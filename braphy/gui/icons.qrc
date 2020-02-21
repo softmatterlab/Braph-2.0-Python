@@ -1,0 +1,19 @@
+<RCC>
+  <qresource prefix="buttons">
+    <file>icon_view_cp.png</file>
+    <file>icon_view_sr.png</file>
+    <file>icon_view_sl.png</file>
+    <file>icon_view_ca.png</file>
+    <file>icon_view_av.png</file>
+    <file>icon_view_ad.png</file>
+    <file>icon_view_3d.png</file>
+    <file>icon_symbol.png</file>
+    <file>icon_sphere.png</file>
+    <file>icon_settings.png</file>
+    <file>icon_label.png</file>
+    <file>icon_grid.png</file>
+    <file>icon_brain.png</file>
+    <file>icon_br.png</file>
+    <file>icon_axis.png</file>
+  </qresource>
+</RCC>

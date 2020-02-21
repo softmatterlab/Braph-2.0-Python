@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1366</width>
+    <height>866</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Cohort Editor</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <property name="rightMargin">
+       <number>600</number>
+      </property>
+      <item>
+       <widget class="QGroupBox" name="groupBox">
+        <property name="title">
+         <string>Community Structure</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout">
+           <item>
+            <widget class="QTableWidget" name="tableWidget">
+             <column>
+              <property name="text">
+               <string>Brain region</string>
+              </property>
+             </column>
+            </widget>
+           </item>
+           <item>
+            <layout class="QGridLayout" name="gridLayout">
+             <property name="topMargin">
+              <number>20</number>
+             </property>
+             <item row="1" column="2">
+              <widget class="QRadioButton" name="btnNewman">
+               <property name="text">
+                <string>Newman algorithm</string>
+               </property>
+               <attribute name="buttonGroup">
+                <string notr="true">buttonGroup_2</string>
+               </attribute>
+              </widget>
+             </item>
+             <item row="0" column="3">
+              <widget class="QComboBox" name="comboBox"/>
+             </item>
+             <item row="0" column="0">
+              <widget class="QRadioButton" name="btnFixed">
+               <property name="text">
+                <string>Fixed structure</string>
+               </property>
+               <attribute name="buttonGroup">
+                <string notr="true">buttonGroup</string>
+               </attribute>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QRadioButton" name="btnDynamic">
+               <property name="text">
+                <string>Dynamic structure</string>
+               </property>
+               <attribute name="buttonGroup">
+                <string notr="true">buttonGroup</string>
+               </attribute>
+              </widget>
+             </item>
+             <item row="0" column="2">
+              <widget class="QRadioButton" name="btnLouvain">
+               <property name="text">
+                <string>Louvain algorithm</string>
+               </property>
+               <attribute name="buttonGroup">
+                <string notr="true">buttonGroup_2</string>
+               </attribute>
+              </widget>
+             </item>
+             <item row="2" column="2">
+              <layout class="QGridLayout" name="gridLayout_2">
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <item row="0" column="0">
+                <widget class="QLabel" name="labelGamma">
+                 <property name="text">
+                  <string>Gamma</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QTextEdit" name="textEditGamma">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>60</width>
+                   <height>30</height>
+                  </size>
+                 </property>
+                 <property name="html">
+                  <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;1&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_3">
+           <property name="topMargin">
+            <number>20</number>
+           </property>
+           <item>
+            <widget class="QPushButton" name="btnSet">
+             <property name="text">
+              <string>Set</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnReset">
+             <property name="text">
+              <string>Reset</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnCalculate">
+             <property name="text">
+              <string>Calculate</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1366</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuAbout">
+    <property name="title">
+     <string>About</string>
+    </property>
+    <addaction name="actionAbout"/>
+   </widget>
+   <widget class="QMenu" name="menuFigure">
+    <property name="title">
+     <string>Figure</string>
+    </property>
+    <addaction name="actionGenerate_figure_2"/>
+   </widget>
+   <addaction name="menuFigure"/>
+   <addaction name="menuAbout"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionZoom_in"/>
+   <addaction name="actionZoom_out"/>
+   <addaction name="action3D_rotation"/>
+   <addaction name="action3D"/>
+   <addaction name="actionSagittal_left"/>
+   <addaction name="actionSagittal_right"/>
+   <addaction name="actionAxial_dorsal"/>
+   <addaction name="actionAxial_ventral"/>
+   <addaction name="actionCoronal_anterior"/>
+   <addaction name="actionCoronal_posterior"/>
+   <addaction name="separator"/>
+   <addaction name="actionBrain"/>
+   <addaction name="actionShow_axis"/>
+   <addaction name="actionShow_grid"/>
+   <addaction name="actionShow_symbols"/>
+   <addaction name="actionRegions"/>
+   <addaction name="actionShow_labels"/>
+  </widget>
+  <action name="actionClose">
+   <property name="text">
+    <string>Close</string>
+   </property>
+  </action>
+  <action name="actionGenerate_figure">
+   <property name="text">
+    <string>Generate figure</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About ...</string>
+   </property>
+  </action>
+  <action name="actionZoom_in">
+   <property name="text">
+    <string>Zoom in</string>
+   </property>
+  </action>
+  <action name="actionZoom_out">
+   <property name="text">
+    <string>Zoom out</string>
+   </property>
+  </action>
+  <action name="action3D_rotation">
+   <property name="text">
+    <string>3D rotation</string>
+   </property>
+  </action>
+  <action name="action3D">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/buttons/icon_view_3d.png</normaloff>:/buttons/icon_view_3d.png</iconset>
+   </property>
+   <property name="text">
+    <string>3D</string>
+   </property>
+  </action>
+  <action name="actionSagittal_left">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/buttons/icon_view_sl.png</normaloff>:/buttons/icon_view_sl.png</iconset>
+   </property>
+   <property name="text">
+    <string>Sagittal left</string>
+   </property>
+  </action>
+  <action name="actionSagittal_right">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/buttons/icon_view_sr.png</normaloff>:/buttons/icon_view_sr.png</iconset>
+   </property>
+   <property name="text">
+    <string>Sagittal right</string>
+   </property>
+  </action>
+  <action name="actionAxial_dorsal">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/buttons/icon_view_ad.png</normaloff>:/buttons/icon_view_ad.png</iconset>
+   </property>
+   <property name="text">
+    <string>Axial dorsal</string>
+   </property>
+  </action>
+  <action name="actionAxial_ventral">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/buttons/icon_view_av.png</normaloff>:/buttons/icon_view_av.png</iconset>
+   </property>
+   <property name="text">
+    <string>Axial ventral</string>
+   </property>
+  </action>
+  <action name="actionCoronal_anterior">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/buttons/icon_view_ca.png</normaloff>:/buttons/icon_view_ca.png</iconset>
+   </property>
+   <property name="text">
+    <string>Coronal anterior</string>
+   </property>
+  </action>
+  <action name="actionCoronal_posterior">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/buttons/icon_view_cp.png</normaloff>:/buttons/icon_view_cp.png</iconset>
+   </property>
+   <property name="text">
+    <string>Coronal posterior</string>
+   </property>
+  </action>
+  <action name="actionBrain">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/buttons/icon_brain.png</normaloff>:/buttons/icon_brain.png</iconset>
+   </property>
+   <property name="text">
+    <string>Brain</string>
+   </property>
+  </action>
+  <action name="actionShow_axis">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/buttons/icon_axis.png</normaloff>:/buttons/icon_axis.png</iconset>
+   </property>
+   <property name="text">
+    <string>Show axis</string>
+   </property>
+  </action>
+  <action name="actionShow_grid">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/buttons/icon_grid.png</normaloff>:/buttons/icon_grid.png</iconset>
+   </property>
+   <property name="text">
+    <string>Show grid</string>
+   </property>
+  </action>
+  <action name="actionShow_symbols">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/buttons/icon_symbol.png</normaloff>:/buttons/icon_symbol.png</iconset>
+   </property>
+   <property name="text">
+    <string>Show symbols</string>
+   </property>
+  </action>
+  <action name="actionRegions">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/buttons/icon_sphere.png</normaloff>:/buttons/icon_sphere.png</iconset>
+   </property>
+   <property name="text">
+    <string>Regions</string>
+   </property>
+  </action>
+  <action name="actionShow_labels">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/buttons/icon_label.png</normaloff>:/buttons/icon_label.png</iconset>
+   </property>
+   <property name="text">
+    <string>Show labels</string>
+   </property>
+  </action>
+  <action name="actionGenerate_figure_2">
+   <property name="text">
+    <string>Generate figure</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="../icons.qrc"/>
+ </resources>
+ <connections/>
+ <buttongroups>
+  <buttongroup name="buttonGroup"/>
+  <buttongroup name="buttonGroup_2"/>
+ </buttongroups>
+</ui>

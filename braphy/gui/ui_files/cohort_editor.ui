@@ -1,0 +1,826 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1255</width>
+    <height>721</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Cohort Editor</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_6">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Brain Atlas</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <property name="topMargin">
+           <number>10</number>
+          </property>
+          <property name="bottomMargin">
+           <number>10</number>
+          </property>
+          <item>
+           <widget class="QTextEdit" name="textEdit_2">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>40</height>
+             </size>
+            </property>
+            <property name="html">
+             <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Brain Atlas name&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;brain region number = &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btnAtlas">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>100</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Select Atlas</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QTextEdit" name="textEdit">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="html">
+             <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;MRI Cohort&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btnLoadXls">
+            <property name="text">
+             <string>Load subject group from xls ...</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btnLoadTxt">
+            <property name="text">
+             <string>Load subject group from txt ...</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btnLoadXml">
+            <property name="text">
+             <string>Load subject group from xml ...</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QTableWidget" name="tableWidget">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <column>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="textAlignment">
+              <set>AlignTrailing|AlignVCenter</set>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Group Name</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Number of Subjects</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Group Notes</string>
+             </property>
+            </column>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <property name="topMargin">
+           <number>10</number>
+          </property>
+          <property name="bottomMargin">
+           <number>10</number>
+          </property>
+          <item>
+           <widget class="QPushButton" name="btnAdd">
+            <property name="text">
+             <string>Add</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btnRemove">
+            <property name="text">
+             <string>Remove</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btnMoveUp">
+            <property name="text">
+             <string>Move up</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btnMoveDown">
+            <property name="text">
+             <string>Move down</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QGridLayout" name="gridLayout_2">
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item row="1" column="1">
+           <widget class="QComboBox" name="comboBox_2"/>
+          </item>
+          <item row="2" column="0">
+           <widget class="QComboBox" name="comboBox_3"/>
+          </item>
+          <item row="1" column="0">
+           <widget class="QComboBox" name="comboBox"/>
+          </item>
+          <item row="1" column="2">
+           <widget class="QPushButton" name="btnMerge">
+            <property name="text">
+             <string>Merge</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QComboBox" name="comboBox_4"/>
+          </item>
+          <item row="2" column="2">
+           <widget class="QPushButton" name="btnIntersect">
+            <property name="text">
+             <string>Intersect</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QPushButton" name="btnInvert">
+            <property name="text">
+             <string>Invert</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QComboBox" name="comboBox_5"/>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>20</number>
+        </property>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_8">
+          <property name="leftMargin">
+           <number>30</number>
+          </property>
+          <property name="rightMargin">
+           <number>30</number>
+          </property>
+          <item>
+           <widget class="QPushButton" name="btnGroupPage">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>200</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Groups and Demographics</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btnSubjectPage">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>200</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Subject Data</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btnAveragesPage">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>200</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Group Averages</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btnBrainPage">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>200</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Brain View</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QStackedWidget" name="stackedWidget">
+          <widget class="GroupWidget" name="groupPage"/>
+          <widget class="SubjectWidget" name="subjectPage"/>
+          <widget class="AveragesWidget" name="averagesPage"/>
+          <widget class="BrainWidget" name="brainPage"/>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1255</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionOpen"/>
+    <addaction name="separator"/>
+    <addaction name="actionSave"/>
+    <addaction name="actionSave_as"/>
+    <addaction name="separator"/>
+    <addaction name="actionImport_xml"/>
+    <addaction name="actionExport_xml"/>
+    <addaction name="separator"/>
+    <addaction name="actionClose"/>
+   </widget>
+   <widget class="QMenu" name="menuGroups">
+    <property name="title">
+     <string>Groups</string>
+    </property>
+    <addaction name="actionLoad_subject_group_from_xls"/>
+    <addaction name="actionLoad_subject_group_from_txt"/>
+    <addaction name="actionLoad_subject_group_from_xml"/>
+    <addaction name="separator"/>
+    <addaction name="actionAdd"/>
+    <addaction name="actionremove"/>
+    <addaction name="actionMove_up"/>
+    <addaction name="actionMove_down"/>
+   </widget>
+   <widget class="QMenu" name="menuSubjects">
+    <property name="title">
+     <string>Subjects</string>
+    </property>
+    <addaction name="actionSelect_all"/>
+    <addaction name="separator"/>
+    <addaction name="actionAdd_subject"/>
+    <addaction name="actionAdd_above"/>
+    <addaction name="actionAdd_below"/>
+    <addaction name="separator"/>
+    <addaction name="actionremove_2"/>
+    <addaction name="separator"/>
+    <addaction name="actionMove_up_2"/>
+    <addaction name="actionMove_down_2"/>
+    <addaction name="actionMove_to_top"/>
+    <addaction name="actionMove_to_bottom"/>
+   </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>View</string>
+    </property>
+    <addaction name="actionGroups_and_Demographics"/>
+    <addaction name="actionSubject_Data"/>
+    <addaction name="actionGroup_Averages"/>
+    <addaction name="actionBrain_View"/>
+   </widget>
+   <widget class="QMenu" name="menuBrain_View">
+    <property name="title">
+     <string>Brain View </string>
+    </property>
+    <addaction name="actionGenerate_figure"/>
+   </widget>
+   <widget class="QMenu" name="menuGraph_Analysis">
+    <property name="title">
+     <string>Graph Analysis</string>
+    </property>
+    <addaction name="actionNew_MRO_graph_analysis"/>
+   </widget>
+   <widget class="QMenu" name="menuAbout">
+    <property name="title">
+     <string>About</string>
+    </property>
+    <addaction name="actionAbout"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuGroups"/>
+   <addaction name="menuSubjects"/>
+   <addaction name="menuView"/>
+   <addaction name="menuBrain_View"/>
+   <addaction name="menuGraph_Analysis"/>
+   <addaction name="menuAbout"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionOpen"/>
+   <addaction name="actionSave"/>
+   <addaction name="separator"/>
+   <addaction name="actionZoom_in"/>
+   <addaction name="actionZoom_out"/>
+   <addaction name="actionPan"/>
+   <addaction name="action3D_rotation"/>
+   <addaction name="actionData_cursor"/>
+   <addaction name="separator"/>
+   <addaction name="actionInsert_colorbar"/>
+   <addaction name="separator"/>
+   <addaction name="actionSagittal_left"/>
+   <addaction name="actionSagittal_right"/>
+   <addaction name="actionAxial_dorsal"/>
+   <addaction name="actionAxial_ventral"/>
+   <addaction name="actionCoronal_anterior"/>
+   <addaction name="actionCoronal_posterior"/>
+   <addaction name="separator"/>
+   <addaction name="actionBrain"/>
+   <addaction name="actionShow_axis"/>
+   <addaction name="actionShow_grid"/>
+   <addaction name="actionShow_symbols"/>
+   <addaction name="actionRegions"/>
+   <addaction name="actionShow_labels"/>
+  </widget>
+  <action name="actionOpen">
+   <property name="text">
+    <string>Open ...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="text">
+    <string>Save</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionSave_as">
+   <property name="text">
+    <string>Save as ...</string>
+   </property>
+  </action>
+  <action name="actionImport_xml">
+   <property name="text">
+    <string>Import (xml) ...</string>
+   </property>
+  </action>
+  <action name="actionExport_xml">
+   <property name="text">
+    <string>Export (xml) ...</string>
+   </property>
+  </action>
+  <action name="actionClose">
+   <property name="text">
+    <string>Close</string>
+   </property>
+  </action>
+  <action name="actionLoad_subject_group_from_xls">
+   <property name="text">
+    <string>Load subject group from xls ...</string>
+   </property>
+  </action>
+  <action name="actionLoad_subject_group_from_txt">
+   <property name="text">
+    <string>Load subject group from txt ...</string>
+   </property>
+  </action>
+  <action name="actionLoad_subject_group_from_xml">
+   <property name="text">
+    <string>Load subject group from xml ...</string>
+   </property>
+  </action>
+  <action name="actionMove_up">
+   <property name="text">
+    <string>Move up</string>
+   </property>
+  </action>
+  <action name="actionMove_down">
+   <property name="text">
+    <string>Move down</string>
+   </property>
+  </action>
+  <action name="actionAdd">
+   <property name="text">
+    <string>Add</string>
+   </property>
+  </action>
+  <action name="actionremove">
+   <property name="text">
+    <string>Remove</string>
+   </property>
+  </action>
+  <action name="actionSelect_all">
+   <property name="text">
+    <string>Select all</string>
+   </property>
+  </action>
+  <action name="actionAdd_subject">
+   <property name="text">
+    <string>Add subject</string>
+   </property>
+  </action>
+  <action name="actionAdd_above">
+   <property name="text">
+    <string>Add above</string>
+   </property>
+  </action>
+  <action name="actionAdd_below">
+   <property name="text">
+    <string>Add below</string>
+   </property>
+  </action>
+  <action name="actionremove_2">
+   <property name="text">
+    <string>Remove</string>
+   </property>
+  </action>
+  <action name="actionMove_up_2">
+   <property name="text">
+    <string>Move up</string>
+   </property>
+  </action>
+  <action name="actionMove_down_2">
+   <property name="text">
+    <string>Move down</string>
+   </property>
+  </action>
+  <action name="actionMove_to_top">
+   <property name="text">
+    <string>Move to top</string>
+   </property>
+  </action>
+  <action name="actionMove_to_bottom">
+   <property name="text">
+    <string>Move to bottom</string>
+   </property>
+  </action>
+  <action name="actionGroups_and_Demographics">
+   <property name="text">
+    <string>Groups and Demographics</string>
+   </property>
+  </action>
+  <action name="actionSubject_Data">
+   <property name="text">
+    <string>Subject Data</string>
+   </property>
+  </action>
+  <action name="actionGroup_Averages">
+   <property name="text">
+    <string>Group Averages</string>
+   </property>
+  </action>
+  <action name="actionBrain_View">
+   <property name="text">
+    <string>Brain View</string>
+   </property>
+  </action>
+  <action name="actionGenerate_figure">
+   <property name="text">
+    <string>Generate figure</string>
+   </property>
+  </action>
+  <action name="actionNew_MRO_graph_analysis">
+   <property name="text">
+    <string>New MRI graph analysis ...</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About ...</string>
+   </property>
+  </action>
+  <action name="actionZoom_in">
+   <property name="text">
+    <string>Zoom in</string>
+   </property>
+  </action>
+  <action name="actionZoom_out">
+   <property name="text">
+    <string>Zoom out</string>
+   </property>
+  </action>
+  <action name="actionPan">
+   <property name="text">
+    <string>Pan</string>
+   </property>
+  </action>
+  <action name="action3D_rotation">
+   <property name="text">
+    <string>3D rotation</string>
+   </property>
+  </action>
+  <action name="actionData_cursor">
+   <property name="text">
+    <string>Data cursor</string>
+   </property>
+  </action>
+  <action name="actionInsert_colorbar">
+   <property name="text">
+    <string>Insert colorbar</string>
+   </property>
+  </action>
+  <action name="action3D">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/buttons/icon_view_3d.png</normaloff>:/buttons/icon_view_3d.png</iconset>
+   </property>
+   <property name="text">
+    <string>3D</string>
+   </property>
+  </action>
+  <action name="actionSagittal_left">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/buttons/icon_view_sl.png</normaloff>:/buttons/icon_view_sl.png</iconset>
+   </property>
+   <property name="text">
+    <string>Sagittal left</string>
+   </property>
+  </action>
+  <action name="actionSagittal_right">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/buttons/icon_view_sr.png</normaloff>:/buttons/icon_view_sr.png</iconset>
+   </property>
+   <property name="text">
+    <string>Sagittal right</string>
+   </property>
+  </action>
+  <action name="actionAxial_dorsal">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/buttons/icon_view_ad.png</normaloff>:/buttons/icon_view_ad.png</iconset>
+   </property>
+   <property name="text">
+    <string>Axial dorsal</string>
+   </property>
+  </action>
+  <action name="actionAxial_ventral">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/buttons/icon_view_av.png</normaloff>:/buttons/icon_view_av.png</iconset>
+   </property>
+   <property name="text">
+    <string>Axial ventral</string>
+   </property>
+  </action>
+  <action name="actionCoronal_anterior">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/buttons/icon_view_ca.png</normaloff>:/buttons/icon_view_ca.png</iconset>
+   </property>
+   <property name="text">
+    <string>Coronal anterior</string>
+   </property>
+  </action>
+  <action name="actionCoronal_posterior">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/buttons/icon_view_cp.png</normaloff>:/buttons/icon_view_cp.png</iconset>
+   </property>
+   <property name="text">
+    <string>Coronal posterior</string>
+   </property>
+  </action>
+  <action name="actionBrain">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/buttons/icon_brain.png</normaloff>:/buttons/icon_brain.png</iconset>
+   </property>
+   <property name="text">
+    <string>Brain</string>
+   </property>
+  </action>
+  <action name="actionShow_axis">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/buttons/icon_axis.png</normaloff>:/buttons/icon_axis.png</iconset>
+   </property>
+   <property name="text">
+    <string>Show axis</string>
+   </property>
+  </action>
+  <action name="actionShow_grid">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/buttons/icon_grid.png</normaloff>:/buttons/icon_grid.png</iconset>
+   </property>
+   <property name="text">
+    <string>Show grid</string>
+   </property>
+  </action>
+  <action name="actionShow_symbols">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/buttons/icon_symbol.png</normaloff>:/buttons/icon_symbol.png</iconset>
+   </property>
+   <property name="text">
+    <string>Show symbols</string>
+   </property>
+  </action>
+  <action name="actionRegions">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/buttons/icon_sphere.png</normaloff>:/buttons/icon_sphere.png</iconset>
+   </property>
+   <property name="text">
+    <string>Regions</string>
+   </property>
+  </action>
+  <action name="actionShow_labels">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/buttons/icon_label.png</normaloff>:/buttons/icon_label.png</iconset>
+   </property>
+   <property name="text">
+    <string>Show labels</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>GroupWidget</class>
+   <extends>QWidget</extends>
+   <header>groupwidget</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>SubjectWidget</class>
+   <extends>QWidget</extends>
+   <header>subjectwidget</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>AveragesWidget</class>
+   <extends>QWidget</extends>
+   <header>averageswidget</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>BrainWidget</class>
+   <extends>QWidget</extends>
+   <header>brainwidget</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="../icons.qrc"/>
+ </resources>
+ <connections/>
+</ui>
