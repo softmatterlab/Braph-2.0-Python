@@ -1,5 +1,9 @@
 # Braph-2.0-Python README
 
+## Installation
+
+    pip3 install .
+
 ## Tests
 
 ### Unit Tests
