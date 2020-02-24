@@ -10,7 +10,7 @@ class MeasureEccentricity(Measure):
 
         description['eccentricity'] = 'The node eccentricity is the maximal shortest ' +\
                                       'path length between a node and any other node.'
-        
+
         description['avg_eccentricity'] = 'The average eccentricity is the average node eccentricy.'
 
         description['radius'] = 'The radius is the minimum eccentricity.'
@@ -19,7 +19,7 @@ class MeasureEccentricity(Measure):
 
         description['in_eccentricity'] = 'In directed graphs, the node in-eccentricity is the maximal '+\
                                          'shortest path length from any nodes in the netwrok and a node.'
-                                         
+
         description['avg_in_eccentricity'] = 'In directed graphs, the average in-eccentricity is the average node in-eccentricy.'
 
         description['out_eccentricity'] = 'In directed graphs, the node out-eccentricity is the maximal shortest '+\
@@ -53,7 +53,7 @@ class MeasureEccentricity(Measure):
         graph_type_measures[GraphBU] = ['eccentricity', 'avg_eccentricity', 'radius', 'diameter']
         graph_type_measures[GraphWD] = ['eccentricity', 'avg_eccentricity', 'radius', 'diameter']
         graph_type_measures[GraphWU] = ['eccentricity', 'avg_eccentricity', 'radius', 'diameter']
-        
+
         for graph_type in graph_type_measures.keys():
             if graph_type.directed:
                 graph_type_measures[graph_type].extend(['in_eccentricity', 'avg_in_eccentricity',

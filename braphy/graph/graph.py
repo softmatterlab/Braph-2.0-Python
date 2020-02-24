@@ -8,9 +8,11 @@ class Graph(ABC):
     def __init__(self, A, measure_list):
         self.A = A
         self.init_measure_dict(measure_list)
-        self.D = Graph.distance(self.A, self.is_weighted(), self.is_directed())
+        self.D = Graph.distance(self.A, self.is_weighted(),
+                                self.is_directed())
         self.community_structure, self.modularity = \
-            CommunityAlgorithms.compute_community(self.A, self.is_weighted(), self.is_directed(),
+            CommunityAlgorithms.compute_community(self.A, self.is_weighted(),
+                                                  self.is_directed(),
                                                   'Louvain')
 
     def init_measure_dict(self, measure_list):
@@ -93,7 +95,8 @@ class Graph(ABC):
             A = A + A.T
         elif rule == 'av' or rule == 'average':
             A = (A + A.T) / 2
-        elif rule == 'min' or rule == 'minimum' or rule == 'or' or rule == 'weak':
+        elif rule == 'min' or rule == 'minimum' or rule == 'or' or
+             rule == 'weak':
             A = np.minimum(A, A.T)
         else:
             A = np.maximum(A, A.T)

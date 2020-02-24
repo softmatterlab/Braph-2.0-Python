@@ -11,14 +11,14 @@ class MeasureDegree(Measure):
 
         description['degree'] = 'The degree of a node is the number of edges connected ' +\
                                 'to the node. Connection weights are ignored in calculations.'
-        
+
         description['avg_degree'] = 'The average degree of a graph is the average node degree. ' +\
                                     'The node degree is the number of edges connected to the node. ' +\
                                     'Connection weights are ignored in calculations.'
-        
+
         description['in_degree'] = 'In directed graphs, the in-degree of a node is the number of ' +\
                                    'inward edges. Connection weights are ignored in calculations.'
-        
+
         description['avg_in_degree'] = 'In directed graphs, the average in-degree is the average node '+\
                                        'in-degree. The node in-degree of a node is the number of ' +\
                                        'inward edges. Connection weights are ignored in calculations.'
@@ -29,7 +29,7 @@ class MeasureDegree(Measure):
         description['avg_out_degree'] = 'In directed graphs, the average out-degree is the average ' +\
                                         'node out-degree. The node out-degree of a node is the number ' +\
                                         'of outward edges. Connection weights are ignored in calculations.'
-        
+
         return description
 
     def compute_measure(graph):

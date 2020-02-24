@@ -5,7 +5,6 @@ import numpy as np
 from test.test_utility import TestUtility
 
 class TestCloseness(TestUtility):
-    
     def test_bd(self):
         measure_list = MeasureParser.list_measures()
         A = np.array([[1, 0, 1, 1, 1],
@@ -81,6 +80,6 @@ class TestCloseness(TestUtility):
         self.assertSequenceAlmostEqual(graph.get_measure(MeasureCloseness, 'closeness').tolist(),
                                        closeness, places = 4)
 
- 
+
 if __name__ == '__main__':
     unittest.main()

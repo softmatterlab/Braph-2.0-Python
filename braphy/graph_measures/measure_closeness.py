@@ -10,7 +10,7 @@ from braphy.graph_measures.measure_path_length import MeasurePathLength
 class MeasureCloseness(Measure):
 
     def get_description():
-        
+
         description = {}
 
         # Proofread please
@@ -19,19 +19,19 @@ class MeasureCloseness(Measure):
 
         description['closeness_in'] = 'The in-closeness centrality of a node is the inverse of the average ' +\
                       'shortest path length from the node to all other nodes in the graph.'
-        
+
         description['closeness_out'] = 'The out-closeness centrality of a node is the inverse of the average ' +\
                       'shortest path length from all other nodes in the graph to the node.'
 
         return description
 
     def compute_measure(graph):
-        
+
         if graph.is_directed():
-            
+
             graph.measure_dict[MeasureCloseness]['closeness_in'] = \
                                 1./graph.get_measure(MeasurePathLength, 'in_path_length')
-            
+
             graph.measure_dict[MeasureCloseness]['closeness_out'] = \
                                 1./graph.get_measure(MeasurePathLength,'out_path_length')
 

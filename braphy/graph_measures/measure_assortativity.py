@@ -8,20 +8,22 @@ import copy
 class MeasureAssortativity(Measure):
 
     def get_description():
-        
+
         description = {}
         txt = 'The assortativity coefficient is a correlation coefficient ' + \
               'between the degrees/strengths of all nodes on two opposite ' + \
-              'ends of a link. A positive assortativity coefficient indicates ' + \
-              'that nodes tend to link to other nodes with the same or similar degree/strength.'
+              'ends of a link.' + \
+              'A positive assortativity coefficient indicates ' + \
+              'that nodes tend to link to other nodes with the same or ' + \
+              'similar degree/strength.'
         description['assortativity_in_in'] = txt
         description['assortativity_in_out'] = txt
         description['assortativity_out_in'] = txt
         description['assortativity_out_out'] = txt
-        description['assortativity'] = txt  
+        description['assortativity'] = txt
 
         return description
-   
+
     def compute_measure(graph):
         A = graph.A.copy()
         np.fill_diagonal(A, 0)
@@ -37,7 +39,8 @@ class MeasureAssortativity(Measure):
             [i, j] = np.where(np.triu(A, 1))
             K = len(i)
             graph.measure_dict[MeasureAssortativity]['assortativity'] = \
-                MeasureAssortativity.compute_assortativity(summed_edges[i], summed_edges[j], K)
+                MeasureAssortativity.compute_assortativity(summed_edges[i],
+                                                           summed_edges[j], K)
 
         else:
             summed_edges_in = summed_edges['in_' + summed_edges_str]

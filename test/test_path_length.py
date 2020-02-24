@@ -59,6 +59,6 @@ class TestPathLength(TestUtility):
         graph = GraphWU(A, measure_list[GraphWU], 'zero', 'max')
         path_length = [0.1079, 0.0612, 0.0535, 0.1341, 0.0527]
         self.assertSequenceAlmostEqual(graph.get_measure(MeasurePathLength, 'path_length'), path_length, places = 4)
- 
+
 if __name__ == '__main__':
     unittest.main()

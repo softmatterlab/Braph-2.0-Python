@@ -76,7 +76,8 @@ def accum(accmap, a, func=None, size=None, fill_value=0, dtype=None):
 
     # Check for bad arguments and handle the defaults.
     if accmap.shape[:a.ndim] != a.shape:
-        raise ValueError("The initial dimensions of accmap must be the same as a.shape")
+        raise ValueError("The initial dimensions of accmap must be " + \
+                         "the same as a.shape")
     if func is None:
         func = np.sum
     if dtype is None:

@@ -37,7 +37,6 @@ class TestDistance(unittest.TestCase):
         self.assertSequenceEqual(graph.D.tolist(), true_distance)
 
     def test_graphWU(self):
-    
         measure_list = MeasureParser.list_measures()
         A = np.array([[0.0, 0.1, 0.5, 0.4, 0.0],
                       [0.1, 0.0, 0.2, 0.5, 0.0],
@@ -53,7 +52,6 @@ class TestDistance(unittest.TestCase):
         self.assertSequenceEqual(graph.D.tolist(), true_distance)
 
     def test_graphWD(self):
-        
         measure_list = MeasureParser.list_measures()
         A = np.array([[0.0, 0.1, 0.5, 0.4, 0.0],
                       [0.8, 0.0, 0.0, 0.0, 0.0],
