@@ -20,8 +20,6 @@ class TestUtility(unittest.TestCase):
                 if(idx == idx2):
                     continue
                 if(test_val == test_val2):
-                    if true_sequence[idx] != true_sequence[idx2]:
-                        hej = 1
                     self.assertEqual(true_sequence[idx], true_sequence[idx2])
                 else:
                     self.assertNotEqual(true_sequence[idx], true_sequence[idx2])
