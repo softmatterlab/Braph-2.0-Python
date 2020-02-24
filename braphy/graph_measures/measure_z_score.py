@@ -16,7 +16,7 @@ class MeasureZScore(Measure):
                                      'version of degree centrality. This measure requires a previously ' +\
                                      'determined community structure.'
         return description
-        
+
     def compute_measure(graph):
         z_score = MeasureZScore.z_score(graph.A + graph.A.T, graph.community_structure)
         graph.measure_dict[MeasureZScore]['z_score'] = z_score
@@ -45,3 +45,6 @@ class MeasureZScore(Measure):
         graph_type_measures[GraphWU] = ['z_score']
 
         return graph_type_measures
+
+    def community_dependent():
+        return True

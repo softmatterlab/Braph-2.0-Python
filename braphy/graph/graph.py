@@ -18,7 +18,12 @@ class Graph(ABC):
         for measure in measure_list:
             measure_dict[measure] = {}
         self.measure_dict = measure_dict
-    
+
+    def clear_community_dependent_measures(self):
+        for measure in self.measure_dict.keys():
+            if measure.community_dependent():
+                self.measure_dict[measure] = {}
+
     def same_community(self, i, j):
         return self.community_structure[i] == self.community_structure[j]
 

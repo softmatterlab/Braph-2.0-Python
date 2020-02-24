@@ -37,3 +37,6 @@ class MeasureParticipation(Measure):
         graph_type_measures[GraphWU] = ['participation']
 
         return graph_type_measures
+
+    def community_dependent():
+        return True
