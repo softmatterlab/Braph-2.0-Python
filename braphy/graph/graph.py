@@ -3,11 +3,13 @@ from abc import ABC, abstractmethod
 import numpy as np
 from scipy.sparse.csgraph import dijkstra
 import copy
+from braphy.graph.random_graph import RandomGraph
 
 class Graph(ABC):
     def __init__(self, A, measure_list):
         self.A = A
         self.init_measure_dict(measure_list)
+        self.measure_list = measure_list
         self.D = Graph.distance(self.A, self.is_weighted(),
                                 self.is_directed())
         self.community_structure, self.modularity = \
@@ -95,8 +97,7 @@ class Graph(ABC):
             A = A + A.T
         elif rule == 'av' or rule == 'average':
             A = (A + A.T) / 2
-        elif rule == 'min' or rule == 'minimum' or rule == 'or' or
-             rule == 'weak':
+        elif rule == 'min' or rule == 'minimum' or rule == 'or' or rule == 'weak':
             A = np.minimum(A, A.T)
         else:
             A = np.maximum(A, A.T)
@@ -136,3 +137,8 @@ class Graph(ABC):
         D[D == 0] = np.inf
         np.fill_diagonal(D, 0.0)
         return D
+
+    def get_random_graph(self):
+        random_A, correlation = RandomGraph.random_graph(self)
+        random_graph = self.__class__(random_A, self.measure_list)
+        return random_graph
