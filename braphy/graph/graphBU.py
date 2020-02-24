@@ -5,9 +5,11 @@ class GraphBU(Graph):
     weighted = False
     directed = False
     def __init__(self,A, measure_list, rule_negative_weights = 'zero', rule_symmetrize = 'max'):
+        A = Graph.symmetrize(A, rule_symmetrize)
         A = Graph.remove_diagonal(A)
         A = Graph.remove_negative_weights(A, rule_negative_weights)
-        A = Graph.symmetrize(A, rule_symmetrize)
+        A = Graph.binarize(A)
+        
         super().__init__(A, measure_list)
 
     def is_selfconnected(self):

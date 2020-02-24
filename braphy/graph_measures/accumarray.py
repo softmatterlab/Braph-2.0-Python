@@ -106,10 +106,3 @@ def accum(accmap, a, func=None, size=None, fill_value=0, dtype=None):
             out[s[0]] = func(vals[s])
 
     return out
-
-#a = np.array([[1, 1], [2, 2], [3, 2], [1, 1], [2, 2], [4, 1]])
-#b = np.array([101, 102, 103, 104, 105, 106])
-a = np.array([1, 2, 1, 0, 2, 2, 3, 3, 1, 3])
-b = np.array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1])
-print(accum(a, b, size = np.array([4, 1])))
-#print(accum(a, b))

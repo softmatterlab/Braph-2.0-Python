@@ -38,5 +38,13 @@ class TestGraphBU(unittest.TestCase):
         for (i, j), value in np.ndenumerate(graph.A):
             if(i != j):
                 self.assertTrue(value > 0)
+
+    def test_binarize(self):
+        measure_list = MeasureParser.list_measures()
+        A = np.array([[0, 0, 0, 0], [4.3, 1.5, -2, 0], [-600, 0.00, 3.14, 0], [1, 1.0, 0.5, 0.0006]])
+        graph = GraphBU(A, measure_list[GraphBU], 'zero')
+        for (i, j), value in np.ndenumerate(graph.A):
+            self.assertTrue(value == 1 or value == 0)
+
 if __name__ == '__main__':
     unittest.main()

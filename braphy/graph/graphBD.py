@@ -8,6 +8,7 @@ class GraphBD(Graph):
     def __init__(self, A, measure_list, rule_negative_weights = 'zero'):
         A = Graph.remove_diagonal(A)
         A = Graph.remove_negative_weights(A, rule_negative_weights)
+        A = Graph.binarize(A)
         super().__init__(A, measure_list)
 
     def is_selfconnected(self):

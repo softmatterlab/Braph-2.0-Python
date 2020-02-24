@@ -94,6 +94,10 @@ class Graph(ABC):
             A = np.maximum(A, A.T)
         return A
 
+    def binarize(A):
+        A[A != 0] = 1
+        return A
+
     def distance(A, is_weighted, is_directed):
         if is_weighted:
             D = Graph.dijkstras(A, is_directed)
