@@ -41,7 +41,7 @@ class TestCommunity(TestUtility):
         graph = GraphWD(A, measure_list[GraphWD], 'zero')
         community = graph.community_structure
         self.assertCategorizationEqual(community, [0,0,0,0,1,1,1,1])
-        self.assertAlmostEqual(graph.get_measure(MeasureModularity, 'modularity'), 0.3875, places = 4)
+        self.assertAlmostEqual(graph.get_measure(MeasureModularity, 'modularity'), 0.3875, 4)
 
     def test_wu(self):
         measure_list = MeasureParser.list_measures()
@@ -56,7 +56,7 @@ class TestCommunity(TestUtility):
         graph = GraphWU(A, measure_list[GraphWU], 'zero')
         community = graph.community_structure
         self.assertCategorizationEqual(community, [0,0,0,0,1,1,1,1])
-        self.assertAlmostEqual(graph.get_measure(MeasureModularity, 'modularity'), 0.3806, places = 4)
+        self.assertAlmostEqual(graph.get_measure(MeasureModularity, 'modularity'), 0.3806, 4)
 
 if __name__ == '__main__':
     unittest.main()

@@ -9,7 +9,8 @@ class MeasureModularity(Measure):
     def get_description():
         description = {}
         description['modularity'] = 'The modularity is a statistic that quantifies the ' +\
-                                'degree to which the graph may be subdivided into such clearly delineated groups.'
+                                    'degree to which the graph may be subdivided into such ' +\
+                                    'clearly delineated groups.'
         return description
 
     def compute_measure(graph):

@@ -10,8 +10,7 @@ class Graph(ABC):
         self.A = A
         self.init_measure_dict(measure_list)
         self.measure_list = measure_list
-        self.D = Graph.distance(self.A, self.is_weighted(),
-                                self.is_directed())
+        self.D = Graph.distance(self.A, self.is_weighted(), self.is_directed())
         self.community_structure, self.modularity = \
             CommunityAlgorithms.compute_community(self.A, self.is_weighted(),
                                                   self.is_directed(),
@@ -106,6 +105,18 @@ class Graph(ABC):
     def binarize(A):
         A[A != 0] = 1
         return A
+
+    def standardize(A, rule):
+        if rule == 'range' or rule == 'compress':
+            if np.min(A) != np.max(A):
+                new_A = (A - np.min(A)) / (np.max(A) - np.min(A))
+            else:
+                new_A = Graph.binarize(A)
+        else: # rule == threshold / one / 1
+            new_A = A.copy()
+            new_A[new_A < 0] = 0
+            new_A[new_A > 1] = 1
+        return new_A
 
     def distance(A, is_weighted, is_directed):
         if is_weighted:

@@ -43,10 +43,10 @@ class TestDistance(unittest.TestCase):
                       [0.5, 0.2, 0.0, 0.4, 0.0],
                       [0.4, 0.5, 0.4, 0.0, 0.0],
                       [0.0, 0.0, 0.0, 0.0, 0.0]])
-        true_distance = [[0.0, 4.5, 2.0, 2.5, np.inf],
-                         [4.5, 0.0, 4.5, 2.0, np.inf],
-                         [2.0, 4.5, 0.0, 2.5, np.inf],
-                         [2.5, 2.0, 2.5, 0.0, np.inf],
+        true_distance = [[0.0, 2.25, 1.0, 1.25, np.inf],
+                         [2.25, 0.0, 2.25, 1.0, np.inf],
+                         [1.0, 2.25, 0.0, 1.25, np.inf],
+                         [1.25, 1.0, 1.25, 0.0, np.inf],
                          [np.inf, np.inf, np.inf, np.inf, 0]]
         graph = GraphWU(A, measure_list[GraphWU], 'zero', 'min')
         self.assertSequenceEqual(graph.D.tolist(), true_distance)
@@ -58,10 +58,10 @@ class TestDistance(unittest.TestCase):
                       [0.5, 0.2, 0.0, 0.4, 0.0],
                       [0.8, 0.1, 0.0, 0.0, 0.0],
                       [0.0, 0.0, 0.0, 0.0, 0.0]])
-        true_distance = [[0.0, 7.0, 2.0, 2.5, np.inf],
-                         [1.25, 0.0, 3.25, 3.75, np.inf],
-                         [2.0, 5.0, 0.0, 2.5, np.inf],
-                         [1.25, 8.25, 3.25, 0.0, np.inf],
+        true_distance = [[0.0, 5.6, 1.6, 2, np.inf],
+                         [1, 0.0, 2.6, 3.0, np.inf],
+                         [1.6, 4, 0.0, 2, np.inf],
+                         [1, 6.6, 2.6, 0.0, np.inf],
                          [np.inf, np.inf, np.inf, np.inf, 0]]
         graph = GraphWD(A, measure_list[GraphWD], 'zero')
         self.assertSequenceEqual(graph.D.tolist(), true_distance)
