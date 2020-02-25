@@ -139,6 +139,6 @@ class Graph(ABC):
         return D
 
     def get_random_graph(self):
-        random_A, correlation = RandomGraph.random_graph(self)
+        random_A, correlation = RandomGraph.random_graph(self) # TypeError: cannot unpack non-iterable NoneType object
         random_graph = self.__class__(random_A, self.measure_list)
         return random_graph
