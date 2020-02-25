@@ -16,3 +16,7 @@ class Measure(ABC):
     @abstractmethod
     def get_description():
         pass
+
+    @abstractmethod
+    def get_name():
+        pass

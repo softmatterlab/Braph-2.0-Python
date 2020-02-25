@@ -7,6 +7,8 @@ import copy
 
 class MeasureAssortativity(Measure):
 
+    def get_name():
+        pass
     def get_description():
         
         description = {}
