@@ -6,7 +6,7 @@ import copy
 class MeasureBetweenness(Measure):
 
     def get_description():
-        
+
         description = {}
         description['betweenness'] = 'Node betweenness centrality of a node is the fraction of all ' +\
                       'shortest paths in the graph that contain a given node. ' + \

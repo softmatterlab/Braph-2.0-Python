@@ -3,14 +3,18 @@ from abc import ABC, abstractmethod
 import numpy as np
 from scipy.sparse.csgraph import dijkstra
 import copy
+from braphy.graph.random_graph import RandomGraph
 
 class Graph(ABC):
     def __init__(self, A, measure_list):
         self.A = A
         self.init_measure_dict(measure_list)
-        self.D = Graph.distance(self.A, self.is_weighted(), self.is_directed())
+        self.measure_list = measure_list
+        self.D = Graph.distance(self.A, self.is_weighted(),
+                                self.is_directed())
         self.community_structure, self.modularity = \
-            CommunityAlgorithms.compute_community(self.A, self.is_weighted(), self.is_directed(),
+            CommunityAlgorithms.compute_community(self.A, self.is_weighted(),
+                                                  self.is_directed(),
                                                   'Louvain')
 
     def init_measure_dict(self, measure_list):
@@ -18,7 +22,12 @@ class Graph(ABC):
         for measure in measure_list:
             measure_dict[measure] = {}
         self.measure_dict = measure_dict
-    
+
+    def clear_community_dependent_measures(self):
+        for measure in self.measure_dict.keys():
+            if measure.community_dependent():
+                self.measure_dict[measure] = {}
+
     def same_community(self, i, j):
         return self.community_structure[i] == self.community_structure[j]
 
@@ -128,3 +137,8 @@ class Graph(ABC):
         D[D == 0] = np.inf
         np.fill_diagonal(D, 0.0)
         return D
+
+    def get_random_graph(self):
+        random_A, correlation = RandomGraph.random_graph(self)
+        random_graph = self.__class__(random_A, self.measure_list)
+        return random_graph

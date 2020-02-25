@@ -9,8 +9,8 @@ class Measure(ABC):
 
     @abstractmethod
     def get_valid_graph_types():
-        ''' Returns a dictionary where the keys are graph types and values are valid measures for 
-        that type '''
+        ''' Returns a dictionary where the keys are graph types and values \
+            are valid measures for that type '''
         pass
 
     @abstractmethod
@@ -20,3 +20,6 @@ class Measure(ABC):
     @abstractmethod
     def get_name():
         pass
+    
+    def community_dependent():
+        return False

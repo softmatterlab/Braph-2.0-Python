@@ -16,7 +16,7 @@ class MeasureCluster(Measure):
 
         description['avg_cluster'] = 'The clustering coefficient of a graph is '+\
                                      'the average of the clustering coefficients of its nodes.'
-        
+
         return description
 
     def compute_measure(graph):

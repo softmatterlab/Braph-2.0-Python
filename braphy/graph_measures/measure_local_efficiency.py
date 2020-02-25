@@ -11,14 +11,14 @@ class MeasureLocalEfficiency(Measure):
                                           'of the node computed on the node''s neighborhood'
         description['avg_local_efficiency'] = 'The local efficiency of a graph is the average of '+\
                                               'the local efficiencies of its nodes. It is related to clustering coefficient.'
-        
+
         return description
 
     def compute_measure(graph):
 
         A = graph.A.copy()
         local_efficiency = np.zeros(len(A))
-        
+
         for i in range(len(A)):
             neighbours = np.where(A[i,:] + A[:,i])[0]
             if len(neighbours) > 1:
@@ -30,7 +30,7 @@ class MeasureLocalEfficiency(Measure):
                 D_subgraph = Graph.distance(A_subgraph, graph.is_weighted(), graph.is_directed())
                 D_subgraph_inverse = np.reciprocal(D_subgraph)
                 np.fill_diagonal(D_subgraph_inverse, 0)
-                
+
                 in_local_efficiency = np.sum(D_subgraph_inverse, axis = 0)/(len(D_subgraph) - 1)
                 out_local_efficiency = np.sum(D_subgraph_inverse, axis = 1)/(len(D_subgraph) - 1)
                 local_efficiency[i] = np.mean((in_local_efficiency + out_local_efficiency) / 2)

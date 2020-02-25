@@ -21,10 +21,10 @@ class GraphBD(Graph):
         return "Binary Directed Graph"
 
     def get_description(self):
-        
+
         description = 'In a binary directed (BD) graph, ' + \
                       'the edges can be either 0 (absence of connection) ' + \
                       'or 1 (existence of connection), ' + \
-                      'and they are directed.' 
+                      'and they are directed.'
 
         return description

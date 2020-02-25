@@ -20,12 +20,14 @@ class GraphWD(Graph):
 
     def get_name(self):
         return "Weighted Directed Graph"
-    
+
     def get_description(self):
-        
+
         description = 'In a weighted directed (WD) graph, ' + \
-                'the edges are associated with a real number between 0 and 1' + \
+                'the edges are associated with a real number ' + \
+                'between 0 and 1' + \
                 'indicating the strength of the connection, ' + \
                 'and they are directed.'
-        
+
         return description
+

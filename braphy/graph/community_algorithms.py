@@ -11,7 +11,8 @@ class CommunityAlgorithms:
     def louvain_iterations(A, is_weighted, is_directed, gamma):
         M, Q = CommunityAlgorithms.louvain(A, is_weighted, is_directed, gamma)
         for _ in range(2):
-            _M, _Q = CommunityAlgorithms.louvain(A, is_weighted, is_directed, gamma)
+            _M, _Q = CommunityAlgorithms.louvain(A, is_weighted, is_directed,
+                                                 gamma)
             if(_Q > Q):
                 M = _M
                 Q = _Q
