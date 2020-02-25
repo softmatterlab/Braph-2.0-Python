@@ -5,9 +5,10 @@ class GraphWU(Graph):
     weighted = True
     directed = False
     def __init__(self, A, measure_list, rule_negative_weights = 'zero',
-                 rule_symmetrize = 'max'):
+                 rule_symmetrize = 'max', rule_standardize = 'range'):
         A = Graph.remove_diagonal(A)
         A = Graph.remove_negative_weights(A, rule_negative_weights)
+        A = Graph.standardize(A, rule_standardize)
         A = Graph.symmetrize(A, rule_symmetrize)
         super().__init__(A, measure_list)
 

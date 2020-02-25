@@ -106,6 +106,18 @@ class Graph(ABC):
         A[A != 0] = 1
         return A
 
+    def standardize(A, rule):
+        if rule == 'range' or rule == 'compress':
+            if np.min(A) != np.max(A):
+                new_A = (A - np.min(A)) / (np.max(A) - np.min(A))
+            else:
+                new_A = Graph.binarize(A)
+        else: # rule == threshold / one / 1
+            new_A = A.copy()
+            new_A[new_A < 0] = 0
+            new_A[new_A > 1] = 1
+        return new_A
+
     def distance(A, is_weighted, is_directed):
         if is_weighted:
             D = Graph.dijkstras(A, is_directed)

@@ -4,9 +4,10 @@ from braphy.graph.graph import Graph
 class GraphWD(Graph):
     weighted = True
     directed = True
-    def __init__(self,A, measure_list, rule_negative_weights = 'zero'):
+    def __init__(self,A, measure_list, rule_negative_weights = 'zero', rule_standardize = 'range'):
         A = Graph.remove_diagonal(A)
         A = Graph.remove_negative_weights(A, rule_negative_weights)
+        A = Graph.standardize(A, rule_standardize)
         super().__init__(A, measure_list)
 
     def is_undirected(self):

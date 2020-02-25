@@ -54,11 +54,11 @@ class TestAssortativity(unittest.TestCase):
                       [13, 0.0, 1.2, 5.7, -0.01],
                       [5.5, 8.2, 0.3, 0.0005, -0.5],
                       [1, 0.0, 345, 8.7, -2]])
-        graph = GraphWD(A, measure_list[GraphWD], 'null')
-        self.assertAlmostEqual(graph.get_measure(MeasureAssortativity, 'assortativity_out_in'), 0.0165, places = 4)
-        self.assertAlmostEqual(graph.get_measure(MeasureAssortativity, 'assortativity_in_out'), -0.0392, places = 4)
-        self.assertAlmostEqual(graph.get_measure(MeasureAssortativity, 'assortativity_out_out'), -0.0390, places = 4)
-        self.assertAlmostEqual(graph.get_measure(MeasureAssortativity, 'assortativity_in_in'), -0.2841, places = 4)
+        graph = GraphWD(A, measure_list[GraphWD], 'zero')
+        self.assertAlmostEqual(graph.get_measure(MeasureAssortativity, 'assortativity_out_in'), 0.0451, places = 4)
+        self.assertAlmostEqual(graph.get_measure(MeasureAssortativity, 'assortativity_in_out'), -0.0973, places = 4)
+        self.assertAlmostEqual(graph.get_measure(MeasureAssortativity, 'assortativity_out_out'), -0.1191, places = 4)
+        self.assertAlmostEqual(graph.get_measure(MeasureAssortativity, 'assortativity_in_in'), -0.2731, places = 4)
 
     def test_wu(self):
         measure_list = MeasureParser.list_measures()

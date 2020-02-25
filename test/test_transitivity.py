@@ -12,8 +12,7 @@ class TestTransitivity(unittest.TestCase):
                       [1, 1, 0, 1],
                       [0, 0, 1, 0]])
         graph = GraphBD(A, measure_list[GraphBD], 'zero')
-        MeasureTransitivity.compute_measure(graph)
-        self.assertAlmostEqual(graph.measure_dict[MeasureTransitivity]['transitivity'], 0.45)
+        self.assertAlmostEqual(graph.get_measure(MeasureTransitivity, 'transitivity'), 0.45)
 
     def test_bu(self):
         measure_list = MeasureParser.list_measures()
@@ -22,8 +21,7 @@ class TestTransitivity(unittest.TestCase):
                       [1, 1, 0, 1],
                       [0, 0, 1, 0]])
         graph = GraphBU(A, measure_list[GraphBU], 'zero', 'max')
-        MeasureTransitivity.compute_measure(graph)
-        self.assertAlmostEqual(graph.measure_dict[MeasureTransitivity]['transitivity'], 0.6)
+        self.assertAlmostEqual(graph.get_measure(MeasureTransitivity, 'transitivity'), 0.6)
 
     def test_wd(self):
         measure_list = MeasureParser.list_measures()
@@ -32,8 +30,7 @@ class TestTransitivity(unittest.TestCase):
                       [1, 1, 0, 1],
                       [0, 0, 1, 0]])
         graph = GraphWD(A, measure_list[GraphWD], 'zero')
-        MeasureTransitivity.compute_measure(graph)
-        self.assertAlmostEqual(graph.measure_dict[MeasureTransitivity]['transitivity'], 0.225)
+        self.assertAlmostEqual(graph.get_measure(MeasureTransitivity, 'transitivity'), 0.225)
 
     def test_wu(self):
         measure_list = MeasureParser.list_measures()
@@ -42,8 +39,7 @@ class TestTransitivity(unittest.TestCase):
                       [1, 1, 0, 1],
                       [0, 0, 1, 0]])
         graph = GraphWU(A, measure_list[GraphWU], 'zero', 'max')
-        MeasureTransitivity.compute_measure(graph)
-        self.assertAlmostEqual(graph.measure_dict[MeasureTransitivity]['transitivity'], 0.9)
+        self.assertAlmostEqual(graph.get_measure(MeasureTransitivity, 'transitivity'), 0.9)
 
 if __name__ == '__main__':
     unittest.main()
