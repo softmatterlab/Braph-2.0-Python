@@ -50,12 +50,12 @@ class MeasurePathLength(Measure):
         path_length = (in_path_length + out_path_length) / 2
 
         graph.measure_dict[MeasurePathLength]['path_length'] = path_length
-        graph.measure_dict[MeasurePathLength]['char_path_length'] = np.mean(path_length)
+        graph.measure_dict[MeasurePathLength]['char_path_length'] = np.nanmean(path_length)
         if graph.is_directed():
             graph.measure_dict[MeasurePathLength]['in_path_length'] = in_path_length
             graph.measure_dict[MeasurePathLength]['out_path_length'] = out_path_length
-            graph.measure_dict[MeasurePathLength]['char_in_path_length'] = np.mean(in_path_length)
-            graph.measure_dict[MeasurePathLength]['char_out_path_length'] = np.mean(out_path_length)
+            graph.measure_dict[MeasurePathLength]['char_in_path_length'] = np.nanmean(in_path_length)
+            graph.measure_dict[MeasurePathLength]['char_out_path_length'] = np.nanmean(out_path_length)
 
     def get_valid_graph_types():
 
