@@ -15,6 +15,23 @@ class TestStatFunctions(unittest.TestCase):
         q = 0.6
         self.assertEqual(StatFunctions.false_discovery_rate(p_values, q), 0.0673)
 
+    def test_quantiles(self):
+        values = np.array([[-1.0546, -1.1122, 0.14],
+                           [-0.3560, -0.8799, 0.0976],
+                           [-1.2410, 1.3363, 1.7498]])
+        P = 5
+        answer = np.array([[-1.2410, -1.1122, 0.0976],
+                           [-1.2322, -1.0877, 0.1141],
+                           [-1.0552, -0.8918, 0.1471],
+                           [-1.0552, -0.8918, 0.1471],
+                           [-0.3649, 1.3118, 1.7333],
+                           [-0.3560, 1.3363, 1.7498]])
+        q = StatFunctions.quantiles(values, P)
+
+        for (i, j), value in np.ndenumerate(q):
+            diff = abs(value - answer[i, j])
+            self.assertLess(diff, 0.06)
+
     def test_p_value_one_tail(self):
         res = np.array([-0.8844, -0.0515, 1.4034])
         values = np.array([[2.1740, 0.5551, 0.4214],

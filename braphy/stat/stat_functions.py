@@ -17,6 +17,35 @@ class StatFunctions():
             r = 0
         return r
 
+    # TODO - check with numpy.quantile
+    def quantiles(values, P = 100):
+        N = np.size(values, 1)
+        M = np.size(values, 0)
+
+        q = np.zeros([P+1, N])
+
+        C = 10*P;
+        for n in range(N):
+            counts, binscenters = np.histogram(values[:,n], C)
+            binscenters = binscenters[:-1] + np.diff(binscenters)/2
+
+            scounts = P*np.cumsum(counts, 0)/np.sum(counts)
+
+            dbinscenters = (binscenters[1] - binscenters[0])/2
+            binscenters = binscenters-dbinscenters
+            binscenters = np.insert(binscenters, 0, binscenters[0]-dbinscenters)
+            scounts = np.insert(scounts, 0, 0)
+
+            for i in range(P+1):
+                indices_low = np.where(scounts <= i)[0]
+                indices_high = np.where(scounts >= i)[0]
+
+                if len(indices_low) != 0 and len(indices_high) != 0:
+                    q[i, n] = (binscenters[indices_low[-1]] + binscenters[indices_high[0]])/2
+                else:
+                    q[i, n] = np.nan
+        return q
+
     def p_value_one_tail(res, values):
         N = np.shape(values)[1]
         M = np.shape(values)[0]
