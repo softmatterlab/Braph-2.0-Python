@@ -54,5 +54,15 @@ class TestRandomGraph(unittest.TestCase):
         self.assertEqual(np.max(random.A), 1)
         self.assertEqual(np.min(random.A), 0)
 
+    def test_wu(self):
+        measure_list = MeasureParser.list_measures()
+        A=np.array([[0,1,1,0],[1,0,0,1],[0,1,0,1],[0,1,0,0]])
+        graph = GraphWU(A, measure_list[GraphWU], 'zero', 'max')
+        random = graph.get_random_graph()
+        self.assertTrue(np.array_equal(random.A, np.array([[0,1,1,0],
+                                                           [1,0,1,1],
+                                                           [1,1,0,1],
+                                                           [0,1,1,0]])))
+
 if __name__ == '__main__':
     unittest.main()
