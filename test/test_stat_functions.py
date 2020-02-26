@@ -1,8 +1,9 @@
 import unittest
 from braphy.stat import *
+from test.test_utility import TestUtility
 import numpy as np
 
-class TestStatFunctions(unittest.TestCase):
+class TestStatFunctions(TestUtility):
     def test_fdr_1(self):
         p_values = np.array([0.0068, 0.0087, 0.0091, 0.0106, 0.0131,
                              0.0138, 0.0155, 0.0473, 0.0551, 0.0596])
@@ -22,15 +23,12 @@ class TestStatFunctions(unittest.TestCase):
         P = 5
         answer = np.array([[-1.2410, -1.1122, 0.0976],
                            [-1.2322, -1.0877, 0.1141],
-                           [-1.0552, -0.8918, 0.1471],
-                           [-1.0552, -0.8918, 0.1471],
-                           [-0.3649, 1.3118, 1.7333],
+                           [-1.0552, -0.8918, 0.1472],
+                           [-1.0552, -0.8918, 0.1472],
+                           [-0.3648, 1.3118, 1.7333],
                            [-0.3560, 1.3363, 1.7498]])
         q = StatFunctions.quantiles(values, P)
-
-        for (i, j), value in np.ndenumerate(q):
-            diff = abs(value - answer[i, j])
-            self.assertLess(diff, 0.06)
+        self.assertMatrixAlmostEqual(q, answer, 4)
 
     def test_p_value_one_tail(self):
         res = np.array([-0.8844, -0.0515, 1.4034])

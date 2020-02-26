@@ -32,8 +32,8 @@ class StatFunctions():
             scounts = P*np.cumsum(counts, 0)/np.sum(counts)
 
             dbinscenters = (binscenters[1] - binscenters[0])/2
-            binscenters = binscenters-dbinscenters
-            binscenters = np.insert(binscenters, 0, binscenters[0]-dbinscenters)
+            binscenters = binscenters+dbinscenters
+            binscenters = np.insert(binscenters, 0, binscenters[0]-2*dbinscenters)
             scounts = np.insert(scounts, 0, 0)
 
             for i in range(P+1):
