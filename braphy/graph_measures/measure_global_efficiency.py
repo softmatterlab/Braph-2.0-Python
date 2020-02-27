@@ -1,5 +1,6 @@
 from braphy.graph_measures.measure import Measure
 from braphy.graph import *
+from braphy.utility.helper_functions import divide_without_warning
 import numpy as np
 import copy
 
@@ -31,7 +32,7 @@ class MeasureGlobalEfficiency(Measure):
     def compute_measure(graph):
 
         D = graph.D.copy()
-        D_inverse = np.reciprocal(D)
+        D_inverse = divide_without_warning(1, D)
         np.fill_diagonal(D_inverse, 0)
 
         in_global_efficiency = np.sum(D_inverse, axis = 0)/(len(D) - 1)

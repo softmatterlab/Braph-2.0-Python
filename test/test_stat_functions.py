@@ -1,5 +1,5 @@
 import unittest
-from braphy.stat import *
+from braphy.utility import *
 from test.test_utility import TestUtility
 import numpy as np
 
