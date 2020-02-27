@@ -2,6 +2,7 @@ import numpy as np
 import copy
 from numpy.linalg import matrix_power, multi_dot
 from braphy.graph.accum_array import AccumArray
+from braphy.utility.helper_functions import divide_without_warning, multiply_without_warning
 
 class RandomGraph():
 
@@ -131,18 +132,19 @@ class RandomGraph():
 
                     cumulative_w_x = AccumArray.accum( w_x[rand_w_ind], sorted_w[r], size=np.array([node_number, 1]))
                     cum_nonzero = cumulative_w_x > 0
-                    expected_w_prob = 1 - cumulative_w_x[cum_nonzero]/out_strength[cum_nonzero]
+                    expected_w_prob = 1 - divide_without_warning(cumulative_w_x[cum_nonzero], out_strength[cum_nonzero])
                     expected_w_prob = np.tile(expected_w_prob, (node_number,1)).T
-                    expected_w[cum_nonzero,:] = expected_w[cum_nonzero,:]*expected_w_prob
-                    expected_w[:,cum_nonzero] = expected_w[:,cum_nonzero]*np.transpose(expected_w_prob)
+                    expected_w[cum_nonzero,:] = multiply_without_warning(expected_w[cum_nonzero,:], expected_w_prob)
+                    expected_w[:,cum_nonzero] = multiply_without_warning(expected_w[:,cum_nonzero], np.transpose(expected_w_prob))
                     out_strength[cum_nonzero] = out_strength[cum_nonzero] - cumulative_w_x[cum_nonzero]
 
                     cumulative_w_y = AccumArray.accum( w_y[rand_w_ind], sorted_w[r], size=np.array([node_number, 1]))
                     cum_nonzero = cumulative_w_y > 0
-                    expected_w_prob = 1 - cumulative_w_y[cum_nonzero]/in_strength[cum_nonzero]
+                    expected_w_prob = 1 - divide_without_warning(cumulative_w_y[cum_nonzero], in_strength[cum_nonzero])
                     expected_w_prob = np.tile(expected_w_prob, (node_number,1)).T
-                    expected_w[cum_nonzero,:] = expected_w[cum_nonzero,:]*expected_w_prob
-                    expected_w[:,cum_nonzero] = expected_w[:,cum_nonzero]*np.transpose(expected_w_prob)
+                    expected_w[cum_nonzero,:] = multiply_without_warning(expected_w[cum_nonzero,:], expected_w_prob)
+                    expected_w[:,cum_nonzero] = multiply_without_warning(expected_w[:,cum_nonzero], np.transpose(expected_w_prob))
+
                     in_strength[cum_nonzero] = in_strength[cum_nonzero] - cumulative_w_y[cum_nonzero]
 
                     rand_w_ind = sorted_index[r]
@@ -153,9 +155,15 @@ class RandomGraph():
 
         A_null = A_null.T
 
-        pos_correlation_in = np.corrcoef(sum(A*(A>0), 0), sum(A_null*(A_null>0), 0))
-        pos_correlation_out = np.corrcoef(sum(A*(A>0), 1), sum(A_null*(A_null>0), 1))
-        neg_correlation_in = np.corrcoef(sum(-A*(A<0), 0), sum(-A_null*(A_null<0), 0))
-        neg_correlation_out = np.corrcoef(sum(-A*(A<0), 1), sum(-A_null*(A_null<0), 1))
-        correlation = np.array([pos_correlation_in.item(2), pos_correlation_out.item(2), neg_correlation_in.item(2), neg_correlation_out.item(2)])
+        if graph.is_directed():
+            pos_correlation_in = np.corrcoef(sum(A*(A>0), 0), sum(A_null*(A_null>0), 0))
+            pos_correlation_out = np.corrcoef(sum(A*(A>0), 1), sum(A_null*(A_null>0), 1))
+            neg_correlation_in = np.corrcoef(sum(-A*(A<0), 0), sum(-A_null*(A_null<0), 0))
+            neg_correlation_out = np.corrcoef(sum(-A*(A<0), 1), sum(-A_null*(A_null<0), 1))
+            correlation = np.array([pos_correlation_in.item(2), pos_correlation_out.item(2), neg_correlation_in.item(2), neg_correlation_out.item(2)])
+        else:
+            pos_correlation = np.corrcoef(sum(A*(A>0)), sum(A_null*(A_null>0)))
+            neg_correlation = np.corrcoef(sum(-A*(A<0)), sum(-A_null*(A_null<0)))
+            correlation = np.array([pos_correlation.item(2), neg_correlation.item(2)])
+
         return A_null, correlation

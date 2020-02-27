@@ -1,5 +1,6 @@
 from braphy.graph_measures.measure import Measure
 from braphy.graph import *
+from braphy.utility.helper_functions import divide_without_warning
 import numpy as np
 import copy
 
@@ -28,7 +29,7 @@ class MeasureLocalEfficiency(Measure):
                     A_subgraph = A[neighbours,:][:,neighbours] * np.sqrt(np.dot(A[i,neighbours], A[neighbours,i]))
 
                 D_subgraph = Graph.distance(A_subgraph, graph.is_weighted(), graph.is_directed())
-                D_subgraph_inverse = np.reciprocal(D_subgraph)
+                D_subgraph_inverse = divide_without_warning(1, D_subgraph)
                 np.fill_diagonal(D_subgraph_inverse, 0)
 
                 in_local_efficiency = np.sum(D_subgraph_inverse, axis = 0)/(len(D_subgraph) - 1)

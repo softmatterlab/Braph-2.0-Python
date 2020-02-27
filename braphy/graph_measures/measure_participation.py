@@ -1,5 +1,6 @@
 from braphy.graph_measures.measure import Measure
 from braphy.graph_measures.measure_degree import MeasureDegree
+from braphy.utility.helper_functions import divide_without_warning
 import numpy as np
 from braphy.graph import *
 import copy
@@ -25,7 +26,7 @@ class MeasureParticipation(Measure):
         for i in range(1, np.max(graph.community_structure)+2):
             community_neighbours = community_neighbours + (np.sum(graph.A*(community_affiliation==i), 1)**2)
 
-        participation = np.ones(n) - community_neighbours/(edges**2)
+        participation = np.ones(n) - divide_without_warning(community_neighbours, (edges**2))
         participation[edges == 0] = 0
         graph.measure_dict[MeasureParticipation]['participation'] = participation
 

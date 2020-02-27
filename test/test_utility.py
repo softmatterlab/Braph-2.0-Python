@@ -12,6 +12,24 @@ class TestUtility(unittest.TestCase):
             else:
                 self.assertAlmostEqual(test_sequence[i], true_sequence[i], places = places)
 
+    def assertMatrixAlmostEqual(self, test_matrix, true_matrix, places = 7):
+        self.assertEqual(np.shape(test_matrix), np.shape(true_matrix))
+
+        for (i, j), value in np.ndenumerate(test_matrix):
+            if np.isnan(value):
+                self.assertTrue(np.isnan(test_matrix[i,j]))
+            else:
+                self.assertAlmostEqual(value, true_matrix[i,j], places)
+
+    def assertMatrixEqual(self, test_matrix, true_matrix):
+        self.assertEqual(np.shape(test_matrix), np.shape(true_matrix))
+
+        for (i, j), value in np.ndenumerate(test_matrix):
+            if np.isnan(value):
+                self.assertTrue(np.isnan(test_matrix[i,j]))
+            else:
+                self.assertEqual(value, true_matrix[i,j])
+
     def assertCategorizationEqual(self, test_sequence, true_sequence):
         self.assertEqual(len(test_sequence), len(true_sequence))
         for idx, test_val in enumerate(test_sequence):
