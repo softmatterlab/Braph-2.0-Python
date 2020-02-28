@@ -31,13 +31,14 @@ def multiply_without_warning(a, b):
     c[inf_mask_b & (np.sign(c) == 0)] = np.nan
     return c
 
-def accumarray(subs, val, size = None):
-    if size == None:
+def accumarray(subs, val, size = np.nan):
+    if np.isnan(size).any():
         size = [np.max(subs) + 1, 1 if subs.ndim == 1 else subs.shape[1]]
     if np.isscalar(val):
         val = np.array([val]*(np.max(subs) + 1))
     output = np.zeros(size)
     for val_index, output_index in enumerate(subs):
-        output_index = output_index[0], output_index[1]
+        if not np.isscalar(output_index):
+            output_index = tuple(output_index)
         output[output_index] = output[output_index] + val[val_index]
     return output

@@ -76,7 +76,6 @@ class TestHelperFunctions(TestUtility):
         self.assertMatrixEqual(c, true_c)
 
     def test_accumarray_1(self):
-        return
         subs = np.array([0, 2, 3, 2, 3])
         val = np.array([101, 102, 103, 104, 105])
         res = np.array([[101], [0], [206], [208]])
