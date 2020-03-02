@@ -1,4 +1,5 @@
 from braphy.graph_measures.measure import Measure
+from braphy.graph_measures.measure_community_structure import MeasureCommunityStructure
 import numpy as np
 from braphy.graph import *
 from braphy.utility.helper_functions import divide_without_warning
@@ -19,11 +20,12 @@ class MeasureZScore(Measure):
         return description
 
     def compute_measure(graph):
-        z_score = MeasureZScore.z_score(graph.A + graph.A.T, graph.community_structure)
+        community_structure = graph.get_measure(MeasureCommunityStructure, 'community_structure')
+        z_score = MeasureZScore.z_score(graph.A + graph.A.T, community_structure)
         graph.measure_dict[MeasureZScore]['z_score'] = z_score
         if graph.is_directed():
-            in_z_score = MeasureZScore.z_score(graph.A, graph.community_structure)
-            out_z_score = MeasureZScore.z_score(graph.A.T, graph.community_structure)
+            in_z_score = MeasureZScore.z_score(graph.A, community_structure)
+            out_z_score = MeasureZScore.z_score(graph.A.T, community_structure)
             graph.measure_dict[MeasureZScore]['in_z_score'] = in_z_score
             graph.measure_dict[MeasureZScore]['out_z_score'] = out_z_score
 

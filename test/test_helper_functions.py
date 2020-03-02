@@ -2,7 +2,6 @@ import unittest
 import numpy as np
 from test.test_utility import TestUtility
 from braphy.utility.helper_functions import *
-from braphy.graph.accum_array import AccumArray
 
 class TestHelperFunctions(TestUtility):
     def test_divide_without_warning_1(self):

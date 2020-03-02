@@ -1,4 +1,5 @@
 from braphy.graph_measures.measure import Measure
+from braphy.graph_measures.measure_distance import MeasureDistance
 from braphy.graph import *
 import numpy as np
 import copy
@@ -30,7 +31,7 @@ class MeasureEccentricity(Measure):
         return description
 
     def compute_measure(graph):
-        D = graph.D.copy()
+        D = graph.get_measure(MeasureDistance, 'distance').copy()
         np.fill_diagonal(D, 0)
         in_eccentricity = np.amax(np.multiply(D, D!=np.inf), axis=0)
         out_eccentricity = np.amax(np.multiply(D, D!=np.inf), axis=1)

@@ -1,4 +1,5 @@
 from braphy.graph_measures.measure import Measure
+from braphy.graph_measures.measure_distance import MeasureDistance
 from braphy.graph import *
 from braphy.utility.helper_functions import divide_without_warning
 import numpy as np
@@ -30,8 +31,7 @@ class MeasureGlobalEfficiency(Measure):
         return description
 
     def compute_measure(graph):
-
-        D = graph.D.copy()
+        D = graph.get_measure(MeasureDistance, 'distance').copy()
         D_inverse = divide_without_warning(1, D)
         np.fill_diagonal(D_inverse, 0)
 
