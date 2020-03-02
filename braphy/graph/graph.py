@@ -30,18 +30,6 @@ class Graph(ABC):
     def same_community(self, i, j):
         return self.community_structure[i] == self.community_structure[j]
 
-    def is_weighted():
-        return weighted
-
-    def is_binary():
-        return not weighted
-
-    def is_directed():
-        return directed
-
-    def is_undirected():
-        return not directed
-
     def is_weighted(self):
         return type(self).weighted
 
