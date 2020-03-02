@@ -10,7 +10,6 @@ class Graph(ABC):
         self.A = A
         self.init_measure_dict(measure_list)
         self.measure_list = measure_list
-        self.D = Graph.distance(self.A, self.is_weighted(), self.is_directed())
         self.community_structure, self.modularity = \
             CommunityAlgorithms.compute_community(self.A, self.is_weighted(),
                                                   self.is_directed(),
@@ -105,37 +104,6 @@ class Graph(ABC):
             new_A[new_A < 0] = 0
             new_A[new_A > 1] = 1
         return new_A
-
-    def distance(A, is_weighted, is_directed):
-        if is_weighted:
-            D = Graph.dijkstras(A, is_directed)
-        else:
-            D = Graph.breadth_first_search(A)
-        return D
-
-    def dijkstras(A, is_directed):
-        lengths = A.copy()
-        lengths = lengths.astype(float)
-        lengths[lengths == 0] = np.inf
-        lengths = 1/lengths
-        lengths[lengths == 0] = np.inf
-        return dijkstra(lengths, is_directed)
-
-    def breadth_first_search(A):
-        current_length = 1
-        D = A.copy()
-        distance_product = A.copy()
-        idx = 1
-        while np.sum(idx) >= 1:
-            current_length = current_length + 1
-            distance_product = distance_product.dot(A)
-            idx = np.zeros([len(A), len(A)], dtype = int)
-            idx[(D == 0) & (distance_product != 0)] = 1
-            D[idx == 1] = current_length
-        D = D.astype(float)
-        D[D == 0] = np.inf
-        np.fill_diagonal(D, 0.0)
-        return D
 
     def get_random_graph(self):
         random_A, correlation = RandomGraph.random_graph(self)

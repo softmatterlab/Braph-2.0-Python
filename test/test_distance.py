@@ -1,5 +1,6 @@
 import unittest
 from braphy.graph_measures.measure_parser import MeasureParser
+from braphy.graph_measures.measure_distance import MeasureDistance
 from braphy.graph import *
 import numpy as np
 
@@ -10,21 +11,24 @@ class TestDistance(unittest.TestCase):
         graph = GraphBU(A, measure_list[GraphBU], 'zero', 'max')
         true_distance = [[0.0, 1.0, 1.0, np.inf], [1.0, 0.0, 2.0, np.inf],
                          [1.0, 2.0, 0.0, np.inf], [np.inf, np.inf, np.inf, 0.0]]
-        self.assertSequenceEqual(graph.D.tolist(), true_distance)
+        D = graph.get_measure(MeasureDistance, 'distance')
+        self.assertSequenceEqual(D.tolist(), true_distance)
 
     def test_graphBU(self):
         measure_list = MeasureParser.list_measures()
         A = np.array([[0, 0, 1], [0, 0, 1], [1, 1, 0]])
         graph = GraphBU(A, measure_list[GraphBU], 'zero', 'max')
         true_distance = [[0.0, 2.0, 1.0], [2.0, 0.0, 1.0], [1.0, 1.0, 0.0]]
-        self.assertSequenceEqual(graph.D.tolist(), true_distance)
+        D = graph.get_measure(MeasureDistance, 'distance')
+        self.assertSequenceEqual(D.tolist(), true_distance)
 
     def test_graphBD_small(self):
         measure_list = MeasureParser.list_measures()
         A = np.array([[0, 1, 0], [0, 0, 1], [1, 0, 0]])
         graph = GraphBD(A, measure_list[GraphBU], 'zero')
         true_distance = [[0.0, 1.0, 2.0], [2.0, 0.0, 1.0], [1.0, 2.0, 0.0]]
-        self.assertSequenceEqual(graph.D.tolist(), true_distance)
+        D = graph.get_measure(MeasureDistance, 'distance')
+        self.assertSequenceEqual(D.tolist(), true_distance)
 
     def test_graphBD_large(self):
         measure_list = MeasureParser.list_measures()
@@ -34,7 +38,8 @@ class TestDistance(unittest.TestCase):
         true_distance = [[0.0, 1.0, 2.0, 3.0, 3.0], [3.0, 0.0, 1.0, 2.0, 2.0],
                          [2.0, 3.0, 0.0, 1.0, 1.0], [3.0, 4.0, 1.0, 0.0, 2.0],
                          [1.0, 2.0, 3.0, 4.0, 0.0]]
-        self.assertSequenceEqual(graph.D.tolist(), true_distance)
+        D = graph.get_measure(MeasureDistance, 'distance')
+        self.assertSequenceEqual(D.tolist(), true_distance)
 
     def test_graphWU(self):
         measure_list = MeasureParser.list_measures()
@@ -49,7 +54,8 @@ class TestDistance(unittest.TestCase):
                          [1.25, 1.0, 1.25, 0.0, np.inf],
                          [np.inf, np.inf, np.inf, np.inf, 0]]
         graph = GraphWU(A, measure_list[GraphWU], 'zero', 'min')
-        self.assertSequenceEqual(graph.D.tolist(), true_distance)
+        D = graph.get_measure(MeasureDistance, 'distance')
+        self.assertSequenceEqual(D.tolist(), true_distance)
 
     def test_graphWD(self):
         measure_list = MeasureParser.list_measures()
@@ -64,7 +70,8 @@ class TestDistance(unittest.TestCase):
                          [1, 6.6, 2.6, 0.0, np.inf],
                          [np.inf, np.inf, np.inf, np.inf, 0]]
         graph = GraphWD(A, measure_list[GraphWD], 'zero')
-        self.assertSequenceEqual(graph.D.tolist(), true_distance)
+        D = graph.get_measure(MeasureDistance, 'distance')
+        self.assertSequenceEqual(D.tolist(), true_distance)
 
     def test_BD_disconnected(self):
         measure_list = MeasureParser.list_measures()
@@ -74,7 +81,8 @@ class TestDistance(unittest.TestCase):
         true_distance = [[0.0, 2.0, 1.0, 1.0, 1.0], [2.0, 0.0, 1.0, 2.0, 1.0],
                          [1.0, 2.0, 0.0, 1.0, 1.0], [np.inf, np.inf, np.inf, 0.0, np.inf],
                          [2.0, 1.0, 1.0, 2.0, 0.0]]
-        self.assertSequenceEqual(graph.D.tolist(), true_distance)
+        D = graph.get_measure(MeasureDistance, 'distance')
+        self.assertSequenceEqual(D.tolist(), true_distance)
 
 if __name__ == '__main__':
     unittest.main()
