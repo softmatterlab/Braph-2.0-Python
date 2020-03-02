@@ -13,7 +13,9 @@ class MeasureDistance(Measure):
 
     def compute_measure(graph):
         distance = MeasureDistance.distance(graph.A, graph.is_weighted(), graph.is_directed())
-        graph.measure_dict[MeasureDistance]['distance'] = distance
+        measure_dict = {}
+        measure_dict['distance'] = distance
+        return measure_dict
 
     def distance(A, is_weighted, is_directed):
         if is_weighted:

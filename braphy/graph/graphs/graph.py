@@ -36,13 +36,18 @@ class Graph(ABC):
     def is_undirected(self):
         return not type(self).directed
 
-    def get_measure(self, measure_class, measure = None):
+    def get_measure(self, measure_class, measure = None, save = True):
         if len(self.measure_dict[measure_class]) == 0:
-            measure_class.compute_measure(self)
-        if measure == None:
-            return self.measure_dict[measure_class]
+            return_value = measure_class.compute_measure(self)
+            if save:
+                self.measure_dict[measure_class] = return_value
         else:
-            return self.measure_dict[measure_class][measure]
+            return_value = self.measure_dict[measure_class]
+
+        if measure == None:
+            return return_value
+        else:
+            return return_value[measure]
 
     @abstractmethod
     def is_selfconnected(self):

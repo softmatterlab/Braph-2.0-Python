@@ -20,14 +20,14 @@ class MeasureCluster(Measure):
         return description
 
     def compute_measure(graph):
-
-        triangles = graph.get_measure(MeasureTriangles, 'triangles')
+        measure_dict = {}
+        triangles = graph.get_measure(MeasureTriangles, 'triangles', save = False)
 
         if graph.is_directed():
             A = graph.A.copy()
             np.fill_diagonal(A, 0)
-            in_degree = graph.get_measure(MeasureDegree, 'in_degree')
-            out_degree = graph.get_measure(MeasureDegree, 'out_degree')
+            in_degree = graph.get_measure(MeasureDegree, 'in_degree', save = False)
+            out_degree = graph.get_measure(MeasureDegree, 'out_degree', save = False)
             in_degree = in_degree.astype(float)
             out_degree = out_degree.astype(float)
 
@@ -44,7 +44,7 @@ class MeasureCluster(Measure):
             cluster = triangles/possible_triangles
 
         else:
-            degree = graph.get_measure(MeasureDegree, 'degree')
+            degree = graph.get_measure(MeasureDegree, 'degree', save = False)
             if graph.is_binary(): #BU
                 cluster = np.zeros(len(triangles))
                 indices = np.argwhere((triangles!=0) & (degree>1)).flatten()
@@ -56,8 +56,9 @@ class MeasureCluster(Measure):
 
                 cluster = 2*triangles/(degree*(degree-1))
 
-        graph.measure_dict[MeasureCluster]['cluster'] = cluster
-        graph.measure_dict[MeasureCluster]['avg_cluster'] = np.mean(cluster)
+        measure_dict['cluster'] = cluster
+        measure_dict['avg_cluster'] = np.mean(cluster)
+        return measure_dict
 
     def get_valid_graph_types():
         graph_type_measures = {}

@@ -18,11 +18,14 @@ class MeasureParticipation(Measure):
                                         'On the other hand, nodes with a high participation coefficient (known ' +\
                                         'as connector hubs) are likely to facilitate global intermodular integration.'
         return description
+
     def compute_measure(graph):
+        measure_dict = {}
         edges = np.sum(graph.A, 1)
         n = np.size(graph.A, 0)
 
-        community_structure = graph.get_measure(MeasureCommunityStructure, 'community_structure')
+        community_structure = graph.get_measure(MeasureCommunityStructure, 'community_structure',
+                                                save = False)
         community_affiliation = (graph.A != 0).dot(np.diag(community_structure + 1))
         community_neighbours = np.zeros(n)
         for i in range(1, np.max(community_structure)+2):
@@ -30,7 +33,8 @@ class MeasureParticipation(Measure):
 
         participation = np.ones(n) - divide_without_warning(community_neighbours, (edges**2))
         participation[edges == 0] = 0
-        graph.measure_dict[MeasureParticipation]['participation'] = participation
+        measure_dict['participation'] = participation
+        return measure_dict
 
     def get_valid_graph_types():
         graph_type_measures = {}

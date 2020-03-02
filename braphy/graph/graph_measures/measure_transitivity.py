@@ -12,15 +12,17 @@ class MeasureTransitivity(Measure):
         description['transitivity'] = 'The transitivity is the ratio of triangles to triplets in the graph. ' +\
                                       'It is an alternative to the graph clustering coefficient.'
         return description
+
     def compute_measure(graph):
+        measure_dict = {}
         A = graph.A.copy()
         np.fill_diagonal(A, 0)
 
         if graph.is_undirected() and graph.is_binary():
             transitivity = np.sum(np.diag(A.dot(A.dot(A)))) / (np.sum(np.sum(A.dot(A))) - np.sum(np.diag(A.dot(A))))
         else:
-            degree = graph.get_measure(MeasureDegree, 'degree')
-            triangles = graph.get_measure(MeasureTriangles, 'triangles')
+            degree = graph.get_measure(MeasureDegree, 'degree', save = False)
+            triangles = graph.get_measure(MeasureTriangles, 'triangles', save = False)
             false_connections = 0
             if graph.directed:
                 false_connections = 2 * np.diag(A.dot(A))
@@ -32,7 +34,8 @@ class MeasureTransitivity(Measure):
             else:
                 transitivity = 0
 
-        graph.measure_dict[MeasureTransitivity]['transitivity'] = transitivity
+        measure_dict['transitivity'] = transitivity
+        return measure_dict
 
     def get_valid_graph_types():
         graph_type_measures = {}

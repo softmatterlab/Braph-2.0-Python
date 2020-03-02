@@ -16,32 +16,32 @@ class MeasureSmallWorldness(Measure):
         return description
 
     def compute_measure(graph):
-                
+        measure_dict = {}
         M = 100
-        C = graph.get_measure(MeasureCluster, 'cluster')
+        C = graph.get_measure(MeasureCluster, 'cluster', save = False)
 
         if graph.is_directed():
-            L = graph.get_measure(MeasurePathLength, 'char_path_length')
+            L = graph.get_measure(MeasurePathLength, 'char_path_length', save = False)
         else:
-            L = graph.get_measure(MeasurePathLength, 'char_path_length_wsg')
-
+            L = graph.get_measure(MeasurePathLength, 'char_path_length_wsg', save = False)
 
         Cr = np.empty((M, graph.A.shape[1]))
         Lr = np.empty((M, graph.A.shape[1]))
 
         for i in range(M):
             gr = graph.get_random_graph()
-            Cr[i] = gr.get_measure(MeasureCluster, 'cluster')
+            Cr[i] = gr.get_measure(MeasureCluster, 'cluster', save = False)
 
             if graph.is_directed():
-                Lr[i] = gr.get_measure(MeasurePathLength, 'char_path_length')
+                Lr[i] = gr.get_measure(MeasurePathLength, 'char_path_length', save = False)
             else:
-                Lr[i] = gr.get_measure(MeasurePathLength, 'char_path_length_wsg')
+                Lr[i] = gr.get_measure(MeasurePathLength, 'char_path_length_wsg', save = False)
 
         Cr = np.mean(Cr)
         Lr = np.mean(Lr)
 
-        graph.measure_dict[MeasureSmallWorldness]['small_worldness'] = (C/Cr)/(L/Lr)
+        measure_dict['small_worldness'] = (C/Cr)/(L/Lr)
+        return measure_dict
 
     def get_valid_graph_types():
         graph_type_measures = {}

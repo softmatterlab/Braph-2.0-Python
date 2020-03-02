@@ -21,6 +21,7 @@ class MeasureStrength(Measure):
         return description
 
     def compute_measure(graph):
+        measure_dict = {}
         A = graph.A.copy()
         np.fill_diagonal(A, 0)
 
@@ -31,13 +32,14 @@ class MeasureStrength(Measure):
         if graph.is_undirected():
             strength = np.multiply(strength, 0.5)
         else:
-            graph.measure_dict[MeasureStrength]['in_strength'] = in_strength
-            graph.measure_dict[MeasureStrength]['out_strength'] = out_strength
-            graph.measure_dict[MeasureStrength]['avg_in_strength'] = np.mean(in_strength)
-            graph.measure_dict[MeasureStrength]['avg_out_strength'] = np.mean(out_strength)
+            measure_dict['in_strength'] = in_strength
+            measure_dict['out_strength'] = out_strength
+            measure_dict['avg_in_strength'] = np.mean(in_strength)
+            measure_dict['avg_out_strength'] = np.mean(out_strength)
 
-        graph.measure_dict[MeasureStrength]['strength'] = strength
-        graph.measure_dict[MeasureStrength]['avg_strength'] = np.mean(strength)
+        measure_dict['strength'] = strength
+        measure_dict['avg_strength'] = np.mean(strength)
+        return measure_dict
 
     def get_valid_graph_types():
         graph_type_measures = {}

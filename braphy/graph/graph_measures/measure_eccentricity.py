@@ -31,22 +31,25 @@ class MeasureEccentricity(Measure):
         return description
 
     def compute_measure(graph):
-        D = graph.get_measure(MeasureDistance, 'distance').copy()
+        measure_dict = {}
+        D = graph.get_measure(MeasureDistance, 'distance', save = False).copy()
         np.fill_diagonal(D, 0)
         in_eccentricity = np.amax(np.multiply(D, D!=np.inf), axis=0)
         out_eccentricity = np.amax(np.multiply(D, D!=np.inf), axis=1)
         eccentricity = np.maximum(in_eccentricity, out_eccentricity)
 
-        graph.measure_dict[MeasureEccentricity]['eccentricity'] = eccentricity
-        graph.measure_dict[MeasureEccentricity]['avg_eccentricity'] = np.mean(eccentricity)
-        graph.measure_dict[MeasureEccentricity]['radius'] = np.min(eccentricity)
-        graph.measure_dict[MeasureEccentricity]['diameter'] = np.max(eccentricity)
+        measure_dict['eccentricity'] = eccentricity
+        measure_dict['avg_eccentricity'] = np.mean(eccentricity)
+        measure_dict['radius'] = np.min(eccentricity)
+        measure_dict['diameter'] = np.max(eccentricity)
 
         if graph.is_directed():
-            graph.measure_dict[MeasureEccentricity]['in_eccentricity'] = in_eccentricity
-            graph.measure_dict[MeasureEccentricity]['avg_in_eccentricity'] = np.mean(in_eccentricity)
-            graph.measure_dict[MeasureEccentricity]['out_eccentricity'] = out_eccentricity
-            graph.measure_dict[MeasureEccentricity]['avg_out_eccentricity'] = np.mean(out_eccentricity)
+            measure_dict['in_eccentricity'] = in_eccentricity
+            measure_dict['avg_in_eccentricity'] = np.mean(in_eccentricity)
+            measure_dict['out_eccentricity'] = out_eccentricity
+            measure_dict['avg_out_eccentricity'] = np.mean(out_eccentricity)
+
+        return measure_dict
 
     def get_valid_graph_types():
         graph_type_measures = {}

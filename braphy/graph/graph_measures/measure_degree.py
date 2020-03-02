@@ -33,15 +33,17 @@ class MeasureDegree(Measure):
         return description
 
     def compute_measure(graph):
+        measure_dict = {}
         degree, in_degree, out_degree = MeasureDegree.degree(graph)
         if graph.is_directed():
-            graph.measure_dict[MeasureDegree]['in_degree'] = in_degree
-            graph.measure_dict[MeasureDegree]['out_degree'] = out_degree
-            graph.measure_dict[MeasureDegree]['avg_in_degree'] = np.mean(in_degree)
-            graph.measure_dict[MeasureDegree]['avg_out_degree'] = np.mean(out_degree)
+            measure_dict['in_degree'] = in_degree
+            measure_dict['out_degree'] = out_degree
+            measure_dict['avg_in_degree'] = np.mean(in_degree)
+            measure_dict['avg_out_degree'] = np.mean(out_degree)
 
-        graph.measure_dict[MeasureDegree]['degree'] = degree
-        graph.measure_dict[MeasureDegree]['avg_degree'] = np.mean(degree)
+        measure_dict['degree'] = degree
+        measure_dict['avg_degree'] = np.mean(degree)
+        return measure_dict
 
     def degree(graph):
         A = graph.A.copy()

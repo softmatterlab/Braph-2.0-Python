@@ -32,6 +32,7 @@ class MeasurePathLength(Measure):
         return description
 
     def compute_measure(graph):
+        measure_dict = {}
         D = graph.get_measure(MeasureDistance, 'distance').copy()
         np.fill_diagonal(D, 0)
         nbr_nodes = len(D)
@@ -54,15 +55,16 @@ class MeasurePathLength(Measure):
                 out_path_length[i] = np.sum(D[i,:]) / nbr_of_paths_to_avg_out
         path_length = (in_path_length + out_path_length) / 2
 
-        graph.measure_dict[MeasurePathLength]['path_length'] = path_length
-        graph.measure_dict[MeasurePathLength]['char_path_length'] = np.nanmean(path_length)
+        measure_dict['path_length'] = path_length
+        measure_dict['char_path_length'] = np.nanmean(path_length)
         if graph.is_directed():
-            graph.measure_dict[MeasurePathLength]['in_path_length'] = in_path_length
-            graph.measure_dict[MeasurePathLength]['out_path_length'] = out_path_length
-            graph.measure_dict[MeasurePathLength]['char_in_path_length'] = np.nanmean(in_path_length)
-            graph.measure_dict[MeasurePathLength]['char_out_path_length'] = np.nanmean(out_path_length)
+            measure_dict['in_path_length'] = in_path_length
+            measure_dict['out_path_length'] = out_path_length
+            measure_dict['char_in_path_length'] = np.nanmean(in_path_length)
+            measure_dict['char_out_path_length'] = np.nanmean(out_path_length)
         else:
-            graph.measure_dict[MeasurePathLength]['char_path_length_wsg'] = np.mean(path_length[np.isfinite(path_length)])
+            measure_dict['char_path_length_wsg'] = np.mean(path_length[np.isfinite(path_length)])
+        return measure_dict
 
     def get_valid_graph_types():
 

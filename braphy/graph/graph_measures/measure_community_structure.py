@@ -1,5 +1,4 @@
 from braphy.graph.graph_measures.measure import Measure
-from braphy.graph.graph_measures.measure_degree import MeasureDegree
 import numpy as np
 from braphy.graph.graphs import *
 import copy
@@ -13,10 +12,12 @@ class MeasureCommunityStructure(Measure):
         return description
 
     def compute_measure(graph):
+        measure_dict = {}
         community_structure, modularity = MeasureCommunityStructure.compute_community(graph.A,
                                           graph.is_weighted(), graph.is_directed())
-        graph.measure_dict[MeasureCommunityStructure]['community_structure'] = community_structure
-        graph.measure_dict[MeasureCommunityStructure]['modularity'] = modularity
+        measure_dict['community_structure'] = community_structure
+        measure_dict['modularity'] = modularity
+        return measure_dict
 
     def compute_community(A, is_weighted, is_directed, algorithm = 'Louvain', gamma = 1):
         algorithms = {'Louvain':CommunityAlgorithms.louvain_iterations,

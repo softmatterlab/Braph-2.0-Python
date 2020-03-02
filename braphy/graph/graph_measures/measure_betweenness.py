@@ -16,7 +16,7 @@ class MeasureBetweenness(Measure):
         return description
 
     def compute_measure(graph, normalization = False):
-
+        measure_dict = {}
         if graph.is_binary():
             betweenness = MeasureBetweenness.compute_binary_betweenness(graph)
         else:
@@ -26,7 +26,8 @@ class MeasureBetweenness(Measure):
             N = np.size(graph.A[0])
             betweenness = betweenness/((N-1)*(N-2))
 
-        graph.measure_dict[MeasureBetweenness]['betweenness'] = betweenness
+        measure_dict['betweenness'] = betweenness
+        return measure_dict
 
     def compute_binary_betweenness(graph):
         A = graph.A.copy()

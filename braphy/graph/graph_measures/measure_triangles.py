@@ -13,6 +13,7 @@ class MeasureTriangles(Measure):
         return description
 
     def compute_measure(graph):
+        measure_dict = {}
         A = graph.A.copy()
         np.fill_diagonal(A, 0)
 
@@ -44,7 +45,8 @@ class MeasureTriangles(Measure):
             A_power = matrix_power(np.power(A,1/3),3)
             triangles = 0.5*np.diag(A_power)
 
-        graph.measure_dict[MeasureTriangles]['triangles'] = triangles
+        measure_dict['triangles'] = triangles
+        return measure_dict
 
     def get_valid_graph_types():
         graph_type_measures = {}

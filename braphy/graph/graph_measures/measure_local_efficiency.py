@@ -17,7 +17,7 @@ class MeasureLocalEfficiency(Measure):
         return description
 
     def compute_measure(graph):
-
+        measure_dict = {}
         A = graph.A.copy()
         local_efficiency = np.zeros(len(A))
 
@@ -37,8 +37,9 @@ class MeasureLocalEfficiency(Measure):
                 out_local_efficiency = np.sum(D_subgraph_inverse, axis = 1)/(len(D_subgraph) - 1)
                 local_efficiency[i] = np.mean((in_local_efficiency + out_local_efficiency) / 2)
 
-        graph.measure_dict[MeasureLocalEfficiency]['local_efficiency'] = local_efficiency
-        graph.measure_dict[MeasureLocalEfficiency]['avg_local_efficiency'] = np.mean(local_efficiency)
+        measure_dict['local_efficiency'] = local_efficiency
+        measure_dict['avg_local_efficiency'] = np.mean(local_efficiency)
+        return measure_dict
 
     def get_valid_graph_types():
         graph_type_measures = {}

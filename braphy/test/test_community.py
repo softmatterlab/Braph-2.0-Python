@@ -1,7 +1,6 @@
 import unittest
 from braphy.graph.graph_factory import GraphFactory, GraphSettings
 from braphy.graph.graph_measures.measure_community_structure import MeasureCommunityStructure
-from braphy.graph.graph_measures.measure_modularity import MeasureModularity
 from braphy.test.test_utility import TestUtility
 import numpy as np
 

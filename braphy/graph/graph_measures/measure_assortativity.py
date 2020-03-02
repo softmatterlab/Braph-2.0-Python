@@ -27,22 +27,22 @@ class MeasureAssortativity(Measure):
         return description
 
     def compute_measure(graph):
+        measure_dict = {}
         A = graph.A.copy()
         np.fill_diagonal(A, 0)
         if graph.is_binary():
-            summed_edges = graph.get_measure(MeasureDegree)
+            summed_edges = graph.get_measure(MeasureDegree, save = False)
             summed_edges_str = 'degree'
         else:
-            summed_edges = graph.get_measure(MeasureStrength)
+            summed_edges = graph.get_measure(MeasureStrength, save = False)
             summed_edges_str = 'strength'
 
         if graph.is_undirected():
             summed_edges = summed_edges[summed_edges_str]
             [i, j] = np.where(np.triu(A, 1))
             K = len(i)
-            graph.measure_dict[MeasureAssortativity]['assortativity'] = \
-                MeasureAssortativity.compute_assortativity(summed_edges[i],
-                                                           summed_edges[j], K)
+            measure_dict['assortativity'] = \
+                MeasureAssortativity.compute_assortativity(summed_edges[i], summed_edges[j], K)
 
         else:
             summed_edges_in = summed_edges['in_' + summed_edges_str]
@@ -50,21 +50,22 @@ class MeasureAssortativity(Measure):
             [i, j] = np.where(A>0)
             K = len(i)
 
-            graph.measure_dict[MeasureAssortativity]['assortativity_out_in'] = \
+            measure_dict['assortativity_out_in'] = \
                 MeasureAssortativity.compute_assortativity(summed_edges_out[i], summed_edges_in[j], K)
-            graph.measure_dict[MeasureAssortativity]['assortativity_in_out'] = \
+            measure_dict['assortativity_in_out'] = \
                 MeasureAssortativity.compute_assortativity(summed_edges_in[i], summed_edges_out[j], K)
-            graph.measure_dict[MeasureAssortativity]['assortativity_out_out'] = \
+            measure_dict['assortativity_out_out'] = \
                 MeasureAssortativity.compute_assortativity(summed_edges_out[i], summed_edges_out[j], K)
-            graph.measure_dict[MeasureAssortativity]['assortativity_in_in'] = \
+            measure_dict['assortativity_in_in'] = \
                 MeasureAssortativity.compute_assortativity(summed_edges_in[i], summed_edges_in[j], K)
+
+        return measure_dict
 
     def compute_assortativity(_in, _out, K):
         numerator = np.sum(_in * _out)/K - (np.sum(0.5 * (_in + _out))/K)**2
         denominator = np.sum(0.5*(_in**2 + _out**2))/K - (np.sum(0.5*(_in + _out))/K)**2
         assortativity = numerator / denominator
         return assortativity
-
 
     def get_valid_graph_types():
         graph_type_measures = {}
