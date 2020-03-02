@@ -17,7 +17,8 @@ class TestSmallWorldness(unittest.TestCase):
     def test_graphBU(self):
         
         measure_list = MeasureParser.list_measures()
-        A=np.array([[0,1,1,0,1],[1,0,1,0,1],[0,1,1,0,1],[0,1,0,1,0],[1,0,1,0,0]])
+        #A=np.array([[0,1,1,0,1],[1,0,1,0,1],[0,1,1,0,1],[0,1,0,1,0],[1,0,1,0,0]])
+        A = np.random.randint(2, size=(10,10))
         graph_bu = GraphBU(A, measure_list[GraphBU], 'zero')
         print(graph_bu.get_measure(MeasureSmallWorldness, 'small_worldness'))
         self.assertTrue(1,1)

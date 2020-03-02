@@ -10,7 +10,6 @@ class MeasureParser():
         measures_dict = {}
         for measure in Measure.__subclasses__():
             graph_types = measure.get_valid_graph_types()
-            print(graph_types)
             for graph_type in graph_types:
                 if graph_type not in measures_dict.keys():
                     measures_dict[graph_type] = {}

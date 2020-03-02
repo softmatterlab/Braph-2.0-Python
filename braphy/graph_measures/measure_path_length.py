@@ -24,6 +24,10 @@ class MeasurePathLength(Measure):
 
         description['char_out_path_length'] = 'The characteristic out-path length of a graph is the average of ' +\
                                               'the out-path length of all nodes in the graph.'
+        
+        description['char_path_length_wsg'] = 'The characteristic path length of a graph is the average shortest ' +\
+                                              'path length in the graph. It is the average of the path length of ' +\
+                                              'all nodes in the graph. This measure is calculated within subgraphs.'
         return description
 
     def compute_measure(graph):
@@ -56,6 +60,8 @@ class MeasurePathLength(Measure):
             graph.measure_dict[MeasurePathLength]['out_path_length'] = out_path_length
             graph.measure_dict[MeasurePathLength]['char_in_path_length'] = np.nanmean(in_path_length)
             graph.measure_dict[MeasurePathLength]['char_out_path_length'] = np.nanmean(out_path_length)
+        else:
+            graph.measure_dict[MeasurePathLength]['char_path_length_wsg'] = np.mean(path_length[np.isfinite(path_length)])
 
     def get_valid_graph_types():
 
@@ -69,5 +75,8 @@ class MeasurePathLength(Measure):
             if graph_type.directed:
                 graph_type_measures[graph_type].extend(['in_path_length', 'char_in_path_length',
                                                         'out_path_length', 'char_out_path_length'])
+            else:
+                graph_type_measures[graph_type].extend(['char_path_length_wsg'])
+
 
         return graph_type_measures
