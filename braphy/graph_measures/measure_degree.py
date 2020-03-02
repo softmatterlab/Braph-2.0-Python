@@ -34,7 +34,6 @@ class MeasureDegree(Measure):
 
     def compute_measure(graph):
         degree, in_degree, out_degree = MeasureDegree.degree(graph)
-        measure_dict = {}
         if graph.is_directed():
             graph.measure_dict[MeasureDegree]['in_degree'] = in_degree
             graph.measure_dict[MeasureDegree]['out_degree'] = out_degree

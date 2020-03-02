@@ -10,10 +10,6 @@ class Graph(ABC):
         self.A = A
         self.init_measure_dict(measure_list)
         self.measure_list = measure_list
-        self.community_structure, self.modularity = \
-            CommunityAlgorithms.compute_community(self.A, self.is_weighted(),
-                                                  self.is_directed(),
-                                                  'Louvain')
 
     def init_measure_dict(self, measure_list):
         measure_dict = {}
