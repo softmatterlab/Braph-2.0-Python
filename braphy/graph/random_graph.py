@@ -1,8 +1,7 @@
 import numpy as np
 import copy
 from numpy.linalg import matrix_power, multi_dot
-from braphy.graph.accum_array import AccumArray
-from braphy.utility.helper_functions import divide_without_warning, multiply_without_warning
+from braphy.utility.helper_functions import divide_without_warning, multiply_without_warning, accumarray
 
 class RandomGraph():
 
@@ -130,7 +129,8 @@ class RandomGraph():
                     for idx, value in enumerate(linear_w_ind[rand_w_ind]):
                         A_null.itemset(value, val[idx])
 
-                    cumulative_w_x = AccumArray.accum( w_x[rand_w_ind], sorted_w[r], size=np.array([node_number, 1]))
+                    cumulative_w_x = accumarray( w_x[rand_w_ind], sorted_w[r], size=np.array([node_number, 1]))
+                    cumulative_w_x = cumulative_w_x.reshape(1,-1)[0]
                     cum_nonzero = cumulative_w_x > 0
                     expected_w_prob = 1 - divide_without_warning(cumulative_w_x[cum_nonzero], out_strength[cum_nonzero])
                     expected_w_prob = np.tile(expected_w_prob, (node_number,1)).T
@@ -138,7 +138,8 @@ class RandomGraph():
                     expected_w[:,cum_nonzero] = multiply_without_warning(expected_w[:,cum_nonzero], np.transpose(expected_w_prob))
                     out_strength[cum_nonzero] = out_strength[cum_nonzero] - cumulative_w_x[cum_nonzero]
 
-                    cumulative_w_y = AccumArray.accum( w_y[rand_w_ind], sorted_w[r], size=np.array([node_number, 1]))
+                    cumulative_w_y = accumarray( w_y[rand_w_ind], sorted_w[r], size=np.array([node_number, 1]))
+                    cumulative_w_y = cumulative_w_y.reshape(1,-1)[0]
                     cum_nonzero = cumulative_w_y > 0
                     expected_w_prob = 1 - divide_without_warning(cumulative_w_y[cum_nonzero], in_strength[cum_nonzero])
                     expected_w_prob = np.tile(expected_w_prob, (node_number,1)).T

@@ -1,6 +1,5 @@
 import numpy as np
-# matrix matrix
-#inf_dict = {-1:-np.inf. 1:np.inf}
+
 def divide_without_warning(a, b):
     b = np.array(b) # in case b is a scalar
     nan_mask = np.isnan(b)
@@ -32,3 +31,14 @@ def multiply_without_warning(a, b):
     c[inf_mask_b & (np.sign(c) == 0)] = np.nan
     return c
 
+def accumarray(subs, val, size = np.nan):
+    if np.isnan(size).any():
+        size = [np.max(subs) + 1, 1 if subs.ndim == 1 else subs.shape[1]]
+    if np.isscalar(val):
+        val = np.array([val]*(np.max(subs) + 1))
+    output = np.zeros(size)
+    for val_index, output_index in enumerate(subs):
+        if not np.isscalar(output_index):
+            output_index = tuple(output_index)
+        output[output_index] = output[output_index] + val[val_index]
+    return output
