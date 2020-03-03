@@ -25,13 +25,29 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.textEdit.setText(self.atlas.name)
 
     def init_brain_view(self):
+        self.init_axis()
+        self.init_grid()
+        self.init_brain_mesh()
+
+    def init_axis(self):
+        self.ax = gl.GLAxisItem()
+        self.ax.setSize(400,400,400)
+        self.graphicsView.addItem(self.ax)
+
+    def init_grid(self):
+        self.grid = gl.GLGridItem()
+        self.grid.setSize(200,200,200)
+        self.grid.setSpacing(10,10,10)
+        self.graphicsView.addItem(self.grid)
+
+    def init_brain_mesh(self):
         self.graphicsView.opts['distance'] = brain_distance_default
         self.graphicsView.setCameraPosition(azimuth=0)
-        self.graphicsView.setBackgroundColor((230, 230, 230, 255))
+        self.graphicsView.setBackgroundColor((200, 200, 200, 255))
         data = np.load(brain_mesh_file, allow_pickle=True).item()
         colors = np.array([[0.7,0.6,0.55,.75] for i in range(len(data['faces']))])
-        p = gl.GLMeshItem(vertexes=data['vertices'], faces=data['faces'], faceColors=colors, shader = 'normalColor')
-        self.graphicsView.addItem(p)
+        self.brain_mesh = gl.GLMeshItem(vertexes=data['vertices'], faces=data['faces'], faceColors=colors, shader = 'normalColor')
+        self.graphicsView.addItem(self.brain_mesh)
 
     def init_buttons(self):
        self.btnSelectAll.clicked.connect(self.select_all)
