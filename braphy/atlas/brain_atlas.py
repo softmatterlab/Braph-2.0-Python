@@ -2,7 +2,7 @@ from braphy.atlas.brain_region import BrainRegion
 import numpy as np
 
 class BrainAtlas():
-    def __init__(self, name, brain_regions):
+    def __init__(self, name, brain_regions = None):
         self.name = name
         self.brain_regions = brain_regions
 
@@ -133,7 +133,26 @@ class BrainAtlas():
             selected = np.arange(self.brain_region_number() - len(selected), self.brain_region_number())
         return selected
 
+    def load_from_txt(self, file_path = None, file_name = None):
 
+        #try:
+        with open(file_path+file_name, 'r') as f:
+            for i, line in enumerate(f):
+                #print(line.split())
+                if i == 0:
+                    continue
+                self.brain_regions.append(BrainRegion(label = line[0],
+                                                    name = line[1:-5],
+                                                    x = line[-5],
+                                                    y = line[-4],
+                                                    z = line[-3]
+                                                    ))
+
+        #except:
+        #    print('Could not open file.')
+
+brain = BrainAtlas(name='hej', brain_regions=[])
+brain.load_from_txt(file_path = 'braphy/atlas/',file_name='aal90_atlas.txt')
 
 
 
