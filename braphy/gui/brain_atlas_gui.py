@@ -8,6 +8,7 @@ from pyqtgraph.opengl import GLViewWidget
 
 qtCreatorFile = "ui_files/brain_atlas.ui" # Enter file here.
 brain_mesh_file = "brain_mesh.npy"
+brain_distance_default = 230
 
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
  
@@ -24,9 +25,12 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.textEdit.setText(self.atlas.name)
 
     def init_brain_view(self):
+        self.graphicsView.opts['distance'] = brain_distance_default
+        self.graphicsView.setCameraPosition(azimuth=0)
+        self.graphicsView.setBackgroundColor((230, 230, 230, 255))
         data = np.load(brain_mesh_file, allow_pickle=True).item()
-        colors = np.array([[1,0,0,1] for i in range(len(data['faces']))])
-        p = gl.GLMeshItem(vertexes=data['vertices'], faces=data['faces'], faceColors=colors, drawEdges=True, edgeColor=(0, 0, 0, 1))
+        colors = np.array([[0.7,0.6,0.55,.75] for i in range(len(data['faces']))])
+        p = gl.GLMeshItem(vertexes=data['vertices'], faces=data['faces'], faceColors=colors, shader = 'normalColor')
         self.graphicsView.addItem(p)
 
     def init_buttons(self):
@@ -156,22 +160,22 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         pass
 
     def sagittal_right(self):
-        pass
+        self.graphicsView.setCameraPosition(distance=brain_distance_default, elevation=0, azimuth=180)
 
     def sagittal_left(self):
-        pass
+        self.graphicsView.setCameraPosition(distance=brain_distance_default, elevation=0, azimuth=0)
 
     def axial_dorsal(self):
-        pass
+        self.graphicsView.setCameraPosition(distance=brain_distance_default, elevation=90, azimuth=90)
 
     def axial_ventral(self):
-        pass
+        self.graphicsView.setCameraPosition(distance=brain_distance_default, elevation=-90, azimuth=-90)
 
     def coronal_anterior(self):
-        pass
+        self.graphicsView.setCameraPosition(distance=brain_distance_default, elevation=0, azimuth=90)
 
     def coronal_posterior(self):
-        pass
+        self.graphicsView.setCameraPosition(distance=brain_distance_default, elevation=0, azimuth=-90)
 
 def run():
     app = QtWidgets.QApplication(sys.argv)
