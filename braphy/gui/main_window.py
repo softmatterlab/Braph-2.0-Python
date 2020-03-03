@@ -1,6 +1,6 @@
 import sys
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
-from brain_atlas_gui import BrainAtlas
+from braphy.gui.brain_atlas_gui import BrainAtlasGui
 from cohort_editor_gui import CohortEditor
 from graph_analysis_gui import GraphAnalysis
 from exit_dialog import ExitDialog
@@ -30,7 +30,7 @@ class MainWindow(ExitDialog, Ui_MainWindow):
         self.btnMRI.setChecked(True)
 
     def brain_atlas(self):
-        self.brain_atlas_gui = BrainAtlas(self)
+        self.brain_atlas_gui = BrainAtlasGui(self)
         self.brain_atlas_gui.show()
 
     def cohort(self):

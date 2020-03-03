@@ -2,7 +2,7 @@ from braphy.atlas.brain_region import BrainRegion
 import numpy as np
 
 class BrainAtlas():
-    def __init__(self, name, brain_regions):
+    def __init__(self, name = 'Atlas', brain_regions = []):
         self.name = name
         self.brain_regions = brain_regions
 
@@ -48,7 +48,11 @@ class BrainAtlas():
             br_positions[i, :] = self.get_brain_region(i).get_position()
         return br_positions
 
-    def add_brain_region(self, br, i):
+    def add_brain_region(self, br = None, i = None):
+        if i == None:
+            i = len(self.brain_regions)
+        if br == None:
+            br = BrainRegion()
         self.brain_regions.insert(i, br)
 
     def remove_brain_region(self, i):
@@ -124,7 +128,7 @@ class BrainAtlas():
             for i in range(len(selected)):
                 self.move_to_brain_region(selected[i], i)
             selected = np.arange(0, len(selected))
-            return selected
+        return selected
 
     def move_to_bottom_brain_regions(self, selected):
         if len(selected) > 0:

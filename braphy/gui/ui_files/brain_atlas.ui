@@ -60,127 +60,6 @@ p, li { white-space: pre-wrap; }
         </item>
         <item>
          <widget class="QTableWidget" name="tableWidget">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="showGrid">
-           <bool>true</bool>
-          </property>
-          <property name="cornerButtonEnabled">
-           <bool>true</bool>
-          </property>
-          <property name="rowCount">
-           <number>100</number>
-          </property>
-          <property name="columnCount">
-           <number>8</number>
-          </property>
-          <attribute name="horizontalHeaderDefaultSectionSize">
-           <number>70</number>
-          </attribute>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
-          <row/>
           <column>
            <property name="text">
             <string/>
@@ -229,70 +108,70 @@ p, li { white-space: pre-wrap; }
            <number>10</number>
           </property>
           <item row="0" column="0">
-           <widget class="QPushButton" name="pushButton">
+           <widget class="QPushButton" name="btnSelectAll">
             <property name="text">
              <string>Select all</string>
             </property>
            </widget>
           </item>
           <item row="2" column="1">
-           <widget class="QPushButton" name="pushButton_7">
+           <widget class="QPushButton" name="btnAddBelow">
             <property name="text">
              <string>Add below</string>
             </property>
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QPushButton" name="pushButton_2">
+           <widget class="QPushButton" name="btnAdd">
             <property name="text">
              <string>Add</string>
             </property>
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QPushButton" name="pushButton_6">
+           <widget class="QPushButton" name="btnAddAbove">
             <property name="text">
              <string>Add above</string>
             </property>
            </widget>
           </item>
           <item row="1" column="0">
-           <widget class="QPushButton" name="pushButton_5">
+           <widget class="QPushButton" name="btnClearSelection">
             <property name="text">
              <string>Clear selection</string>
             </property>
            </widget>
           </item>
           <item row="2" column="3">
-           <widget class="QPushButton" name="pushButton_9">
+           <widget class="QPushButton" name="btnMoveToTop">
             <property name="text">
              <string>Move to top</string>
             </property>
            </widget>
           </item>
           <item row="0" column="3">
-           <widget class="QPushButton" name="pushButton_4">
+           <widget class="QPushButton" name="btnMoveUp">
             <property name="text">
              <string>Move up</string>
             </property>
            </widget>
           </item>
           <item row="1" column="3">
-           <widget class="QPushButton" name="pushButton_8">
+           <widget class="QPushButton" name="btnMoveDown">
             <property name="text">
              <string>Move down</string>
             </property>
            </widget>
           </item>
           <item row="0" column="2">
-           <widget class="QPushButton" name="pushButton_3">
+           <widget class="QPushButton" name="btnRemove">
             <property name="text">
              <string>Remove</string>
             </property>
            </widget>
           </item>
           <item row="3" column="3">
-           <widget class="QPushButton" name="pushButton_10">
+           <widget class="QPushButton" name="btnMoveToBottom">
             <property name="text">
              <string>Move to bottom</string>
             </property>
@@ -355,49 +234,49 @@ p, li { white-space: pre-wrap; }
              <item>
               <layout class="QGridLayout" name="gridLayout_2">
                <item row="0" column="2">
-                <widget class="QPushButton" name="pushButton_13">
+                <widget class="QPushButton" name="btnAxialDorsal">
                  <property name="text">
                   <string>Axial dorsal</string>
                  </property>
                 </widget>
                </item>
                <item row="0" column="0">
-                <widget class="QPushButton" name="pushButton_11">
+                <widget class="QPushButton" name="btn3D">
                  <property name="text">
                   <string>3D</string>
                  </property>
                 </widget>
                </item>
                <item row="0" column="3">
-                <widget class="QPushButton" name="pushButton_14">
+                <widget class="QPushButton" name="btnCoronalAnterior">
                  <property name="text">
                   <string>Coronal anterior</string>
                  </property>
                 </widget>
                </item>
                <item row="0" column="1">
-                <widget class="QPushButton" name="pushButton_12">
+                <widget class="QPushButton" name="btnSagittalLeft">
                  <property name="text">
                   <string>Sagittal left</string>
                  </property>
                 </widget>
                </item>
                <item row="1" column="1">
-                <widget class="QPushButton" name="pushButton_15">
+                <widget class="QPushButton" name="btnSagittalRight">
                  <property name="text">
                   <string>Sagittal right</string>
                  </property>
                 </widget>
                </item>
                <item row="1" column="2">
-                <widget class="QPushButton" name="pushButton_16">
+                <widget class="QPushButton" name="btnAxialVentral">
                  <property name="text">
                   <string>Axial ventral</string>
                  </property>
                 </widget>
                </item>
                <item row="1" column="3">
-                <widget class="QPushButton" name="pushButton_17">
+                <widget class="QPushButton" name="btnCoronalPosterior">
                  <property name="text">
                   <string>Coronal posterior</string>
                  </property>
@@ -429,28 +308,28 @@ p, li { white-space: pre-wrap; }
               <number>0</number>
              </property>
              <item>
-              <widget class="QCheckBox" name="checkBox">
+              <widget class="QCheckBox" name="checkBoxShowAxis">
                <property name="text">
                 <string>Show axis</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QCheckBox" name="checkBox_2">
+              <widget class="QCheckBox" name="checkBoxShowGrid">
                <property name="text">
                 <string>Show grid</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QCheckBox" name="checkBox_3">
+              <widget class="QCheckBox" name="checkBoxShowBrainRegions">
                <property name="text">
                 <string>Show brain regions</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QCheckBox" name="checkBox_4">
+              <widget class="QCheckBox" name="checkBoxShowLabels">
                <property name="text">
                 <string>Show labels</string>
                </property>
@@ -523,7 +402,7 @@ p, li { white-space: pre-wrap; }
     <property name="title">
      <string>Subject Cohorts</string>
     </property>
-    <addaction name="actionNew_MRO_Cohort"/>
+    <addaction name="actionNew_MRI_Cohort"/>
     <addaction name="actionNew_fMRI_Cohort"/>
     <addaction name="actionNew_EEG_Cohort"/>
     <addaction name="actionNew_PET_Cohort"/>
@@ -658,7 +537,7 @@ p, li { white-space: pre-wrap; }
     <string>Generate figure</string>
    </property>
   </action>
-  <action name="actionNew_MRO_Cohort">
+  <action name="actionNew_MRI_Cohort">
    <property name="text">
     <string>New MRI Cohort ...</string>
    </property>
