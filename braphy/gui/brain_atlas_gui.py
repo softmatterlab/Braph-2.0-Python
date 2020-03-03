@@ -1,11 +1,14 @@
 import sys
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
-from PyQt5.QtWidgets import *#QFileDialog, QTableWidget, QTableWidgetItem, QRadioButton, QWidget, 
+from PyQt5.QtWidgets import *
 from braphy.atlas.brain_atlas import BrainAtlas
 import numpy as np
- 
+import pyqtgraph.opengl as gl
+from pyqtgraph.opengl import GLViewWidget
+
 qtCreatorFile = "ui_files/brain_atlas.ui" # Enter file here.
- 
+brain_mesh_file = "brain_mesh.npy"
+
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
  
 class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
@@ -15,21 +18,16 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.atlas = BrainAtlas()
         self.setupUi(self)
         self.init_buttons()
+        self.init_brain_view()
         self.check_boxes = []
         self.tableWidget.cellChanged.connect(self.changeCell)
         self.textEdit.setText(self.atlas.name)
 
-    def changeCell(self, row, column):
-        if column == 1:
-            self.atlas.brain_regions[row].label = self.tableWidget.item(row, column).text()
-        elif column == 2:
-            self.atlas.brain_regions[row].name = self.tableWidget.item(row, column).text()
-        elif column == 3:
-            self.atlas.brain_regions[row].x = float(self.tableWidget.item(row, column).text())
-        elif column == 4:
-            self.atlas.brain_regions[row].y = float(self.tableWidget.item(row, column).text())
-        elif column == 5:
-            self.atlas.brain_regions[row].z = float(self.tableWidget.item(row, column).text())
+    def init_brain_view(self):
+        data = np.load(brain_mesh_file, allow_pickle=True).item()
+        colors = np.array([[1,0,0,1] for i in range(len(data['faces']))])
+        p = gl.GLMeshItem(vertexes=data['vertices'], faces=data['faces'], faceColors=colors, drawEdges=True, edgeColor=(0, 0, 0, 1))
+        self.graphicsView.addItem(p)
 
     def init_buttons(self):
        self.btnSelectAll.clicked.connect(self.select_all)
@@ -90,16 +88,27 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         selected = self.atlas.move_to_bottom_brain_regions(self.get_checked())
         self.update_table(selected)
 
+    def changeCell(self, row, column):
+        if column == 1:
+            self.atlas.brain_regions[row].label = self.tableWidget.item(row, column).text()
+        elif column == 2:
+            self.atlas.brain_regions[row].name = self.tableWidget.item(row, column).text()
+        elif column == 3:
+            self.atlas.brain_regions[row].x = float(self.tableWidget.item(row, column).text())
+        elif column == 4:
+            self.atlas.brain_regions[row].y = float(self.tableWidget.item(row, column).text())
+        elif column == 5:
+            self.atlas.brain_regions[row].z = float(self.tableWidget.item(row, column).text())
+
     def update_table(self, selected = None):
         if selected == None:
             selected = self.get_checked()
 
         self.tableWidget.blockSignals(True)
-        self.tableWidget.clearContents() # clear table but keep headers
+        self.tableWidget.clearContents()
         self.check_boxes = []
 
         for i in range(len(self.atlas.brain_regions)):
-            # checkbox:
             self.tableWidget.setRowCount(i+1)
             widget = QWidget()
             layout = QHBoxLayout()
@@ -112,7 +121,6 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
             widget.setLayout(layout)
             self.tableWidget.setCellWidget(i, 0, widget)
 
-            # data:
             item = QTableWidgetItem(self.atlas.brain_regions[i].label)
             self.tableWidget.setItem(i, 1, item)
 
