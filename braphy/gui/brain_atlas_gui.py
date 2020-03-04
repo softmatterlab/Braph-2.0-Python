@@ -19,6 +19,8 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.atlas = BrainAtlas()
         self.setupUi(self)
         self.init_buttons()
+        self.init_actions()
+        self.init_check_boxes()
         self.init_brain_view()
         self.check_boxes = []
         self.tableWidget.cellChanged.connect(self.changeCell)
@@ -32,13 +34,13 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
     def init_axis(self):
         self.ax = gl.GLAxisItem()
         self.ax.setSize(400,400,400)
-        self.graphicsView.addItem(self.ax)
+        #self.graphicsView.addItem(self.ax)
 
     def init_grid(self):
         self.grid = gl.GLGridItem()
         self.grid.setSize(200,200,200)
         self.grid.setSpacing(10,10,10)
-        self.graphicsView.addItem(self.grid)
+        #self.graphicsView.addItem(self.grid)
 
     def init_brain_mesh(self):
         self.graphicsView.opts['distance'] = brain_distance_default
@@ -49,7 +51,6 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.brain_mesh = gl.GLMeshItem(vertexes=data['vertices'], faces=data['faces'], 
                                         faceColors=colors, shader = 'normalColor')
         self.graphicsView.addItem(self.brain_mesh)
-
 
     def init_buttons(self):
        self.btnSelectAll.clicked.connect(self.select_all)
@@ -70,6 +71,46 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
        self.btnAxialVentral.clicked.connect(self.axial_ventral)
        self.btnCoronalAnterior.clicked.connect(self.coronal_anterior)
        self.btnCoronalPosterior.clicked.connect(self.coronal_posterior)
+
+    def init_actions(self):
+        self.actionSagittal_left.triggered.connect(self.sagittal_left)
+        self.actionSagittal_right.triggered.connect(self.sagittal_right)
+        self.actionAxial_dorsal.triggered.connect(self.axial_dorsal)
+        self.actionAxial_ventral.triggered.connect(self.axial_ventral)
+        self.actionCoronal_anterior.triggered.connect(self.coronal_anterior)
+        self.actionCoronal_posterior.triggered.connect(self.coronal_posterior)
+
+    def init_check_boxes(self):
+        self.checkBoxShowBrain.stateChanged.connect(self.show_brain)
+        self.checkBoxShowAxis.stateChanged.connect(self.show_axis)
+        self.checkBoxShowGrid.stateChanged.connect(self.show_grid)
+        self.checkBoxShowBrainRegions.stateChanged.connect(self.show_brain_regions)
+        self.checkBoxShowLabels.stateChanged.connect(self.show_labels)
+
+    def show_brain(self, state):
+        if state == 0: #not checked
+            self.graphicsView.removeItem(self.brain_mesh)
+        else: #checked
+            self.graphicsView.addItem(self.brain_mesh)
+
+    def show_axis(self, state):
+        if state == 0: #not checked
+            self.graphicsView.removeItem(self.ax)
+        else: #checked
+            self.graphicsView.addItem(self.ax)
+
+    def show_grid(self, state):
+        print('show_grid')
+        if state == 0:
+            self.graphicsView.removeItem(self.grid)
+        else:
+            self.graphicsView.addItem(self.grid)
+
+    def show_brain_regions(self, state):
+        pass
+
+    def show_labels(self, state):
+        pass
 
     def select_all(self):
         selected = np.arange(len(self.atlas.brain_regions))
@@ -183,10 +224,10 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         pass
 
     def sagittal_right(self):
-        self.graphicsView.setCameraPosition(distance=brain_distance_default, elevation=0, azimuth=180)
+        self.graphicsView.setCameraPosition(distance=brain_distance_default, elevation=0, azimuth=0)
 
     def sagittal_left(self):
-        self.graphicsView.setCameraPosition(distance=brain_distance_default, elevation=0, azimuth=0)
+        self.graphicsView.setCameraPosition(distance=brain_distance_default, elevation=0, azimuth=180)
 
     def axial_dorsal(self):
         self.graphicsView.setCameraPosition(distance=brain_distance_default, elevation=90, azimuth=90)
