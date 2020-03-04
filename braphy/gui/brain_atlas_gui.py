@@ -26,7 +26,8 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
     def init_brain_view(self):
         data = np.load(brain_mesh_file, allow_pickle=True).item()
         colors = np.array([[1,0,0,1] for i in range(len(data['faces']))])
-        p = gl.GLMeshItem(vertexes=data['vertices'], faces=data['faces'], faceColors=colors, drawEdges=True, edgeColor=(0, 0, 0, 1))
+        p = gl.GLMeshItem(vertexes=data['vertices'], faces=data['faces'], faceColors=colors,
+                          drawEdges=True, edgeColor=(0, 0, 0, 1))
         self.graphicsView.addItem(p)
 
     def init_buttons(self):
@@ -54,18 +55,18 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.set_checked(selected)
 
     def clear_selection(self):
-        self.set_checked([])
+        self.set_checked(np.array([]))
 
     def add(self):
         self.atlas.add_brain_region()
         self.update_table()
 
     def add_above(self):
-        selected = self.atlas.add_above_brain_regions(self.get_checked())
+        selected, added = self.atlas.add_above_brain_regions(self.get_checked())
         self.update_table(selected)
 
     def add_below(self):
-        selected = self.atlas.add_below_brain_regions(self.get_checked())
+        selected, added = self.atlas.add_below_brain_regions(self.get_checked())
         self.update_table(selected)
 
     def remove(self):
@@ -99,16 +100,21 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
             self.atlas.brain_regions[row].y = float(self.tableWidget.item(row, column).text())
         elif column == 5:
             self.atlas.brain_regions[row].z = float(self.tableWidget.item(row, column).text())
+        elif column == 6:
+            pass #left/right
+        elif column == 7:
+            pass #Notes
 
     def update_table(self, selected = None):
-        if selected == None:
+        if np.any(selected == None):
             selected = self.get_checked()
 
         self.tableWidget.blockSignals(True)
         self.tableWidget.clearContents()
+        self.tableWidget.setRowCount(0)
         self.check_boxes = []
 
-        for i in range(len(self.atlas.brain_regions)):
+        for i in range(self.atlas.brain_region_number()):
             self.tableWidget.setRowCount(i+1)
             widget = QWidget()
             layout = QHBoxLayout()
@@ -150,7 +156,7 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         for i in range(len(self.check_boxes)):
             if self.check_boxes[i].isChecked():
                 selected.append(i)
-        return selected
+        return np.array(selected)
 
     def show_3D(self):
         pass

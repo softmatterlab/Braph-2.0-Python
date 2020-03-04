@@ -59,10 +59,12 @@ class BrainAtlas():
         del self.brain_regions[i]
 
     def remove_brain_regions(self, selected):
+        new_selected = list(selected)
         for i in range(len(selected) - 1, -1, -1):
             del self.brain_regions[selected[i]]
-        selected = []
-        return selected
+            del new_selected[i]
+
+        return np.array(new_selected)
 
     def replace_brain_region(self, i, br):
         self.brain_regions[i] = br
@@ -98,9 +100,13 @@ class BrainAtlas():
         if len(selected) > 0:
             first_index_to_process = 0
             unprocessable_length = 0
-            while first_index_to_process <= self.brain_region_number() \
-                  & first_index_to_process <= len(selected) \
-                  & selected[first_index_to_process] == unprocessable_length:
+            while True:
+                if (first_index_to_process >= self.brain_region_number()):
+                    break
+                if (first_index_to_process >= len(selected)):
+                    break
+                if (selected[first_index_to_process] != unprocessable_length):
+                    break
                 first_index_to_process = first_index_to_process + 1
                 unprocessable_length = unprocessable_length + 1
 
@@ -113,7 +119,7 @@ class BrainAtlas():
         if (len(selected) > 0) & (len(selected) < self.brain_region_number()):
             last_index_to_process = len(selected) - 1
             unprocessable_length = self.brain_region_number() - 1
-            while (last_index_to_process > 0) \
+            while (last_index_to_process >= 0) \
                   & (selected[last_index_to_process] == unprocessable_length):
                 last_index_to_process = last_index_to_process - 1
                 unprocessable_length = unprocessable_length - 1
