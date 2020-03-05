@@ -1,13 +1,14 @@
 import sys
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from PyQt5.QtWidgets import *#QFileDialog, QTableWidget, QTableWidgetItem, QRadioButton, QWidget, 
+from braphy.utility.helper_functions import abs_path_from_relative
 from functools import partial
 import xml.etree.ElementTree as ET
- 
-qtCreatorFile = "ui_files/cohort_editor.ui" # Enter file here.
- 
+
+qtCreatorFile = abs_path_from_relative(__file__, "ui_files/cohort_editor.ui")
+
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
- 
+
 class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self, AppWindow):
         self.AppWindow = AppWindow

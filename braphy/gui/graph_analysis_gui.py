@@ -1,12 +1,12 @@
 import sys
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from community_structure_gui import CommunityStructure
+from braphy.utility.helper_functions import abs_path_from_relative
 
- 
-qtCreatorFile = "ui_files/graph_analysis.ui" # Enter file here.
- 
+qtCreatorFile = abs_path_from_relative(__file__, "ui_files/graph_analysis.ui")
+
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
- 
+
 class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self, AppWindow):
         self.AppWindow = AppWindow

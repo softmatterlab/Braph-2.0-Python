@@ -1,4 +1,5 @@
 import numpy as np
+import os
 
 def divide_without_warning(a, b):
     b = np.array(b) # in case b is a scalar
@@ -42,3 +43,9 @@ def accumarray(subs, val, size = np.nan):
             output_index = tuple(output_index)
         output[output_index] = output[output_index] + val[val_index]
     return output
+
+def abs_path_from_relative(script_file, file_relative):
+    script_path = os.path.abspath(script_file)
+    script_dir = os.path.split(script_path)[0]
+    file_absolute = os.path.join(script_dir, file_relative)
+    return file_absolute

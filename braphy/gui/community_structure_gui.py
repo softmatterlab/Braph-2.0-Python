@@ -1,10 +1,11 @@
 import sys
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
- 
-qtCreatorFile = "ui_files/community_structure.ui" # Enter file here.
- 
+from braphy.utility.helper_functions import abs_path_from_relative
+
+qtCreatorFile = abs_path_from_relative(__file__, "ui_files/community_structure.ui")
+
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
- 
+
 class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self, AppWindow):
         self.AppWindow = AppWindow

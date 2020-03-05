@@ -1,11 +1,12 @@
 import sys
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from braphy.gui.brain_atlas_gui import BrainAtlasGui
+from braphy.utility.helper_functions import abs_path_from_relative
 from cohort_editor_gui import CohortEditor
 from graph_analysis_gui import GraphAnalysis
 from exit_dialog import ExitDialog
 
-qtCreatorFile = "ui_files/braph.ui" # Enter file here.
+qtCreatorFile = abs_path_from_relative(__file__, "ui_files/braph.ui")
 
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 

@@ -1,8 +1,8 @@
 import os
+from braphy.utility.helper_functions import abs_path_from_relative
 from PyQt5 import QtGui, uic
 
-current_dir = os.path.dirname(os.path.abspath(__file__))
-Form, Base = uic.loadUiType(os.path.join(current_dir, "ui_files/cohort_editor_subject_data_widget.ui"))
+Form, Base = uic.loadUiType(abs_path_from_relative(__file__, "ui_files/cohort_editor_subject_data_widget.ui"))
 
 class SubjectWidget(Base, Form):
 	def __init__(self, parent=None):

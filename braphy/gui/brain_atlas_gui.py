@@ -2,16 +2,17 @@ import sys
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from PyQt5.QtWidgets import *
 from braphy.atlas.brain_atlas import BrainAtlas
+from braphy.utility.helper_functions import abs_path_from_relative
 import numpy as np
 import pyqtgraph.opengl as gl
 from pyqtgraph.opengl import GLViewWidget
 
-qtCreatorFile = "ui_files/brain_atlas.ui" # Enter file here.
-brain_mesh_file = "brain_mesh.npy"
+qtCreatorFile = abs_path_from_relative(__file__, "ui_files/brain_atlas.ui")
+brain_mesh_file = abs_path_from_relative(__file__, "brain_mesh.npy")
 brain_distance_default = 230
 
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
- 
+
 class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self, AppWindow):
         self.AppWindow = AppWindow

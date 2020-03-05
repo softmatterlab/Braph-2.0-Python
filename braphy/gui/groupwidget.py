@@ -1,8 +1,7 @@
-import os
 from PyQt5 import QtGui, uic
+from braphy.utility.helper_functions import abs_path_from_relative
 
-current_dir = os.path.dirname(os.path.abspath(__file__))
-Form, Base = uic.loadUiType(os.path.join(current_dir, "ui_files/cohort_editor_group_demographics_widget.ui"))
+Form, Base = uic.loadUiType(abs_path_from_relative(__file__, "ui_files/cohort_editor_group_demographics_widget.ui"))
 
 class GroupWidget(Base, Form):
 	def __init__(self, parent=None):
