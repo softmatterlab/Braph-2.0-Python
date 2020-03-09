@@ -220,6 +220,9 @@ p, li { white-space: pre-wrap; }
                </item>
                <item>
                 <widget class="QSlider" name="horizontalSlider">
+                 <property name="maximum">
+                  <number>100</number>
+                 </property>
                  <property name="orientation">
                   <enum>Qt::Horizontal</enum>
                  </property>
@@ -648,7 +651,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionSagittal_left">
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset>
      <normaloff>:/buttons/icon_view_sl.png</normaloff>:/buttons/icon_view_sl.png</iconset>
    </property>
    <property name="text">
@@ -657,7 +660,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionSagittal_right">
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset>
      <normaloff>:/buttons/icon_view_sr.png</normaloff>:/buttons/icon_view_sr.png</iconset>
    </property>
    <property name="text">
@@ -666,7 +669,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionAxial_dorsal">
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset>
      <normaloff>:/buttons/icon_view_ad.png</normaloff>:/buttons/icon_view_ad.png</iconset>
    </property>
    <property name="text">
@@ -675,7 +678,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionAxial_ventral">
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset>
      <normaloff>:/buttons/icon_view_av.png</normaloff>:/buttons/icon_view_av.png</iconset>
    </property>
    <property name="text">
@@ -684,7 +687,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionCoronal_anterior">
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset>
      <normaloff>:/buttons/icon_view_ca.png</normaloff>:/buttons/icon_view_ca.png</iconset>
    </property>
    <property name="text">
@@ -693,7 +696,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionCoronal_posterior">
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset>
      <normaloff>:/buttons/icon_view_cp.png</normaloff>:/buttons/icon_view_cp.png</iconset>
    </property>
    <property name="text">
@@ -705,7 +708,7 @@ p, li { white-space: pre-wrap; }
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset>
      <normaloff>:/buttons/icon_brain.png</normaloff>:/buttons/icon_brain.png</iconset>
    </property>
    <property name="text">
@@ -717,7 +720,7 @@ p, li { white-space: pre-wrap; }
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset>
      <normaloff>:/buttons/icon_axis.png</normaloff>:/buttons/icon_axis.png</iconset>
    </property>
    <property name="text">
@@ -729,7 +732,7 @@ p, li { white-space: pre-wrap; }
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset>
      <normaloff>:/buttons/icon_grid.png</normaloff>:/buttons/icon_grid.png</iconset>
    </property>
    <property name="text">
@@ -741,7 +744,7 @@ p, li { white-space: pre-wrap; }
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset>
      <normaloff>:/buttons/icon_br.png</normaloff>:/buttons/icon_br.png</iconset>
    </property>
    <property name="text">
@@ -753,7 +756,7 @@ p, li { white-space: pre-wrap; }
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset>
      <normaloff>:/buttons/icon_label.png</normaloff>:/buttons/icon_label.png</iconset>
    </property>
    <property name="text">
@@ -762,7 +765,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actiontred">
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset>
      <normaloff>:/buttons/icon_view_3d.png</normaloff>:/buttons/icon_view_3d.png</iconset>
    </property>
    <property name="text">
@@ -777,8 +780,6 @@ p, li { white-space: pre-wrap; }
    <header>pyqtgraph.opengl</header>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="../icons.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

@@ -797,30 +797,29 @@ p, li { white-space: pre-wrap; }
   <customwidget>
    <class>GroupWidget</class>
    <extends>QWidget</extends>
-   <header>groupwidget</header>
+   <header>braphy.gui.groupwidget</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>SubjectWidget</class>
    <extends>QWidget</extends>
-   <header>subjectwidget</header>
+   <header>braphy.gui.subjectwidget</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>AveragesWidget</class>
    <extends>QWidget</extends>
-   <header>averageswidget</header>
+   <header>braphy.gui.averageswidget</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>BrainWidget</class>
    <extends>QWidget</extends>
-   <header>brainwidget</header>
+   <header>braphy.gui.brainwidget</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../icons.qrc"/>
  </resources>
  <connections/>
 </ui>
