@@ -2,9 +2,9 @@ import sys
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from braphy.gui.brain_atlas_gui import BrainAtlasGui
 from braphy.utility.helper_functions import abs_path_from_relative
-from cohort_editor_gui import CohortEditor
-from graph_analysis_gui import GraphAnalysis
-from exit_dialog import ExitDialog
+from braphy.gui.cohort_editor_gui import CohortEditor
+from braphy.gui.graph_analysis_gui import GraphAnalysis
+from braphy.gui.exit_dialog import ExitDialog
 
 qtCreatorFile = abs_path_from_relative(__file__, "ui_files/braph.ui")
 
@@ -44,7 +44,7 @@ class MainWindow(ExitDialog, Ui_MainWindow):
 
     def set_MRI_btn_options(self):
         self.set_btn_options("MRI")
-    
+
     def set_fMRI_btn_options(self):
         self.set_btn_options("fMRI")
 
@@ -66,8 +66,11 @@ class MainWindow(ExitDialog, Ui_MainWindow):
         else:
             self.subtitle.setText("EEG Analysis Workflow")
 
-if __name__ == "__main__":
+def braphy_run_gui():
     app = QtWidgets.QApplication(sys.argv)
     window = MainWindow()
     window.show()
     sys.exit(app.exec_())
+
+if __name__ == "__main__":
+    braphy_run_gui()

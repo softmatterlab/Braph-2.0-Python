@@ -1,6 +1,6 @@
 import sys
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
-from community_structure_gui import CommunityStructure
+from braphy.gui.community_structure_gui import CommunityStructure
 from braphy.utility.helper_functions import abs_path_from_relative
 
 qtCreatorFile = abs_path_from_relative(__file__, "ui_files/graph_analysis.ui")
