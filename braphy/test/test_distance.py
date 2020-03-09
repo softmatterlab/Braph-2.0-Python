@@ -1,6 +1,6 @@
 import unittest
 from braphy.graph.graph_factory import GraphFactory, GraphSettings
-from braphy.graph.graph_measures.measure_distance import MeasureDistance
+from braphy.graph.measures.measure_distance import MeasureDistance
 import numpy as np
 
 class TestDistance(unittest.TestCase):

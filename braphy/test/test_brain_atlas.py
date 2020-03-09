@@ -16,7 +16,7 @@ class TestBrainAtlas(TestUtility):
         br8 = BrainRegion('BR8', 'brain region 8', 8, 88, 888)
         br9 = BrainRegion('BR9', 'brain region 9', 9, 99, 999)
         brain_regions = [br1, br2, br3, br4, br5, br6, br7, br8, br9]
-        atlas = BrainAtlas('atlas', brain_regions)
+        atlas = BrainAtlas(brain_regions=brain_regions)
 
         self.assertTrue(atlas.brain_region_number() == 9)
         self.assertTrue(atlas.get_brain_region(2) == br3)
@@ -44,7 +44,7 @@ class TestBrainAtlas(TestUtility):
         atlas.replace_brain_region(4, br9)
         atlas.invert_brain_regions(2, 5)
         self.assertSequenceEqual(atlas.get_brain_region_labels().tolist(), ['BR1', 'BR3', 'BR7', 'BR4', 'BR9', 'BR1', 'BR8'])
-        
+
         atlas.move_to_brain_region(6, 6)
         atlas.move_to_brain_region(6, 0)
         selected, added = atlas.add_above_brain_regions(np.array([0, 4]))
@@ -74,9 +74,10 @@ class TestBrainAtlas(TestUtility):
         br2 = BrainRegion('BR2', 'brain region 2', 2, 22, 222)
         br3 = BrainRegion('BR3', 'brain region 3', 3, 33, 333)
         brain_regions = [br1, br2, br3]
-        atlas = BrainAtlas('atlas', brain_regions)
+        atlas = BrainAtlas(brain_regions=brain_regions)
 
         selected = atlas.move_up_brain_regions(np.array([1, 2]))
+        print(selected)
         self.assertSequenceEqual(selected.tolist(), [0, 1])
         self.assertSequenceEqual(atlas.get_brain_region_labels().tolist(), ['BR2', 'BR3', 'BR1'])
 
@@ -85,7 +86,7 @@ class TestBrainAtlas(TestUtility):
         br2 = BrainRegion('BR2', 'brain region 2', 2, 22, 222)
         br3 = BrainRegion('BR3', 'brain region 3', 3, 33, 333)
         brain_regions = [br1, br2, br3]
-        atlas = BrainAtlas('atlas', brain_regions)
+        atlas = BrainAtlas(brain_regions=brain_regions)
 
         selected = atlas.move_up_brain_regions(np.array([1]))
         self.assertSequenceEqual(selected.tolist(), [0])
@@ -96,7 +97,7 @@ class TestBrainAtlas(TestUtility):
         br2 = BrainRegion('BR2', 'brain region 2', 2, 22, 222)
         br3 = BrainRegion('BR3', 'brain region 3', 3, 33, 333)
         brain_regions = [br1, br2, br3]
-        atlas = BrainAtlas('atlas', brain_regions)
+        atlas = BrainAtlas(brain_regions=brain_regions)
 
         selected = atlas.move_up_brain_regions(np.array([0, 1]))
         self.assertSequenceEqual(selected.tolist(), [0, 1])
@@ -107,7 +108,7 @@ class TestBrainAtlas(TestUtility):
         br2 = BrainRegion('BR2', 'brain region 2', 2, 22, 222)
         br3 = BrainRegion('BR3', 'brain region 3', 3, 33, 333)
         brain_regions = [br1, br2, br3]
-        atlas = BrainAtlas('atlas', brain_regions)
+        atlas = BrainAtlas(brain_regions=brain_regions)
 
         selected = atlas.move_down_brain_regions(np.array([0, 1]))
         self.assertSequenceEqual(selected.tolist(), [1, 2])
@@ -118,13 +119,13 @@ class TestBrainAtlas(TestUtility):
         br2 = BrainRegion('BR2', 'brain region 2', 2, 22, 222)
         br3 = BrainRegion('BR3', 'brain region 3', 3, 33, 333)
         brain_regions = [br1, br2, br3]
-        atlas = BrainAtlas('atlas', brain_regions)
+        atlas = BrainAtlas(brain_regions=brain_regions)
 
         selected = atlas.move_down_brain_regions(np.array([1, 2]))
         self.assertSequenceEqual(selected.tolist(), [1, 2])
         self.assertSequenceEqual(atlas.get_brain_region_labels().tolist(), ['BR1', 'BR2', 'BR3'])
 
-    def test_read_brain_atlas(self):    
+    def test_read_brain_atlas(self):
         brain_xml = BrainAtlas(name='hey', brain_regions=[])
         brain_xml.load_from_xml(file_path = 'braphy/atlas/',file_name='aal90_atlas.xml')
 

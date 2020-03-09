@@ -1,6 +1,6 @@
 import unittest
-from braphy.graph.graph_measures import MeasureParser
-from braphy.graph import *
+from braphy.graph.measures import MeasureParser
+from braphy.graph.graph_factory import GraphFactory, GraphSettings
 import numpy as np
 
 class TestGraphWD(unittest.TestCase):

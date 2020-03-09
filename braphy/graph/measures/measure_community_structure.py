@@ -1,4 +1,4 @@
-from braphy.graph.graph_measures.measure import Measure
+from braphy.graph.measures.measure import Measure
 import numpy as np
 from braphy.graph.graphs import *
 import copy

@@ -1,6 +1,6 @@
 import unittest
 from braphy.graph.graph_factory import GraphFactory, GraphSettings
-from braphy.graph.graph_measures.measure_closeness import MeasureCloseness
+from braphy.graph.measures.measure_closeness import MeasureCloseness
 from braphy.test.test_utility import TestUtility
 import numpy as np
 

@@ -1,6 +1,6 @@
-from braphy.graph.graph_measures.measure import Measure
-from braphy.graph.graph_measures.measure_triangles import MeasureTriangles
-from braphy.graph.graph_measures.measure_degree import MeasureDegree
+from braphy.graph.measures.measure import Measure
+from braphy.graph.measures.measure_triangles import MeasureTriangles
+from braphy.graph.measures.measure_degree import MeasureDegree
 from braphy.graph.graphs import *
 import numpy as np
 import copy

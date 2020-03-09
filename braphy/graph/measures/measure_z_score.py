@@ -1,5 +1,5 @@
-from braphy.graph.graph_measures.measure import Measure
-from braphy.graph.graph_measures.measure_community_structure import MeasureCommunityStructure
+from braphy.graph.measures.measure import Measure
+from braphy.graph.measures.measure_community_structure import MeasureCommunityStructure
 import numpy as np
 from braphy.graph.graphs import *
 from braphy.utility.helper_functions import divide_without_warning

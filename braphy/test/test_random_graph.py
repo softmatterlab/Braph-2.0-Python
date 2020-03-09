@@ -1,6 +1,6 @@
 import unittest
 from braphy.graph.graph_factory import GraphFactory, GraphSettings
-from braphy.graph.graph_measures.measure_path_length import MeasurePathLength
+from braphy.graph.measures.measure_path_length import MeasurePathLength
 import numpy as np
 
 class TestRandomGraph(unittest.TestCase):

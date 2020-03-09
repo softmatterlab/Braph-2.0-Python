@@ -1,6 +1,6 @@
 import unittest
 from braphy.graph.graph_factory import GraphFactory, GraphSettings
-from braphy.graph.graph_measures.measure_assortativity import MeasureAssortativity
+from braphy.graph.measures.measure_assortativity import MeasureAssortativity
 import numpy as np
 
 class TestAssortativity(unittest.TestCase):

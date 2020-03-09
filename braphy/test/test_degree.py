@@ -1,6 +1,6 @@
 import unittest
 from braphy.graph.graph_factory import GraphFactory, GraphSettings
-from braphy.graph.graph_measures.measure_degree import MeasureDegree
+from braphy.graph.measures.measure_degree import MeasureDegree
 import numpy as np
 
 class TestDegree(unittest.TestCase):
