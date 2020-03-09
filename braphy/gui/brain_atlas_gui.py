@@ -64,11 +64,13 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.graphicsView.setCameraPosition(azimuth=0)
         self.graphicsView.setBackgroundColor((200, 200, 200, 255))
         data = load_nv(brain_mesh_file)
-        colors = np.array([self.brain_color for i in range(len(data['faces']))])
         self.brain_mesh = gl.GLMeshItem(vertexes=data['vertices'], faces=data['faces'], shader = 'normalColor')
         self.brain_mesh.setGLOptions('translucent')
         self.graphicsView.addItem(self.brain_mesh)
         self.changeTransparency()
+
+    def load_brain_mesh(self, data):
+        self.brain_mesh.setMeshData(vertexes=data['vertices'], faces=data['faces'])
 
     def init_buttons(self):
        self.btnSelectAll.clicked.connect(self.select_all)
@@ -128,6 +130,8 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionExport_xml.triggered.connect(self.export_xml)
         self.actionExport_txt.triggered.connect(self.export_txt)
         self.actionClose.triggered.connect(self.close)
+
+        self.actionBrainViewOpen.triggered.connect(self.brain_view_open)
 
         self.actionSelect_all.triggered.connect(self.select_all)
         self.actionClear_selection.triggered.connect(self.clear_selection)
@@ -376,6 +380,14 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def close(self):
         pass
+
+    def brain_view_open(self):
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        fileName, name = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()", "","nv files (*.nv)", options=options)
+        if fileName:
+            data = load_nv(fileName)
+            self.load_brain_mesh(data)
 
     def generate_figure(self):
         pass

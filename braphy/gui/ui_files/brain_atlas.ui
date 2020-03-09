@@ -396,6 +396,7 @@ p, li { white-space: pre-wrap; }
      <string>Brain View</string>
     </property>
     <addaction name="actionGenerate_figure"/>
+    <addaction name="actionBrainViewOpen"/>
    </widget>
    <widget class="QMenu" name="menuSubject_Cohorts">
     <property name="title">
@@ -470,7 +471,7 @@ p, li { white-space: pre-wrap; }
   </widget>
   <action name="actionSave">
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset>
      <normaloff>:/buttons/save.png</normaloff>:/buttons/save.png</iconset>
    </property>
    <property name="text">
@@ -570,7 +571,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionOpen">
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset>
      <normaloff>:/buttons/open.png</normaloff>:/buttons/open.png</iconset>
    </property>
    <property name="text">
@@ -615,7 +616,7 @@ p, li { white-space: pre-wrap; }
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset>
      <normaloff>:/buttons/zoom_in.png</normaloff>:/buttons/zoom_in.png</iconset>
    </property>
    <property name="text">
@@ -627,7 +628,7 @@ p, li { white-space: pre-wrap; }
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset>
      <normaloff>:/buttons/zoom_out.png</normaloff>:/buttons/zoom_out.png</iconset>
    </property>
    <property name="text">
@@ -639,7 +640,7 @@ p, li { white-space: pre-wrap; }
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset>
      <normaloff>:/buttons/hand.png</normaloff>:/buttons/hand.png</iconset>
    </property>
    <property name="text">
@@ -654,7 +655,7 @@ p, li { white-space: pre-wrap; }
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset>
      <normaloff>:/buttons/rotate.png</normaloff>:/buttons/rotate.png</iconset>
    </property>
    <property name="text">
@@ -666,7 +667,7 @@ p, li { white-space: pre-wrap; }
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset>
      <normaloff>:/buttons/cursor.png</normaloff>:/buttons/cursor.png</iconset>
    </property>
    <property name="text">
@@ -794,6 +795,16 @@ p, li { white-space: pre-wrap; }
    </property>
    <property name="text">
     <string>tred</string>
+   </property>
+  </action>
+  <action name="actionOpen_2">
+   <property name="text">
+    <string>Open...</string>
+   </property>
+  </action>
+  <action name="actionBrainViewOpen">
+   <property name="text">
+    <string>Open...</string>
    </property>
   </action>
  </widget>
