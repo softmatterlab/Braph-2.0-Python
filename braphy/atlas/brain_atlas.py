@@ -1,6 +1,7 @@
 from braphy.atlas.brain_region import BrainRegion
 import numpy as np
-
+import pandas as pd
+import xml.etree.ElementTree as ET 
 class BrainAtlas():
     def __init__(self, name = 'Atlas', brain_regions = []):
         self.name = name
@@ -143,10 +144,51 @@ class BrainAtlas():
             selected = np.arange(self.brain_region_number() - len(selected), self.brain_region_number())
         return selected
 
+    def load_from_txt(self, file_path = None, file_name = None):
 
+        try:
+            with open(file_path+file_name, 'r') as f:
+                for i, line in enumerate(f):
+                    line = line.split()
+                    if i == 0:
+                        continue
+                    self.brain_regions.append(BrainRegion(label = line[0],
+                                                        name = (' '.join(line[1:-5])).replace('  ', ' '),
+                                                        x = float(line[-5]),
+                                                        y = float(line[-4]),
+                                                        z = float(line[-3])
+                                                        ))
+        except:
+            print('Could not open file and add brain regions.')
+    
+    def load_from_xls(self, file_path = None, file_name = None):
+        
+        try:
+            data = pd.read_excel(file_path + file_name)
+            
+            # Remove leading, trailing and double whitespaces
+            data.iloc[:,0] = data.iloc[:,0].str.strip().str.replace('  ', ' ')
+            data.iloc[:,1] = data.iloc[:,1].str.strip().str.replace('  ', ' ')
+            
+            br = np.array( data.apply(lambda x: BrainRegion(x[0], x[1], x[2], x[3], x[4]),
+                                    axis = 1)).tolist()
+            self.brain_regions = br
+        except: 
+            print('Could not open file and add brain regions.')
 
-
-
-
-
+    def load_from_xml(self, file_path = None, file_name = None):
+        try:
+            with open(file_path+file_name, 'r') as f:
+                tree = ET.parse(f)
+                root = tree.getroot() 
+                for brain_region in root.findall('BrainAtlas/BrainRegion'):
+                    br = brain_region.attrib
+                    self.brain_regions.append(BrainRegion(  label = br['label'].replace('  ', ' ').strip(),
+                                                            name = br['name'].replace('  ', ' ').strip(),
+                                                            x = float(br['x']),
+                                                            y = float(br['y']),
+                                                            z = float(br['z'])
+                                                            ))
+        except: 
+            print('Could not open file and add brain regions.')
 
