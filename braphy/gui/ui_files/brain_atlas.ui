@@ -778,7 +778,6 @@ p, li { white-space: pre-wrap; }
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../icons.qrc"/>
  </resources>
  <connections/>
 </ui>

@@ -2,6 +2,16 @@ import sys
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from PyQt5.QtWidgets import *#QFileDialog, QTableWidget, QTableWidgetItem, QRadioButton, QWidget, 
 from braphy.utility.helper_functions import abs_path_from_relative
+
+import braphy.gui.averageswidget
+import braphy.gui.brainwidget
+import braphy.gui.groupwidget
+import braphy.gui.subjectwidget
+import braphy.gui.icons_rc
+#from braphy.gui.averageswidget import AveragesWidget
+#from braphy.gui.brainwidget import BrainWidget
+#from braphy.gui.averageswidget import AveragesWidget
+#from braphy.gui.averageswidget import AveragesWidget
 from functools import partial
 import xml.etree.ElementTree as ET
 
@@ -21,7 +31,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.disable_menu_bar(True)
 
     def init_table(self):
-        header = self.tableWidget.horizontalHeader()       
+        header = self.tableWidget.horizontalHeader()
         header.setSectionResizeMode(0, QtWidgets.QHeaderView.Fixed)
         header.setSectionResizeMode(1, QtWidgets.QHeaderView.Fixed)
         header.setSectionResizeMode(2, QtWidgets.QHeaderView.Fixed)
@@ -186,7 +196,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def add_new_group(self):
         print("Add group")
-    
+
     def remove_group(self):
         print("remove group")
 

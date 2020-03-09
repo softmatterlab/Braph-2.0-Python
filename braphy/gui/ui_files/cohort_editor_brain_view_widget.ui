@@ -25,8 +25,11 @@
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_4">
           <property name="topMargin">
-           <number>400</number>
+           <number>0</number>
           </property>
+          <item>
+           <widget class="GLViewWidget" name="graphicsView"/>
+          </item>
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout">
             <item>
@@ -97,6 +100,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>GLViewWidget</class>
+   <extends>QGraphicsView</extends>
+   <header>pyqtgraph.opengl</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

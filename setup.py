@@ -6,5 +6,5 @@ setup(
     description='A graph theory software for the analysis of brain connectivity',
     packages=find_packages(),
     include_package_data=True,
-    install_requires=['pyopengl', 'pyqtgraph', 'numpy'],
+    install_requires=['pyinstaller', 'pyopengl', 'pyqtgraph', 'numpy'],
 )
