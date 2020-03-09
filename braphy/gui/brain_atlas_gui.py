@@ -38,10 +38,18 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         #self.graphicsView.addItem(self.ax)
 
     def init_grid(self):
-        self.grid = gl.GLGridItem()
-        self.grid.setSize(200,200,200)
-        self.grid.setSpacing(10,10,10)
-        #self.graphicsView.addItem(self.grid)
+        size = 250
+        spacing = size/20
+        self.grid = {}
+        for ax in ['x', 'y', 'z']:
+            self.grid[ax] = gl.GLGridItem()
+            self.grid[ax].setSize(size,size,size)
+            self.grid[ax].setSpacing(spacing,spacing,spacing)
+        self.grid['x'].rotate(90, 0, 1, 0)
+        self.grid['x'].translate(-size/2, 0, size/4)
+        self.grid['y'].rotate(90, 1, 0, 0)
+        self.grid['y'].translate(0, -size/2, size/4)
+        self.grid['z'].translate(0, 0, -size/4)
 
     def init_brain_mesh(self):
         self.graphicsView.opts['distance'] = brain_distance_default
@@ -103,9 +111,11 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
     def show_grid(self, state):
         print('show_grid')
         if state == 0:
-            self.graphicsView.removeItem(self.grid)
+            for grid in self.grid.values():
+                self.graphicsView.removeItem(grid)
         else:
-            self.graphicsView.addItem(self.grid)
+            for grid in self.grid.values():
+                self.graphicsView.addItem(grid)
 
     def show_brain_regions(self, state):
         pass
