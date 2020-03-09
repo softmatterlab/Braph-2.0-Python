@@ -26,7 +26,8 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.init_slider()
         self.check_boxes = []
         self.tableWidget.cellChanged.connect(self.changeCell)
-        self.textEdit.setText(self.atlas.name)
+        self.textAtlasName.setText(self.atlas.name)
+        self.textAtlasName.textChanged.connect(self.atlas_name_change)
 
     def init_slider(self):
         self.horizontalSlider.valueChanged.connect(self.change_transparency)
@@ -213,6 +214,9 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
     def move_to_bottom(self):
         selected = self.atlas.move_to_bottom_brain_regions(self.get_checked())
         self.update_table(selected)
+
+    def atlas_name_change(self):
+        self.atlas.name = self.textAtlasName.toPlainText()
 
     def changeCell(self, row, column):
         if column == 1:
