@@ -422,7 +422,9 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
             self.load_brain_mesh(data)
 
     def generate_figure(self):
-        pass
+        fileName, name = QFileDialog.getSaveFileName(self, "QFileDialog.saveFileName()", "", "Image (*.png)")
+        fb = self.graphicsView.grabFrameBuffer()
+        fb.save(fileName)
 
     def new_mri_cohort(self):
         pass
