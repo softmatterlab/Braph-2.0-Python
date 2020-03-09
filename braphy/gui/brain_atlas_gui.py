@@ -7,6 +7,8 @@ import numpy as np
 from braphy.gui.brain_widget import BrainWidget
 
 qtCreatorFile = abs_path_from_relative(__file__, "ui_files/brain_atlas.ui")
+brain_mesh_file_name = "BrainMesh_ICBM152.nv"
+brain_mesh_file = abs_path_from_relative(__file__, brain_mesh_file_name)
 
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 
@@ -15,10 +17,11 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.AppWindow = AppWindow
         QtWidgets.QMainWindow.__init__(self, parent = None)
         if atlas == None:
-            self.atlas = BrainAtlas()
+            self.atlas = BrainAtlas(mesh_file = brain_mesh_file_name)
         else:
             self.atlas = atlas
         self.setupUi(self)
+        self.brainWidget.init_brain_view(brain_mesh_file)
         self.init_buttons()
         self.init_actions()
         self.init_check_boxes()
@@ -363,7 +366,7 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         options |= QFileDialog.DontUseNativeDialog
         file_name, name = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()", "","nv files (*.nv)", options=options)
         if file_name:
-            self.atlas.name = file_name
+            self.atlas.mesh_file = file_name
             brain_mesh_file = abs_path_from_relative(__file__, file_name)
             data = load_nv(file_name)
             self.brainWidget.load_brain_mesh(data)

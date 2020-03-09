@@ -5,18 +5,17 @@ from braphy.utility.helper_functions import abs_path_from_relative, load_nv
 import pyqtgraph.Vector
 import numpy as np
 
-brain_mesh_file = abs_path_from_relative(__file__, "BrainMesh_ICBM152.nv")
 brain_distance_default = 230
 
 class BrainWidget(GLViewWidget):
-    def __init__(self, parent = None):
+    def __init__(self, mesh_file, parent = None):
         super(BrainWidget, self).__init__(parent)
-        self.init_brain_view()
+        self.brain_color = [0.7, 0.6, 0.55, 1]
 
-    def init_brain_view(self):
+    def init_brain_view(self, mesh_file):
         self.init_axis()
         self.init_grid()
-        self.init_brain_mesh()
+        self.init_brain_mesh(mesh_file)
 
     def init_axis(self):
         self.ax = gl.GLAxisItem()
@@ -36,12 +35,11 @@ class BrainWidget(GLViewWidget):
         self.grid['y'].translate(0, -size/2, size/4)
         self.grid['z'].translate(0, 0, -size/4)
 
-    def init_brain_mesh(self):
-        self.brain_color = [0.7, 0.6, 0.55, 1]
+    def init_brain_mesh(self, mesh_file):
         self.opts['distance'] = brain_distance_default
         self.setCameraPosition(azimuth=0)
         self.setBackgroundColor((200, 200, 200, 255))
-        data = load_nv(brain_mesh_file)
+        data = load_nv(mesh_file)
         self.brain_mesh = gl.GLMeshItem(vertexes=data['vertices'], faces=data['faces'], shader = 'normalColor')
         self.brain_mesh.setGLOptions('translucent')
         self.addItem(self.brain_mesh)
