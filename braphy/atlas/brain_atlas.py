@@ -144,10 +144,9 @@ class BrainAtlas():
             selected = np.arange(self.brain_region_number() - len(selected), self.brain_region_number())
         return selected
 
-    def load_from_txt(self, file_path = None, file_name = None):
-
+    def load_from_txt(self, file_path = '', file_name = ''):
         try:
-            with open(file_path+file_name, 'r') as f:
+            with open(file_path + file_name, 'r') as f:
                 for i, line in enumerate(f):
                     line = line.split()
                     if i == 0:
@@ -161,7 +160,7 @@ class BrainAtlas():
         except:
             print('Could not open file and add brain regions.')
     
-    def load_from_xls(self, file_path = None, file_name = None):
+    def load_from_xls(self, file_path = '', file_name = ''):
         
         try:
             data = pd.read_excel(file_path + file_name)
@@ -176,9 +175,9 @@ class BrainAtlas():
         except: 
             print('Could not open file and add brain regions.')
 
-    def load_from_xml(self, file_path = None, file_name = None):
+    def load_from_xml(self, file_path = '', file_name = ''):
         try:
-            with open(file_path+file_name, 'r') as f:
+            with open(file_path + file_name, 'r') as f:
                 tree = ET.parse(f)
                 root = tree.getroot() 
                 for brain_region in root.findall('BrainAtlas/BrainRegion'):

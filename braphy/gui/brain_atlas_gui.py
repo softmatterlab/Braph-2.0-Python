@@ -360,13 +360,28 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         pass
 
     def import_txt(self):
-        pass
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        file_name, name = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()",
+                                                      "","txt files (*.txt)", options=options)
+        self.atlas.load_from_txt(file_name)
+        self.update_table()
 
     def import_xls(self):
-        pass
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        file_name, name = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()",
+                                                      "","xls files (*.xls)", options=options)
+        self.atlas.load_from_xls(file_name)
+        self.update_table()
 
     def import_xml(self):
-        pass
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        file_name, name = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()",
+                                                      "","xml files (*.xml)", options=options)
+        self.atlas.load_from_xml(file_name)
+        self.update_table()
 
     def export_xml(self):
         pass
