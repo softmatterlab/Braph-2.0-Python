@@ -302,7 +302,24 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
             item = QTableWidgetItem(str(self.atlas.brain_regions[i].z))
             self.tableWidget.setItem(i, 5, item)
 
+        self.update_brain_regions()
         self.tableWidget.blockSignals(False)
+
+    def update_brain_regions(self):
+        sphere_color = [.3, .3, 1.0, 1.0]
+        if hasattr(self, 'spheres'):
+            for sphere in self.spheres:
+                self.graphicsView.removeItem(sphere)
+        self.spheres = []
+        for brain_region in self.atlas.brain_regions:
+            sphere_meshdata = gl.MeshData.sphere(8, 8, radius=4.0)
+            v = sphere_meshdata.vertexes()
+            translate = np.array([brain_region.x, brain_region.y, brain_region.z])
+            v = v + translate
+            sphere_meshdata.setVertexes(v)
+            sphere = gl.GLMeshItem(meshdata=sphere_meshdata, color = sphere_color, shader='shaded')
+            self.spheres.append(sphere)
+            self.graphicsView.addItem(sphere)
 
     def set_checked(self, selected):
         for i in range(len(self.check_boxes)):
