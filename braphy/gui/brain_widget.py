@@ -17,6 +17,12 @@ class BrainWidget(GLViewWidget):
         self.init_grid()
         self.init_brain_mesh(mesh_file)
 
+    def init_brain_regions(self, brain_regions, visible):
+        self.spheres = []
+        self.brain_regions = brain_regions
+        alpha = 1.0 if visible else 0.0
+        self.sphere_color = [0.3, 0.3, 1.0, alpha]
+
     def init_axis(self):
         self.ax = gl.GLAxisItem()
         self.ax.setSize(400,400,400)
@@ -100,11 +106,12 @@ class BrainWidget(GLViewWidget):
             for grid in self.grid.values():
                 self.addItem(grid)
 
-    def show_brain_regions(self, state):
-        if state == 0:
-            pass
-        else:
-            pass
+    def show_brain_regions(self, visible):
+        alpha = 1.0 if visible else 0.0
+        for sphere in self.spheres:
+            color = sphere.opts['color']
+            color[-1] = alpha
+            sphere.setColor(color)
 
     def show_labels(self, state):
         if state == 0:
@@ -118,19 +125,21 @@ class BrainWidget(GLViewWidget):
             fb = self.grabFrameBuffer()
             fb.save(file_name)
 
-    def update_brain_regions(self, brain_regions):
-        sphere_color = [.3, .3, 1.0, 1.0]
-        if hasattr(self, 'spheres'):
-            for sphere in self.spheres:
+    def update_brain_regions(self):
+        for sphere in self.spheres:
+            try:
                 self.removeItem(sphere)
-        self.spheres = []
-        for brain_region in brain_regions:
+            except:
+                pass
+
+        for brain_region in self.brain_regions:
             sphere_meshdata = gl.MeshData.sphere(8, 8, radius=4.0)
             v = sphere_meshdata.vertexes()
             translate = np.array([brain_region.x, brain_region.y, brain_region.z])
             v = v + translate
             sphere_meshdata.setVertexes(v)
-            sphere = gl.GLMeshItem(meshdata=sphere_meshdata, color = sphere_color, shader='shaded')
+            sphere = gl.GLMeshItem(meshdata=sphere_meshdata, color = self.sphere_color, shader='shaded')
+            sphere.setGLOptions('translucent')
             self.spheres.append(sphere)
             self.addItem(sphere)
 
