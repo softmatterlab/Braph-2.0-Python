@@ -17,6 +17,7 @@ class BrainWidget(GLViewWidget):
         self.init_axis()
         self.init_grid()
         self.init_brain_mesh()
+        self.update_brain_regions([])
 
     def init_axis(self):
         self.ax = gl.GLAxisItem()
@@ -104,9 +105,13 @@ class BrainWidget(GLViewWidget):
 
     def show_brain_regions(self, state):
         if state == 0:
-            pass
+            for sphere in self.spheres:
+                self.removeItem(sphere)
         else:
-            pass
+            self.removeItem(self.brain_mesh)
+            for sphere in self.spheres:
+                self.addItem(sphere)
+            self.addItem(self.brain_mesh)
 
     def show_labels(self, state):
         if state == 0:
@@ -121,6 +126,7 @@ class BrainWidget(GLViewWidget):
             fb.save(file_name)
 
     def update_brain_regions(self, brain_regions):
+        self.removeItem(self.brain_mesh)
         sphere_color = [.3, .3, 1.0, 1.0]
         if hasattr(self, 'spheres'):
             for sphere in self.spheres:
@@ -135,4 +141,5 @@ class BrainWidget(GLViewWidget):
             sphere = gl.GLMeshItem(meshdata=sphere_meshdata, color = sphere_color, shader='shaded')
             self.spheres.append(sphere)
             self.addItem(sphere)
+        self.addItem(self.brain_mesh)
 

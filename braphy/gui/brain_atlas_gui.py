@@ -20,8 +20,8 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
             self.atlas = atlas
         self.setupUi(self)
         self.init_buttons()
-        self.init_actions()
         self.init_check_boxes()
+        self.init_actions()
 
         self.init_slider()
         self.check_boxes = []
@@ -82,9 +82,13 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionView_brain.triggered.connect(self.show_brain)
         self.actionView_brain.setChecked(True)
         self.actionShow_axis.triggered.connect(self.show_axis)
+        self.actionShow_axis.setChecked(True)
         self.actionShow_grid.triggered.connect(self.show_grid)
+        self.actionShow_grid.setChecked(True)
         self.actionShow_brain_regions.triggered.connect(self.show_brain_regions)
+        self.actionShow_brain_regions.setChecked(True)
         self.actionShow_labels.triggered.connect(self.show_labels)
+        self.actionShow_labels.setChecked(True)
 
         # MENU BAR:
         self.actionSave_as.triggered.connect(self.save_as)
@@ -119,10 +123,15 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def init_check_boxes(self):
         self.checkBoxShowBrain.stateChanged.connect(self.show_brain)
+        self.checkBoxShowBrain.setChecked(True)
         self.checkBoxShowAxis.stateChanged.connect(self.show_axis)
+        self.checkBoxShowAxis.setChecked(True)
         self.checkBoxShowGrid.stateChanged.connect(self.show_grid)
+        self.checkBoxShowGrid.setChecked(True)
         self.checkBoxShowBrainRegions.stateChanged.connect(self.show_brain_regions)
+        self.checkBoxShowBrainRegions.setChecked(True)
         self.checkBoxShowLabels.stateChanged.connect(self.show_labels)
+        self.checkBoxShowLabels.setChecked(True)
 
     def show_brain(self, state):
         if (self.actionView_brain.isChecked() != self.checkBoxShowBrain.isChecked()):
