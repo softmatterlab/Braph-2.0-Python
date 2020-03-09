@@ -5,6 +5,7 @@ from braphy.atlas.brain_atlas import BrainAtlas
 from braphy.utility.helper_functions import abs_path_from_relative, load_nv
 import numpy as np
 import pyqtgraph.opengl as gl
+import pyqtgraph.Vector
 from pyqtgraph.opengl import GLViewWidget
 
 qtCreatorFile = abs_path_from_relative(__file__, "ui_files/brain_atlas.ui")
@@ -367,21 +368,27 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         pass
 
     def sagittal_right(self):
+        self.graphicsView.opts['center'] = pyqtgraph.Vector(0, 0, 0)
         self.graphicsView.setCameraPosition(distance=brain_distance_default, elevation=0, azimuth=0)
 
     def sagittal_left(self):
+        self.graphicsView.opts['center'] = pyqtgraph.Vector(0, 0, 0)
         self.graphicsView.setCameraPosition(distance=brain_distance_default, elevation=0, azimuth=180)
 
     def axial_dorsal(self):
+        self.graphicsView.opts['center'] = pyqtgraph.Vector(0, 0, 0)
         self.graphicsView.setCameraPosition(distance=brain_distance_default, elevation=90, azimuth=90)
 
     def axial_ventral(self):
+        self.graphicsView.opts['center'] = pyqtgraph.Vector(0, 0, 0)
         self.graphicsView.setCameraPosition(distance=brain_distance_default, elevation=-90, azimuth=-90)
 
     def coronal_anterior(self):
+        self.graphicsView.opts['center'] = pyqtgraph.Vector(0, 0, 0)
         self.graphicsView.setCameraPosition(distance=brain_distance_default, elevation=0, azimuth=90)
 
     def coronal_posterior(self):
+        self.graphicsView.opts['center'] = pyqtgraph.Vector(0, 0, 0)
         self.graphicsView.setCameraPosition(distance=brain_distance_default, elevation=0, azimuth=-90)
 
     def save_as(self):
