@@ -124,6 +124,7 @@ class TestBrainAtlas(TestUtility):
         self.assertSequenceEqual(selected.tolist(), [1, 2])
         self.assertSequenceEqual(atlas.get_brain_region_labels().tolist(), ['BR1', 'BR2', 'BR3'])
 
+    def test_read_brain_atlas(self):    
         brain_xml = BrainAtlas(name='hey', brain_regions=[])
         brain_xml.load_from_xml(file_path = 'braphy/atlas/',file_name='aal90_atlas.xml')
 

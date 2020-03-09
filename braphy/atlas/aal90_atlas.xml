@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xml>
+   <BrainAtlas brainsurf="BrainMesh_ICBM152.nv" name="AAL90">
+      <BrainRegion hemisphere="left" label="PreCG.L" name="Precentral gyrus Left" notes="." x="-38.65" y="-5.68" z="50.94"/>
+      <BrainRegion hemisphere="right" label="PreCG.R" name="Precentral gyrus Right" notes="." x="41.37" y="-8.21" z="52.09"/>
+      <BrainRegion hemisphere="left" label="SFGdor.L" name="Superior frontal gyrus (dorsolateral) Left" notes="." x="-18.45" y="34.81" z="42.2"/>
+      <BrainRegion hemisphere="right" label="SFGdor.R" name="Superior frontal gyrus (dorsolateral) Right" notes="." x="21.9" y="31.12" z="43.82"/>
+      <BrainRegion hemisphere="left" label="ORBsup.L" name="Middle frontal gyrus  (orbital part) Left" notes="." x="-16.56" y="47.32" z="-13.31"/>
+      <BrainRegion hemisphere="right" label="ORBmid.R" name="Middle frontal gyrus  (orbital part) Right " notes="." x="18.49" y="48.1" z="-14.02"/>
+      <BrainRegion hemisphere="left" label="MFG.L" name="Middle frontal gyrus Left" notes="." x="-33.43" y="32.73" z="35.46"/>
+      <BrainRegion hemisphere="right" label="MFG.R" name="Middle frontal gyrus Right" notes="." x="37.59" y="33.06" z="34.04"/>
+      <BrainRegion hemisphere="left" label="ORBmid.L " name="Middle frontal gyrus  (orbital part) Left" notes="." x="-30.65" y="50.43" z="-9.62"/>
+      <BrainRegion hemisphere="right" label="ORBmid.R " name="Middle frontal gyrus  (orbital part) Right" notes="." x="33.18" y="52.59" z="-10.73"/>
+      <BrainRegion hemisphere="left" label="IFGoperc.L " name="Inferior frontal gyrus  (opercular part) Left" notes="." x="-48.43" y="12.73" z="19.02"/>
+      <BrainRegion hemisphere="right" label="IFGoperc.R " name="Inferior frontal gyrus  (opercular part) Right" notes="." x="50.2" y="14.98" z="21.41"/>
+      <BrainRegion hemisphere="left" label="IFGtriang.L " name="Inferior frontal gyrus  (triangular part) Left" notes="." x="-45.58" y="29.91" z="13.99"/>
+      <BrainRegion hemisphere="right" label="IFGtriang.R " name="Inferior frontal gyrus  (triangular part) Right" notes="." x="50.33" y="30.16" z="14.17"/>
+      <BrainRegion hemisphere="left" label="ORBinf.L " name="Inferior frontal gyrus  (orbital part) Left" notes="." x="-35.98" y="30.71" z="-12.11"/>
+      <BrainRegion hemisphere="right" label="ORBinf.R " name="Inferior frontal gyrus  (orbital part) Right" notes="." x="41.22" y="32.23" z="-11.91"/>
+      <BrainRegion hemisphere="left" label="ROL.L " name="Rolandic operculum Left" notes="." x="-47.16" y="-8.48" z="13.95"/>
+      <BrainRegion hemisphere="right" label="ROL.R " name="Rolandic operculum Right" notes="." x="52.65" y="-6.25" z="14.63"/>
+      <BrainRegion hemisphere="left" label="SMA.L " name="Supplementary motor area Left" notes="." x="-5.32" y="4.85" z="61.38"/>
+      <BrainRegion hemisphere="right" label="SMA.R " name="Supplementary motor area Right" notes="." x="8.62" y="0.17" z="61.85"/>
+      <BrainRegion hemisphere="left" label="OLF.L " name="Olfactory cortex Left" notes="." x="-8.06" y="15.05" z="-11.46"/>
+      <BrainRegion hemisphere="right" label="OLF.R " name="Olfactory cortex Right" notes="." x="10.43" y="15.91" z="-11.26"/>
+      <BrainRegion hemisphere="left" label="SFGmed.L " name="Superior frontal gyrus  (medial) Left" notes="." x="-4.8" y="49.17" z="30.89"/>
+      <BrainRegion hemisphere="right" label="SFGmed.R " name="Superior frontal gyrus  (medial) Right" notes="." x="9.1" y="50.84" z="30.22"/>
+      <BrainRegion hemisphere="left" label="ORBsupmed.L " name="Superior frontal gyrus  (medial orbital) Left" notes="." x="-5.17" y="54.06" z="-7.4"/>
+      <BrainRegion hemisphere="right" label="ORBsupmed.R " name="Superior frontal gyrus  (medial orbital) Right" notes="." x="8.16" y="51.67" z="-7.13"/>
+      <BrainRegion hemisphere="left" label="REC.L " name="Rectus gyrus Left" notes="." x="-5.08" y="37.07" z="-18.14"/>
+      <BrainRegion hemisphere="right" label="REC.R " name="Rectus gyrus Right" notes="." x="8.35" y="35.64" z="-18.04"/>
+      <BrainRegion hemisphere="left" label="INS.L " name="Insula Left" notes="." x="-35.13" y="6.65" z="3.44"/>
+      <BrainRegion hemisphere="right" label="INS.R " name="Insula Right" notes="." x="39.02" y="6.25" z="2.08"/>
+      <BrainRegion hemisphere="left" label="ACG.L " name="Anterior cingulate  and paracingulate gyri Left" notes="." x="-4.04" y="35.4" z="13.95"/>
+      <BrainRegion hemisphere="right" label="ACG.R " name="Anterior cingulate  and paracingulate gyri Right" notes="." x="8.46" y="37.01" z="15.84"/>
+      <BrainRegion hemisphere="left" label="DCG.L " name="Median cingulate  and paracingulate gyri Left" notes="." x="-5.48" y="-14.92" z="41.57"/>
+      <BrainRegion hemisphere="right" label="DCG.R " name="Median cingulate  and paracingulate gyri Right" notes="." x="8.02" y="-8.83" z="39.79"/>
+      <BrainRegion hemisphere="left" label="PCG.L " name="Posterior cingulate gyrus Left" notes="." x="-4.85" y="-42.92" z="24.67"/>
+      <BrainRegion hemisphere="right" label="PCG.R " name="Posterior cingulate gyrus Right" notes="." x="7.44" y="-41.81" z="21.87"/>
+      <BrainRegion hemisphere="left" label="HIP.L " name="Hippocampus Left" notes="." x="-25.03" y="-20.74" z="-10.13"/>
+      <BrainRegion hemisphere="right" label="HIP.R " name="Hippocampus Right" notes="." x="29.23" y="-19.78" z="-10.33"/>
+      <BrainRegion hemisphere="left" label="PHG.L " name="Parahippocampal gyrus Left" notes="." x="-21.17" y="-15.95" z="-20.7"/>
+      <BrainRegion hemisphere="right" label="PHG.R " name="Parahippocampal gyrus Right" notes="." x="25.38" y="-15.15" z="-20.47"/>
+      <BrainRegion hemisphere="left" label="AMYG.L " name="Amygdala Left" notes="." x="-23.27" y="-0.67" z="-17.14"/>
+      <BrainRegion hemisphere="right" label="AMYG.R " name="Amygdala Right" notes="." x="27.32" y="0.64" z="-17.5"/>
+      <BrainRegion hemisphere="left" label="CAL.L " name="Calcarine fissure  and surrounding cortex Left" notes="." x="-7.14" y="-78.67" z="6.44"/>
+      <BrainRegion hemisphere="right" label="CAL.R " name="Calcarine fissure  and surrounding cortex Right" notes="." x="15.99" y="-73.15" z="9.4"/>
+      <BrainRegion hemisphere="left" label="CUN.L " name="Cuneus Left" notes="." x="-5.93" y="-80.13" z="27.22"/>
+      <BrainRegion hemisphere="right" label="CUN.R " name="Cuneus Right" notes="." x="13.51" y="-79.36" z="28.23"/>
+      <BrainRegion hemisphere="left" label="LING.L " name="Lingual gyrus Left" notes="." x="-14.62" y="-67.56" z="-4.63"/>
+      <BrainRegion hemisphere="right" label="LING.R " name="Lingual gyrus Right" notes="." x="16.29" y="-66.93" z="-3.87"/>
+      <BrainRegion hemisphere="left" label="SOG.L " name="Superior occipital gyrus Left" notes="." x="-16.54" y="-84.26" z="28.17"/>
+      <BrainRegion hemisphere="right" label="SOG.R " name="Superior occipital gyrus Right" notes="." x="24.29" y="-80.85" z="30.59"/>
+      <BrainRegion hemisphere="left" label="MOG.L " name="Middle occipital gyrus Left" notes="." x="-32.39" y="-80.73" z="16.11"/>
+      <BrainRegion hemisphere="right" label="MOG.R " name="Middle occipital gyrus Right" notes="." x="37.39" y="-79.7" z="19.42"/>
+      <BrainRegion hemisphere="left" label="IOG.L " name="Inferior occipital gyrus Left" notes="." x="-36.36" y="-78.29" z="-7.84"/>
+      <BrainRegion hemisphere="right" label="IOG.R " name="Inferior occipital gyrus Right" notes="." x="38.16" y="-81.99" z="-7.61"/>
+      <BrainRegion hemisphere="left" label="FFG.L " name="Fusiform gyrus Left" notes="." x="-31.16" y="-40.3" z="-20.23"/>
+      <BrainRegion hemisphere="right" label="FFG.R " name="Fusiform gyrus Right" notes="." x="33.97" y="-39.1" z="-20.18"/>
+      <BrainRegion hemisphere="left" label="PoCG.L " name="Postcentral gyrus Left" notes="." x="-42.46" y="-22.63" z="48.92"/>
+      <BrainRegion hemisphere="right" label="PoCG.R " name="Postcentral gyrus Left" notes="." x="41.43" y="-25.49" z="52.55"/>
+      <BrainRegion hemisphere="left" label="SPG.L " name="Superior parietal gyrus Left" notes="." x="-23.45" y="-59.56" z="58.96"/>
+      <BrainRegion hemisphere="right" label="SPG.R " name="Superior parietal gyrus Right" notes="." x="26.11" y="-59.18" z="62.06"/>
+      <BrainRegion hemisphere="left" label="IPL.L " name="Inferior parietal, but  supramarginal and angular gyri Left" notes="." x="-42.8" y="-45.82" z="46.74"/>
+      <BrainRegion hemisphere="right" label="IPL.R " name="Inferior parietal, but  supramarginal and angular gyri Right" notes="." x="46.46" y="-46.29" z="49.54"/>
+      <BrainRegion hemisphere="left" label="SMG.L " name="Supramarginal gyrus Left" notes="." x="-55.79" y="-33.64" z="30.45"/>
+      <BrainRegion hemisphere="right" label="SMG.R " name="Supramarginal gyrus Right" notes="." x="57.61" y="-31.5" z="34.48"/>
+      <BrainRegion hemisphere="left" label="ANG.L " name="Angular gyrus Left" notes="." x="-44.14" y="-60.82" z="35.59"/>
+      <BrainRegion hemisphere="right" label="ANG.R " name="Angular gyrus Right" notes="." x="45.51" y="-59.98" z="38.63"/>
+      <BrainRegion hemisphere="left" label="PCUN.L " name="Precuneus Left" notes="." x="-7.24" y="-56.07" z="48.01"/>
+      <BrainRegion hemisphere="right" label="PCUN.R " name="Precuneus Right" notes="." x="9.98" y="-56.05" z="43.77"/>
+      <BrainRegion hemisphere="left" label="PCL.L " name="Paracentral lobule Left" notes="." x="-7.63" y="-25.36" z="70.07"/>
+      <BrainRegion hemisphere="right" label="PCL.R " name="Paracentral lobule Right" notes="." x="7.48" y="-31.59" z="68.09"/>
+      <BrainRegion hemisphere="left" label="CAU.L " name="Caudate nucleus Left" notes="." x="-11.46" y="11" z="9.24"/>
+      <BrainRegion hemisphere="right" label="CAU.R " name="Caudate nucleus Right" notes="." x="14.84" y="12.07" z="9.42"/>
+      <BrainRegion hemisphere="left" label="PUT.L " name="Lenticular nucleus, putamen Left" notes="." x="-23.91" y="3.86" z="2.4"/>
+      <BrainRegion hemisphere="right" label="PUT.R " name="Lenticular nucleus, putamen Right" notes="." x="27.78" y="4.91" z="2.46"/>
+      <BrainRegion hemisphere="left" label="PAL.L " name="Lenticular nucleus, pallidum Left" notes="." x="-17.75" y="-0.03" z="0.21"/>
+      <BrainRegion hemisphere="right" label="PAL.R " name="Lenticular nucleus, pallidum Right" notes="." x="21.2" y="0.18" z="0.23"/>
+      <BrainRegion hemisphere="left" label="THA.L " name="Thalamus Left" notes="." x="-10.85" y="-17.56" z="7.98"/>
+      <BrainRegion hemisphere="right" label="THA.R " name="Thalamus Right" notes="." x="13" y="-17.55" z="8.09"/>
+      <BrainRegion hemisphere="left" label="HES.L " name="Heschl gyrus Left" notes="." x="-41.99" y="-18.88" z="9.98"/>
+      <BrainRegion hemisphere="right" label="HES.R " name="Heschl gyrus Right" notes="." x="45.86" y="-17.15" z="10.41"/>
+      <BrainRegion hemisphere="left" label="STG.L " name="Superior temporal gyrus Left" notes="." x="-53.16" y="-20.68" z="7.13"/>
+      <BrainRegion hemisphere="right" label="STG.R " name="Superior temporal gyrus Right" notes="." x="58.15" y="-21.78" z="6.8"/>
+      <BrainRegion hemisphere="left" label="TPOsup.L " name="Temporal pole:  superior temporal gyrus Left" notes="." x="-39.88" y="15.14" z="-20.18"/>
+      <BrainRegion hemisphere="right" label="TPOsup.R " name="Temporal pole:  superior temporal gyrus Right" notes="." x="48.25" y="14.75" z="-16.86"/>
+      <BrainRegion hemisphere="left" label="MTG.L " name="Middle temporal gyrus Left" notes="." x="-55.52" y="-33.8" z="-2.2"/>
+      <BrainRegion hemisphere="right" label="MTG.R " name="Middle temporal gyrus Right" notes="." x="57.47" y="-37.23" z="-1.47"/>
+      <BrainRegion hemisphere="left" label="TPOmid.L " name="Temporal pole:  middle temporal gyrus Left" notes="." x="-36.32" y="14.59" z="-34.08"/>
+      <BrainRegion hemisphere="right" label="TPOmid.R " name="Temporal pole:  middle temporal gyrus Right" notes="." x="44.22" y="14.55" z="-32.23"/>
+      <BrainRegion hemisphere="left" label="ITG.L " name="Inferior temporal gyrus Left" notes="." x="-49.77" y="-28.05" z="-23.17"/>
+      <BrainRegion hemisphere="right" label="ITG.R " name="Inferior temporal gyrus Right" notes="." x="53.69" y="-31.07" z="-22.32"/>
+   </BrainAtlas>
+</xml>

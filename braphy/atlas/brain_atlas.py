@@ -192,5 +192,3 @@ class BrainAtlas():
         except: 
             print('Could not open file and add brain regions.')
 
-#brain = BrainAtlas(name='hej', brain_regions=[])
-#brain.load_from_xml(file_path = 'braphy/atlas/',file_name='aal90_atlas.xml')
