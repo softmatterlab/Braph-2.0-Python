@@ -57,3 +57,13 @@ def get_version_info():
     except:
         v = "UNKNOWN"
     return v
+
+def load_nv(filename):
+    number_of_vertices = np.loadtxt(filename, max_rows = 1).astype(int).item()
+    vertices = np.loadtxt(filename, skiprows = 1, max_rows = number_of_vertices)
+    number_of_faces = np.loadtxt(filename, skiprows = number_of_vertices+1, max_rows = 1).astype(int).item()
+    faces = np.loadtxt(filename, skiprows = number_of_vertices+2, max_rows = number_of_faces).astype(int) -1
+    return {'vertices':vertices, 'faces':faces}
+
+
+

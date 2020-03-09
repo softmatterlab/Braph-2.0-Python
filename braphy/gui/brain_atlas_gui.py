@@ -14,10 +14,13 @@ brain_distance_default = 230
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 
 class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
-    def __init__(self, AppWindow):
+    def __init__(self, AppWindow, atlas = None): # should be able to input atlas
         self.AppWindow = AppWindow
         QtWidgets.QMainWindow.__init__(self, parent = None)
-        self.atlas = BrainAtlas()
+        if atlas == None:
+            self.atlas = BrainAtlas()
+        else:
+            self.atlas = atlas
         self.setupUi(self)
         self.init_slider()
         self.init_buttons()
@@ -40,7 +43,6 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
     def init_axis(self):
         self.ax = gl.GLAxisItem()
         self.ax.setSize(400,400,400)
-        #self.graphicsView.addItem(self.ax)
 
     def init_grid(self):
         size = 250
@@ -89,12 +91,64 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
        self.btnCoronalPosterior.clicked.connect(self.coronal_posterior)
 
     def init_actions(self):
+        # TOOL BAR:
+        self.actionSave.triggered.connect(self.save)
+        self.actionOpen.triggered.connect(self.open)
+
+        self.actionZoom_in.triggered.connect(self.zoom_in)
+        self.actionZoom_out.triggered.connect(self.zoom_out)
+        self.actionPan.triggered.connect(self.pan)
+        self.actionRotate.triggered.connect(self.rotate)
+        self.actionFind.triggered.connect(self.find)
+
+        group = QtWidgets.QActionGroup(self, exclusive = True)
+        for action in (self.actionZoom_in, self.actionZoom_out, self.actionPan,
+                       self.actionRotate, self.actionFind):
+            group.addAction(action)
+
         self.actionSagittal_left.triggered.connect(self.sagittal_left)
         self.actionSagittal_right.triggered.connect(self.sagittal_right)
         self.actionAxial_dorsal.triggered.connect(self.axial_dorsal)
         self.actionAxial_ventral.triggered.connect(self.axial_ventral)
         self.actionCoronal_anterior.triggered.connect(self.coronal_anterior)
         self.actionCoronal_posterior.triggered.connect(self.coronal_posterior)
+
+        self.actionView_brain.triggered.connect(self.show_brain)
+        self.actionView_brain.setChecked(True)
+        self.actionShow_axis.triggered.connect(self.show_axis)
+        self.actionShow_grid.triggered.connect(self.show_grid)
+        self.actionShow_brain_regions.triggered.connect(self.show_brain_regions)
+        self.actionShow_labels.triggered.connect(self.show_labels)
+
+        # MENU BAR:
+        self.actionSave_as.triggered.connect(self.save_as)
+        self.actionImport_txt.triggered.connect(self.import_txt)
+        self.actionImport_xls.triggered.connect(self.import_xls)
+        self.actionImport_xml.triggered.connect(self.import_xml)
+        self.actionExport_xml.triggered.connect(self.export_xml)
+        self.actionExport_txt.triggered.connect(self.export_txt)
+        self.actionClose.triggered.connect(self.close)
+
+        self.actionSelect_all.triggered.connect(self.select_all)
+        self.actionClear_selection.triggered.connect(self.clear_selection)
+        self.actionAdd.triggered.connect(self.add)
+        self.actionAdd_above.triggered.connect(self.add_above)
+        self.actionAdd_below.triggered.connect(self.add_below)
+        self.actionRemove.triggered.connect(self.remove)
+        self.actionMove_up.triggered.connect(self.remove)
+        self.actionMove_up.triggered.connect(self.move_up)
+        self.actionMove_down.triggered.connect(self.move_down)
+        self.actionMove_to_top.triggered.connect(self.move_to_top)
+        self.actionMove_to_bottom.triggered.connect(self.move_to_bottom)
+
+        self.actionGenerate_figure.triggered.connect(self.generate_figure)
+        self.actionNew_MRI_Cohort.triggered.connect(self.new_mri_cohort)
+        self.actionNew_fMRI_Cohort.triggered.connect(self.new_fmri_cohort)
+        self.actionNew_EEG_Cohort.triggered.connect(self.new_eeg_cohort)
+        self.actionNew_PET_Cohort.triggered.connect(self.new_pet_cohort)
+
+        self.actionAbout.triggered.connect(self.about)
+
 
     def init_check_boxes(self):
         self.checkBoxShowBrain.stateChanged.connect(self.show_brain)
@@ -104,25 +158,39 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.checkBoxShowLabels.stateChanged.connect(self.show_labels)
 
     def show_brain(self, state):
-        if state == 0: #not checked
-            self.graphicsView.removeItem(self.brain_mesh)
-        else: #checked
-            self.graphicsView.addItem(self.brain_mesh)
+        if (self.actionView_brain.isChecked() != self.checkBoxShowBrain.isChecked()):
+            if state == 0: #not checked
+                self.graphicsView.removeItem(self.brain_mesh)
+                self.actionView_brain.setChecked(False)
+                self.checkBoxShowBrain.setChecked(False)
+            else: #checked
+                self.graphicsView.addItem(self.brain_mesh)
+                self.actionView_brain.setChecked(True)
+                self.checkBoxShowBrain.setChecked(True)
 
     def show_axis(self, state):
-        if state == 0: #not checked
-            self.graphicsView.removeItem(self.ax)
-        else: #checked
-            self.graphicsView.addItem(self.ax)
+        if (self.actionShow_axis.isChecked() != self.checkBoxShowAxis.isChecked()):
+            if state == 0: #not checked
+                self.graphicsView.removeItem(self.ax)
+                self.actionShow_axis.setChecked(False)
+                self.checkBoxShowAxis.setChecked(False)
+            else: #checked
+                self.graphicsView.addItem(self.ax)
+                self.actionShow_axis.setChecked(True)
+                self.checkBoxShowAxis.setChecked(True)
 
     def show_grid(self, state):
-        print('show_grid')
-        if state == 0:
-            for grid in self.grid.values():
-                self.graphicsView.removeItem(grid)
-        else:
-            for grid in self.grid.values():
-                self.graphicsView.addItem(grid)
+        if (self.actionShow_grid.isChecked() != self.checkBoxShowGrid.isChecked()):
+            if state == 0:
+                for grid in self.grid.values():
+                    self.graphicsView.removeItem(grid)
+                self.actionShow_grid.setChecked(False)
+                self.checkBoxShowGrid.setChecked(False)
+            else:
+                for grid in self.grid.values():
+                    self.graphicsView.addItem(grid)
+                self.actionShow_grid.setChecked(True)
+                self.checkBoxShowGrid.setChecked(True)
 
     def show_brain_regions(self, state):
         pass
@@ -142,6 +210,7 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.update_table()
 
     def add_above(self):
+        self.tableWidget.setEnabled(False)
         selected, added = self.atlas.add_above_brain_regions(self.get_checked())
         self.update_table(selected)
 
@@ -245,6 +314,27 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
                 selected.append(i)
         return np.array(selected)
 
+    def save(self):
+        pass
+
+    def open(self):
+        pass
+
+    def zoom_in(self):
+        self.graphicsView.setCursor(QtCore.Qt.ForbiddenCursor)
+
+    def zoom_out(self):
+        self.graphicsView.setCursor(QtCore.Qt.SizeHorCursor)
+
+    def pan(self):
+        self.graphicsView.setCursor(QtCore.Qt.OpenHandCursor)
+
+    def rotate(self):
+        self.graphicsView.setCursor(QtCore.Qt.ForbiddenCursor)
+
+    def find(self):
+        self.graphicsView.setCursor(QtCore.Qt.CrossCursor)
+
     def show_3D(self):
         pass
 
@@ -265,6 +355,45 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def coronal_posterior(self):
         self.graphicsView.setCameraPosition(distance=brain_distance_default, elevation=0, azimuth=-90)
+
+    def save_as(self):
+        pass
+
+    def import_txt(self):
+        pass
+
+    def import_xls(self):
+        pass
+
+    def import_xml(self):
+        pass
+
+    def export_xml(self):
+        pass
+
+    def export_txt(self):
+        pass
+
+    def close(self):
+        pass
+
+    def generate_figure(self):
+        pass
+
+    def new_mri_cohort(self):
+        pass
+
+    def new_fmri_cohort(self):
+        pass
+
+    def new_eeg_cohort(self):
+        pass
+
+    def new_pet_cohort(self):
+        pass
+
+    def about(self):
+        pass
 
 def run():
     app = QtWidgets.QApplication(sys.argv)
