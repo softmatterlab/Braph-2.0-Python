@@ -188,7 +188,7 @@ p, li { white-space: pre-wrap; }
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <item>
-          <widget class="GLViewWidget" name="graphicsView"/>
+          <widget class="BrainWidget" name="brainWidget"/>
          </item>
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -810,9 +810,9 @@ p, li { white-space: pre-wrap; }
  </widget>
  <customwidgets>
   <customwidget>
-   <class>GLViewWidget</class>
+   <class>BrainWidget</class>
    <extends>QGraphicsView</extends>
-   <header>pyqtgraph.opengl</header>
+   <header>braphy.gui.brain_widget</header>
   </customwidget>
  </customwidgets>
  <resources/>
