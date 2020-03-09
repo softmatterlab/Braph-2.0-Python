@@ -53,7 +53,7 @@ def abs_path_from_relative(script_file, file_relative):
 
 def get_version_info():
     try:
-        v = subprocess.check_output(["git", "log", "-1", "--date=short", "--pretty=format:'%ad.%h'"]).decode('ascii')
+        v = subprocess.check_output(["git", "log", "-1", "--date=short", "--pretty=format:'%ad.%h'"]).decode('ascii').replace("'","")
     except:
         v = "UNKNOWN"
     return v
@@ -64,3 +64,4 @@ def load_nv(filename):
     number_of_faces = np.loadtxt(filename, skiprows = number_of_vertices+1, max_rows = 1).astype(int).item()
     faces = np.loadtxt(filename, skiprows = number_of_vertices+2, max_rows = number_of_faces).astype(int) -1
     return {'vertices':vertices, 'faces':faces}
+

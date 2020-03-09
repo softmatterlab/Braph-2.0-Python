@@ -1,7 +1,8 @@
 from braphy.atlas.brain_region import BrainRegion
 import numpy as np
 import pandas as pd
-import xml.etree.ElementTree as ET 
+import xml.etree.ElementTree as ET
+
 class BrainAtlas():
     def __init__(self, name = 'Atlas', brain_regions = []):
         self.name = name
@@ -159,27 +160,27 @@ class BrainAtlas():
                                                         ))
         except:
             print('Could not open file and add brain regions.')
-    
+
     def load_from_xls(self, file_path = '', file_name = ''):
-        
+
         try:
             data = pd.read_excel(file_path + file_name)
-            
+
             # Remove leading, trailing and double whitespaces
             data.iloc[:,0] = data.iloc[:,0].str.strip().str.replace('  ', ' ')
             data.iloc[:,1] = data.iloc[:,1].str.strip().str.replace('  ', ' ')
-            
+
             br = np.array( data.apply(lambda x: BrainRegion(x[0], x[1], x[2], x[3], x[4]),
                                     axis = 1)).tolist()
             self.brain_regions = br
-        except: 
+        except:
             print('Could not open file and add brain regions.')
 
     def load_from_xml(self, file_path = '', file_name = ''):
         try:
             with open(file_path + file_name, 'r') as f:
                 tree = ET.parse(f)
-                root = tree.getroot() 
+                root = tree.getroot()
                 for brain_region in root.findall('BrainAtlas/BrainRegion'):
                     br = brain_region.attrib
                     self.brain_regions.append(BrainRegion(  label = br['label'].replace('  ', ' ').strip(),
@@ -188,6 +189,30 @@ class BrainAtlas():
                                                             y = float(br['y']),
                                                             z = float(br['z'])
                                                             ))
-        except: 
+        except:
             print('Could not open file and add brain regions.')
 
+    def save_to_txt(self, file_name):
+        with open(file_name, 'w') as f:
+            s = "{}\n".format(self.name)
+            f.write(s)
+            for region in self.brain_regions:
+                f.write(str(region))
+
+    def str_xml(self):
+
+        s = "<xml>\n  <BrainAtlas>\n"
+        for region in self.brain_regions:
+            s = s + "    {}\n".format(region.str_xml())
+        s = s + "  <BrainAtlas>\n</xml>"
+        return s
+
+    def save_to_xml(self, file_name):
+        root = ET.Element("xml")
+        atlas_xml = ET.SubElement(root, "BrainAtlas")
+
+        for region in self.brain_regions:
+            region.set_xml(atlas_xml)
+
+        tree = ET.ElementTree(root)
+        tree.write(file_name, encoding="utf-8", xml_declaration=True)
