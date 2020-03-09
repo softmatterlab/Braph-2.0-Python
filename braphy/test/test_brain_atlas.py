@@ -124,6 +124,13 @@ class TestBrainAtlas(TestUtility):
         self.assertSequenceEqual(selected.tolist(), [1, 2])
         self.assertSequenceEqual(atlas.get_brain_region_labels().tolist(), ['BR1', 'BR2', 'BR3'])
 
+        brain_xml = BrainAtlas(name='hey', brain_regions=[])
+        brain_xml.load_from_xml(file_path = 'braphy/atlas/',file_name='aal90_atlas.xml')
+
+        brain_xls = BrainAtlas(name='bye', brain_regions=[])
+        brain_xls.load_from_txt(file_path = 'braphy/atlas/',file_name='aal90_atlas.txt')
+
+        self.assertEqual(brain_xls.brain_regions, brain_xml.brain_regions)
 
 if __name__ == '__main__':
     unittest.main()
