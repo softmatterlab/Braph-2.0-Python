@@ -2,13 +2,13 @@ import sys
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from PyQt5.QtWidgets import *
 from braphy.atlas.brain_atlas import BrainAtlas
-from braphy.utility.helper_functions import abs_path_from_relative
+from braphy.utility.helper_functions import abs_path_from_relative, load_nv
 import numpy as np
 import pyqtgraph.opengl as gl
 from pyqtgraph.opengl import GLViewWidget
 
 qtCreatorFile = abs_path_from_relative(__file__, "ui_files/brain_atlas.ui")
-brain_mesh_file = abs_path_from_relative(__file__, "brain_mesh.npy")
+brain_mesh_file = abs_path_from_relative(__file__, "BrainMesh_ICBM152.nv")
 brain_distance_default = 230
 
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
@@ -22,6 +22,7 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         else:
             self.atlas = atlas
         self.setupUi(self)
+        self.init_slider()
         self.init_buttons()
         self.init_actions()
         self.init_check_boxes()
@@ -29,6 +30,10 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.check_boxes = []
         self.tableWidget.cellChanged.connect(self.changeCell)
         self.textEdit.setText(self.atlas.name)
+
+    def init_slider(self):
+        self.horizontalSlider.setValue(50)
+        self.horizontalSlider.valueChanged.connect(self.changeTransparency)
 
     def init_brain_view(self):
         self.init_axis()
@@ -40,19 +45,30 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.ax.setSize(400,400,400)
 
     def init_grid(self):
-        self.grid = gl.GLGridItem()
-        self.grid.setSize(200,200,200)
-        self.grid.setSpacing(10,10,10)
+        size = 250
+        spacing = size/20
+        self.grid = {}
+        for ax in ['x', 'y', 'z']:
+            self.grid[ax] = gl.GLGridItem()
+            self.grid[ax].setSize(size,size,size)
+            self.grid[ax].setSpacing(spacing,spacing,spacing)
+        self.grid['x'].rotate(90, 0, 1, 0)
+        self.grid['x'].translate(-size/2, 0, size/4)
+        self.grid['y'].rotate(90, 1, 0, 0)
+        self.grid['y'].translate(0, -size/2, size/4)
+        self.grid['z'].translate(0, 0, -size/4)
 
     def init_brain_mesh(self):
+        self.brain_color = [0.7, 0.6, 0.55, self.horizontalSlider.value()]
         self.graphicsView.opts['distance'] = brain_distance_default
         self.graphicsView.setCameraPosition(azimuth=0)
         self.graphicsView.setBackgroundColor((200, 200, 200, 255))
-        data = np.load(brain_mesh_file, allow_pickle=True).item()
-        colors = np.array([[0.7,0.6,0.55,.75] for i in range(len(data['faces']))])
-        self.brain_mesh = gl.GLMeshItem(vertexes=data['vertices'], faces=data['faces'], 
-                                        faceColors=colors, shader = 'normalColor')
+        data = load_nv(brain_mesh_file)
+        colors = np.array([self.brain_color for i in range(len(data['faces']))])
+        self.brain_mesh = gl.GLMeshItem(vertexes=data['vertices'], faces=data['faces'], shader = 'normalColor')
+        self.brain_mesh.setGLOptions('translucent')
         self.graphicsView.addItem(self.brain_mesh)
+        self.changeTransparency()
 
     def init_buttons(self):
        self.btnSelectAll.clicked.connect(self.select_all)
@@ -166,11 +182,13 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
     def show_grid(self, state):
         if (self.actionShow_grid.isChecked() != self.checkBoxShowGrid.isChecked()):
             if state == 0:
-                self.graphicsView.removeItem(self.grid)
+                for grid in self.grid.values():
+                    self.graphicsView.removeItem(grid)
                 self.actionShow_grid.setChecked(False)
                 self.checkBoxShowGrid.setChecked(False)
             else:
-                self.graphicsView.addItem(self.grid)
+                for grid in self.grid.values():
+                    self.graphicsView.addItem(grid)
                 self.actionShow_grid.setChecked(True)
                 self.checkBoxShowGrid.setChecked(True)
 
@@ -207,7 +225,7 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
     def move_up(self):
         selected = self.atlas.move_up_brain_regions(self.get_checked())
         self.update_table(selected)
-    
+
     def move_down(self):
         selected = self.atlas.move_down_brain_regions(self.get_checked())
         self.update_table(selected)
@@ -235,6 +253,13 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
             pass #left/right
         elif column == 7:
             pass #Notes
+
+    def changeTransparency(self):
+        alpha = self.horizontalSlider.value()/100.0
+        new_color = self.brain_color
+        new_color[-1] = alpha
+        self.brain_color = new_color
+        self.brain_mesh.setColor(self.brain_color)
 
     def update_table(self, selected = None):
         if np.any(selected == None):

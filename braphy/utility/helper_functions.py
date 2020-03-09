@@ -1,5 +1,6 @@
 import numpy as np
 import os
+import subprocess
 
 def divide_without_warning(a, b):
     b = np.array(b) # in case b is a scalar
@@ -49,3 +50,10 @@ def abs_path_from_relative(script_file, file_relative):
     script_dir = os.path.split(script_path)[0]
     file_absolute = os.path.join(script_dir, file_relative)
     return file_absolute
+
+def get_version_info():
+    try:
+        v = subprocess.check_output(["git", "log", "-1", "--date=short", "--pretty=format:'%ad.%h'"]).decode('ascii')
+    except:
+        v = "UNKNOWN"
+    return v
