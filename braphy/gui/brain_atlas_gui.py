@@ -2,13 +2,13 @@ import sys
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from PyQt5.QtWidgets import *
 from braphy.atlas.brain_atlas import BrainAtlas
-from braphy.utility.helper_functions import abs_path_from_relative
+from braphy.utility.helper_functions import abs_path_from_relative, load_nv
 import numpy as np
 import pyqtgraph.opengl as gl
 from pyqtgraph.opengl import GLViewWidget
 
 qtCreatorFile = abs_path_from_relative(__file__, "ui_files/brain_atlas.ui")
-brain_mesh_file = abs_path_from_relative(__file__, "brain_mesh.npy")
+brain_mesh_file = abs_path_from_relative(__file__, "BrainMesh_ICBM152.nv")
 brain_distance_default = 230
 
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
@@ -61,7 +61,7 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.graphicsView.opts['distance'] = brain_distance_default
         self.graphicsView.setCameraPosition(azimuth=0)
         self.graphicsView.setBackgroundColor((200, 200, 200, 255))
-        data = np.load(brain_mesh_file, allow_pickle=True).item()
+        data = load_nv(brain_mesh_file)
         colors = np.array([self.brain_color for i in range(len(data['faces']))])
         self.brain_mesh = gl.GLMeshItem(vertexes=data['vertices'], faces=data['faces'], shader = 'normalColor')
         self.brain_mesh.setGLOptions('translucent')
@@ -156,7 +156,7 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
     def move_up(self):
         selected = self.atlas.move_up_brain_regions(self.get_checked())
         self.update_table(selected)
-    
+
     def move_down(self):
         selected = self.atlas.move_down_brain_regions(self.get_checked())
         self.update_table(selected)
