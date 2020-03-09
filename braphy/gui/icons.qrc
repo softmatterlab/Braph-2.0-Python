@@ -1,5 +1,12 @@
 <RCC>
   <qresource prefix="buttons">
+    <file>cursor.png</file>
+    <file>rotate.png</file>
+    <file>hand.png</file>
+    <file>zoom_out.png</file>
+    <file>zoom_in.png</file>
+    <file>save.png</file>
+    <file>open.png</file>
     <file>icon_view_cp.png</file>
     <file>icon_view_sr.png</file>
     <file>icon_view_sl.png</file>

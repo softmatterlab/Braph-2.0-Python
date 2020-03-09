@@ -360,14 +360,14 @@ p, li { white-space: pre-wrap; }
     </property>
     <addaction name="separator"/>
     <addaction name="separator"/>
-    <addaction name="actionOpen_3"/>
+    <addaction name="actionOpen"/>
     <addaction name="separator"/>
-    <addaction name="actionSave_2"/>
-    <addaction name="actionSave_as_2"/>
+    <addaction name="actionSave"/>
+    <addaction name="actionSave_as"/>
     <addaction name="separator"/>
-    <addaction name="actionImport_xml"/>
     <addaction name="actionImport_txt"/>
     <addaction name="actionImport_xls"/>
+    <addaction name="actionImport_xml"/>
     <addaction name="actionExport_xml"/>
     <addaction name="actionExport_txt"/>
     <addaction name="separator"/>
@@ -387,7 +387,7 @@ p, li { white-space: pre-wrap; }
     <addaction name="actionRemove"/>
     <addaction name="separator"/>
     <addaction name="actionMove_up"/>
-    <addaction name="actionMove_dowm"/>
+    <addaction name="actionMove_down"/>
     <addaction name="actionMove_to_top"/>
     <addaction name="actionMove_to_bottom"/>
    </widget>
@@ -435,11 +435,11 @@ p, li { white-space: pre-wrap; }
     <bool>false</bool>
    </attribute>
    <addaction name="actionSave"/>
-   <addaction name="actionOpen_3"/>
+   <addaction name="actionOpen"/>
    <addaction name="separator"/>
    <addaction name="actionZoom_in"/>
    <addaction name="actionZoom_out"/>
-   <addaction name="actionHand"/>
+   <addaction name="actionPan"/>
    <addaction name="actionRotate"/>
    <addaction name="actionFind"/>
    <addaction name="separator"/>
@@ -469,6 +469,10 @@ p, li { white-space: pre-wrap; }
    </attribute>
   </widget>
   <action name="actionSave">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/buttons/save.png</normaloff>:/buttons/save.png</iconset>
+   </property>
    <property name="text">
     <string>Save</string>
    </property>
@@ -516,9 +520,12 @@ p, li { white-space: pre-wrap; }
     <string>Move up</string>
    </property>
   </action>
-  <action name="actionMove_dowm">
+  <action name="actionMove_down">
    <property name="text">
     <string>Move dowm</string>
+   </property>
+   <property name="toolTip">
+    <string>Move down</string>
    </property>
   </action>
   <action name="actionMove_to_top">
@@ -561,22 +568,16 @@ p, li { white-space: pre-wrap; }
     <string>About ...</string>
    </property>
   </action>
-  <action name="actionOpen_3">
+  <action name="actionOpen">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/buttons/open.png</normaloff>:/buttons/open.png</iconset>
+   </property>
    <property name="text">
     <string>Open ...</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+O</string>
-   </property>
-  </action>
-  <action name="actionSave_2">
-   <property name="text">
-    <string>Save</string>
-   </property>
-  </action>
-  <action name="actionSave_as_2">
-   <property name="text">
-    <string>Save as ...</string>
    </property>
   </action>
   <action name="actionImport_xml">
@@ -613,6 +614,10 @@ p, li { white-space: pre-wrap; }
    <property name="checkable">
     <bool>true</bool>
    </property>
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/buttons/zoom_in.png</normaloff>:/buttons/zoom_in.png</iconset>
+   </property>
    <property name="text">
     <string>Zoom in</string>
    </property>
@@ -621,21 +626,36 @@ p, li { white-space: pre-wrap; }
    <property name="checkable">
     <bool>true</bool>
    </property>
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/buttons/zoom_out.png</normaloff>:/buttons/zoom_out.png</iconset>
+   </property>
    <property name="text">
     <string>Zoom out</string>
    </property>
   </action>
-  <action name="actionHand">
+  <action name="actionPan">
    <property name="checkable">
     <bool>true</bool>
    </property>
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/buttons/hand.png</normaloff>:/buttons/hand.png</iconset>
+   </property>
    <property name="text">
-    <string>Hand</string>
+    <string>Pan</string>
+   </property>
+   <property name="toolTip">
+    <string>Pan</string>
    </property>
   </action>
   <action name="actionRotate">
    <property name="checkable">
     <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/buttons/rotate.png</normaloff>:/buttons/rotate.png</iconset>
    </property>
    <property name="text">
     <string>Rotate</string>
@@ -644,6 +664,10 @@ p, li { white-space: pre-wrap; }
   <action name="actionFind">
    <property name="checkable">
     <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/buttons/cursor.png</normaloff>:/buttons/cursor.png</iconset>
    </property>
    <property name="text">
     <string>Find</string>
