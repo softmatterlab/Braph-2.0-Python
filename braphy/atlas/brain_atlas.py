@@ -173,7 +173,6 @@ class BrainAtlas():
                 root = tree.getroot() 
                 for brain_region in root.findall('BrainAtlas/BrainRegion'):
                     br = brain_region.attrib
-                    #print(br)
                     self.brain_regions.append(BrainRegion(  label = br['label'].replace('  ', ' ').strip(),
                                                             name = br['name'].replace('  ', ' ').strip(),
                                                             x = float(br['x']),
