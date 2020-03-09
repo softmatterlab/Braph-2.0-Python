@@ -342,20 +342,26 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
     def open(self):
         pass
 
+    def set_cursor(self, file_name):
+        cursor_file = abs_path_from_relative(__file__, file_name)
+        pm = QtGui.QPixmap(cursor_file)
+        cursor = QtGui.QCursor(pm)
+        self.graphicsView.setCursor(cursor)
+
     def zoom_in(self):
-        self.graphicsView.setCursor(QtCore.Qt.ForbiddenCursor)
+        self.set_cursor('zoom_in.png')
 
     def zoom_out(self):
-        self.graphicsView.setCursor(QtCore.Qt.SizeHorCursor)
+        self.set_cursor('zoom_out.png')
 
     def pan(self):
-        self.graphicsView.setCursor(QtCore.Qt.OpenHandCursor)
+        self.set_cursor('hand.png')
 
     def rotate(self):
-        self.graphicsView.setCursor(QtCore.Qt.ForbiddenCursor)
+        self.set_cursor('rotate.png')
 
     def find(self):
-        self.graphicsView.setCursor(QtCore.Qt.CrossCursor)
+        self.set_cursor('cursor.png')
 
     def show_3D(self):
         pass
