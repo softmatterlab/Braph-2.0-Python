@@ -523,6 +523,9 @@ p, li { white-space: pre-wrap; }
    <property name="text">
     <string>Add</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+A</string>
+   </property>
   </action>
   <action name="actionAdd_above">
    <property name="text">
@@ -538,10 +541,16 @@ p, li { white-space: pre-wrap; }
    <property name="text">
     <string>Remove</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
+   </property>
   </action>
   <action name="actionMove_up">
    <property name="text">
     <string>Move up</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+U</string>
    </property>
   </action>
   <action name="actionMove_down">
@@ -551,20 +560,32 @@ p, li { white-space: pre-wrap; }
    <property name="toolTip">
     <string>Move down</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+D</string>
+   </property>
   </action>
   <action name="actionMove_to_top">
    <property name="text">
     <string>Move to top</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+T</string>
    </property>
   </action>
   <action name="actionMove_to_bottom">
    <property name="text">
     <string>Move to bottom</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+B</string>
+   </property>
   </action>
   <action name="actionGenerate_figure">
    <property name="text">
     <string>Generate figure</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F</string>
    </property>
   </action>
   <action name="actionNew_MRI_Cohort">
@@ -632,6 +653,9 @@ p, li { white-space: pre-wrap; }
   <action name="actionClose">
    <property name="text">
     <string>Close</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+C</string>
    </property>
   </action>
   <action name="actionZoom_in">
@@ -817,7 +841,7 @@ p, li { white-space: pre-wrap; }
      <normaloff>:/buttons/icon_view_3d.png</normaloff>:/buttons/icon_view_3d.png</iconset>
    </property>
    <property name="text">
-    <string>tred</string>
+    <string>3D</string>
    </property>
   </action>
   <action name="actionOpen_2">
