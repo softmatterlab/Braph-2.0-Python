@@ -150,8 +150,6 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionExport_txt.triggered.connect(self.export_txt)
         self.actionClose.triggered.connect(self.close)
 
-        self.actionBrainViewOpen.triggered.connect(self.brain_view_open)
-
         self.actionSelect_all.triggered.connect(self.select_all)
         self.actionClear_selection.triggered.connect(self.clear_selection)
         self.actionAdd.triggered.connect(self.add)
@@ -165,6 +163,8 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionMove_to_bottom.triggered.connect(self.move_to_bottom)
 
         self.actionGenerate_figure.triggered.connect(self.brainWidget.generate_figure)
+        self.actionBrainViewOpen.triggered.connect(self.brain_view_open)
+
         self.actionNew_MRI_Cohort.triggered.connect(self.new_mri_cohort)
         self.actionNew_fMRI_Cohort.triggered.connect(self.new_fmri_cohort)
         self.actionNew_EEG_Cohort.triggered.connect(self.new_eeg_cohort)
@@ -406,14 +406,7 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         pass
 
     def brain_view_open(self):
-        options = QFileDialog.Options()
-        options |= QFileDialog.DontUseNativeDialog
-        file_name, name = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()", "","nv files (*.nv)", options=options)
-        if file_name:
-            self.atlas.mesh_file = file_name
-            brain_mesh_file = abs_path_from_relative(__file__, file_name)
-            data = load_nv(file_name)
-            self.brainWidget.load_brain_mesh(data)
+        self.comboBox.setCurrentText('Open...')
 
     def new_mri_cohort(self):
         pass
