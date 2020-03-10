@@ -171,7 +171,6 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.update_table()
 
     def add_above(self):
-        self.tableWidget.setEnabled(False)
         selected, added = self.atlas.add_above_brain_regions(self.get_checked())
         self.update_table(selected)
 
