@@ -1,6 +1,6 @@
 import unittest
 from braphy.graph.graph_factory import GraphFactory, GraphSettings
-from braphy.graph.graph_measures.measure_small_worldness import MeasureSmallWorldness
+from braphy.graph.measures.measure_small_worldness import MeasureSmallWorldness
 import numpy as np
 
 class TestSmallWorldness(unittest.TestCase):

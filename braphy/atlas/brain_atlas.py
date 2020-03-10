@@ -4,7 +4,8 @@ import pandas as pd
 import xml.etree.ElementTree as ET
 
 class BrainAtlas():
-    def __init__(self, name = 'Atlas', brain_regions = []):
+    def __init__(self, mesh_file = '', name = 'Atlas', brain_regions = []):
+        self.mesh_file = mesh_file
         self.name = name
         self.brain_regions = brain_regions
 
@@ -194,14 +195,14 @@ class BrainAtlas():
 
     def save_to_txt(self, file_name):
         with open(file_name, 'w') as f:
-            s = "{}\n".format(self.name)
+            s = "{}\t{}\n".format(self.name, self.mesh_file)
             f.write(s)
             for region in self.brain_regions:
                 f.write(str(region))
 
     def str_xml(self):
 
-        s = "<xml>\n  <BrainAtlas>\n"
+        s = "<xml>\n  <BrainAtlas brainsurf=\"{}\" name=\"{}\">\n".format(self.mesh_file, self.name)
         for region in self.brain_regions:
             s = s + "    {}\n".format(region.str_xml())
         s = s + "  <BrainAtlas>\n</xml>"

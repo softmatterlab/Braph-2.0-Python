@@ -32,7 +32,7 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="QTextEdit" name="textEdit">
+         <widget class="QTextEdit" name="textAtlasName">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -199,7 +199,7 @@ p, li { white-space: pre-wrap; }
             <number>0</number>
            </property>
            <item>
-            <widget class="QLabel" name="mesh_name">
+            <widget class="QLabel" name="meshName">
              <property name="text">
               <string>Brain mesh</string>
              </property>

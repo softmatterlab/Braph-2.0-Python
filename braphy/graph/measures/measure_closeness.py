@@ -1,8 +1,8 @@
-from braphy.graph.graph_measures import *
+from braphy.graph.measures import *
 import numpy as np
 from braphy.graph.graphs import *
 import copy
-from braphy.graph.graph_measures.measure_path_length import MeasurePathLength
+from braphy.graph.measures.measure_path_length import MeasurePathLength
 
 class MeasureCloseness(Measure):
 

@@ -1,6 +1,6 @@
-from braphy.graph.graph_measures.measure import Measure
-from braphy.graph.graph_measures.measure_cluster import MeasureCluster
-from braphy.graph.graph_measures.measure_path_length import MeasurePathLength
+from braphy.graph.measures.measure import Measure
+from braphy.graph.measures.measure_cluster import MeasureCluster
+from braphy.graph.measures.measure_path_length import MeasurePathLength
 from braphy.graph.graphs import *
 import numpy as np
 import copy

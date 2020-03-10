@@ -1,6 +1,6 @@
 import unittest
 from braphy.graph.graph_factory import GraphFactory, GraphSettings
-from braphy.graph.graph_measures.measure_transitivity import MeasureTransitivity
+from braphy.graph.measures.measure_transitivity import MeasureTransitivity
 import numpy as np
 
 class TestTransitivity(unittest.TestCase):

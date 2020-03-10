@@ -1,6 +1,6 @@
 import unittest
 from braphy.graph.graph_factory import GraphFactory, GraphSettings
-from braphy.graph.graph_measures.measure_betweenness import MeasureBetweenness
+from braphy.graph.measures.measure_betweenness import MeasureBetweenness
 from braphy.test.test_utility import TestUtility
 import numpy as np
 

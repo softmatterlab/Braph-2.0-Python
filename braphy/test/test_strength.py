@@ -1,6 +1,6 @@
 import unittest
 from braphy.graph.graph_factory import GraphFactory, GraphSettings
-from braphy.graph.graph_measures.measure_strength import MeasureStrength
+from braphy.graph.measures.measure_strength import MeasureStrength
 from braphy.test.test_utility import TestUtility
 import numpy as np
 

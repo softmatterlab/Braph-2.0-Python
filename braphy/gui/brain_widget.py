@@ -5,20 +5,22 @@ from braphy.utility.helper_functions import abs_path_from_relative, load_nv
 import pyqtgraph.Vector
 import numpy as np
 
-default_brain_mesh = "BrainMesh_ICBM152.nv"
-brain_mesh_file = abs_path_from_relative(__file__, default_brain_mesh)
 brain_distance_default = 230
 
 class BrainWidget(GLViewWidget):
-    def __init__(self, parent = None):
+    def __init__(self, mesh_file, parent = None):
         super(BrainWidget, self).__init__(parent)
-        self.init_brain_view()
+        self.brain_color = [0.7, 0.6, 0.55, 1]
 
-    def init_brain_view(self):
+    def init_brain_view(self, mesh_file, mesh_file_name):
         self.init_axis()
         self.init_grid()
-        self.init_brain_mesh()
-        self.update_brain_regions([])
+        self.init_brain_mesh(mesh_file, mesh_file_name)
+
+    def init_brain_regions(self, brain_regions, visible):
+        self.spheres = []
+        self.brain_regions = brain_regions
+        self.sphere_color = [0.3, 0.3, 1.0, 1.0]
 
     def init_axis(self):
         self.ax = gl.GLAxisItem()
@@ -38,13 +40,13 @@ class BrainWidget(GLViewWidget):
         self.grid['y'].translate(0, -size/2, size/4)
         self.grid['z'].translate(0, 0, -size/4)
 
-    def init_brain_mesh(self):
-        self.brain_color = [0.7, 0.6, 0.55, 1]
+    def init_brain_mesh(self, mesh_file, mesh_file_name):
         self.opts['distance'] = brain_distance_default
         self.setCameraPosition(azimuth=0)
         self.setBackgroundColor((200, 200, 200, 255))
-        data = load_nv(brain_mesh_file)
-        self.mesh_name = default_brain_mesh
+
+        self.mesh_name = mesh_file_name
+        data = load_nv(mesh_file)
         self.brain_mesh = gl.GLMeshItem(vertexes=data['vertices'], faces=data['faces'], shader = 'normalColor')
         self.brain_mesh.setGLOptions('translucent')
         self.addItem(self.brain_mesh)
@@ -105,8 +107,15 @@ class BrainWidget(GLViewWidget):
             for grid in self.grid.values():
                 self.addItem(grid)
 
-    def show_brain_regions(self, state):
-        if state == 0:
+    def show_brain_regions(self, visible):
+        '''
+        alpha = 1.0 if visible else 0.0
+        for sphere in self.spheres:
+            color = sphere.opts['color']
+            color[-1] = alpha
+            sphere.setColor(color)
+        '''
+        if visible == 0:
             for sphere in self.spheres:
                 self.removeItem(sphere)
         else:
@@ -127,20 +136,23 @@ class BrainWidget(GLViewWidget):
             fb = self.grabFrameBuffer()
             fb.save(file_name)
 
-    def update_brain_regions(self, brain_regions):
+    def update_brain_regions(self):
         self.removeItem(self.brain_mesh)
         sphere_color = [.3, .3, 1.0, 1.0]
-        if hasattr(self, 'spheres'):
-            for sphere in self.spheres:
+        for sphere in self.spheres:
+            try:
                 self.removeItem(sphere)
-        self.spheres = []
-        for brain_region in brain_regions:
+            except:
+                pass
+
+        for brain_region in self.brain_regions:
             sphere_meshdata = gl.MeshData.sphere(8, 8, radius=4.0)
             v = sphere_meshdata.vertexes()
             translate = np.array([brain_region.x, brain_region.y, brain_region.z])
             v = v + translate
             sphere_meshdata.setVertexes(v)
-            sphere = gl.GLMeshItem(meshdata=sphere_meshdata, color = sphere_color, shader='shaded')
+            sphere = gl.GLMeshItem(meshdata=sphere_meshdata, color = self.sphere_color, shader='shaded')
+            sphere.setGLOptions('translucent')
             self.spheres.append(sphere)
             self.addItem(sphere)
         self.addItem(self.brain_mesh)

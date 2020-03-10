@@ -1,5 +1,5 @@
 from braphy.graph.graphs import *
-from braphy.graph.graph_measures.measure_parser import MeasureParser
+from braphy.graph.measures.measure_parser import MeasureParser
 
 class GraphSettings():
     GAMMA_DEFAULT = 1

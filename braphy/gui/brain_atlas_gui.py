@@ -7,6 +7,8 @@ import numpy as np
 from braphy.gui.brain_widget import BrainWidget
 
 qtCreatorFile = abs_path_from_relative(__file__, "ui_files/brain_atlas.ui")
+brain_mesh_file_name = "BrainMesh_ICBM152.nv"
+brain_mesh_file = abs_path_from_relative(__file__, brain_mesh_file_name)
 
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 
@@ -15,10 +17,12 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.AppWindow = AppWindow
         QtWidgets.QMainWindow.__init__(self, parent = None)
         if atlas == None:
-            self.atlas = BrainAtlas()
+            self.atlas = BrainAtlas(mesh_file = brain_mesh_file_name)
         else:
             self.atlas = atlas
         self.setupUi(self)
+        self.brainWidget.init_brain_view(brain_mesh_file, brain_mesh_file_name)
+        self.brainWidget.init_brain_regions(self.atlas.brain_regions, self.actionShow_brain_regions.isChecked())
         self.init_buttons()
         self.init_check_boxes()
         self.init_actions()
@@ -26,8 +30,10 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.init_slider()
         self.check_boxes = []
         self.tableWidget.cellChanged.connect(self.changeCell)
-        self.textEdit.setText(self.atlas.name)
-        self.mesh_name.setText(self.brainWidget.mesh_name)
+
+        self.textAtlasName.setText(self.atlas.name)
+        self.meshName.setText(self.brainWidget.mesh_name)
+        self.textAtlasName.textChanged.connect(self.atlas_name_change)
 
     def init_slider(self):
         self.horizontalSlider.valueChanged.connect(self.change_transparency)
@@ -137,52 +143,32 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
     def show_brain(self, state):
         if (self.actionView_brain.isChecked() != self.checkBoxShowBrain.isChecked()):
             self.brainWidget.show_brain(state)
-            if state == 0:
-                self.actionView_brain.setChecked(False)
-                self.checkBoxShowBrain.setChecked(False)
-            else:
-                self.actionView_brain.setChecked(True)
-                self.checkBoxShowBrain.setChecked(True)
+            self.actionView_brain.setChecked(state != 0)
+            self.checkBoxShowBrain.setChecked(state != 0)
 
     def show_axis(self, state):
         if (self.actionShow_axis.isChecked() != self.checkBoxShowAxis.isChecked()):
             self.brainWidget.show_axis(state)
-            if state == 0:
-                self.actionShow_axis.setChecked(False)
-                self.checkBoxShowAxis.setChecked(False)
-            else:
-                self.actionShow_axis.setChecked(True)
-                self.checkBoxShowAxis.setChecked(True)
+            self.actionShow_axis.setChecked(state != 0)
+            self.checkBoxShowAxis.setChecked(state != 0)
 
     def show_grid(self, state):
         if (self.actionShow_grid.isChecked() != self.checkBoxShowGrid.isChecked()):
             self.brainWidget.show_grid(state)
-            if state == 0:
-                self.actionShow_grid.setChecked(False)
-                self.checkBoxShowGrid.setChecked(False)
-            else:
-                self.actionShow_grid.setChecked(True)
-                self.checkBoxShowGrid.setChecked(True)
+            self.actionShow_grid.setChecked(state != 0)
+            self.checkBoxShowGrid.setChecked(state != 0)
 
     def show_brain_regions(self, state):
         if (self.actionShow_brain_regions.isChecked() != self.checkBoxShowBrainRegions.isChecked()):
             self.brainWidget.show_brain_regions(state)
-            if state == 0:
-                self.actionShow_brain_regions.setChecked(False)
-                self.checkBoxShowBrainRegions.setChecked(False)
-            else:
-                self.actionShow_brain_regions.setChecked(True)
-                self.checkBoxShowBrainRegions.setChecked(True)
+            self.actionShow_brain_regions.setChecked(state != 0)
+            self.checkBoxShowBrainRegions.setChecked(state != 0)
 
     def show_labels(self, state):
         if (self.actionShow_labels.isChecked() != self.checkBoxShowLabels.isChecked()):
             self.brainWidget.show_labels(state)
-            if state == 0:
-                self.actionShow_labels.setChecked(False)
-                self.checkBoxShowLabels.setChecked(False)
-            else:
-                self.actionShow_labels.setChecked(True)
-                self.checkBoxShowLabels.setChecked(True)
+            self.actionShow_labels.setChecked(state != 0)
+            self.checkBoxShowLabels.setChecked(state != 0)
 
     def select_all(self):
         selected = np.arange(len(self.atlas.brain_regions))
@@ -196,7 +182,6 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.update_table()
 
     def add_above(self):
-        self.tableWidget.setEnabled(False)
         selected, added = self.atlas.add_above_brain_regions(self.get_checked())
         self.update_table(selected)
 
@@ -223,6 +208,9 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
     def move_to_bottom(self):
         selected = self.atlas.move_to_bottom_brain_regions(self.get_checked())
         self.update_table(selected)
+
+    def atlas_name_change(self):
+        self.atlas.name = self.textAtlasName.toPlainText()
 
     def changeCell(self, row, column):
         if column == 1:
@@ -277,7 +265,7 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
             item = QTableWidgetItem(str(self.atlas.brain_regions[i].z))
             self.tableWidget.setItem(i, 5, item)
 
-        self.brainWidget.update_brain_regions(self.atlas.brain_regions)
+        self.brainWidget.update_brain_regions()
         self.tableWidget.blockSignals(False)
 
     def set_checked(self, selected):
@@ -369,7 +357,7 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         options |= QFileDialog.DontUseNativeDialog
         file_name, name = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()", "","nv files (*.nv)", options=options)
         if file_name:
-            self.atlas.name = file_name
+            self.atlas.mesh_file = file_name
             brain_mesh_file = abs_path_from_relative(__file__, file_name)
             data = load_nv(file_name)
             self.brainWidget.load_brain_mesh(data)

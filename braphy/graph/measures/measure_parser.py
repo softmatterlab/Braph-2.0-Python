@@ -2,9 +2,9 @@ import inspect
 import importlib
 import os
 from glob import glob
-from braphy.graph.graph_measures.measure import Measure
+from braphy.graph.measures.measure import Measure
 import re
-#from braphy.graph.graph_measures import *
+#from braphy.graph.measures import *
 
 class MeasureParser():
 
@@ -12,7 +12,7 @@ class MeasureParser():
         measures_dict = {}
         for measure in Measure.__subclasses__():
             snake_case_measure_name = re.sub(r'(?<!^)(?=[A-Z])', '_', measure.__name__).lower()
-            measure = getattr(importlib.import_module("braphy.graph.graph_measures.{}".format(snake_case_measure_name)), measure.__name__)
+            measure = getattr(importlib.import_module("braphy.graph.measures.{}".format(snake_case_measure_name)), measure.__name__)
             graph_types = measure.get_valid_graph_types()
             for graph_type in graph_types:
                 if graph_type not in measures_dict.keys():
