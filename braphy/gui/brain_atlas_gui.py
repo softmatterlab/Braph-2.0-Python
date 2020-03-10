@@ -271,6 +271,7 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
             pass #left/right
         elif column == 7:
             pass #Notes
+        self.brainWidget.update_brain_regions()
 
     def update_table(self, selected = None):
         if np.any(selected == None):
@@ -280,6 +281,7 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.tableWidget.clearContents()
         self.tableWidget.setRowCount(0)
         self.check_boxes = []
+        self.brainWidget.selected_regions = []
 
         for i in range(self.atlas.brain_region_number()):
             self.tableWidget.setRowCount(i+1)

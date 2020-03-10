@@ -1,5 +1,6 @@
 import pyqtgraph.opengl as gl
 from pyqtgraph.opengl import GLViewWidget
+from PyQt5.QtGui import QColor
 from PyQt5.QtWidgets import QFileDialog
 from braphy.utility.helper_functions import abs_path_from_relative, load_nv
 import pyqtgraph.Vector
@@ -53,6 +54,13 @@ class BrainWidget(GLViewWidget):
         self.brain_mesh = gl.GLMeshItem(vertexes=data['vertices'], faces=data['faces'], shader = 'normalColor')
         self.brain_mesh.setGLOptions('translucent')
         self.addItem(self.brain_mesh)
+
+    def paintGL(self, *args, **kwds):
+        GLViewWidget.paintGL(self, *args, **kwds)
+        self.qglColor(QColor("k"))
+        if self.show_labels_bool:
+            for region in self.brain_regions:
+                self.renderText(region.x, region.y, region.z, region.label)
 
     def load_brain_mesh(self, data):
         self.brain_mesh.setMeshData(vertexes=data['vertices'], faces=data['faces'])
@@ -121,10 +129,8 @@ class BrainWidget(GLViewWidget):
             self.addItem(self.brain_mesh)
 
     def show_labels(self, state):
-        if state == 0:
-            pass
-        else:
-            pass
+        self.show_labels_bool = (state != 0)
+        self.update()
 
     def select_region(self, index):
         self.selected_regions.append(index)
