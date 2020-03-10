@@ -287,6 +287,7 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
             layout = QHBoxLayout()
             layout.setAlignment(QtCore.Qt.AlignHCenter)
             check_box = QCheckBox()
+            check_box.stateChanged.connect(self.check_box_changed)
             self.check_boxes.append(check_box)
             if i in selected:
                 self.check_boxes[i].setChecked(True)
@@ -311,6 +312,14 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.brainWidget.update_brain_regions()
         self.tableWidget.blockSignals(False)
+
+    def check_box_changed(self, state):
+        check_box = self.sender()
+        index = self.check_boxes.index(check_box)
+        if state == 0:
+            self.brainWidget.deselect_region(index)
+        else:
+            self.brainWidget.select_region(index)
 
     def set_checked(self, selected):
         for i in range(len(self.check_boxes)):
