@@ -1,4 +1,5 @@
 import sys
+import os
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from PyQt5.QtWidgets import *
 from braphy.atlas.brain_atlas import BrainAtlas
@@ -21,19 +22,62 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         else:
             self.atlas = atlas
         self.setupUi(self)
-        self.brainWidget.init_brain_view(brain_mesh_file, brain_mesh_file_name)
+        self.brainWidget.init_brain_view(brain_mesh_file)
         self.brainWidget.init_brain_regions(self.atlas.brain_regions, self.actionShow_brain_regions.isChecked())
         self.init_buttons()
         self.init_check_boxes()
         self.init_actions()
 
+        self.init_combo_box()
         self.init_slider()
         self.check_boxes = []
         self.tableWidget.cellChanged.connect(self.changeCell)
 
         self.textAtlasName.setText(self.atlas.name)
-        self.meshName.setText(self.brainWidget.mesh_name)
+        self.meshName.setText('Brain View')
         self.textAtlasName.textChanged.connect(self.atlas_name_change)
+
+    def init_combo_box(self):
+        self.mesh_file_paths = []
+        nv_files = self.get_all_nv_files()
+        for file in nv_files:
+            self.comboBox.addItem(file)
+            self.mesh_file_paths.append(abs_path_from_relative(__file__, file))
+
+        self.comboBox.insertSeparator(self.comboBox.count())
+        self.comboBox.addItem('Open...')
+        self.comboBox.currentIndexChanged.connect(self.select_brain_mesh)
+        self.last_combobox_index = 0
+
+    def select_brain_mesh(self, i):
+        if self.comboBox.currentText() == 'Open...':
+            options = QFileDialog.Options()
+            options |= QFileDialog.DontUseNativeDialog
+            file_path, name = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()",
+                                                      "","nv files (*.nv)", options=options)
+            if file_path:
+                file_name = file_path.split('/')[-1]
+                self.comboBox.blockSignals(True)
+                self.comboBox.insertItem(self.comboBox.count() - 2, file_name)
+                self.comboBox.setCurrentText(file_name)
+                self.comboBox.blockSignals(False)
+                self.mesh_file_paths.append(file_path)
+                self.last_combobox_index = self.comboBox.count() - 3
+            else:
+                self.comboBox.blockSignals(True)
+                self.comboBox.setCurrentIndex(self.last_combobox_index)
+                self.comboBox.blockSignals(False)
+        else:
+            file_path = self.mesh_file_paths[i]
+            self.last_combobox_index = i
+        if file_path:
+            self.brainWidget.change_brain_mesh(file_path)
+            self.change_transparency()
+
+    def get_all_nv_files(self):
+        dir = abs_path_from_relative(__file__)
+        nv_files = [f for f in os.listdir(dir) if f.endswith('.nv')]
+        return nv_files
 
     def init_slider(self):
         self.horizontalSlider.valueChanged.connect(self.change_transparency)

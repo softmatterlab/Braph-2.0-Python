@@ -45,10 +45,13 @@ def accumarray(subs, val, size = np.nan):
         output[output_index] = output[output_index] + val[val_index]
     return output
 
-def abs_path_from_relative(script_file, file_relative):
+def abs_path_from_relative(script_file, file_relative = None):
     script_path = os.path.abspath(script_file)
     script_dir = os.path.split(script_path)[0]
-    file_absolute = os.path.join(script_dir, file_relative)
+    if file_relative == None:
+        file_absolute = script_dir
+    else:
+        file_absolute = os.path.join(script_dir, file_relative)
     return file_absolute
 
 def get_version_info():

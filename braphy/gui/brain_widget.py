@@ -12,10 +12,14 @@ class BrainWidget(GLViewWidget):
         super(BrainWidget, self).__init__(parent)
         self.brain_color = [0.7, 0.6, 0.55, 1]
 
-    def init_brain_view(self, mesh_file, mesh_file_name):
+    def init_brain_view(self, mesh_file):
         self.init_axis()
         self.init_grid()
-        self.init_brain_mesh(mesh_file, mesh_file_name)
+        self.init_brain_mesh(mesh_file)
+
+    def change_brain_mesh(self, mesh_file):
+        self.removeItem(self.brain_mesh)
+        self.init_brain_mesh(mesh_file)
 
     def init_brain_regions(self, brain_regions, visible):
         self.spheres = []
@@ -40,12 +44,11 @@ class BrainWidget(GLViewWidget):
         self.grid['y'].translate(0, -size/2, size/4)
         self.grid['z'].translate(0, 0, -size/4)
 
-    def init_brain_mesh(self, mesh_file, mesh_file_name):
+    def init_brain_mesh(self, mesh_file):
         self.opts['distance'] = brain_distance_default
         self.setCameraPosition(azimuth=0)
         self.setBackgroundColor((200, 200, 200, 255))
 
-        self.mesh_name = mesh_file_name
         data = load_nv(mesh_file)
         self.brain_mesh = gl.GLMeshItem(vertexes=data['vertices'], faces=data['faces'], shader = 'normalColor')
         self.brain_mesh.setGLOptions('translucent')
