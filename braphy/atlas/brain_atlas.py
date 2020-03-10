@@ -4,10 +4,10 @@ import pandas as pd
 import xml.etree.ElementTree as ET
 
 class BrainAtlas():
-    def __init__(self, mesh_file = '', name = 'Atlas', brain_regions = []):
+    def __init__(self, mesh_file = '', name = 'Atlas', brain_regions = None):
         self.mesh_file = mesh_file
         self.name = name
-        self.brain_regions = brain_regions
+        self.brain_regions = brain_regions if brain_regions else []
 
     def brain_region_number(self):
         return len(self.brain_regions)
