@@ -27,6 +27,7 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.check_boxes = []
         self.tableWidget.cellChanged.connect(self.changeCell)
         self.textEdit.setText(self.atlas.name)
+        self.mesh_name.setText(self.brainWidget.mesh_name)
 
     def init_slider(self):
         self.horizontalSlider.valueChanged.connect(self.change_transparency)
@@ -303,7 +304,7 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         cursor_file = abs_path_from_relative(__file__, file_name)
         pm = QtGui.QPixmap(cursor_file)
         cursor = QtGui.QCursor(pm)
-        self.graphicsView.setCursor(cursor)
+        self.brainWidget.setCursor(cursor)
 
     def zoom_in(self):
         self.set_cursor('zoom_in.png')

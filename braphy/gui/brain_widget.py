@@ -5,7 +5,8 @@ from braphy.utility.helper_functions import abs_path_from_relative, load_nv
 import pyqtgraph.Vector
 import numpy as np
 
-brain_mesh_file = abs_path_from_relative(__file__, "BrainMesh_ICBM152.nv")
+default_brain_mesh = "BrainMesh_ICBM152.nv"
+brain_mesh_file = abs_path_from_relative(__file__, default_brain_mesh)
 brain_distance_default = 230
 
 class BrainWidget(GLViewWidget):
@@ -43,6 +44,7 @@ class BrainWidget(GLViewWidget):
         self.setCameraPosition(azimuth=0)
         self.setBackgroundColor((200, 200, 200, 255))
         data = load_nv(brain_mesh_file)
+        self.mesh_name = default_brain_mesh
         self.brain_mesh = gl.GLMeshItem(vertexes=data['vertices'], faces=data['faces'], shader = 'normalColor')
         self.brain_mesh.setGLOptions('translucent')
         self.addItem(self.brain_mesh)
