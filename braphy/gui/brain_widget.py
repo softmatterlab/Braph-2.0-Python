@@ -20,7 +20,7 @@ class BrainWidget(GLViewWidget):
     def init_brain_regions(self, brain_regions, visible):
         self.spheres = []
         self.brain_regions = brain_regions
-        self.sphere_color = [0.3, 0.3, 1.0, 1.0]
+        self.selected_regions = []
 
     def init_axis(self):
         self.ax = gl.GLAxisItem()
@@ -108,13 +108,6 @@ class BrainWidget(GLViewWidget):
                 self.addItem(grid)
 
     def show_brain_regions(self, visible):
-        '''
-        alpha = 1.0 if visible else 0.0
-        for sphere in self.spheres:
-            color = sphere.opts['color']
-            color[-1] = alpha
-            sphere.setColor(color)
-        '''
         if visible == 0:
             for sphere in self.spheres:
                 self.removeItem(sphere)
@@ -130,6 +123,20 @@ class BrainWidget(GLViewWidget):
         else:
             pass
 
+    def select_region(self, index):
+        self.selected_regions.append(index)
+        self.spheres[index].setColor(self.sphere_color(index))
+
+    def deselect_region(self, index):
+        self.selected_regions.remove(index)
+        self.spheres[index].setColor(self.sphere_color(index))
+
+    def sphere_color(self, index):
+        sphere_color = [.3, .3, 1.0, 1.0]
+        if index in self.selected_regions:
+            sphere_color = [1.0, .0, 2.0/3, 1.0]
+        return sphere_color
+
     def generate_figure(self):
         file_name, name = QFileDialog.getSaveFileName(self, "QFileDialog.saveFileName()", "", "Image (*.png)")
         if file_name:
@@ -138,20 +145,17 @@ class BrainWidget(GLViewWidget):
 
     def update_brain_regions(self):
         self.removeItem(self.brain_mesh)
-        sphere_color = [.3, .3, 1.0, 1.0]
         for sphere in self.spheres:
             try:
                 self.removeItem(sphere)
             except:
                 pass
-
-        for brain_region in self.brain_regions:
+        self.spheres = []
+        for i in range(len(self.brain_regions)):
+            brain_region = self.brain_regions[i]
             sphere_meshdata = gl.MeshData.sphere(8, 8, radius=4.0)
-            v = sphere_meshdata.vertexes()
-            translate = np.array([brain_region.x, brain_region.y, brain_region.z])
-            v = v + translate
-            sphere_meshdata.setVertexes(v)
-            sphere = gl.GLMeshItem(meshdata=sphere_meshdata, color = self.sphere_color, shader='shaded')
+            sphere = gl.GLMeshItem(meshdata=sphere_meshdata, color = self.sphere_color(i), shader='shaded')
+            sphere.translate(brain_region.x, brain_region.y, brain_region.z)
             sphere.setGLOptions('translucent')
             self.spheres.append(sphere)
             self.addItem(sphere)
