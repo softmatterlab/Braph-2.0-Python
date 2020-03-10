@@ -1,4 +1,5 @@
 import pyqtgraph.opengl as gl
+from PyQt5 import QtCore
 from pyqtgraph.opengl import GLViewWidget
 from PyQt5.QtGui import QColor
 from PyQt5.QtWidgets import QFileDialog
@@ -9,9 +10,15 @@ import numpy as np
 brain_distance_default = 230
 
 class BrainWidget(GLViewWidget):
+    MOUSE_MODE_DEFAULT = 0
+    MOUSE_MODE_ZOOM_IN = 1
+    MOUSE_MODE_ZOOM_OUT = 2
+    MOUSE_MODE_PAN = 3
+    MOUSE_MODE_ROTATE = 4
     def __init__(self, mesh_file, parent = None):
         super(BrainWidget, self).__init__(parent)
         self.brain_color = [0.7, 0.6, 0.55, 1]
+        self.mouse_mode = BrainWidget.MOUSE_MODE_DEFAULT
 
     def init_brain_view(self, mesh_file):
         self.init_axis()
@@ -170,3 +177,65 @@ class BrainWidget(GLViewWidget):
             self.addItem(sphere)
         self.addItem(self.brain_mesh)
 
+    def mouseMoveEvent(self, ev):
+        if ev.buttons() == QtCore.Qt.MidButton:
+            diff = ev.pos() - self.mousePos
+            self.mousePos = ev.pos()
+            if (ev.modifiers() & QtCore.Qt.ControlModifier):
+                self.pan(diff.x(), 0, diff.y(), relative=True)
+            else:
+                self.pan(diff.x(), diff.y(), 0, relative=True)
+        if self.mouse_mode == BrainWidget.MOUSE_MODE_DEFAULT:
+            self.mouseMoveEventDefault(ev)
+        elif self.mouse_mode == BrainWidget.MOUSE_MODE_ZOOM_IN:
+            pass
+        elif self.mouse_mode == BrainWidget.MOUSE_MODE_ZOOM_OUT:
+            pass
+        elif self.mouse_mode == BrainWidget.MOUSE_MODE_PAN:
+            self.mouseMoveEventPan(ev)
+        elif self.mouse_mode == BrainWidget.MOUSE_MODE_ROTATE:
+            self.mouseMoveEventRotate(ev)
+
+    def mouseReleaseEvent(self, ev):
+        if self.mouse_mode == BrainWidget.MOUSE_MODE_ZOOM_IN:
+            self.mouseReleaseEventZoomIn(ev)
+        elif self.mouse_mode == BrainWidget.MOUSE_MODE_ZOOM_OUT:
+            self.mouseReleaseEventZoomOut(ev)
+
+    def mouseMoveEventDefault(self, ev):
+        diff = ev.pos() - self.mousePos
+        self.mousePos = ev.pos()
+
+        if ev.buttons() == QtCore.Qt.LeftButton:
+            self.orbit(-diff.x(), diff.y())
+
+    def mouseReleaseEventZoom(self, ev, delta):
+        _, _, w, h = self.getViewport()
+        dx = w/2-ev.pos().x()
+        dy = h/2-ev.pos().y()
+        self.pan(dx, 0, dy, relative=True)
+        self.opts['distance'] *= 0.999**delta
+        self.update()
+
+    def mouseReleaseEventZoomIn(self, ev):
+        self.mouseReleaseEventZoom(ev, 100)
+
+    def mouseReleaseEventZoomOut(self, ev):
+        self.mouseReleaseEventZoom(ev, -500)
+
+    def mouseMoveEventPan(self, ev):
+        diff = ev.pos() - self.mousePos
+        self.mousePos = ev.pos()
+
+        if ev.buttons() == QtCore.Qt.LeftButton:
+            if (ev.modifiers() & QtCore.Qt.ControlModifier):
+                self.pan(diff.x(), 0, diff.y(), relative=True)
+            else:
+                self.pan(diff.x(), diff.y(), 0, relative=True)
+
+    def mouseMoveEventRotate(self, ev):
+        diff = ev.pos() - self.mousePos
+        self.mousePos = ev.pos()
+
+        if ev.buttons() == QtCore.Qt.LeftButton:
+            self.orbit(-diff.x(), diff.y())
