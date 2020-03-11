@@ -30,9 +30,11 @@ class BrainWidget(GLViewWidget):
         self.init_brain_mesh(mesh_file)
 
     def init_brain_regions(self, brain_regions, visible):
+        self.brain_region_size = 4
         self.spheres = []
         self.brain_regions = brain_regions
         self.selected_regions = []
+        self.show_only_selected = False
 
     def init_axis(self):
         self.ax = gl.GLAxisItem()
@@ -66,7 +68,10 @@ class BrainWidget(GLViewWidget):
         GLViewWidget.paintGL(self, *args, **kwds)
         self.qglColor(QColor("k"))
         if self.show_labels_bool:
-            for region in self.brain_regions:
+            for i in range(len(self.brain_regions)):
+                if self.show_only_selected and i not in self.selected_regions:
+                    continue
+                region = self.brain_regions[i]
                 self.renderText(region.x, region.y, region.z, region.label)
 
     def load_brain_mesh(self, data):
@@ -77,6 +82,10 @@ class BrainWidget(GLViewWidget):
         new_color[-1] = alpha
         self.brain_color = new_color
         self.brain_mesh.setColor(self.brain_color)
+
+    def change_brain_region_size(self, size):
+        self.brain_region_size = size
+        self.update_brain_regions()
 
     def show_3D(self):
         pass
@@ -126,6 +135,7 @@ class BrainWidget(GLViewWidget):
                 self.addItem(grid)
 
     def show_brain_regions(self, visible):
+        print(visible)
         if visible == 0:
             for sphere in self.spheres:
                 self.removeItem(sphere)
@@ -160,7 +170,12 @@ class BrainWidget(GLViewWidget):
             fb.save(file_name)
 
     def update_brain_regions(self):
-        self.removeItem(self.brain_mesh)
+        brain_removed = False
+        try:
+            self.removeItem(self.brain_mesh)
+            brain_removed = True
+        except:
+            pass
         for sphere in self.spheres:
             try:
                 self.removeItem(sphere)
@@ -168,14 +183,17 @@ class BrainWidget(GLViewWidget):
                 pass
         self.spheres = []
         for i in range(len(self.brain_regions)):
+            if self.show_only_selected and i not in self.selected_regions:
+                continue
             brain_region = self.brain_regions[i]
-            sphere_meshdata = gl.MeshData.sphere(8, 8, radius=4.0)
+            sphere_meshdata = gl.MeshData.sphere(8, 8, radius=self.brain_region_size)
             sphere = gl.GLMeshItem(meshdata=sphere_meshdata, color = self.sphere_color(i), shader='shaded')
             sphere.translate(brain_region.x, brain_region.y, brain_region.z)
             sphere.setGLOptions('translucent')
             self.spheres.append(sphere)
             self.addItem(sphere)
-        self.addItem(self.brain_mesh)
+        if brain_removed:
+            self.addItem(self.brain_mesh)
 
     def mouseMoveEvent(self, ev):
         if ev.buttons() == QtCore.Qt.MidButton:

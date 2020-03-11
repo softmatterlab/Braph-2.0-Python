@@ -230,8 +230,18 @@ p, li { white-space: pre-wrap; }
               <number>0</number>
              </property>
              <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_4">
-               <item>
+              <layout class="QGridLayout" name="gridLayout_3">
+               <item row="0" column="1">
+                <widget class="QSlider" name="sliderBrain">
+                 <property name="maximum">
+                  <number>100</number>
+                 </property>
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="0">
                 <widget class="QCheckBox" name="checkBoxShowBrain">
                  <property name="text">
                   <string>Show brain</string>
@@ -241,10 +251,29 @@ p, li { white-space: pre-wrap; }
                  </property>
                 </widget>
                </item>
-               <item>
-                <widget class="QSlider" name="horizontalSlider">
+               <item row="1" column="0">
+                <widget class="QCheckBox" name="checkBoxShowBrainRegions">
+                 <property name="text">
+                  <string>Show brain regions</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <widget class="QSlider" name="sliderRegions">
+                 <property name="minimum">
+                  <number>1</number>
+                 </property>
                  <property name="maximum">
-                  <number>100</number>
+                  <number>80</number>
+                 </property>
+                 <property name="singleStep">
+                  <number>1</number>
+                 </property>
+                 <property name="pageStep">
+                  <number>10</number>
+                 </property>
+                 <property name="value">
+                  <number>40</number>
                  </property>
                  <property name="orientation">
                   <enum>Qt::Horizontal</enum>
@@ -315,7 +344,7 @@ p, li { white-space: pre-wrap; }
              </property>
              <property name="sizeHint" stdset="0">
               <size>
-               <width>40</width>
+               <width>20</width>
                <height>20</height>
               </size>
              </property>
@@ -344,16 +373,16 @@ p, li { white-space: pre-wrap; }
               </widget>
              </item>
              <item>
-              <widget class="QCheckBox" name="checkBoxShowBrainRegions">
+              <widget class="QCheckBox" name="checkBoxShowLabels">
                <property name="text">
-                <string>Show brain regions</string>
+                <string>Show labels</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QCheckBox" name="checkBoxShowLabels">
+              <widget class="QCheckBox" name="checkBoxShowOnlySelected">
                <property name="text">
-                <string>Show labels</string>
+                <string>Show only selected</string>
                </property>
               </widget>
              </item>
