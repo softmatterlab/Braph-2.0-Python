@@ -22,20 +22,26 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         else:
             self.atlas = atlas
         self.setupUi(self)
-        self.brainWidget.init_brain_view(brain_mesh_file)
-        self.brainWidget.init_brain_regions(self.atlas.brain_regions, self.actionShow_brain_regions.isChecked())
-        self.init_buttons()
+        self.check_boxes = []
         self.init_check_boxes()
+        self.init_brain_widget()
+        self.init_buttons()
         self.init_actions()
 
         self.init_combo_box()
         self.init_sliders()
-        self.check_boxes = []
         self.tableWidget.cellChanged.connect(self.changeCell)
 
         self.textAtlasName.setText(self.atlas.name)
         self.meshName.setText('Brain View')
         self.textAtlasName.textChanged.connect(self.atlas_name_change)
+
+    def init_brain_widget(self):
+        self.brainWidget.init_brain_view(brain_mesh_file)
+        size = self.sliderRegions.value()/10.0
+        show_only_selected = self.checkBoxShowOnlySelected.isChecked()
+        show_brain_regions = self.actionShow_brain_regions.isChecked()
+        self.brainWidget.init_brain_regions(self.atlas.brain_regions, size, self.get_checked(), show_brain_regions, show_only_selected)
 
     def init_combo_box(self):
         self.mesh_file_paths = []
@@ -210,7 +216,7 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def show_brain_regions(self, state):
         if (self.actionShow_brain_regions.isChecked() != self.checkBoxShowBrainRegions.isChecked()):
-            self.brainWidget.show_brain_regions(state)
+            self.brainWidget.set_brain_regions_visible(state != 0)
             self.actionShow_brain_regions.setChecked(state != 0)
             self.checkBoxShowBrainRegions.setChecked(state != 0)
             if state == 0:
@@ -230,7 +236,7 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def show_only_selected(self, state):
         self.brainWidget.show_only_selected = (state != 0)
-        self.brainWidget.update_brain_regions()
+        self.brainWidget.update_brain_regions_plot()
 
     def select_all(self):
         selected = np.arange(len(self.atlas.brain_regions))
@@ -289,7 +295,9 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
             pass #left/right
         elif column == 7:
             pass #Notes
-        self.brainWidget.update_brain_regions()
+
+#        self.brainWidget.set_selected(checked)
+        self.brainWidget.update_brain_regions(self.atlas.brain_regions, self.get_checked())
 
     def update_table(self, selected = None):
         if np.any(selected == None):
@@ -299,7 +307,7 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.tableWidget.clearContents()
         self.tableWidget.setRowCount(0)
         self.check_boxes = []
-        self.brainWidget.selected_regions = []
+#        self.brainWidget.selected_regions = []
 
         for i in range(self.atlas.brain_region_number()):
             self.tableWidget.setRowCount(i+1)
@@ -330,7 +338,8 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
             item = QTableWidgetItem(str(self.atlas.brain_regions[i].z))
             self.tableWidget.setItem(i, 5, item)
 
-        self.brainWidget.update_brain_regions()
+#        self.brainWidget.set_selected(self.get_checked())
+        self.brainWidget.update_brain_regions(self.atlas.brain_regions, self.get_checked())
         self.tableWidget.blockSignals(False)
 
     def check_box_changed(self, state):
