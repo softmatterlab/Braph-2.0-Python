@@ -3,6 +3,7 @@ import xml.etree.ElementTree as ET
 
 class BrainRegion():
     def __init__(self, label = 'BR', name = 'br_name', x = 0, y = 0, z = 0, hemisphere = ".", notes = "."):
+        self.observers = []
         self.label = label
         self.name = name
         self.x = x
@@ -10,6 +11,17 @@ class BrainRegion():
         self.z = z
         self.hemisphere = hemisphere
         self.notes = notes
+
+    def set(self, **kwargs):
+        self.__dict__.update(kwargs)
+        self.notify_observers()
+
+    def add_observer(self, observer):
+        self.observers.append(observer)
+
+    def notify_observers(self):
+        for observer in self.observers:
+            observer()
 
     def to_string(self):
         pass

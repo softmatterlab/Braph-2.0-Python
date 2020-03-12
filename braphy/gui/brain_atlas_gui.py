@@ -282,22 +282,19 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def changeCell(self, row, column):
         if column == 1:
-            self.atlas.brain_regions[row].label = self.tableWidget.item(row, column).text()
+            self.atlas.brain_regions[row].set(label = self.tableWidget.item(row, column).text())
         elif column == 2:
-            self.atlas.brain_regions[row].name = self.tableWidget.item(row, column).text()
+            self.atlas.brain_regions[row].set(name = self.tableWidget.item(row, column).text())
         elif column == 3:
-            self.atlas.brain_regions[row].x = float(self.tableWidget.item(row, column).text())
+            self.atlas.brain_regions[row].set(x = float(self.tableWidget.item(row, column).text()))
         elif column == 4:
-            self.atlas.brain_regions[row].y = float(self.tableWidget.item(row, column).text())
+            self.atlas.brain_regions[row].set(y = float(self.tableWidget.item(row, column).text()))
         elif column == 5:
-            self.atlas.brain_regions[row].z = float(self.tableWidget.item(row, column).text())
+            self.atlas.brain_regions[row].set(z = float(self.tableWidget.item(row, column).text()))
         elif column == 6:
             pass #left/right
         elif column == 7:
             pass #Notes
-
-#        self.brainWidget.set_selected(checked)
-        self.brainWidget.update_brain_regions(self.atlas.brain_regions, self.get_checked())
 
     def update_table(self, selected = None):
         if np.any(selected == None):
@@ -307,7 +304,6 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.tableWidget.clearContents()
         self.tableWidget.setRowCount(0)
         self.check_boxes = []
-#        self.brainWidget.selected_regions = []
 
         for i in range(self.atlas.brain_region_number()):
             self.tableWidget.setRowCount(i+1)
@@ -338,8 +334,7 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
             item = QTableWidgetItem(str(self.atlas.brain_regions[i].z))
             self.tableWidget.setItem(i, 5, item)
 
-#        self.brainWidget.set_selected(self.get_checked())
-        self.brainWidget.update_brain_regions(self.atlas.brain_regions, self.get_checked())
+        self.brainWidget.update_brain_regions(self.get_checked())
         self.tableWidget.blockSignals(False)
 
     def check_box_changed(self, state):

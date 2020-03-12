@@ -31,11 +31,11 @@ class BrainWidget(GLViewWidget):
         self.init_brain_mesh(mesh_file)
 
     def init_brain_regions(self, brain_regions, size, selected, show_brain_regions, show_only_selected):
-        self.brain_regions_init = True
+        self.brain_regions = brain_regions
         self.brain_region_size = size
         self.show_brain_regions = show_brain_regions
         self.show_only_selected = show_only_selected
-        self.update_brain_regions(brain_regions, selected)
+        self.update_brain_regions(selected)
 
     def init_axis(self):
         self.ax = gl.GLAxisItem()
@@ -70,13 +70,6 @@ class BrainWidget(GLViewWidget):
         GLViewWidget.paintGL(self, *args, **kwds)
         self.qglColor(QColor("k"))
         if self.show_labels_bool:
-            '''
-            for i in range(len(self.gui_brain_regions)):
-                if self.show_only_selected and i not in self.selected_regions:
-                    continue
-                region = self.brain_regions[i]
-                self.renderText(region.x, region.y, region.z, region.label)
-            '''
             for gui_brain_region in self.gui_brain_regions:
                 if self.brain_region_visible(gui_brain_region.selected):
                     pos = gui_brain_region.pos()
@@ -192,13 +185,13 @@ class BrainWidget(GLViewWidget):
         if brain_removed:
             self.addItem(self.brain_mesh)
 
-
-    def update_brain_regions(self, brain_regions, selected_regions):
+    def update_brain_regions(self, selected_regions):
         self.gui_brain_regions = []
-        for i in range(len(brain_regions)):
+        for i in range(len(self.brain_regions)):
             selected = (i in selected_regions)
-            brain_region = brain_regions[i]
+            brain_region = self.brain_regions[i]
             gui_brain_region = GUIBrainRegion(brain_region, self.brain_region_size, selected)
+            gui_brain_region.add_observer(self.update)
             self.gui_brain_regions.append(gui_brain_region)
         self.update_brain_regions_plot()
 
@@ -278,14 +271,38 @@ class BrainWidget(GLViewWidget):
 
 class GUIBrainRegion(gl.GLMeshItem):
     def __init__(self, brain_region, size, selected):
-        self.label = brain_region.label
-        self.x = brain_region.x
-        self.y = brain_region.y
-        self.z = brain_region.z
+        self.brain_region = brain_region
+        self.label = self.brain_region.label
+        self.x = self.brain_region.x
+        self.y = self.brain_region.y
+        self.z = self.brain_region.z
         meshdata = gl.MeshData.sphere(8, 8, radius=size)
         super().__init__(meshdata=meshdata, shader='shaded')
         self.set_selected(selected)
         self.translate(self.x, self.y, self.z)
+        brain_region.add_observer(self.brain_region_changed)
+        self.observers = []
+
+    def brain_region_changed(self):
+        self.label = self.brain_region.label
+        self.update_pos()
+        self.notify_observers()
+
+    def update_pos(self):
+        dx = self.brain_region.x - self.x
+        dy = self.brain_region.y - self.y
+        dz = self.brain_region.z - self.z
+        self.x += dx
+        self.y += dy
+        self.z += dz
+        self.translate(dx, dy, dz)
+
+    def add_observer(self, observer):
+        self.observers.append(observer)
+
+    def notify_observers(self):
+        for observer in self.observers:
+            observer()
 
     def pos(self):
         return (self.x ,self.y, self.z)
