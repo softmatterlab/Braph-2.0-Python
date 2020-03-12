@@ -9,16 +9,16 @@ import numpy as np
 
 brain_distance_default = 230
 
-class BrainWidget(GLViewWidget):
+class BrainAtlasWidget(GLViewWidget):
     MOUSE_MODE_DEFAULT = 0
     MOUSE_MODE_ZOOM_IN = 1
     MOUSE_MODE_ZOOM_OUT = 2
     MOUSE_MODE_PAN = 3
     MOUSE_MODE_ROTATE = 4
     def __init__(self, mesh_file, parent = None):
-        super(BrainWidget, self).__init__(parent)
+        super(BrainAtlasWidget, self).__init__(parent)
         self.brain_color = [0.7, 0.6, 0.55, 1]
-        self.mouse_mode = BrainWidget.MOUSE_MODE_DEFAULT
+        self.mouse_mode = BrainAtlasWidget.MOUSE_MODE_DEFAULT
         self.gui_brain_regions = []
         self.init_axis()
         self.init_grid()
@@ -203,21 +203,21 @@ class BrainWidget(GLViewWidget):
                 self.pan(diff.x(), 0, diff.y(), relative=True)
             else:
                 self.pan(diff.x(), diff.y(), 0, relative=True)
-        if self.mouse_mode == BrainWidget.MOUSE_MODE_DEFAULT:
+        if self.mouse_mode == BrainAtlasWidget.MOUSE_MODE_DEFAULT:
             self.mouseMoveEventDefault(ev)
-        elif self.mouse_mode == BrainWidget.MOUSE_MODE_ZOOM_IN:
+        elif self.mouse_mode == BrainAtlasWidget.MOUSE_MODE_ZOOM_IN:
             pass
-        elif self.mouse_mode == BrainWidget.MOUSE_MODE_ZOOM_OUT:
+        elif self.mouse_mode == BrainAtlasWidget.MOUSE_MODE_ZOOM_OUT:
             pass
-        elif self.mouse_mode == BrainWidget.MOUSE_MODE_PAN:
+        elif self.mouse_mode == BrainAtlasWidget.MOUSE_MODE_PAN:
             self.mouseMoveEventPan(ev)
-        elif self.mouse_mode == BrainWidget.MOUSE_MODE_ROTATE:
+        elif self.mouse_mode == BrainAtlasWidget.MOUSE_MODE_ROTATE:
             self.mouseMoveEventRotate(ev)
 
     def mouseReleaseEvent(self, ev):
-        if self.mouse_mode == BrainWidget.MOUSE_MODE_ZOOM_IN:
+        if self.mouse_mode == BrainAtlasWidget.MOUSE_MODE_ZOOM_IN:
             self.mouseReleaseEventZoomIn(ev)
-        elif self.mouse_mode == BrainWidget.MOUSE_MODE_ZOOM_OUT:
+        elif self.mouse_mode == BrainAtlasWidget.MOUSE_MODE_ZOOM_OUT:
             self.mouseReleaseEventZoomOut(ev)
 
     def mouseMoveEventDefault(self, ev):

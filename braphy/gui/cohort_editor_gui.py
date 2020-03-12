@@ -1,6 +1,6 @@
 import sys
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
-from PyQt5.QtWidgets import *#QFileDialog, QTableWidget, QTableWidgetItem, QRadioButton, QWidget, 
+from PyQt5.QtWidgets import *
 from braphy.utility.helper_functions import abs_path_from_relative
 
 import braphy.gui.averageswidget
@@ -8,10 +8,6 @@ import braphy.gui.brainwidget
 import braphy.gui.groupwidget
 import braphy.gui.subjectwidget
 import braphy.gui.icons_rc
-#from braphy.gui.averageswidget import AveragesWidget
-#from braphy.gui.brainwidget import BrainWidget
-#from braphy.gui.averageswidget import AveragesWidget
-#from braphy.gui.averageswidget import AveragesWidget
 from functools import partial
 import xml.etree.ElementTree as ET
 
@@ -75,8 +71,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.set_brain_view_actions_visible(False)
 
     def brain_page(self):
-        self.stackedWidget.setCurrentIndex(3)
-        self.set_brain_view_actions_visible(True)
+        pass
 
     def init_actions(self):
         self.actionOpen.triggered.connect(self.open)

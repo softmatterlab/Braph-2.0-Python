@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import *
 from braphy.atlas.brain_atlas import BrainAtlas
 from braphy.utility.helper_functions import abs_path_from_relative, load_nv
 import numpy as np
-from braphy.gui.brain_widget import BrainWidget
+from braphy.gui.brain_atlas_widget import BrainAtlasWidget
 
 qtCreatorFile = abs_path_from_relative(__file__, "ui_files/brain_atlas.ui")
 brain_mesh_file_name = "BrainMesh_ICBM152.nv"
@@ -373,19 +373,19 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def zoom_in(self):
         self.set_cursor('zoom_in.png')
-        self.brainWidget.mouse_mode = BrainWidget.MOUSE_MODE_ZOOM_IN
+        self.brainWidget.mouse_mode = BrainAtlasWidget.MOUSE_MODE_ZOOM_IN
 
     def zoom_out(self):
         self.set_cursor('zoom_out.png')
-        self.brainWidget.mouse_mode = BrainWidget.MOUSE_MODE_ZOOM_OUT
+        self.brainWidget.mouse_mode = BrainAtlasWidget.MOUSE_MODE_ZOOM_OUT
 
     def pan(self):
         self.set_cursor('hand.png')
-        self.brainWidget.mouse_mode = BrainWidget.MOUSE_MODE_PAN
+        self.brainWidget.mouse_mode = BrainAtlasWidget.MOUSE_MODE_PAN
 
     def rotate(self):
         self.set_cursor('rotate.png')
-        self.brainWidget.mouse_mode = BrainWidget.MOUSE_MODE_ROTATE
+        self.brainWidget.mouse_mode = BrainAtlasWidget.MOUSE_MODE_ROTATE
 
     def find(self):
         self.set_cursor('cursor.png')

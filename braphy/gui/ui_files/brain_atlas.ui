@@ -211,7 +211,7 @@ p, li { white-space: pre-wrap; }
           </layout>
          </item>
          <item>
-          <widget class="BrainWidget" name="brainWidget"/>
+          <widget class="BrainAtlasWidget" name="brainWidget"/>
          </item>
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -886,9 +886,9 @@ p, li { white-space: pre-wrap; }
  </widget>
  <customwidgets>
   <customwidget>
-   <class>BrainWidget</class>
+   <class>BrainAtlasWidget</class>
    <extends>QGraphicsView</extends>
-   <header>braphy.gui.brain_widget</header>
+   <header>braphy.gui.brain_atlas_widget</header>
   </customwidget>
  </customwidgets>
  <resources/>
