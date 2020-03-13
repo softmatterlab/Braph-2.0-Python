@@ -29,7 +29,7 @@ class MeasureLocalEfficiency(Measure):
                 else:
                     A_subgraph = A[neighbours,:][:,neighbours] * np.sqrt(np.dot(A[i,neighbours], A[neighbours,i]))
 
-                D_subgraph = MeasureDistance.distance(A_subgraph, graph.is_weighted(), graph.is_directed())
+                D_subgraph = MeasureDistance.distance(A_subgraph, graph.is_weighted(), graph.is_directed())['distance']
                 D_subgraph_inverse = divide_without_warning(1, D_subgraph)
                 np.fill_diagonal(D_subgraph_inverse, 0)
 

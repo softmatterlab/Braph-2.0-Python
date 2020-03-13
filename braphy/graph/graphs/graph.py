@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 import numpy as np
-from scipy.sparse.csgraph import dijkstra
 import copy
 from braphy.graph.graphs.random_graph import RandomGraph
 

@@ -56,6 +56,22 @@ class TestDistance(unittest.TestCase):
         D = graph.get_measure(MeasureDistance, 'distance')
         self.assertSequenceEqual(D.tolist(), true_distance)
 
+    def test_graphWU_2(self):
+        A = np.array([[0.0, 0.1, 0.2, 0.25, 0.0],
+                      [0.125, 0.0, 0.0, 0.0, 0.0],
+                      [0.2, 0.5, 0.0, 0.25, 0.0],
+                      [0.125, 10.0, 0.0, 0.0, 0.0],
+                      [0.0, 0.0, 0.0, 0.0, 0.0]])
+        true_edge_number_distance = [[0, 2, 1, 1, 0],
+                                     [2, 0, 1, 1, 0],
+                                     [1, 1, 0, 2, 0],
+                                     [1, 1, 2, 0, 0],
+                                     [0, 0, 0, 0, 0]]
+        settings = GraphSettings.get_wu()
+        graph = GraphFactory.get_graph(A, settings)
+        edge_number_distance = graph.get_measure(MeasureDistance, 'edge_number_distance')
+        self.assertSequenceEqual(edge_number_distance.tolist(), true_edge_number_distance)
+
     def test_graphWD(self):
         A = np.array([[0.0, 0.1, 0.5, 0.4, 0.0],
                       [0.8, 0.0, 0.0, 0.0, 0.0],
@@ -71,6 +87,23 @@ class TestDistance(unittest.TestCase):
         graph = GraphFactory.get_graph(A, settings)
         D = graph.get_measure(MeasureDistance, 'distance')
         self.assertSequenceEqual(D.tolist(), true_distance)
+
+    def test_graphWD_2(self):
+        A = np.array([[0.0, 0.1, 0.2, 0.25, 0.0],
+                      [0.125, 0.0, 0.0, 0.0, 0.0],
+                      [0.2, 0.5, 0.0, 0.25, 0.0],
+                      [0.125, 10.0, 0.0, 0.0, 0.0],
+                      [0.0, 0.0, 0.0, 0.0, 0.0]])
+        true_edge_number_distance = [[0, 2, 1, 1, 0],
+                                     [1, 0, 2, 2, 0],
+                                     [1, 1, 0, 1, 0],
+                                     [1, 1, 2, 0, 0],
+                                     [0, 0, 0, 0, 0]]
+        settings = GraphSettings.get_wd()
+        graph = GraphFactory.get_graph(A, settings)
+        edge_number_distance = graph.get_measure(MeasureDistance, 'edge_number_distance')
+        self.assertSequenceEqual(edge_number_distance.tolist(), true_edge_number_distance)
+
 
     def test_BD_disconnected(self):
         A = np.array([[1, 0, 1, 1, 1], [0, 1, 1, 0, 1], [1, 0, 1, 1, 1], [0, 0, 0, 0, 0],
