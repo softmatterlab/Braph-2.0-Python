@@ -20,6 +20,7 @@ class BrainAtlasWidget(GLViewWidget):
         self.brain_color = [0.7, 0.6, 0.55, 1]
         self.mouse_mode = BrainAtlasWidget.MOUSE_MODE_DEFAULT
         self.gui_brain_regions = []
+        self.show_labels_bool = 0
         self.init_axis()
         self.init_grid()
 

@@ -3,10 +3,6 @@ from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from PyQt5.QtWidgets import *
 from braphy.utility.helper_functions import abs_path_from_relative
 
-import braphy.gui.averageswidget
-import braphy.gui.brainwidget
-import braphy.gui.groupwidget
-import braphy.gui.subjectwidget
 import braphy.gui.icons_rc
 from functools import partial
 import xml.etree.ElementTree as ET
@@ -52,11 +48,6 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.btnInvert.clicked.connect(self.invert_group)
         self.btnMerge.clicked.connect(self.merge_groups)
         self.btnIntersect.clicked.connect(self.intersect_groups)
-
-        self.btnGroupPage.clicked.connect(self.group_page)
-        self.btnSubjectPage.clicked.connect(self.subject_page)
-        self.btnAveragesPage.clicked.connect(self.averages_page)
-        self.btnBrainPage.clicked.connect(self.brain_page)
 
     def group_page(self):
         self.stackedWidget.setCurrentIndex(0)
