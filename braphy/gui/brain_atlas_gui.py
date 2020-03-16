@@ -55,6 +55,15 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.comboBox.currentIndexChanged.connect(self.select_brain_mesh)
         self.last_combobox_index = 0
 
+    def set_locked(self, locked):
+        lock_items = [self.tableWidget, self.textAtlasName, self.actionOpen, self.actionImport_txt, self.actionImport_xls,
+                      self.actionImport_xml, self.btnAdd, self.btnAddAbove, self.btnAddBelow, self.btnRemove, self.btnMoveUp,
+                      self.btnMoveDown, self.btnMoveToTop, self.btnMoveToBottom, self.actionAdd, self.actionAdd_above,
+                      self.actionAdd_below, self.actionRemove, self.actionMove_up, self.actionMove_down, self.actionMove_to_top,
+                      self.actionMove_to_bottom]
+        for item in lock_items:
+            item.setEnabled(not locked)
+
     def select_brain_mesh(self, i):
         if self.comboBox.currentText() == 'Open...':
             options = QFileDialog.Options()
@@ -168,7 +177,6 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionAdd_above.triggered.connect(self.add_above)
         self.actionAdd_below.triggered.connect(self.add_below)
         self.actionRemove.triggered.connect(self.remove)
-        self.actionMove_up.triggered.connect(self.remove)
         self.actionMove_up.triggered.connect(self.move_up)
         self.actionMove_down.triggered.connect(self.move_down)
         self.actionMove_to_top.triggered.connect(self.move_to_top)
