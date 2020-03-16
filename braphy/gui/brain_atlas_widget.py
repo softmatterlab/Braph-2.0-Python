@@ -24,6 +24,27 @@ class BrainAtlasWidget(GLViewWidget):
         self.orthographic = False
         self.init_axis()
         self.init_grid()
+        self.interaction_enabled = True
+        self.timer = None
+        self.brainBackgroundColor = (200, 200, 200, 255)
+
+    def setBrainBackgroundColor(self, rgba):
+        self.brainBackgroundColor = rgba
+        self.setBackgroundColor(self.brainBackgroundColor)
+
+    def update_orbit(self):
+        self.orbit(0.5, 0)
+
+    def animate(self, on):
+        if not self.timer:
+            self.timer = QtCore.QTimer()
+            self.timer.timeout.connect(self.update_orbit)
+        if on:
+            self.interaction_enabled = False
+            self.timer.start(10)
+        else:
+            self.interaction_enabled = True
+            self.timer.stop()
 
     def set_orthographic(self, orthographic):
         if orthographic:
@@ -69,7 +90,7 @@ class BrainAtlasWidget(GLViewWidget):
 
     def init_brain_mesh(self, mesh_file):
         self.opts['distance'] = brain_distance_default
-        self.setBackgroundColor((200, 200, 200, 255))
+        self.setBackgroundColor(self.brainBackgroundColor)
 
         data = load_nv(mesh_file)
         self.brain_mesh = gl.GLMeshItem(vertexes=data['vertices'], faces=data['faces'], shader = 'normalColor')
@@ -207,7 +228,14 @@ class BrainAtlasWidget(GLViewWidget):
             self.gui_brain_regions.append(gui_brain_region)
         self.update_brain_regions_plot()
 
+    def wheelEvent(self, ev):
+        if not self.interaction_enabled:
+            return
+        super().wheelEvent(ev)
+
     def mouseMoveEvent(self, ev):
+        if not self.interaction_enabled:
+            return
         if ev.buttons() == QtCore.Qt.MidButton:
             diff = ev.pos() - self.mousePos
             self.mousePos = ev.pos()
@@ -227,6 +255,8 @@ class BrainAtlasWidget(GLViewWidget):
             self.mouseMoveEventRotate(ev)
 
     def mouseReleaseEvent(self, ev):
+        if not self.interaction_enabled:
+            return
         if self.mouse_mode == BrainAtlasWidget.MOUSE_MODE_ZOOM_IN:
             self.mouseReleaseEventZoomIn(ev)
         elif self.mouse_mode == BrainAtlasWidget.MOUSE_MODE_ZOOM_OUT:
