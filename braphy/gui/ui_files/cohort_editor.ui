@@ -439,7 +439,7 @@ p, li { white-space: pre-wrap; }
                  <number>0</number>
                 </property>
                 <item row="2" column="1">
-                 <widget class="QPushButton" name="btnAddBelow_2">
+                 <widget class="QPushButton" name="btnAddBelow">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                     <horstretch>0</horstretch>
@@ -464,7 +464,7 @@ p, li { white-space: pre-wrap; }
                  </widget>
                 </item>
                 <item row="0" column="0">
-                 <widget class="QPushButton" name="btnSelectAll_2">
+                 <widget class="QPushButton" name="btnSelectAll">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                     <horstretch>0</horstretch>
@@ -489,7 +489,7 @@ p, li { white-space: pre-wrap; }
                  </widget>
                 </item>
                 <item row="1" column="3">
-                 <widget class="QPushButton" name="btnMoveDown_3">
+                 <widget class="QPushButton" name="btnMoveDown2">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                     <horstretch>0</horstretch>
@@ -514,7 +514,7 @@ p, li { white-space: pre-wrap; }
                  </widget>
                 </item>
                 <item row="1" column="1">
-                 <widget class="QPushButton" name="btnAddAbove_2">
+                 <widget class="QPushButton" name="btnAddAbove">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                     <horstretch>0</horstretch>
@@ -539,7 +539,7 @@ p, li { white-space: pre-wrap; }
                  </widget>
                 </item>
                 <item row="0" column="3">
-                 <widget class="QPushButton" name="btnMoveUp_3">
+                 <widget class="QPushButton" name="btnMoveUp2">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                     <horstretch>0</horstretch>
@@ -564,7 +564,7 @@ p, li { white-space: pre-wrap; }
                  </widget>
                 </item>
                 <item row="0" column="1">
-                 <widget class="QPushButton" name="btnAddSubject_2">
+                 <widget class="QPushButton" name="btnAddSubject">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                     <horstretch>0</horstretch>
@@ -589,7 +589,7 @@ p, li { white-space: pre-wrap; }
                  </widget>
                 </item>
                 <item row="0" column="2">
-                 <widget class="QPushButton" name="btnRemove_3">
+                 <widget class="QPushButton" name="btnRemove2">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                     <horstretch>0</horstretch>
@@ -614,7 +614,7 @@ p, li { white-space: pre-wrap; }
                  </widget>
                 </item>
                 <item row="1" column="0">
-                 <widget class="QPushButton" name="btnClearSelection_2">
+                 <widget class="QPushButton" name="btnClearSelection">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                     <horstretch>0</horstretch>
@@ -639,7 +639,7 @@ p, li { white-space: pre-wrap; }
                  </widget>
                 </item>
                 <item row="3" column="3">
-                 <widget class="QPushButton" name="btnMoveToBottom_2">
+                 <widget class="QPushButton" name="btnMoveToBottom">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                     <horstretch>0</horstretch>
@@ -664,7 +664,7 @@ p, li { white-space: pre-wrap; }
                  </widget>
                 </item>
                 <item row="2" column="3">
-                 <widget class="QPushButton" name="btnMoveToTop_2">
+                 <widget class="QPushButton" name="btnMoveToTop">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                     <horstretch>0</horstretch>
@@ -712,7 +712,7 @@ p, li { white-space: pre-wrap; }
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="QPushButton" name="btnNewGroup_2">
+                 <widget class="QPushButton" name="btnNewGroup">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                     <horstretch>0</horstretch>
@@ -796,7 +796,7 @@ p, li { white-space: pre-wrap; }
              </spacer>
             </item>
             <item>
-             <widget class="QPushButton" name="btnSaveSubjects_2">
+             <widget class="QPushButton" name="btnSaveSubjects">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -928,7 +928,7 @@ p, li { white-space: pre-wrap; }
              </layout>
             </item>
             <item>
-             <widget class="QPushButton" name="btnComparison_2">
+             <widget class="QPushButton" name="btnComparison">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -1074,27 +1074,27 @@ p, li { white-space: pre-wrap; }
     <addaction name="actionLoad_subject_group_from_txt"/>
     <addaction name="actionLoad_subject_group_from_xml"/>
     <addaction name="separator"/>
-    <addaction name="actionAdd"/>
-    <addaction name="actionremove"/>
-    <addaction name="actionMove_up"/>
-    <addaction name="actionMove_down"/>
+    <addaction name="actionAdd_group"/>
+    <addaction name="actionRemove_group"/>
+    <addaction name="actionMove_group_up"/>
+    <addaction name="actionMove_group_down"/>
    </widget>
    <widget class="QMenu" name="menuSubjects">
     <property name="title">
      <string>Subjects</string>
     </property>
-    <addaction name="actionSelect_all"/>
+    <addaction name="actionSelect_all_subjects"/>
     <addaction name="separator"/>
     <addaction name="actionAdd_subject"/>
-    <addaction name="actionAdd_above"/>
-    <addaction name="actionAdd_below"/>
+    <addaction name="actionAdd_subject_above"/>
+    <addaction name="actionAdd_subject_below"/>
     <addaction name="separator"/>
-    <addaction name="actionremove_2"/>
+    <addaction name="actionRemove_subject"/>
     <addaction name="separator"/>
-    <addaction name="actionMove_up_2"/>
-    <addaction name="actionMove_down_2"/>
-    <addaction name="actionMove_to_top"/>
-    <addaction name="actionMove_to_bottom"/>
+    <addaction name="actionMove_subject_up"/>
+    <addaction name="actionMove_subject_down"/>
+    <addaction name="actionMove_subject_to_top"/>
+    <addaction name="actionMove_subject_to_bottom"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
@@ -1115,7 +1115,7 @@ p, li { white-space: pre-wrap; }
     <property name="title">
      <string>Graph Analysis</string>
     </property>
-    <addaction name="actionNew_MRO_graph_analysis"/>
+    <addaction name="actionNew_MRI_graph_analysis"/>
    </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="title">
@@ -1153,6 +1153,7 @@ p, li { white-space: pre-wrap; }
    <addaction name="separator"/>
    <addaction name="actionInsert_colorbar"/>
    <addaction name="separator"/>
+   <addaction name="action3D"/>
    <addaction name="actionSagittal_left"/>
    <addaction name="actionSagittal_right"/>
    <addaction name="actionAxial_dorsal"/>
@@ -1160,14 +1161,18 @@ p, li { white-space: pre-wrap; }
    <addaction name="actionCoronal_anterior"/>
    <addaction name="actionCoronal_posterior"/>
    <addaction name="separator"/>
-   <addaction name="actionBrain"/>
+   <addaction name="actionShow_brain"/>
    <addaction name="actionShow_axis"/>
    <addaction name="actionShow_grid"/>
    <addaction name="actionShow_symbols"/>
-   <addaction name="actionRegions"/>
+   <addaction name="actionShow_regions"/>
    <addaction name="actionShow_labels"/>
   </widget>
   <action name="actionOpen">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/buttons/open.png</normaloff>:/buttons/open.png</iconset>
+   </property>
    <property name="text">
     <string>Open ...</string>
    </property>
@@ -1176,6 +1181,10 @@ p, li { white-space: pre-wrap; }
    </property>
   </action>
   <action name="actionSave">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/buttons/save.png</normaloff>:/buttons/save.png</iconset>
+   </property>
    <property name="text">
     <string>Save</string>
    </property>
@@ -1218,27 +1227,27 @@ p, li { white-space: pre-wrap; }
     <string>Load subject group from xml ...</string>
    </property>
   </action>
-  <action name="actionMove_up">
+  <action name="actionMove_group_up">
    <property name="text">
     <string>Move up</string>
    </property>
   </action>
-  <action name="actionMove_down">
+  <action name="actionMove_group_down">
    <property name="text">
     <string>Move down</string>
    </property>
   </action>
-  <action name="actionAdd">
+  <action name="actionAdd_group">
    <property name="text">
     <string>Add</string>
    </property>
   </action>
-  <action name="actionremove">
+  <action name="actionRemove_group">
    <property name="text">
     <string>Remove</string>
    </property>
   </action>
-  <action name="actionSelect_all">
+  <action name="actionSelect_all_subjects">
    <property name="text">
     <string>Select all</string>
    </property>
@@ -1248,37 +1257,37 @@ p, li { white-space: pre-wrap; }
     <string>Add subject</string>
    </property>
   </action>
-  <action name="actionAdd_above">
+  <action name="actionAdd_subject_above">
    <property name="text">
     <string>Add above</string>
    </property>
   </action>
-  <action name="actionAdd_below">
+  <action name="actionAdd_subject_below">
    <property name="text">
     <string>Add below</string>
    </property>
   </action>
-  <action name="actionremove_2">
+  <action name="actionRemove_subject">
    <property name="text">
     <string>Remove</string>
    </property>
   </action>
-  <action name="actionMove_up_2">
+  <action name="actionMove_subject_up">
    <property name="text">
     <string>Move up</string>
    </property>
   </action>
-  <action name="actionMove_down_2">
+  <action name="actionMove_subject_down">
    <property name="text">
     <string>Move down</string>
    </property>
   </action>
-  <action name="actionMove_to_top">
+  <action name="actionMove_subject_to_top">
    <property name="text">
     <string>Move to top</string>
    </property>
   </action>
-  <action name="actionMove_to_bottom">
+  <action name="actionMove_subject_to_bottom">
    <property name="text">
     <string>Move to bottom</string>
    </property>
@@ -1287,20 +1296,32 @@ p, li { white-space: pre-wrap; }
    <property name="text">
     <string>Groups and Demographics</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+1</string>
+   </property>
   </action>
   <action name="actionSubject_Data">
    <property name="text">
     <string>Subject Data</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+2</string>
    </property>
   </action>
   <action name="actionGroup_Averages">
    <property name="text">
     <string>Group Averages</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+3</string>
+   </property>
   </action>
   <action name="actionBrain_View">
    <property name="text">
     <string>Brain View</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+4</string>
    </property>
   </action>
   <action name="actionGenerate_figure">
@@ -1308,7 +1329,7 @@ p, li { white-space: pre-wrap; }
     <string>Generate figure</string>
    </property>
   </action>
-  <action name="actionNew_MRO_graph_analysis">
+  <action name="actionNew_MRI_graph_analysis">
    <property name="text">
     <string>New MRI graph analysis ...</string>
    </property>
@@ -1319,38 +1340,76 @@ p, li { white-space: pre-wrap; }
    </property>
   </action>
   <action name="actionZoom_in">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/buttons/zoom_in.png</normaloff>:/buttons/zoom_in.png</iconset>
+   </property>
    <property name="text">
     <string>Zoom in</string>
    </property>
   </action>
   <action name="actionZoom_out">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/buttons/zoom_out.png</normaloff>:/buttons/zoom_out.png</iconset>
+   </property>
    <property name="text">
     <string>Zoom out</string>
    </property>
   </action>
   <action name="actionPan">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/buttons/hand.png</normaloff>:/buttons/hand.png</iconset>
+   </property>
    <property name="text">
     <string>Pan</string>
    </property>
   </action>
   <action name="action3D_rotation">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/buttons/rotate.png</normaloff>:/buttons/rotate.png</iconset>
+   </property>
    <property name="text">
     <string>3D rotation</string>
    </property>
   </action>
   <action name="actionData_cursor">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/buttons/cursor.png</normaloff>:/buttons/cursor.png</iconset>
+   </property>
    <property name="text">
     <string>Data cursor</string>
    </property>
   </action>
   <action name="actionInsert_colorbar">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Insert colorbar</string>
    </property>
   </action>
   <action name="action3D">
    <property name="icon">
-    <iconset>
+    <iconset resource="../icons.qrc">
      <normaloff>:/buttons/icon_view_3d.png</normaloff>:/buttons/icon_view_3d.png</iconset>
    </property>
    <property name="text">
@@ -1359,7 +1418,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionSagittal_left">
    <property name="icon">
-    <iconset>
+    <iconset resource="../icons.qrc">
      <normaloff>:/buttons/icon_view_sl.png</normaloff>:/buttons/icon_view_sl.png</iconset>
    </property>
    <property name="text">
@@ -1368,7 +1427,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionSagittal_right">
    <property name="icon">
-    <iconset>
+    <iconset resource="../icons.qrc">
      <normaloff>:/buttons/icon_view_sr.png</normaloff>:/buttons/icon_view_sr.png</iconset>
    </property>
    <property name="text">
@@ -1377,7 +1436,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionAxial_dorsal">
    <property name="icon">
-    <iconset>
+    <iconset resource="../icons.qrc">
      <normaloff>:/buttons/icon_view_ad.png</normaloff>:/buttons/icon_view_ad.png</iconset>
    </property>
    <property name="text">
@@ -1386,7 +1445,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionAxial_ventral">
    <property name="icon">
-    <iconset>
+    <iconset resource="../icons.qrc">
      <normaloff>:/buttons/icon_view_av.png</normaloff>:/buttons/icon_view_av.png</iconset>
    </property>
    <property name="text">
@@ -1395,7 +1454,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionCoronal_anterior">
    <property name="icon">
-    <iconset>
+    <iconset resource="../icons.qrc">
      <normaloff>:/buttons/icon_view_ca.png</normaloff>:/buttons/icon_view_ca.png</iconset>
    </property>
    <property name="text">
@@ -1404,16 +1463,19 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionCoronal_posterior">
    <property name="icon">
-    <iconset>
+    <iconset resource="../icons.qrc">
      <normaloff>:/buttons/icon_view_cp.png</normaloff>:/buttons/icon_view_cp.png</iconset>
    </property>
    <property name="text">
     <string>Coronal posterior</string>
    </property>
   </action>
-  <action name="actionBrain">
+  <action name="actionShow_brain">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="icon">
-    <iconset>
+    <iconset resource="../icons.qrc">
      <normaloff>:/buttons/icon_brain.png</normaloff>:/buttons/icon_brain.png</iconset>
    </property>
    <property name="text">
@@ -1421,8 +1483,11 @@ p, li { white-space: pre-wrap; }
    </property>
   </action>
   <action name="actionShow_axis">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="icon">
-    <iconset>
+    <iconset resource="../icons.qrc">
      <normaloff>:/buttons/icon_axis.png</normaloff>:/buttons/icon_axis.png</iconset>
    </property>
    <property name="text">
@@ -1430,8 +1495,11 @@ p, li { white-space: pre-wrap; }
    </property>
   </action>
   <action name="actionShow_grid">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="icon">
-    <iconset>
+    <iconset resource="../icons.qrc">
      <normaloff>:/buttons/icon_grid.png</normaloff>:/buttons/icon_grid.png</iconset>
    </property>
    <property name="text">
@@ -1439,17 +1507,23 @@ p, li { white-space: pre-wrap; }
    </property>
   </action>
   <action name="actionShow_symbols">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="icon">
-    <iconset>
+    <iconset resource="../icons.qrc">
      <normaloff>:/buttons/icon_symbol.png</normaloff>:/buttons/icon_symbol.png</iconset>
    </property>
    <property name="text">
     <string>Show symbols</string>
    </property>
   </action>
-  <action name="actionRegions">
+  <action name="actionShow_regions">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="icon">
-    <iconset>
+    <iconset resource="../icons.qrc">
      <normaloff>:/buttons/icon_sphere.png</normaloff>:/buttons/icon_sphere.png</iconset>
    </property>
    <property name="text">
@@ -1457,12 +1531,24 @@ p, li { white-space: pre-wrap; }
    </property>
   </action>
   <action name="actionShow_labels">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="icon">
-    <iconset>
+    <iconset resource="../icons.qrc">
      <normaloff>:/buttons/icon_label.png</normaloff>:/buttons/icon_label.png</iconset>
    </property>
    <property name="text">
     <string>Show labels</string>
+   </property>
+  </action>
+  <action name="action3D_2">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/buttons/icon_view_3d.png</normaloff>:/buttons/icon_view_3d.png</iconset>
+   </property>
+   <property name="text">
+    <string>3D</string>
    </property>
   </action>
  </widget>
@@ -1473,6 +1559,8 @@ p, li { white-space: pre-wrap; }
    <header>braphy.gui.brain_atlas_widget</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../icons.qrc"/>
+ </resources>
  <connections/>
 </ui>

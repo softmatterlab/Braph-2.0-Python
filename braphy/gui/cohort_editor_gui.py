@@ -49,24 +49,82 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.btnMerge.clicked.connect(self.merge_groups)
         self.btnIntersect.clicked.connect(self.intersect_groups)
 
-    def group_page(self):
-        self.stackedWidget.setCurrentIndex(0)
-        self.set_brain_view_actions_visible(False)
+        self.btnSelectAll.clicked.connect(self.select_all_subjects)
+        self.btnClearSelection.clicked.connect(self.clear_subject_selection)
+        self.btnAddSubject.clicked.connect(self.add_subject)
+        self.btnAddAbove.clicked.connect(self.add_subject_above)
+        self.btnAddBelow.clicked.connect(self.add_subject_below)
+        self.btnRemove2.clicked.connect(self.remove_subject)
+        self.btnMoveUp2.clicked.connect(self.move_subject_up)
+        self.btnMoveDown2.clicked.connect(self.move_subject_down)
+        self.btnNewGroup.clicked.connect(self.new_group)
 
-    def subject_page(self):
-        self.stackedWidget.setCurrentIndex(1)
-        self.set_brain_view_actions_visible(False)
+        self.btnSaveSubjects.clicked.connect(self.save_subjects)
 
-    def averages_page(self):
-        self.stackedWidget.setCurrentIndex(2)
-        self.set_brain_view_actions_visible(False)
+        self.btnComparison.clicked.connect(self.comparison)
 
-    def brain_page(self):
-        pass
+        self.btnViewSubjects.clicked.connect(self.view_subjects)
+        self.btnViewGroup.clicked.connect(self.view_group)
+        self.btnViewComparison.clicked.connect(self.view_comparison)
 
     def init_actions(self):
         self.actionOpen.triggered.connect(self.open)
+        self.actionSave.triggered.connect(self.save)
+        self.actionSave_as.triggered.connect(self.save_as)
+        self.actionImport_xml.triggered.connect(self.import_xml)
+        self.actionExport_xml.triggered.connect(self.export_xml)
+        self.actionClose.triggered.connect(self.close)
+
+        self.actionLoad_subject_group_from_xls.triggered.connect(self.load_xls_subject_group)
+        self.actionLoad_subject_group_from_txt.triggered.connect(self.load_txt_subject_group)
+        self.actionLoad_subject_group_from_xml.triggered.connect(self.load_xml_subject_group)
+        self.actionAdd_group.triggered.connect(self.add_new_group)
+        self.actionRemove_group.triggered.connect(self.remove_group)
+        self.actionMove_group_up.triggered.connect(self.move_group_up)
+        self.actionMove_group_down.triggered.connect(self.move_group_down)
+
+        self.actionAdd_subject.triggered.connect(self.add_subject)
+        self.actionAdd_subject_above.triggered.connect(self.add_subject_above)
+        self.actionAdd_subject_below.triggered.connect(self.add_subject_below)
+        self.actionRemove_subject.triggered.connect(self.remove_subject)
+        self.actionMove_subject_up.triggered.connect(self.move_subject_up)
+        self.actionMove_subject_down.triggered.connect(self.move_subject_down)
+        self.actionMove_subject_to_top.triggered.connect(self.move_subject_to_top)
+        self.actionMove_subject_to_bottom.triggered.connect(self.move_subject_to_bottom)
+
+        self.actionGroups_and_Demographics.triggered.connect(self.tab_groups_and_demographics)
+        self.actionSubject_Data.triggered.connect(self.tab_subject_data)
+        self.actionGroup_Averages.triggered.connect(self.tab_group_averages)
+        self.actionBrain_View.triggered.connect(self.tab_brain_view)
+
+        self.actionGenerate_figure.triggered.connect(self.generate_figure)
         self.set_brain_view_actions_visible(False)
+
+        self.actionNew_MRI_graph_analysis.triggered.connect(self.new_MRI_graph_analysis)
+
+        self.actionAbout.triggered.connect(self.about)
+
+        self.actionZoom_in.triggered.connect(self.zoom_in)
+        self.actionZoom_out.triggered.connect(self.zoom_out)
+        self.actionPan.triggered.connect(self.pan)
+        self.action3D_rotation.triggered.connect(self.rotation)
+        self.actionData_cursor.triggered.connect(self.data_cursor)
+        self.actionInsert_colorbar.triggered.connect(self.insert_colorbar)
+
+        self.action3D.triggered.connect(self.view_3D)
+        self.actionSagittal_left.triggered.connect(self.sagittal_left)
+        self.actionSagittal_right.triggered.connect(self.sagittal_right)
+        self.actionAxial_dorsal.triggered.connect(self.axial_dorsal)
+        self.actionAxial_ventral.triggered.connect(self.axial_ventral)
+        self.actionCoronal_anterior.triggered.connect(self.coronal_anterior)
+        self.actionCoronal_posterior.triggered.connect(self.coronal_posterior)
+
+        self.actionShow_brain.triggered.connect(self.show_brain)
+        self.actionShow_axis.triggered.connect(self.show_axis)
+        self.actionShow_grid.triggered.connect(self.show_grid)
+        self.actionShow_symbols.triggered.connect(self.show_symbols)
+        self.actionShow_regions.triggered.connect(self.show_regions)
+        self.actionShow_labels.triggered.connect(self.show_labels)
 
     def set_brain_view_actions_visible(self, state):
         self.actionZoom_in.setVisible(state)
@@ -82,15 +140,108 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionAxial_ventral.setVisible(state)
         self.actionCoronal_anterior.setVisible(state)
         self.actionCoronal_posterior.setVisible(state)
-        self.actionBrain.setVisible(state)
+        self.actionShow_brain.setVisible(state)
         self.actionShow_axis.setVisible(state)
         self.actionShow_grid.setVisible(state)
         self.actionShow_symbols.setVisible(state)
-        self.actionRegions.setVisible(state)
+        self.actionShow_regions.setVisible(state)
         self.actionShow_labels.setVisible(state)
+
+    def tab_groups_and_demographics(self):
+        self.tabWidget.setCurrentIndex(0)
+
+    def tab_subject_data(self):
+        self.tabWidget.setCurrentIndex(1)
+
+    def tab_group_averages(self):
+        self.tabWidget.setCurrentIndex(2)
+
+    def tab_brain_view(self):
+        self.tabWidget.setCurrentIndex(3)
 
     def open(self):
         print("open")
+
+    def save(self):
+        pass
+
+    def save_as(self):
+        pass
+
+    def import_xml(self):
+        pass
+
+    def export_xml(self):
+        pass
+
+    def close(self):
+        pass
+
+    def generate_figure(self):
+        pass
+
+    def new_MRI_graph_analysis(self):
+        pass
+
+    def about(self):
+        pass
+
+    def zoom_in(self):
+        pass
+
+    def zoom_out(self):
+        pass
+
+    def pan(self):
+        pass
+
+    def rotation(self):
+        pass
+
+    def data_cursor(self):
+        pass
+
+    def insert_colorbar(self):
+        pass
+
+    def view_3D(self):
+        pass
+
+    def sagittal_left(self):
+        pass
+
+    def sagittal_right(self):
+        pass
+
+    def axial_dorsal(self):
+        pass
+
+    def axial_ventral(self):
+        pass
+
+    def coronal_anterior(self):
+        pass
+
+    def coronal_posterior(self):
+        pass
+
+    def show_brain(self):
+        pass
+
+    def show_axis(self):
+        pass
+
+    def show_grid(self):
+        pass
+
+    def show_symbols(self):
+        pass
+
+    def show_regions(self):
+        pass
+
+    def show_labels(self):
+        pass
 
     def btn_brain_atlas(self):
         self.load_atlas()
@@ -200,6 +351,56 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def intersect_groups(self):
         print("intersect")
+
+    def select_all_subjects(self):
+        pass
+
+    def clear_subject_selection(self):
+        pass
+
+    def add_subject(self):
+        pass
+
+    def add_subject_above(self):
+        pass
+
+    def add_subject_below(self):
+        pass
+
+    def remove_subject(self):
+        pass
+
+    def move_subject_up(self):
+        pass
+
+    def move_subject_down(self):
+        pass
+
+    def move_subject_to_top(self):
+        pass
+
+    def move_subject_to_bottom(self):
+        pass
+
+    def new_group(self):
+        pass
+
+    def save_subjects(self):
+        pass
+
+    def comparison(self):
+        pass
+
+    def view_subjects(self):
+        pass
+
+    def view_group(self):
+        pass
+
+    def view_comparison(self):
+        pass
+
+
 
 def run():
     app = QtWidgets.QApplication(sys.argv)
