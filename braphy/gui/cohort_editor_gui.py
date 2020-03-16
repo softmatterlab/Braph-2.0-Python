@@ -3,7 +3,7 @@ from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from PyQt5.QtWidgets import *
 from braphy.utility.helper_functions import abs_path_from_relative
 from braphy.gui.brain_atlas_widget import BrainAtlasWidget
-
+from braphy.gui.brain_atlas_gui import BrainAtlasGui
 import braphy.gui.icons_rc
 from functools import partial
 import xml.etree.ElementTree as ET
@@ -250,10 +250,13 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.brainWidget.show_labels(state)
 
     def btn_brain_atlas(self):
-        self.load_atlas()
-        self.atlas_loaded = True
-        self.btnAtlas.setText("View Atlas")
-        self.disable_menu_bar(False)
+        if not self.atlas_loaded:
+            self.load_atlas()
+        else:
+            self.brain_atlas_gui = BrainAtlasGui(self)
+            self.brain_atlas_gui.set_locked(True)
+            self.brain_atlas_gui.show()
+
 
     def load_atlas(self):
         print("Loading brain atlas...")
@@ -262,6 +265,9 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         fileName, _ = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()", "","atlas files (*.atlas)", options=options)
         if fileName:
             print(fileName)
+            self.atlas_loaded = True
+            self.btnAtlas.setText("View Atlas")
+            self.disable_menu_bar(False)
 
     def load_xls_subject_group(self):
         print("Loading xls subject group...")
