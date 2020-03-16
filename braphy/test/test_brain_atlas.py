@@ -77,7 +77,6 @@ class TestBrainAtlas(TestUtility):
         atlas = BrainAtlas(brain_regions=brain_regions)
 
         selected = atlas.move_up_brain_regions(np.array([1, 2]))
-        print(selected)
         self.assertSequenceEqual(selected.tolist(), [0, 1])
         self.assertSequenceEqual(atlas.get_brain_region_labels().tolist(), ['BR2', 'BR3', 'BR1'])
 

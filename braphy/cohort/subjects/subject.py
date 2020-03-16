@@ -1,15 +1,14 @@
 from abc import ABC, abstractmethod
 
 class Subject:
-    def __init__(self, atlases, id, groups):
-        self.atlases = atlases
+    def __init__(self, id = 'sub_id'):
         self.id = id
-        self.groups = groups
+        self.data_dict = {}
 
     @abstractmethod
-    def initialize_datadict(self):
+    def initialize_data_dict(self):
         pass
 
     @abstractmethod
-    def update_brainatlases(self, atlases):
+    def update_brain_atlases(self, atlases):
         pass

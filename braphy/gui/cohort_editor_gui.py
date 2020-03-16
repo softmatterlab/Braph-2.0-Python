@@ -2,12 +2,15 @@ import sys
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from PyQt5.QtWidgets import *
 from braphy.utility.helper_functions import abs_path_from_relative
+from braphy.gui.brain_atlas_widget import BrainAtlasWidget
 
 import braphy.gui.icons_rc
 from functools import partial
 import xml.etree.ElementTree as ET
 
 qtCreatorFile = abs_path_from_relative(__file__, "ui_files/cohort_editor.ui")
+brain_mesh_file_name = "BrainMesh_ICBM152.nv"
+brain_mesh_file = abs_path_from_relative(__file__, brain_mesh_file_name)
 
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 
@@ -19,8 +22,15 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.init_buttons()
         self.init_actions()
         self.init_table()
+        self.init_brain_widget()
         self.atlas_loaded = False
         self.disable_menu_bar(True)
+        self.set_brain_view_actions_visible(False)
+        self.tab_groups_and_demographics()
+
+    def init_brain_widget(self):
+        self.brainWidget.init_brain_view(brain_mesh_file)
+        self.brainWidget.change_transparency(0.5)
 
     def init_table(self):
         header = self.tableWidget.horizontalHeader()
@@ -97,8 +107,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionGroup_Averages.triggered.connect(self.tab_group_averages)
         self.actionBrain_View.triggered.connect(self.tab_brain_view)
 
-        self.actionGenerate_figure.triggered.connect(self.generate_figure)
-        self.set_brain_view_actions_visible(False)
+        self.actionGenerate_figure.triggered.connect(self.brainWidget.generate_figure)
 
         self.actionNew_MRI_graph_analysis.triggered.connect(self.new_MRI_graph_analysis)
 
@@ -111,13 +120,18 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionData_cursor.triggered.connect(self.data_cursor)
         self.actionInsert_colorbar.triggered.connect(self.insert_colorbar)
 
-        self.action3D.triggered.connect(self.view_3D)
-        self.actionSagittal_left.triggered.connect(self.sagittal_left)
-        self.actionSagittal_right.triggered.connect(self.sagittal_right)
-        self.actionAxial_dorsal.triggered.connect(self.axial_dorsal)
-        self.actionAxial_ventral.triggered.connect(self.axial_ventral)
-        self.actionCoronal_anterior.triggered.connect(self.coronal_anterior)
-        self.actionCoronal_posterior.triggered.connect(self.coronal_posterior)
+        group = QtWidgets.QActionGroup(self, exclusive = True)
+        for action in (self.actionZoom_in, self.actionZoom_out, self.actionPan,
+                       self.action3D_rotation, self.actionData_cursor):
+            group.addAction(action)
+
+        self.action3D.triggered.connect(self.brainWidget.show_3D)
+        self.actionSagittal_left.triggered.connect(self.brainWidget.sagittal_left)
+        self.actionSagittal_right.triggered.connect(self.brainWidget.sagittal_right)
+        self.actionAxial_dorsal.triggered.connect(self.brainWidget.axial_dorsal)
+        self.actionAxial_ventral.triggered.connect(self.brainWidget.axial_ventral)
+        self.actionCoronal_anterior.triggered.connect(self.brainWidget.coronal_anterior)
+        self.actionCoronal_posterior.triggered.connect(self.brainWidget.coronal_posterior)
 
         self.actionShow_brain.triggered.connect(self.show_brain)
         self.actionShow_axis.triggered.connect(self.show_axis)
@@ -147,16 +161,22 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionShow_regions.setVisible(state)
         self.actionShow_labels.setVisible(state)
 
+        self.actionShow_brain.setChecked(state)
+
     def tab_groups_and_demographics(self):
+        self.set_brain_view_actions_visible(False)
         self.tabWidget.setCurrentIndex(0)
 
     def tab_subject_data(self):
+        self.set_brain_view_actions_visible(False)
         self.tabWidget.setCurrentIndex(1)
 
     def tab_group_averages(self):
+        self.set_brain_view_actions_visible(False)
         self.tabWidget.setCurrentIndex(2)
 
     def tab_brain_view(self):
+        self.set_brain_view_actions_visible(True)
         self.tabWidget.setCurrentIndex(3)
 
     def open(self):
@@ -177,71 +197,57 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
     def close(self):
         pass
 
-    def generate_figure(self):
-        pass
-
     def new_MRI_graph_analysis(self):
         pass
 
     def about(self):
         pass
 
+    def set_cursor(self, file_name):
+        cursor_file = abs_path_from_relative(__file__, file_name)
+        pm = QtGui.QPixmap(cursor_file)
+        cursor = QtGui.QCursor(pm)
+        self.brainWidget.setCursor(cursor)
+
     def zoom_in(self):
-        pass
+        self.set_cursor('zoom_in.png')
+        self.brainWidget.mouse_mode = BrainAtlasWidget.MOUSE_MODE_ZOOM_IN
 
     def zoom_out(self):
-        pass
+        self.set_cursor('zoom_out.png')
+        self.brainWidget.mouse_mode = BrainAtlasWidget.MOUSE_MODE_ZOOM_OUT
 
     def pan(self):
-        pass
+        self.set_cursor('hand.png')
+        self.brainWidget.mouse_mode = BrainAtlasWidget.MOUSE_MODE_PAN
 
     def rotation(self):
-        pass
+        self.set_cursor('rotate.png')
+        self.brainWidget.mouse_mode = BrainAtlasWidget.MOUSE_MODE_ROTATE
 
     def data_cursor(self):
-        pass
+        self.set_cursor('cursor.png')
 
     def insert_colorbar(self):
         pass
 
-    def view_3D(self):
+    def show_brain(self, state):
+        self.brainWidget.show_brain(state)
+
+    def show_axis(self, state):
+        self.brainWidget.show_axis(state)
+
+    def show_grid(self, state):
+        self.brainWidget.show_grid(state)
+
+    def show_symbols(self, state):
         pass
 
-    def sagittal_left(self):
+    def show_regions(self, state):
         pass
 
-    def sagittal_right(self):
-        pass
-
-    def axial_dorsal(self):
-        pass
-
-    def axial_ventral(self):
-        pass
-
-    def coronal_anterior(self):
-        pass
-
-    def coronal_posterior(self):
-        pass
-
-    def show_brain(self):
-        pass
-
-    def show_axis(self):
-        pass
-
-    def show_grid(self):
-        pass
-
-    def show_symbols(self):
-        pass
-
-    def show_regions(self):
-        pass
-
-    def show_labels(self):
-        pass
+    def show_labels(self, state):
+        self.brainWidget.show_labels(state)
 
     def btn_brain_atlas(self):
         self.load_atlas()
@@ -399,8 +405,6 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def view_comparison(self):
         pass
-
-
 
 def run():
     app = QtWidgets.QApplication(sys.argv)

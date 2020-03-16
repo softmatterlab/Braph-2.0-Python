@@ -265,7 +265,7 @@ p, li { white-space: pre-wrap; }
       <item>
        <widget class="QTabWidget" name="tabWidget">
         <property name="currentIndex">
-         <number>0</number>
+         <number>3</number>
         </property>
         <widget class="QWidget" name="tabGroup">
          <attribute name="title">
@@ -1473,6 +1473,9 @@ p, li { white-space: pre-wrap; }
   <action name="actionShow_brain">
    <property name="checkable">
     <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
    </property>
    <property name="icon">
     <iconset resource="../icons.qrc">
