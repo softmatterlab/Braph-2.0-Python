@@ -496,7 +496,7 @@ p, li { white-space: pre-wrap; }
    <addaction name="actionRotate"/>
    <addaction name="actionFind"/>
    <addaction name="separator"/>
-   <addaction name="actiontred"/>
+   <addaction name="action3D"/>
    <addaction name="actionSagittal_left"/>
    <addaction name="actionSagittal_right"/>
    <addaction name="actionAxial_dorsal"/>
@@ -864,7 +864,7 @@ p, li { white-space: pre-wrap; }
     <string>Show labels</string>
    </property>
   </action>
-  <action name="actiontred">
+  <action name="action3D">
    <property name="icon">
     <iconset>
      <normaloff>:/buttons/icon_view_3d.png</normaloff>:/buttons/icon_view_3d.png</iconset>

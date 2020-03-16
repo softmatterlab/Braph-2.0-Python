@@ -99,24 +99,24 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.brainWidget.change_brain_region_size(size)
 
     def init_buttons(self):
-       self.btnSelectAll.clicked.connect(self.select_all)
-       self.btnClearSelection.clicked.connect(self.clear_selection)
-       self.btnAdd.clicked.connect(self.add)
-       self.btnAddAbove.clicked.connect(self.add_above)
-       self.btnAddBelow.clicked.connect(self.add_below)
-       self.btnRemove.clicked.connect(self.remove)
-       self.btnMoveUp.clicked.connect(self.move_up)
-       self.btnMoveDown.clicked.connect(self.move_down)
-       self.btnMoveToTop.clicked.connect(self.move_to_top)
-       self.btnMoveToBottom.clicked.connect(self.move_to_bottom)
+        self.btnSelectAll.clicked.connect(self.select_all)
+        self.btnClearSelection.clicked.connect(self.clear_selection)
+        self.btnAdd.clicked.connect(self.add)
+        self.btnAddAbove.clicked.connect(self.add_above)
+        self.btnAddBelow.clicked.connect(self.add_below)
+        self.btnRemove.clicked.connect(self.remove)
+        self.btnMoveUp.clicked.connect(self.move_up)
+        self.btnMoveDown.clicked.connect(self.move_down)
+        self.btnMoveToTop.clicked.connect(self.move_to_top)
+        self.btnMoveToBottom.clicked.connect(self.move_to_bottom)
 
-       self.btn3D.clicked.connect(self.brainWidget.show_3D)
-       self.btnSagittalLeft.clicked.connect(self.brainWidget.sagittal_left)
-       self.btnSagittalRight.clicked.connect(self.brainWidget.sagittal_right)
-       self.btnAxialDorsal.clicked.connect(self.brainWidget.axial_dorsal)
-       self.btnAxialVentral.clicked.connect(self.brainWidget.axial_ventral)
-       self.btnCoronalAnterior.clicked.connect(self.brainWidget.coronal_anterior)
-       self.btnCoronalPosterior.clicked.connect(self.brainWidget.coronal_posterior)
+        self.btn3D.clicked.connect(self.brainWidget.show_3D)
+        self.btnSagittalLeft.clicked.connect(self.brainWidget.sagittal_left)
+        self.btnSagittalRight.clicked.connect(self.brainWidget.sagittal_right)
+        self.btnAxialDorsal.clicked.connect(self.brainWidget.axial_dorsal)
+        self.btnAxialVentral.clicked.connect(self.brainWidget.axial_ventral)
+        self.btnCoronalAnterior.clicked.connect(self.brainWidget.coronal_anterior)
+        self.btnCoronalPosterior.clicked.connect(self.brainWidget.coronal_posterior)
 
     def init_actions(self):
         # TOOL BAR:
@@ -134,6 +134,7 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
                        self.actionRotate, self.actionFind):
             group.addAction(action)
 
+        self.action3D.triggered.connect(self.brainWidget.show_3D)
         self.actionSagittal_left.triggered.connect(self.brainWidget.sagittal_left)
         self.actionSagittal_right.triggered.connect(self.brainWidget.sagittal_right)
         self.actionAxial_dorsal.triggered.connect(self.brainWidget.axial_dorsal)
@@ -389,9 +390,6 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def find(self):
         self.set_cursor('cursor.png')
-
-    def show_3D(self):
-        pass
 
     def save_as(self):
         pass

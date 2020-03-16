@@ -7,7 +7,7 @@ from braphy.utility.helper_functions import abs_path_from_relative, load_nv
 import pyqtgraph.Vector
 import numpy as np
 
-brain_distance_default = 230
+brain_distance_default = 235
 
 class BrainAtlasWidget(GLViewWidget):
     MOUSE_MODE_DEFAULT = 0
@@ -21,8 +21,19 @@ class BrainAtlasWidget(GLViewWidget):
         self.mouse_mode = BrainAtlasWidget.MOUSE_MODE_DEFAULT
         self.gui_brain_regions = []
         self.show_labels_bool = 0
+        self.orthographic = False
         self.init_axis()
         self.init_grid()
+
+    def set_orthographic(self, orthographic):
+        if orthographic:
+            self.orthographic = True
+            self.opts['fov'] = 0.1
+            self.setCameraPosition(distance = 160000)
+        else:
+            self.orthographic = False
+            self.opts['fov'] = 60
+            self.setCameraPosition(distance = brain_distance_default)
 
     def init_brain_view(self, mesh_file):
         self.init_brain_mesh(mesh_file)
@@ -58,7 +69,6 @@ class BrainAtlasWidget(GLViewWidget):
 
     def init_brain_mesh(self, mesh_file):
         self.opts['distance'] = brain_distance_default
-        self.setCameraPosition(azimuth=0)
         self.setBackgroundColor((200, 200, 200, 255))
 
         data = load_nv(mesh_file)
@@ -90,31 +100,32 @@ class BrainAtlasWidget(GLViewWidget):
             gui_brain_region.set_size(size)
 
     def show_3D(self):
-        pass
+        self.set_orthographic(False)
+        self.opts['center'] = pyqtgraph.Vector(0, 0, 0)
+        self.setCameraPosition(distance = brain_distance_default, elevation = 30, azimuth = 45)
+
+    def fixed_view(self, elevation, azimuth):
+        self.set_orthographic(True)
+        self.opts['center'] = pyqtgraph.Vector(0, 0, 0)
+        self.setCameraPosition(elevation=elevation, azimuth=azimuth)
 
     def sagittal_right(self):
-        self.opts['center'] = pyqtgraph.Vector(0, 0, 0)
-        self.setCameraPosition(distance=brain_distance_default, elevation=0, azimuth=0)
+        self.fixed_view(0, 0)
 
     def sagittal_left(self):
-        self.opts['center'] = pyqtgraph.Vector(0, 0, 0)
-        self.setCameraPosition(distance=brain_distance_default, elevation=0, azimuth=180)
+        self.fixed_view(0, 180)
 
     def axial_dorsal(self):
-        self.opts['center'] = pyqtgraph.Vector(0, 0, 0)
-        self.setCameraPosition(distance=brain_distance_default, elevation=90, azimuth=90)
+        self.fixed_view(90, 90)
 
     def axial_ventral(self):
-        self.opts['center'] = pyqtgraph.Vector(0, 0, 0)
-        self.setCameraPosition(distance=brain_distance_default, elevation=-90, azimuth=-90)
+        self.fixed_view(-90, -90)
 
     def coronal_anterior(self):
-        self.opts['center'] = pyqtgraph.Vector(0, 0, 0)
-        self.setCameraPosition(distance=brain_distance_default, elevation=0, azimuth=90)
+        self.fixed_view(0, 90)
 
     def coronal_posterior(self):
-        self.opts['center'] = pyqtgraph.Vector(0, 0, 0)
-        self.setCameraPosition(distance=brain_distance_default, elevation=0, azimuth=-90)
+        self.fixed_view(0, -90)
 
     def show_brain(self, state):
         if state == 0:
@@ -226,6 +237,8 @@ class BrainAtlasWidget(GLViewWidget):
         self.mousePos = ev.pos()
 
         if ev.buttons() == QtCore.Qt.LeftButton:
+            if self.orthographic:
+                self.set_orthographic(False)
             self.orbit(-diff.x(), diff.y())
 
     def mouseReleaseEventZoom(self, ev, delta):
