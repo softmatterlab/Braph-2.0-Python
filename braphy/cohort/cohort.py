@@ -163,3 +163,8 @@ class Cohort:
     def load_from_txt(self, file_path = '', file_name = ''):
         file_txt = abs_path_from_relative(__file__, file_path + file_name)
         self.subjects = self.subject_class.from_txt(file_txt)
+
+    def load_from_xml(self, file_path = '', file_name = ''):
+        file_xml = abs_path_from_relative(__file__, file_path + file_name)
+        self.subjects = self.subject_class.from_xml(file_xml)
+

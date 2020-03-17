@@ -1,6 +1,7 @@
 from braphy.cohort.subjects.subject import Subject
 from braphy.cohort.data_types.data_scalar import DataScalar
 from braphy.cohort.data_types.data_structural import DataStructural
+import xml.etree.ElementTree as ET
 import numpy as np
 
 class SubjectMRI(Subject):
@@ -24,3 +25,17 @@ class SubjectMRI(Subject):
                 subject.data_dict['MRI'].set_value(mri_data)
                 subjects.append(subject)
         return subjects
+
+    def from_xml(file_xml):
+        subjects = []
+        with open(file_xml, 'r') as f:
+            tree = ET.parse(f)
+            root = tree.getroot()
+            for item in root.findall('MRICohort/MRISubject'):
+                item = item.attrib
+                subject_id = item['code']
+                subject = SubjectMRI(id = subject_id)
+                mri_data = np.array(item['data'].split()).astype(float)
+                subject.data_dict['age'].set_value(int(item['age']))
+                subject.data_dict['MRI'].set_value(mri_data)
+
