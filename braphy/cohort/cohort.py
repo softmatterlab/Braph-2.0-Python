@@ -11,7 +11,7 @@ class Cohort:
         else:
             self.subjects = []
 
-    def add_group(self, group = None):
+    def add_new_group(self, group = None):
         if not group:
             group = Group(self.subject_class)
         self.groups.append(group)
@@ -61,13 +61,21 @@ class Cohort:
                 selected[i] = selected[i] + 1
         return selected
 
-    def add_subject(self, i, subject = None):
+    def add_subject(self, i = None, subject = None):
+        if not i:
+            i = len(self.subjects)
         if not subject:
             subject = Subject()
         self.subjects.insert(i, subject)
 
     def remove_subject(self, i):
         self.subjects.remove(i)
+
+    def remove_subjects(self, selected):
+        for i in selected:
+            self.remove_subject(i)
+        selected = np.array([])
+        return selected
 
     def replace_subject(self, i, subject):
         self.subjects[i] = subject

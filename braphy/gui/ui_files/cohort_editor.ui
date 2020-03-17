@@ -145,7 +145,7 @@ p, li { white-space: pre-wrap; }
            </widget>
           </item>
           <item>
-           <widget class="QTableWidget" name="tableWidget">
+           <widget class="QTableWidget" name="tableWidget_groups">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
               <horstretch>0</horstretch>
@@ -265,7 +265,7 @@ p, li { white-space: pre-wrap; }
       <item>
        <widget class="QTabWidget" name="tabWidget">
         <property name="currentIndex">
-         <number>3</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="tabGroup">
          <attribute name="title">
@@ -281,121 +281,15 @@ p, li { white-space: pre-wrap; }
              <number>0</number>
             </property>
             <item>
-             <widget class="QTableWidget" name="tableWidget_2">
-              <property name="rowCount">
-               <number>100</number>
-              </property>
-              <property name="columnCount">
-               <number>7</number>
-              </property>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
-              <row/>
+             <widget class="QTableWidget" name="tableWidget_groups_and_demographics">
               <column>
                <property name="text">
-                <string/>
+                <string> </string>
                </property>
               </column>
               <column>
                <property name="text">
-                <string>Subject Code</string>
+                <string>Subject code</string>
                </property>
               </column>
               <column>
@@ -411,16 +305,6 @@ p, li { white-space: pre-wrap; }
               <column>
                <property name="text">
                 <string>Notes</string>
-               </property>
-              </column>
-              <column>
-               <property name="text">
-                <string>Group 1</string>
-               </property>
-              </column>
-              <column>
-               <property name="text">
-                <string>Group 2</string>
                </property>
               </column>
              </widget>
@@ -769,7 +653,7 @@ p, li { white-space: pre-wrap; }
          </attribute>
          <layout class="QVBoxLayout" name="verticalLayout_9">
           <item>
-           <widget class="QTableWidget" name="tableWidget_3">
+           <widget class="QTableWidget" name="tableWidget_subject_data">
             <column>
              <property name="text">
               <string>index</string>
@@ -824,7 +708,7 @@ p, li { white-space: pre-wrap; }
          </attribute>
          <layout class="QVBoxLayout" name="verticalLayout_13">
           <item>
-           <widget class="QTableWidget" name="tableWidget_4"/>
+           <widget class="QTableWidget" name="tableWidget_group_averages"/>
           </item>
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_12">
