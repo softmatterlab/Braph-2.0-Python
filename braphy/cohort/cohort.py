@@ -1,6 +1,7 @@
 from braphy.cohort.subjects.subject import Subject
 from braphy.utility.helper_functions import abs_path_from_relative
 from braphy.cohort.group import Group
+import numpy as np
 
 class Cohort:
     def __init__(self, name, subject_class, subjects = None):
@@ -21,15 +22,18 @@ class Cohort:
         self.groups.remove(i)
 
     def remove_groups(self, selected):
-        for i in selected:
-            self.remove_group(i)
+        new_selected = list(selected)
+        for i in range(len(selected) - 1, -1, -1):
+            del self.groups[selected[i]]
+            del new_selected[i]
+        return np.array(new_selected)
 
     def invert_groups(self, i, j):
         tmp_group = self.groups[i]
         self.groups[i] = self.groups[j]
         self.groups[j] = tmp_group
 
-    def move_up_group(self, selected):
+    def move_up_groups(self, selected):
         if len(selected) > 0:
             first_index_to_process = 0
             unprocessable_length = 0
@@ -73,10 +77,11 @@ class Cohort:
         self.subjects.remove(i)
 
     def remove_subjects(self, selected):
-        for i in selected:
-            self.remove_subject(i)
-        selected = np.array([])
-        return selected
+        new_selected = list(selected)
+        for i in range(len(selected) - 1, -1, -1):
+            del self.subjects[selected[i]]
+            del new_selected[i]
+        return np.array(new_selected)
 
     def replace_subject(self, i, subject):
         self.subjects[i] = subject

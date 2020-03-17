@@ -332,9 +332,9 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def update_tables(self, selected_groups = None, selected_subjects = None):
         if np.any(selected_groups == None):
-            selected_groups = selg.get_checked_groups()
+            selected_groups = self.get_checked_groups()
         if np.any(selected_subjects == None):
-            selected_subjects = selg.get_checked_subjects()
+            selected_subjects = self.get_checked_subjects()
 
         self.update_group_table(selected_groups)
         self.update_groups_and_demographics_table()
@@ -345,7 +345,8 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.tableWidget_groups.blockSignals(True)
         self.tableWidget_groups.clearContents()
         self.tableWidget_groups.setRowCount(0)
-        self.check_boxes = []
+        self.subject_check_boxes = []
+        self.group_radio_buttons = []
 
         for i in range(len(self.cohort.groups)):
             self.tableWidget_groups.setRowCount(i+1)
@@ -421,19 +422,19 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def add_new_group(self):
         self.cohort.add_new_group()
-        self.update_tables(self.get_checked_groups(), self.get_checked_subjects())
+        self.update_tables(self.get_checked_groups())
 
     def remove_group(self):
         selected_groups = self.cohort.remove_groups(self.get_checked_groups())
-        self.update_tables(selected_groups, self.get_checked_subjects())
+        self.update_tables(selected_groups)
 
     def move_group_up(self):
-        selected = self.cohort.move_up_group(self.get_checked_groups())
-        self.update_tables(selected_groups, self.get_checked_subjects)
+        selected_groups = self.cohort.move_up_groups(self.get_checked_groups())
+        self.update_tables(selected_groups)
     
     def move_group_down(self):
-        selected = self.cohort.move_down_group(self.get_checked_groups())
-        self.update_tables(selected_groups, self.get_checked_subjects)
+        selected_groups = self.cohort.move_down_groups(self.get_checked_groups())
+        self.update_tables(selected_groups)
 
     def invert_group(self):
         print("invert")
@@ -469,31 +470,31 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
     def remove_subjects(self):
         selected_subjects = self.get_checked_subjects()
         selected_subjects = self.cohort.remove_subjects(selected)
-        self.update_tables(selg.get_checked_groups(), selected_subjects)
+        self.update_tables(self.get_checked_groups(), selected_subjects)
 
     def move_subjects_up(self):
         selected_subjects = self.get_checked_subjects()
         selected_subjects = self.cohort.move_up_subjects(selected)
-        self.update_tables(selg.get_checked_groups(), selected_subjects)
+        self.update_tables(self.get_checked_groups(), selected_subjects)
 
     def move_subjects_down(self):
         selected_subjects = self.get_checked_subjects()
         selected_subjects = self.cohort.move_down_subjects(selected)
-        self.update_tables(selg.get_checked_groups(), selected_subjects)
+        self.update_tables(self.get_checked_groups(), selected_subjects)
 
     def move_subjects_to_top(self):
         selected_subjects = self.get_checked_subjects()
         selected_subjects = self.cohort.move_to_top_subjects(selected_subjects)
-        self.update_tables(selg.get_checked_groups(), selected_subjects)
+        self.update_tables(self.get_checked_groups(), selected_subjects)
 
     def move_subjects_to_bottom(self):
         selected_subjects = self.get_checked_subjects()
         selected_subjects = self.cohort.move_to_bottom_subjects(selected_subjects)
-        self.update_tables(selg.get_checked_groups(), selected_subjects)
+        self.update_tables(self.get_checked_groups(), selected_subjects)
 
     def new_group(self):
         self.cohort.add_new_group()
-        self.update_tables(selg.get_checked_groups(), self.get_checked_subjects())
+        self.update_tables(self.get_checked_groups(), self.get_checked_subjects())
 
     def save_subjects(self):
         pass
