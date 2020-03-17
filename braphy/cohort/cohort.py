@@ -1,4 +1,5 @@
 from braphy.cohort.subjects.subject import Subject
+from braphy.utility.helper_functions import abs_path_from_relative
 from braphy.cohort.group import Group
 
 class Cohort:
@@ -166,5 +167,15 @@ class Cohort:
     def remove_subjects_from_group(self, indices, group_name):
         for i in indices:
             self.groups[group_name]['subjects'].remove(i)
-        
-        
+
+    def load_from_txt(self, file_path = '', file_name = ''):
+        file_txt = abs_path_from_relative(__file__, file_path + file_name)
+        self.subjects = self.subject_class.from_txt(file_txt)
+
+    def load_from_xml(self, file_path = '', file_name = ''):
+        file_xml = abs_path_from_relative(__file__, file_path + file_name)
+        self.subjects = self.subject_class.from_xml(file_xml)
+
+    def load_from_xlsx(self, file_path = '', file_name = ''):
+        file_xlsx = abs_path_from_relative(__file__, file_path + file_name)
+        self.subjects = self.subject_class.from_xlsx(file_xlsx)

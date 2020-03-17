@@ -4,7 +4,7 @@ from braphy.cohort.data_types.data_connectivity import DataConnectivity
 
 class SubjectDTI(Subject):
     def __init__(self, id = 'sub_id'):
-        pass
+        super().__init__(id = id)
 
     def init_data_dict(self):
         self.data_dict['age'] = DataScalar()
