@@ -1,15 +1,66 @@
 from braphy.cohort.subjects.subject import Subject
 from braphy.utility.helper_functions import abs_path_from_relative
+from braphy.cohort.group import Group
 
 class Cohort:
     def __init__(self, name, subject_class, subjects = None):
         self.name = name
         self.subject_class = subject_class
-        self.groups = {}
+        self.groups = []
         if subjects:
             self.subjects = subjects
         else:
             self.subjects = []
+
+    def add_group(self, group = None):
+        if not group:
+            group = Group(self.subject_class)
+        self.groups.append(group)
+
+    def remove_group(self, i):
+        self.groups.remove(i)
+
+    def remove_groups(self, selected):
+        for i in selected:
+            self.remove_group(i)
+
+    def invert_groups(self, i, j):
+        tmp_group = self.groups[i]
+        self.groups[i] = self.groups[j]
+        self.groups[j] = tmp_group
+
+    def move_up_group(self, selected):
+        if len(selected) > 0:
+            first_index_to_process = 0
+            unprocessable_length = 0
+            while True:
+                if (first_index_to_process >= len(self.groups)):
+                    break
+                if (first_index_to_process >= len(selected)):
+                    break
+                if (selected[first_index_to_process] != unprocessable_length):
+                    break
+                first_index_to_process = first_index_to_process + 1
+                unprocessable_length = unprocessable_length + 1
+
+            for i in range(first_index_to_process, len(selected)):
+                self.invert_groups(selected[i], selected[i] - 1)
+                selected[i] = selected[i] - 1
+        return selected
+
+    def move_down_groups(self, selected):
+        if (len(selected) > 0) & (len(selected) < len(self.groups)):
+            last_index_to_process = len(selected) - 1
+            unprocessable_length = len(self.groups) - 1
+            while (last_index_to_process >= 0) \
+                  & (selected[last_index_to_process] == unprocessable_length):
+                last_index_to_process = last_index_to_process - 1
+                unprocessable_length = unprocessable_length - 1
+
+            for i in range(last_index_to_process, -1, -1):
+                self.invert_groups(selected[i], selected[i] + 1)
+                selected[i] = selected[i] + 1
+        return selected
 
     def add_subject(self, i, subject = None):
         if not subject:
@@ -66,31 +117,31 @@ class Cohort:
         return selected
 
     def move_down_subjects(self, selected):
-        if (len(selected) > 0) & (len(selected) < self.brain_region_number()):
+        if (len(selected) > 0) & (len(selected) < len(self.subjects)):
             last_index_to_process = len(selected) - 1
-            unprocessable_length = self.brain_region_number() - 1
+            unprocessable_length = len(self.subjects) - 1
             while (last_index_to_process >= 0) \
                   & (selected[last_index_to_process] == unprocessable_length):
                 last_index_to_process = last_index_to_process - 1
                 unprocessable_length = unprocessable_length - 1
 
             for i in range(last_index_to_process, -1, -1):
-                self.invert_brain_regions(selected[i], selected[i] + 1)
+                self.invert_subjects(selected[i], selected[i] + 1)
                 selected[i] = selected[i] + 1
         return selected
 
     def move_to_top_subjects(self, selected):
         if len(selected) > 0:
             for i in range(len(selected)):
-                self.move_to_brain_region(selected[i], i)
+                self.move_to_subject(selected[i], i)
             selected = np.arange(0, len(selected))
         return selected
 
     def move_to_bottom_subjects(self, selected):
         if len(selected) > 0:
             for i in range(len(selected) - 1, -1, -1):
-                self.move_to_brain_region(selected[i], self.brain_region_number() - (len(selected) - i))
-            selected = np.arange(self.brain_region_number() - len(selected), self.brain_region_number())
+                self.move_to_subject(selected[i], len(self.subjects) - (len(selected) - i))
+            selected = np.arange(len(self.subjects) - len(selected), len(self.subjects))
         return selected
 
     def add_subject_to_group(self, subject, group_name):
