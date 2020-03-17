@@ -1,4 +1,5 @@
 from braphy.cohort.subjects.subject import Subject
+from braphy.utility.helper_functions import abs_path_from_relative
 
 class Cohort:
     def __init__(self, name, subject_class, subjects = None):
@@ -107,5 +108,7 @@ class Cohort:
     def remove_subjects_from_group(self, indices, group_name):
         for i in indices:
             self.groups[group_name]['subjects'].remove(i)
-        
-        
+
+    def load_from_txt(self, file_path = '', file_name = ''):
+        file_txt = abs_path_from_relative(__file__, file_path + file_name)
+        self.subjects = self.subject_class.from_txt(file_txt)
