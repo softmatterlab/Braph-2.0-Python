@@ -6,7 +6,7 @@ class Subject:
         self.data_dict = {}
 
     @abstractmethod
-    def initialize_data_dict(self):
+    def init_data_dict(self):
         pass
 
     @abstractmethod
