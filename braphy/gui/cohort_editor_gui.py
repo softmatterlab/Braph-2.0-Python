@@ -8,16 +8,24 @@ import braphy.gui.icons_rc
 from functools import partial
 import xml.etree.ElementTree as ET
 
+from braphy.cohort.cohort import Cohort
+from braphy.cohort.subjects.subject_MRI import SubjectMRI
+
 qtCreatorFile = abs_path_from_relative(__file__, "ui_files/cohort_editor.ui")
 brain_mesh_file_name = "BrainMesh_ICBM152.nv"
 brain_mesh_file = abs_path_from_relative(__file__, brain_mesh_file_name)
 
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
+subject_class = SubjectMRI
 
 class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
-    def __init__(self, AppWindow):
+    def __init__(self, AppWindow, cohort = None):
         self.AppWindow = AppWindow
         QtWidgets.QMainWindow.__init__(self, parent = None)
+        if cohort == None:
+            self.cohort = Cohort('Cohort', subject_class)
+        else:
+            self.cohort = cohort
         self.setupUi(self)
         self.init_buttons()
         self.init_actions()
@@ -302,7 +310,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
             }
             self.subjects = subjects
             self.group_data = group_data
-            self.update_table()
+            self.update_tables()
 
     def string_to_list_of_floats(self, str):
         string_list = str.split()
@@ -318,7 +326,13 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
             float_list.append(int(i))
         return float_list
 
-    def update_table(self):
+    def update_tables(self):
+        self.update_group_table()
+        self.update_groups_and_demographics_table()
+        self.update_subject_data_table()
+        self.update_group_averages_table()
+
+    def update_group_table(self):
         self.tableWidget.setRowCount(self.tableWidget.rowCount()+1)
 
         widget = QWidget()
@@ -339,6 +353,15 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         item = QTableWidgetItem(self.group_data["notes"])
         self.tableWidget.setItem(0, 3, item)
 
+    def update_groups_and_demographics_table(self):
+        pass
+
+    def update_subject_data_table(self):
+        pass
+
+    def update_group_averages_table(self):
+        pass
+
     def disable_menu_bar(self, b):
         self.menuGroups.setDisabled(b)
         self.menuSubjects.setDisabled(b)
@@ -348,8 +371,9 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def add_new_group(self):
         print("Add group")
+        #self.cohort.add_new_group()
 
-    def remove_group(self):
+    def remove_group(self, selected):
         print("remove group")
 
     def move_group_up(self):

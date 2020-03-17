@@ -50,7 +50,7 @@ class Cohort:
             first_index_to_process = 0
             unprocessable_length = 0
             while True:
-                if (first_index_to_process >= len(self.subjects):
+                if (first_index_to_process >= len(self.subjects)):
                     break
                 if (first_index_to_process >= len(selected)):
                     break
