@@ -2,6 +2,7 @@ from braphy.cohort.subjects.subject import Subject
 from braphy.cohort.data_types.data_scalar import DataScalar
 from braphy.cohort.data_types.data_structural import DataStructural
 import xml.etree.ElementTree as ET
+import pandas as pd
 import numpy as np
 
 class SubjectMRI(Subject):
@@ -39,4 +40,15 @@ class SubjectMRI(Subject):
                 subject.data_dict['age'].set_value(int(item['age']))
                 subject.data_dict['MRI'].set_value(mri_data)
                 subjects.append(subject)
+        return subjects
+
+    def from_xlsx(file_xlsx):
+        subjects = []
+        data = np.array(pd.read_excel(file_xlsx))
+        for item in data:
+            subject_id = item[0]
+            subject = SubjectMRI(id = subject_id)
+            mri_data = item[1:]
+            subject.data_dict['MRI'].set_value(mri_data)
+            subjects.append(subject)
         return subjects

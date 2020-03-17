@@ -11,6 +11,7 @@ class TestCohort(TestUtility):
         cohort = Cohort('mri', SubjectMRI)
         cohort.load_from_txt(file_name='gr1_MRI.txt')
         cohort.load_from_xml(file_name='gr1_MRI.xml')
+        cohort.load_from_xlsx(file_name='gr1_MRI.xlsx')
 
 
 if __name__ == '__main__':

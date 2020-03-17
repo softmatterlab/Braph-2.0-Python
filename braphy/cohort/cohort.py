@@ -168,3 +168,6 @@ class Cohort:
         file_xml = abs_path_from_relative(__file__, file_path + file_name)
         self.subjects = self.subject_class.from_xml(file_xml)
 
+    def load_from_xlsx(self, file_path = '', file_name = ''):
+        file_xlsx = abs_path_from_relative(__file__, file_path + file_name)
+        self.subjects = self.subject_class.from_xlsx(file_xlsx)
