@@ -27,6 +27,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.disable_menu_bar(True)
         self.set_brain_view_actions_visible(False)
         self.tab_groups_and_demographics()
+        self.tabWidget.currentChanged.connect(self.tab_changed)
 
     def init_brain_widget(self):
         self.brainWidget.init_brain_view(brain_mesh_file)
@@ -163,20 +164,22 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.actionShow_brain.setChecked(state)
 
+    def tab_changed(self):
+        if self.tabWidget.currentIndex() == 3:
+            self.set_brain_view_actions_visible(True)
+        else:
+            self.set_brain_view_actions_visible(False)
+
     def tab_groups_and_demographics(self):
-        self.set_brain_view_actions_visible(False)
         self.tabWidget.setCurrentIndex(0)
 
     def tab_subject_data(self):
-        self.set_brain_view_actions_visible(False)
         self.tabWidget.setCurrentIndex(1)
 
     def tab_group_averages(self):
-        self.set_brain_view_actions_visible(False)
         self.tabWidget.setCurrentIndex(2)
 
     def tab_brain_view(self):
-        self.set_brain_view_actions_visible(True)
         self.tabWidget.setCurrentIndex(3)
 
     def open(self):
