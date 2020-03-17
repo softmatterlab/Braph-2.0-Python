@@ -38,4 +38,5 @@ class SubjectMRI(Subject):
                 mri_data = np.array(item['data'].split()).astype(float)
                 subject.data_dict['age'].set_value(int(item['age']))
                 subject.data_dict['MRI'].set_value(mri_data)
-
+                subjects.append(subject)
+        return subjects
