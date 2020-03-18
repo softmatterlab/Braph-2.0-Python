@@ -337,7 +337,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
             selected_subjects = self.get_checked_subjects()
 
         self.update_group_table(selected_groups)
-        self.update_groups_and_demographics_table()
+        self.update_groups_and_demographics_table(selected_subjects)
         self.update_subject_data_table()
         self.update_group_averages_table()
 
@@ -345,7 +345,6 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.tableWidget_groups.blockSignals(True)
         self.tableWidget_groups.clearContents()
         self.tableWidget_groups.setRowCount(0)
-        self.subject_check_boxes = []
         self.group_radio_buttons = []
 
         for i in range(len(self.cohort.groups)):
@@ -373,8 +372,44 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.tableWidget_groups.blockSignals(False)
 
-    def update_groups_and_demographics_table(self):
-        pass
+    def update_groups_and_demographics_table(self, selected):
+        self.tableWidget_groups_and_demographics.blockSignals(True)
+        self.tableWidget_groups_and_demographics.clearContents()
+        self.tableWidget_groups_and_demographics.setRowCount(0)
+        self.subject_check_boxes = []
+
+        #Update columns:
+        self.tableWidget_groups_and_demographics.setColumnCount(2)
+        item = QTableWidgetItem('Subject Code')
+        self.tableWidget_groups_and_demographics.setHorizontalHeaderItem(1, item)
+        keys = self.cohort.subjects[0].data_dict.keys()
+        for i in range(len(keys)):
+            item = QTableWidgetItem(keys[i])
+            self.tableWidget_groups_and_demographics.setHorizontalHeaderItem(i+2, item)
+
+        # Update subjects:
+        for i in range(len(self.cohort.subjects)):
+            self.tableWidget_groups_and_demographics.setRowCount(i+1)
+            widget = QWidget()
+            layout = QHBoxLayout()
+            layout.setAlignment(QtCore.Qt.AlignHCenter)
+            check_box = QCheckBox()
+            #radio_button.stateChanged.connect(self.group_radio_button_changed)
+            self.subject_check_boxes.append(check_box)
+            if i in selected:
+                self.subject_check_boxes[i].setChecked(True)
+            layout.addWidget(self.subject_check_boxes[i])
+            widget.setLayout(layout)
+            self.tableWidget_groups_and_demographics.setCellWidget(i, 0, widget)
+
+            item = QTableWidgetItem(self.cohort.subjects[i].id)
+            self.tableWidget_groups_and_demographics.setItem(i, 1, item)
+
+            for j in range(len(keys)):
+                item = QTableWidgetItem(str(self.cohort.subjects[i].data_dict[keys[j]]))
+                self.tableWidget_groups_and_demographics.setItem(i, j+2, item)
+
+        self.tableWidget_groups_and_demographics.blockSignals(False)
 
     def update_subject_data_table(self):
         pass
@@ -469,17 +504,17 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def remove_subjects(self):
         selected_subjects = self.get_checked_subjects()
-        selected_subjects = self.cohort.remove_subjects(selected)
+        selected_subjects = self.cohort.remove_subjects(selected_subjects)
         self.update_tables(self.get_checked_groups(), selected_subjects)
 
     def move_subjects_up(self):
         selected_subjects = self.get_checked_subjects()
-        selected_subjects = self.cohort.move_up_subjects(selected)
+        selected_subjects = self.cohort.move_up_subjects(selected_subjects)
         self.update_tables(self.get_checked_groups(), selected_subjects)
 
     def move_subjects_down(self):
         selected_subjects = self.get_checked_subjects()
-        selected_subjects = self.cohort.move_down_subjects(selected)
+        selected_subjects = self.cohort.move_down_subjects(selected_subjects)
         self.update_tables(self.get_checked_groups(), selected_subjects)
 
     def move_subjects_to_top(self):
