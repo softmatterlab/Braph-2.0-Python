@@ -1,30 +1,31 @@
 import sys
 import os
+import json
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from PyQt5.QtWidgets import *
 from braphy.atlas.brain_atlas import BrainAtlas
-from braphy.utility.helper_functions import abs_path_from_relative, load_nv
+from braphy.utility.helper_functions import abs_path_from_relative, load_nv, get_version_info
 import numpy as np
 from braphy.gui.brain_atlas_widget import BrainAtlasWidget
 
 qtCreatorFile = abs_path_from_relative(__file__, "ui_files/brain_atlas.ui")
-brain_mesh_file_name = "BrainMesh_ICBM152.nv"
-brain_mesh_file = abs_path_from_relative(__file__, brain_mesh_file_name)
+brain_mesh_file_name_default = "BrainMesh_ICBM152.nv"
+brain_mesh_file_default = abs_path_from_relative(__file__, brain_mesh_file_name_default)
 
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 
 class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
-    def __init__(self, AppWindow, atlas = None): # should be able to input atlas
+    def __init__(self, AppWindow, atlas_file = None): # should be able to input atlas
         self.AppWindow = AppWindow
         QtWidgets.QMainWindow.__init__(self, parent = None)
-        if atlas == None:
-            self.atlas = BrainAtlas(mesh_file = brain_mesh_file_name)
+        if atlas_file:
+            self.from_file(atlas_file)
         else:
-            self.atlas = atlas
+            self.atlas = BrainAtlas(mesh_file = brain_mesh_file_name_default)
         self.setupUi(self)
         self.check_boxes = []
         self.init_check_boxes()
-        self.init_brain_widget()
+        self.init_brain_widget(brain_mesh_file_default)
         self.init_buttons()
         self.init_actions()
 
@@ -35,9 +36,46 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.textAtlasName.setText(self.atlas.name)
         self.meshName.setText('Brain View')
         self.textAtlasName.textChanged.connect(self.atlas_name_change)
+        self.file_name = None
 
-    def init_brain_widget(self):
-        self.brainWidget.init_brain_view(brain_mesh_file)
+    def from_file(self, atlas_file):
+        with open(atlas_file, 'r') as f:
+            d = json.load(f)
+        self.from_dict(d)
+        self.brainWidget.change_brain_mesh(self.brain_mesh_data)
+
+    def to_file(self, atlas_file):
+        with open(atlas_file, 'w') as f:
+            json.dump(self.to_dict(), f, sort_keys=True, indent=4)
+
+    def from_dict(self, d):
+        self.atlas = BrainAtlas.from_dict(d['atlas'])
+        vertices = np.asarray(d['brain_mesh_data']['vertices'])
+        faces = np.asarray(d['brain_mesh_data']['faces'])
+        self.brain_mesh_data = {'vertices': vertices, 'faces': faces}
+        self.atlas_name_change()
+        self.update_table()
+
+    def to_dict(self):
+        d = {}
+        brain_mesh_data = {}
+        brain_mesh_data['vertices'] = self.brain_mesh_data['vertices'].tolist()
+        brain_mesh_data['faces'] = self.brain_mesh_data['faces'].tolist()
+        d['brain_mesh_data'] = brain_mesh_data
+        d['version'] = get_version_info()
+        d['atlas'] = self.atlas.to_dict()
+        return d
+
+    def set_brain_mesh(self, brain_mesh_file):
+        self.brain_mesh_file_name = brain_mesh_file.split('/')[-1]
+        self.brain_mesh_data = load_nv(brain_mesh_file)
+        self.brainWidget.change_brain_mesh(self.brain_mesh_data)
+        self.change_transparency()
+
+    def init_brain_widget(self, brain_mesh_file):
+        self.brain_mesh_file_name = brain_mesh_file.split('/')[-1]
+        self.brain_mesh_data = load_nv(brain_mesh_file)
+        self.brainWidget.init_brain_view(self.brain_mesh_data)
         size = self.sliderRegions.value()/10.0
         show_only_selected = self.checkBoxShowOnlySelected.isChecked()
         show_brain_regions = self.actionShow_brain_regions.isChecked()
@@ -86,8 +124,7 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
             file_path = self.mesh_file_paths[i]
             self.last_combobox_index = i
         if file_path:
-            self.brainWidget.change_brain_mesh(file_path)
-            self.change_transparency()
+            self.set_brain_mesh(file_path)
 
     def get_all_nv_files(self):
         dir = abs_path_from_relative(__file__)
@@ -368,11 +405,27 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
                 selected.append(i)
         return np.array(selected)
 
+    def save_as(self):
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        file_name, name = QFileDialog.getSaveFileName(self, "QFileDialog.saveFileName()", "", "atlas files (*.atlas)")
+        if file_name:
+            self.file_name = file_name
+            self.to_file(file_name)
+
     def save(self):
-        pass
+        if self.file_name:
+            self.to_file(self.file_name)
+        else:
+            self.save_as()
 
     def open(self):
-        pass
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        file_name, name = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()",
+                                                      "","atlas files (*.atlas)", options=options)
+        if file_name:
+            self.from_file(file_name)
 
     def set_cursor(self, file_name):
         cursor_file = abs_path_from_relative(__file__, file_name)
@@ -399,39 +452,43 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
     def find(self):
         self.set_cursor('cursor.png')
 
-    def save_as(self):
-        pass
-
     def import_txt(self):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
         file_name, name = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()",
                                                       "","txt files (*.txt)", options=options)
-        self.atlas.load_from_txt(file_name)
-        self.update_table()
+        if file_name:
+            self.atlas.load_from_txt(file_name)
+            self.update_table()
 
     def import_xls(self):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
         file_name, name = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()",
                                                       "","xls files (*.xls)", options=options)
-        self.atlas.load_from_xls(file_name)
-        self.update_table()
+        if file_name:
+            self.atlas.load_from_xls(file_name)
+            self.update_table()
 
     def import_xml(self):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
         file_name, name = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()",
                                                       "","xml files (*.xml)", options=options)
-        self.atlas.load_from_xml(file_name)
-        self.update_table()
+        if file_name:
+            self.atlas.load_from_xml(file_name)
+            self.update_table()
 
     def export_xml(self):
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
         file_name, name = QFileDialog.getSaveFileName(self, "QFileDialog.saveFileName()", "", "xml files (*.xml)")
         if file_name:
             self.atlas.save_to_xml(file_name)
 
     def export_txt(self):
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
         file_name, name = QFileDialog.getSaveFileName(self, "QFileDialog.saveFileName()", "", "txt files (*.txt)")
         if file_name:
             self.atlas.save_to_txt(file_name)

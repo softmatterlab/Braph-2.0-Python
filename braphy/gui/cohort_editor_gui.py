@@ -1,7 +1,7 @@
 import sys
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from PyQt5.QtWidgets import *
-from braphy.utility.helper_functions import abs_path_from_relative
+from braphy.utility.helper_functions import abs_path_from_relative, load_nv
 from braphy.gui.brain_atlas_widget import BrainAtlasWidget
 from braphy.gui.brain_atlas_gui import BrainAtlasGui
 import braphy.gui.icons_rc
@@ -44,7 +44,8 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.subject_in_group_check_boxes = {}
 
     def init_brain_widget(self):
-        self.brainWidget.init_brain_view(brain_mesh_file)
+        mesh_data = load_nv(brain_mesh_file)
+        self.brainWidget.init_brain_view(mesh_data)
         self.brainWidget.change_transparency(0.5)
 
     def init_table(self):
@@ -275,7 +276,6 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
             self.brain_atlas_gui.show()
 
     def load_atlas(self):
-        print("Loading brain atlas...")
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
         file_name, _ = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()", "","atlas files (*.atlas)", options=options)

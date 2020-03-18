@@ -2,7 +2,7 @@ import sys
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from braphy.atlas.brain_region import BrainRegion
 from braphy.gui.brain_atlas_gui import BrainAtlasGui
-from braphy.utility.helper_functions import abs_path_from_relative
+from braphy.utility.helper_functions import abs_path_from_relative, load_nv
 from braphy.gui.cohort_editor_gui import CohortEditor
 from braphy.gui.graph_analysis_gui import GraphAnalysis
 from braphy.gui.exit_dialog import ExitDialog
@@ -23,8 +23,9 @@ class MainWindow(ExitDialog, Ui_MainWindow):
         self.init_animation()
 
     def init_animation(self):
-        self.brainWidget.init_brain_view(brain_mesh_file)
-        self.brainWidget.animate(True)
+        mesh_data = load_nv(brain_mesh_file)
+        self.brainWidget.init_brain_view(mesh_data)
+        #self.brainWidget.animate(True)
         color = self.palette().color(QtGui.QPalette.Window).getRgb()
         self.brainWidget.setBrainBackgroundColor(color)
         coords = [[22.6, -59.5, 48.1],
