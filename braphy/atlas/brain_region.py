@@ -63,3 +63,23 @@ class BrainRegion():
 
         return (self.label, self.name, self.x, self.y, self.z) == (other.label, \
                 other.name, other.x, other.y, other.z)
+
+    def to_dict(self):
+        d = {}
+        d['label'] = self.label
+        d['name'] = self.name
+        d['x'] = self.x
+        d['y'] = self.y
+        d['z'] = self.z
+        d['hemisphere'] = self.hemisphere
+        d['notes'] = self.notes
+        return d
+
+    def from_dict(d):
+        return BrainRegion(label = d['label'],
+                           name = d['name'],
+                           x = d['x'],
+                           y = d['y'],
+                           z = d['z'],
+                           hemisphere = d['hemisphere'],
+                           notes = d['notes'])
