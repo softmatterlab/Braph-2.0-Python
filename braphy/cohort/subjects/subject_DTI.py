@@ -8,4 +8,4 @@ class SubjectDTI(Subject):
 
     def init_data_dict(self):
         self.data_dict['age'] = DataScalar()
-        self.data_dict['DTI'] = DataConnectivity()
+        self.data_dict['data'] = DataConnectivity()

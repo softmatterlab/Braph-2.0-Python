@@ -11,7 +11,7 @@ class SubjectMRI(Subject):
 
     def init_data_dict(self):
         self.data_dict['age'] = DataScalar()
-        self.data_dict['MRI'] = DataStructural()
+        self.data_dict['data'] = DataStructural()
 
     def from_txt(file_txt):
         subjects = []
@@ -23,7 +23,7 @@ class SubjectMRI(Subject):
                 subject_id = line[0]
                 subject = SubjectMRI(id = subject_id)
                 mri_data = np.array(line[1:]).astype(float)
-                subject.data_dict['MRI'].set_value(mri_data)
+                subject.data_dict['data'].set_value(mri_data)
                 subjects.append(subject)
         return subjects
 
@@ -38,7 +38,7 @@ class SubjectMRI(Subject):
                 subject = SubjectMRI(id = subject_id)
                 mri_data = np.array(item['data'].split()).astype(float)
                 subject.data_dict['age'].set_value(int(item['age']))
-                subject.data_dict['MRI'].set_value(mri_data)
+                subject.data_dict['data'].set_value(mri_data)
                 subjects.append(subject)
         return subjects
 
@@ -49,6 +49,6 @@ class SubjectMRI(Subject):
             subject_id = item[0]
             subject = SubjectMRI(id = subject_id)
             mri_data = item[1:]
-            subject.data_dict['MRI'].set_value(mri_data)
+            subject.data_dict['data'].set_value(mri_data)
             subjects.append(subject)
         return subjects

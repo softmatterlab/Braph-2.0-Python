@@ -168,15 +168,18 @@ class Cohort:
     def add_subjects_to_group(self, subjects, group_name):
         self.get_group(group_name).add_subjects(subjects)
 
-    def remove_subjects_from_group(self, indices, group_name):
-        for i in indices:
-            self.groups[group_name]['subjects'].remove(i)
+    def remove_subject_from_group(self, subject, group_name):
+        self.get_group(group_name).remove_subject(subject)
+
+    def remove_subjects_from_group(self, subjects, group_name):
+        self.get_group(group_name).remove_subjects(subjects)
 
     def load_from_file(self, file_name, subject_load_function):
         group_name = file_name.split('/')[-1]
         group = Group(self.subject_class, name = group_name)
         self.add_new_group(group=group)
         subjects = subject_load_function(file_name)
+        self.subjects.extend(subjects)
         self.add_subjects_to_group(subjects, group_name)
 
     def load_from_txt(self, file_name):

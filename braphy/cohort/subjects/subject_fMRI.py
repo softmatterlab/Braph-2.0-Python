@@ -10,7 +10,7 @@ class SubjectfMRI(Subject):
 
     def init_data_dict(self):
         self.data_dict['age'] = DataScalar()
-        self.data_dict['fMRI'] = DataFunctional()
+        self.data_dict['data'] = DataFunctional()
 
     def from_txt(file_txt):
         raise Exception("Not implemented")
@@ -30,7 +30,7 @@ class SubjectfMRI(Subject):
                 for v in data.split(";"):
                     fmri_data.append(v.split())
                 fmri_data = np.array(fmri_data).astype(float)
-                subject.data_dict['fMRI'].set_value(fmri_data)
+                subject.data_dict['data'].set_value(fmri_data)
                 subjects.append(subject)
         return subjects
 
