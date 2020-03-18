@@ -1,5 +1,4 @@
 from braphy.cohort.subjects.subject import Subject
-from braphy.utility.helper_functions import abs_path_from_relative
 from braphy.cohort.group import Group
 import numpy as np
 
@@ -12,6 +11,12 @@ class Cohort:
             self.subjects = subjects
         else:
             self.subjects = []
+
+    def get_group(self, group_name):
+        for group in self.groups:
+            if group.name == group_name:
+                return group
+        return None
 
     def add_new_group(self, group = None):
         if not group:
@@ -158,29 +163,27 @@ class Cohort:
         return selected
 
     def add_subject_to_group(self, subject, group_name):
-        if group_name not in self.groups.keys():
-            self.groups[group_name] = {'description': '',
-                                       'subjects': []}
-        self.groups[group_name]['subjects'].append(subject)
+        self.get_group(group_name).add_subject(subject)
 
     def add_subjects_to_group(self, subjects, group_name):
-        if group_name not in self.groups.keys():
-            self.groups[group_name] = {'description': '',
-                                       'subjects': []}
-        self.groups[group_name]['subjects'].extend(subjects)
+        self.get_group(group_name).add_subjects(subjects)
 
     def remove_subjects_from_group(self, indices, group_name):
         for i in indices:
             self.groups[group_name]['subjects'].remove(i)
 
-    def load_from_txt(self, file_path = '', file_name = ''):
-        file_txt = abs_path_from_relative(__file__, file_path + file_name)
-        self.subjects = self.subject_class.from_txt(file_txt)
+    def load_from_file(self, file_name, subject_load_function):
+        group_name = file_name.split('/')[-1]
+        group = Group(self.subject_class, name = group_name)
+        self.add_new_group(group=group)
+        subjects = subject_load_function(file_name)
+        self.add_subjects_to_group(subjects, group_name)
 
-    def load_from_xml(self, file_path = '', file_name = ''):
-        file_xml = abs_path_from_relative(__file__, file_path + file_name)
-        self.subjects = self.subject_class.from_xml(file_xml)
+    def load_from_txt(self, file_name):
+        self.load_from_file(file_name, self.subject_class.from_txt)
 
-    def load_from_xlsx(self, file_path = '', file_name = ''):
-        file_xlsx = abs_path_from_relative(__file__, file_path + file_name)
-        self.subjects = self.subject_class.from_xlsx(file_xlsx)
+    def load_from_xml(self, file_name):
+        self.load_from_file(file_name, self.subject_class.from_xml)
+
+    def load_from_xlsx(self, file_name):
+        self.load_from_file(file_name, self.subject_class.from_xlsx)

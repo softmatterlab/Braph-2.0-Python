@@ -277,43 +277,35 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         print("Loading brain atlas...")
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
-        fileName, _ = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()", "","atlas files (*.atlas)", options=options)
-        if fileName:
-            print(fileName)
+        file_name, _ = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()", "","atlas files (*.atlas)", options=options)
+        if file_name:
+            print(file_name)
             self.atlas_loaded = True
             self.btnAtlas.setText("View Atlas")
             self.disable_menu_bar(False)
 
     def load_xls_subject_group(self):
-        print("Loading xls subject group...")
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        file_name, _ = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()", "","xlsx files (*.xlsx)", options=options)
+        if file_name:
+            self.cohort.load_from_xlsx(file_name)
+            self.update_tables()
 
     def load_txt_subject_group(self):
-        print("Loading txt subject group...")
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        file_name, _ = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()", "","txt files (*.txt)", options=options)
+        if file_name:
+            self.cohort.load_from_txt(file_name)
+            self.update_tables()
 
     def load_xml_subject_group(self):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
-        fileName, name = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()", "","xml files (*.xml)", options=options)
-        if fileName:
-            tree = ET.parse(fileName)
-            root = tree.getroot()
-            subjects = []
-            for MRISubject in root[0].findall('MRISubject'):
-                tmp_dict = {
-                    "age": MRISubject.attrib["age"],
-                    "code": MRISubject.attrib["code"],
-                    "data": self.string_to_list_of_floats(MRISubject.attrib["data"]),
-                    "gender": MRISubject.attrib["gender"],
-                    "notes": MRISubject.attrib["notes"]
-                }
-                subjects.append(tmp_dict)
-            group_data = {
-                "data": self.string_to_list_of_ints(root[0][-1][0].attrib["data"]),
-                "name": root[0][-1][0].attrib["name"],
-                "notes": root[0][-1][0].attrib["notes"]
-            }
-            self.subjects = subjects
-            self.group_data = group_data
+        file_name, _ = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()", "","xml files (*.xml)", options=options)
+        if file_name:
+            self.cohort.load_from_xml(file_name)
             self.update_tables()
 
     def string_to_list_of_floats(self, str):
@@ -353,7 +345,6 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
             layout = QHBoxLayout()
             layout.setAlignment(QtCore.Qt.AlignHCenter)
             radio_button = QRadioButton()
-            #radio_button.stateChanged.connect(self.group_radio_button_changed)
             self.group_radio_buttons.append(radio_button)
             if i in selected:
                 self.group_radio_buttons[i].setChecked(True)
@@ -466,7 +457,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
     def move_group_up(self):
         selected_groups = self.cohort.move_up_groups(self.get_checked_groups())
         self.update_tables(selected_groups)
-    
+
     def move_group_down(self):
         selected_groups = self.cohort.move_down_groups(self.get_checked_groups())
         self.update_tables(selected_groups)

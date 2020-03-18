@@ -5,5 +5,8 @@ class Group:
         self.subject_class = subject_class
         self.subjects = subjects
 
-    def add_subjects(self, subjects):
+    def add_subject(self, subjects):
         self.subjects.append(subjects)
+
+    def add_subjects(self, subjects):
+        self.subjects.extend(subjects)
