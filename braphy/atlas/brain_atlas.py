@@ -193,15 +193,18 @@ class BrainAtlas():
         except:
             print('Could not open file and add brain regions.')
 
+    def __str__(self):
+        s = "{}\t{}\n".format(self.name, self.mesh_file)
+        for region in self.brain_regions:
+            s = s + str(region)
+        return s
+
     def save_to_txt(self, file_name):
+        print(self.to_dict())
         with open(file_name, 'w') as f:
-            s = "{}\t{}\n".format(self.name, self.mesh_file)
-            f.write(s)
-            for region in self.brain_regions:
-                f.write(str(region))
+            f.write(str(self))
 
     def str_xml(self):
-
         s = "<xml>\n  <BrainAtlas brainsurf=\"{}\" name=\"{}\">\n".format(self.mesh_file, self.name)
         for region in self.brain_regions:
             s = s + "    {}\n".format(region.str_xml())
@@ -217,3 +220,19 @@ class BrainAtlas():
 
         tree = ET.ElementTree(root)
         tree.write(file_name, encoding="utf-8", xml_declaration=True)
+
+    def to_dict(self):
+        d = {}
+        d['mesh_file'] = self.mesh_file
+        d['name'] = self.name
+        d['brain_regions'] = []
+        for brain_region in self.brain_regions:
+            d['brain_regions'].append(brain_region.to_dict())
+        return d
+
+    def from_dict(d):
+        brain_regions = []
+        for brain_region in d['brain_regions']:
+            brain_regions.append(BrainRegion.from_dict(brain_region))
+        return BrainAtlas(mesh_file = d['mesh_file'], name = d['name'], brain_regions = brain_regions)
+

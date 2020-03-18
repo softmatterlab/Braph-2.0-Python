@@ -3,7 +3,7 @@ from PyQt5 import QtCore
 from pyqtgraph.opengl import GLViewWidget
 from PyQt5.QtGui import QColor
 from PyQt5.QtWidgets import QFileDialog
-from braphy.utility.helper_functions import abs_path_from_relative, load_nv
+from braphy.utility.helper_functions import abs_path_from_relative
 import pyqtgraph.Vector
 import numpy as np
 
@@ -15,7 +15,7 @@ class BrainAtlasWidget(GLViewWidget):
     MOUSE_MODE_ZOOM_OUT = 2
     MOUSE_MODE_PAN = 3
     MOUSE_MODE_ROTATE = 4
-    def __init__(self, mesh_file, parent = None):
+    def __init__(self, parent = None):
         super(BrainAtlasWidget, self).__init__(parent)
         self.brain_color = [0.7, 0.6, 0.55, 1]
         self.mouse_mode = BrainAtlasWidget.MOUSE_MODE_DEFAULT
@@ -56,12 +56,12 @@ class BrainAtlasWidget(GLViewWidget):
             self.opts['fov'] = 60
             self.setCameraPosition(distance = brain_distance_default)
 
-    def init_brain_view(self, mesh_file):
-        self.init_brain_mesh(mesh_file)
+    def init_brain_view(self, mesh_data):
+        self.init_brain_mesh(mesh_data)
 
-    def change_brain_mesh(self, mesh_file):
+    def change_brain_mesh(self, mesh_data):
         self.removeItem(self.brain_mesh)
-        self.init_brain_mesh(mesh_file)
+        self.init_brain_mesh(mesh_data)
 
     def init_brain_regions(self, brain_regions, size, selected, show_brain_regions, show_only_selected):
         self.brain_regions = brain_regions
@@ -88,12 +88,11 @@ class BrainAtlasWidget(GLViewWidget):
         self.grid['y'].translate(0, -size/2, size/4)
         self.grid['z'].translate(0, 0, -size/4)
 
-    def init_brain_mesh(self, mesh_file):
+    def init_brain_mesh(self, mesh_data):
         self.opts['distance'] = brain_distance_default
         self.setBackgroundColor(self.brainBackgroundColor)
 
-        data = load_nv(mesh_file)
-        self.brain_mesh = gl.GLMeshItem(vertexes=data['vertices'], faces=data['faces'], shader = 'normalColor')
+        self.brain_mesh = gl.GLMeshItem(vertexes=mesh_data['vertices'], faces=mesh_data['faces'], shader = 'normalColor')
         self.brain_mesh.setGLOptions('translucent')
         self.addItem(self.brain_mesh)
 
