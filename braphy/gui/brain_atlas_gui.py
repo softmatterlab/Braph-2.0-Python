@@ -102,13 +102,20 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.last_combobox_index = 0
 
     def set_locked(self, locked):
-        lock_items = [self.tableWidget, self.textAtlasName, self.actionOpen, self.actionImport_txt, self.actionImport_xls,
+        lock_items = [self.textAtlasName, self.actionOpen, self.actionImport_txt, self.actionImport_xls,
                       self.actionImport_xml, self.btnAdd, self.btnAddAbove, self.btnAddBelow, self.btnRemove, self.btnMoveUp,
                       self.btnMoveDown, self.btnMoveToTop, self.btnMoveToBottom, self.actionAdd, self.actionAdd_above,
                       self.actionAdd_below, self.actionRemove, self.actionMove_up, self.actionMove_down, self.actionMove_to_top,
                       self.actionMove_to_bottom]
         for item in lock_items:
             item.setEnabled(not locked)
+
+        for col in range(1, self.tableWidget.columnCount()):
+            for row in range(self.tableWidget.rowCount()):
+                flags = (QtCore.Qt.NoItemFlags) if locked else (QtCore.Qt.ItemIsSelectable |  QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable)
+                item = self.tableWidget.item(row, col)
+                if item:
+                    item.setFlags(flags)
 
     def select_brain_mesh(self, i):
         if self.comboBox.currentText() == 'Open...':
