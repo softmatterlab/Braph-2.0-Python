@@ -24,7 +24,8 @@ class MainWindow(ExitDialog, Ui_MainWindow):
 
     def init_animation(self):
         mesh_data = load_nv(brain_mesh_file)
-        self.brainWidget.init_brain_view(mesh_data)
+        self.brainWidget.set_brain_mesh(mesh_data)
+        self.brainWidget.set_locked(True)
         #self.brainWidget.animate(True)
         color = self.palette().color(QtGui.QPalette.Window).getRgb()
         self.brainWidget.setBrainBackgroundColor(color)

@@ -200,7 +200,6 @@ class BrainAtlas():
         return s
 
     def save_to_txt(self, file_name):
-        print(self.to_dict())
         with open(file_name, 'w') as f:
             f.write(str(self))
 
