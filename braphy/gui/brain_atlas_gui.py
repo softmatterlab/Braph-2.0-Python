@@ -42,17 +42,8 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         with open(atlas_file, 'r') as f:
             d = json.load(f)
         self.from_dict(d)
-        self.brainWidget.change_brain_mesh(self.brain_mesh_data)
-
-    def to_file(self, atlas_file):
-        with open(atlas_file, 'w') as f:
-            json.dump(self.to_dict(), f, sort_keys=True, indent=4)
-
-    def from_dict(self, d):
-        self.atlas = BrainAtlas.from_dict(d['atlas'])
-        vertices = np.asarray(d['brain_mesh_data']['vertices'])
-        faces = np.asarray(d['brain_mesh_data']['faces'])
-        self.brain_mesh_data = {'vertices': vertices, 'faces': faces}
+        self.set_brain_mesh_data()
+        self.set_brain_regions()
         self.atlas_name_change()
         self.update_table()
 
@@ -66,20 +57,37 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         d['atlas'] = self.atlas.to_dict()
         return d
 
-    def set_brain_mesh(self, brain_mesh_file):
+    def to_file(self, atlas_file):
+        with open(atlas_file, 'w') as f:
+            json.dump(self.to_dict(), f, sort_keys=True, indent=4)
+
+    def from_dict(self, d):
+        self.atlas = BrainAtlas.from_dict(d['atlas'])
+        vertices = np.asarray(d['brain_mesh_data']['vertices'])
+        faces = np.asarray(d['brain_mesh_data']['faces'])
+        brain_mesh_data = {'vertices': vertices, 'faces': faces}
+        self.brain_mesh_data = brain_mesh_data
+
+    def set_brain_mesh_file(self, brain_mesh_file):
         self.brain_mesh_file_name = brain_mesh_file.split('/')[-1]
         self.brain_mesh_data = load_nv(brain_mesh_file)
+        self.set_brain_mesh_data()
+
+    def set_brain_mesh_data(self):
         self.brainWidget.change_brain_mesh(self.brain_mesh_data)
         self.change_transparency()
+
+    def set_brain_regions(self):
+        size = self.sliderRegions.value()/10.0
+        show_only_selected = self.checkBoxShowOnlySelected.isChecked()
+        show_brain_regions = self.actionShow_brain_regions.isChecked()
+        self.brainWidget.init_brain_regions(self.atlas.brain_regions, size, self.get_checked(), show_brain_regions, show_only_selected)
 
     def init_brain_widget(self, brain_mesh_file):
         self.brain_mesh_file_name = brain_mesh_file.split('/')[-1]
         self.brain_mesh_data = load_nv(brain_mesh_file)
         self.brainWidget.init_brain_view(self.brain_mesh_data)
-        size = self.sliderRegions.value()/10.0
-        show_only_selected = self.checkBoxShowOnlySelected.isChecked()
-        show_brain_regions = self.actionShow_brain_regions.isChecked()
-        self.brainWidget.init_brain_regions(self.atlas.brain_regions, size, self.get_checked(), show_brain_regions, show_only_selected)
+        self.set_brain_regions()
 
     def init_combo_box(self):
         self.mesh_file_paths = []
