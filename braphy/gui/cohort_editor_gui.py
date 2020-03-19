@@ -85,6 +85,8 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.btnRemove2.clicked.connect(self.remove_subjects)
         self.btnMoveUp2.clicked.connect(self.move_subjects_up)
         self.btnMoveDown2.clicked.connect(self.move_subjects_down)
+        self.btnMoveToTop.clicked.connect(self.move_subjects_to_top)
+        self.btnMoveToBottom.clicked.connect(self.move_subjects_to_bottom)
         self.btnNewGroup.clicked.connect(self.new_group)
 
         self.btnSaveSubjects.clicked.connect(self.save_subjects)
