@@ -46,6 +46,8 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.subject_check_boxes = []
         self.subject_in_group_check_boxes = {}
 
+        self.tableWidget_groups.cellChanged.connect(self.cell_changed_in_group_table)
+
     def init_brain_widget(self):
         self.brainWidget.set_brain_mesh(self.brain_mesh_data)
         self.brainWidget.change_transparency(0.5)
@@ -202,6 +204,12 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
     def tab_brain_view(self):
         self.tabWidget.setCurrentIndex(3)
 
+    def cell_changed_in_group_table(self, row, column):
+        if column == 1: #name
+            self.cohort.groups[row].name = self.tableWidget_groups.item(row, column).text()
+        elif column == 3: #notes
+            self.cohort.groups[row].description = self.tableWidget_groups.item(row, column).text()
+        
     def open(self):
         pass
     def save(self):
