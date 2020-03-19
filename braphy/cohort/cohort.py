@@ -1,6 +1,7 @@
 from braphy.cohort.subjects.subject import Subject
 from braphy.cohort.group import Group
 import numpy as np
+from braphy.cohort.subjects.subject_MRI import SubjectMRI
 
 class Cohort:
     def __init__(self, name, subject_class, subjects = None):

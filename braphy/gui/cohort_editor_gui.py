@@ -494,16 +494,16 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         for i, label in enumerate(self.subject_data_labels):
             item = QTableWidgetItem(label)
             self.tableWidget_subject_data.setHorizontalHeaderItem(i+1, item)
-        '''
+        
         # Update subjects:
         for i in range(len(self.cohort.subjects)):
+            self.tableWidget_subject_data.setRowCount(i+1)
             item = QTableWidgetItem(self.cohort.subjects[i].id)
             self.tableWidget_subject_data.setItem(i, 0, item)
 
-            for j in range(len(self.cohort.subjects[i].data_dict['data'])):
-                item = QTableWidgetItem(str(self.cohort.subjects[i].data_dict['data'][j]))
+            for j in range(len(self.cohort.subjects[i].data_dict['data'].value)):
+                item = QTableWidgetItem(str(self.cohort.subjects[i].data_dict['data'].value[j]))
                 self.tableWidget_subject_data.setItem(i, j+1, item)
-        '''
 
         self.tableWidget_subject_data.blockSignals(False)
 
