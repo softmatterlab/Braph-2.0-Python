@@ -206,14 +206,21 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.tabWidget.setCurrentIndex(3)
 
     def cell_changed_in_group_table(self, row, column):
-        if column == 1: #name
+        if column == 1: # name
             self.cohort.groups[row].name = self.tableWidget_groups.item(row, column).text()
-        elif column == 3: #notes
+        elif column == 3: # notes
             self.cohort.groups[row].description = self.tableWidget_groups.item(row, column).text()
         self.update_tables()
 
     def cell_changed_in_groups_and_demographics_table(self, row, column):
-        pass
+        if column == 0: # check box
+            pass
+        elif column == 1: # subject code
+            self.cohort.subjects[row].id = self.tableWidget_groups_and_demographics.item(row, column).text()
+        else: # scalar data
+            column_header = self.tableWidget_groups_and_demographics.horizontalHeaderItem(column).text()
+            new_value = float(self.tableWidget_groups_and_demographics.item(row, column).text())
+            self.cohort.subjects[row].data_dict[column_header].value = new_value
 
     def open(self):
         pass
