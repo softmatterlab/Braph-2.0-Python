@@ -162,18 +162,6 @@ class Cohort:
             selected = np.arange(len(self.subjects) - len(selected), len(self.subjects))
         return selected
 
-    def add_subject_to_group(self, subject, group_name):
-        self.get_group(group_name).add_subject(subject)
-
-    def add_subjects_to_group(self, subjects, group_name):
-        self.get_group(group_name).add_subjects(subjects)
-
-    def remove_subject_from_group(self, subject, group_name):
-        self.get_group(group_name).remove_subject(subject)
-
-    def remove_subjects_from_group(self, subjects, group_name):
-        self.get_group(group_name).remove_subjects(subjects)
-
     def load_from_file(self, file_name, subject_load_function):
         group_name = file_name.split('/')[-1]
         group = Group(self.subject_class, name = group_name)

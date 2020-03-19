@@ -201,8 +201,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.tabWidget.setCurrentIndex(3)
 
     def open(self):
-        print("open")
-
+        pass
     def save(self):
         pass
 
@@ -445,7 +444,9 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.subject_in_group_check_boxes[self.cohort.groups[j]].append(check_box)
                 self.subject_in_group_check_boxes[self.cohort.groups[j]][i].stateChanged.connect(self.subject_in_group_check_box_changed)
                 if self.cohort.subjects[i] in self.cohort.groups[j].subjects:
+                    self.subject_in_group_check_boxes[self.cohort.groups[j]][i].blockSignals(True)
                     self.subject_in_group_check_boxes[self.cohort.groups[j]][i].setChecked(True)
+                    self.subject_in_group_check_boxes[self.cohort.groups[j]][i].blockSignals(False)
                 layout.addWidget(self.subject_in_group_check_boxes[self.cohort.groups[j]][i])
                 widget.setLayout(layout)
                 self.tableWidget_groups_and_demographics.setCellWidget(i, nbr_columns+j, widget)
@@ -455,9 +456,9 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
     def subject_in_group_check_box_changed(self):
         check_box = self.sender()
         if check_box.isChecked():
-            self.cohort.add_subject_to_group(self.cohort.subjects[check_box.i], self.cohort.groups[check_box.j].name)
+            self.cohort.groups[check_box.j].add_subject(self.cohort.subjects[check_box.i])
         else:
-            self.cohort.remove_subject_from_group(self.cohort.subjects[check_box.i], self.cohort.groups[check_box.j].name)
+            self.cohort.groups[check_box.j].remove_subject(self.cohort.subjects[check_box.i])
         self.update_group_table()
 
     def update_subject_data_table(self):
@@ -541,13 +542,13 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.update_tables(selected_groups)
 
     def invert_group(self):
-        print("invert")
+        pass
 
     def merge_groups(self):
-        print("merge")
+        pass
 
     def intersect_groups(self):
-        print("intersect")
+        pass
 
     def select_all_subjects(self):
         for check_box in self.subject_check_boxes:

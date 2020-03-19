@@ -1,12 +1,14 @@
 class Group:
-    def __init__(self, subject_class, subjects = [], name = 'Group', description = '-'):
+    def __init__(self, subject_class, subjects = None, name = 'Group', description = '-'):
         self.name = name
         self.description = description
         self.subject_class = subject_class
+        if not subjects:
+            subjects = []
         self.subjects = subjects
 
-    def add_subject(self, subjects):
-        self.subjects.append(subjects)
+    def add_subject(self, subject):
+        self.subjects.append(subject)
 
     def add_subjects(self, subjects):
         self.subjects.extend(subjects)
