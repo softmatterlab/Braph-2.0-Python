@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from braphy.cohort.data_types.data import Data
 
 class Subject:
     def __init__(self, id = 'sub_id'):
@@ -8,7 +9,7 @@ class Subject:
 
     @abstractmethod
     def init_data_dict(self):
-        pass
+        self.data_dict['data'] = Data()
 
     @abstractmethod
     def from_txt(file_txt):
