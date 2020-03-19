@@ -15,15 +15,15 @@ brain_mesh_file_default = abs_path_from_relative(__file__, brain_mesh_file_name_
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 
 class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
-    def __init__(self, AppWindow, atlas_file = None): # should be able to input atlas
+    def __init__(self, AppWindow, atlas_dict = None): # should be able to input atlas
         self.AppWindow = AppWindow
         QtWidgets.QMainWindow.__init__(self, parent = None)
-        if atlas_file:
-            self.from_file(atlas_file)
-        else:
-            self.atlas = BrainAtlas(mesh_file = brain_mesh_file_name_default)
         self.setupUi(self)
         self.check_boxes = []
+        if atlas_dict:
+            self.from_dict(atlas_dict)
+        else:
+            self.atlas = BrainAtlas(mesh_file = brain_mesh_file_name_default)
         self.init_check_boxes()
         self.init_brain_widget(brain_mesh_file_default)
         self.init_buttons()
@@ -42,10 +42,6 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         with open(atlas_file, 'r') as f:
             d = json.load(f)
         self.from_dict(d)
-        self.set_brain_mesh_data()
-        self.set_brain_regions()
-        self.atlas_name_change()
-        self.update_table()
 
     def to_dict(self):
         d = {}
@@ -67,6 +63,10 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         faces = np.asarray(d['brain_mesh_data']['faces'])
         brain_mesh_data = {'vertices': vertices, 'faces': faces}
         self.brain_mesh_data = brain_mesh_data
+        self.set_brain_mesh_data()
+        self.set_brain_regions()
+        self.atlas_name_change()
+        self.update_table()
 
     def set_brain_mesh_file(self, brain_mesh_file):
         self.brain_mesh_file_name = brain_mesh_file.split('/')[-1]
@@ -74,7 +74,7 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.set_brain_mesh_data()
 
     def set_brain_mesh_data(self):
-        self.brainWidget.change_brain_mesh(self.brain_mesh_data)
+        self.brainWidget.set_brain_mesh(self.brain_mesh_data)
         self.change_transparency()
 
     def set_brain_regions(self):
@@ -86,7 +86,7 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
     def init_brain_widget(self, brain_mesh_file):
         self.brain_mesh_file_name = brain_mesh_file.split('/')[-1]
         self.brain_mesh_data = load_nv(brain_mesh_file)
-        self.brainWidget.init_brain_view(self.brain_mesh_data)
+        self.brainWidget.set_brain_mesh(self.brain_mesh_data)
         self.set_brain_regions()
 
     def init_combo_box(self):
@@ -102,13 +102,20 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.last_combobox_index = 0
 
     def set_locked(self, locked):
-        lock_items = [self.tableWidget, self.textAtlasName, self.actionOpen, self.actionImport_txt, self.actionImport_xls,
+        lock_items = [self.textAtlasName, self.actionOpen, self.actionImport_txt, self.actionImport_xls,
                       self.actionImport_xml, self.btnAdd, self.btnAddAbove, self.btnAddBelow, self.btnRemove, self.btnMoveUp,
                       self.btnMoveDown, self.btnMoveToTop, self.btnMoveToBottom, self.actionAdd, self.actionAdd_above,
                       self.actionAdd_below, self.actionRemove, self.actionMove_up, self.actionMove_down, self.actionMove_to_top,
                       self.actionMove_to_bottom]
         for item in lock_items:
             item.setEnabled(not locked)
+
+        for col in range(1, self.tableWidget.columnCount()):
+            for row in range(self.tableWidget.rowCount()):
+                flags = (QtCore.Qt.NoItemFlags) if locked else (QtCore.Qt.ItemIsSelectable |  QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable)
+                item = self.tableWidget.item(row, col)
+                if item:
+                    item.setFlags(flags)
 
     def select_brain_mesh(self, i):
         if self.comboBox.currentText() == 'Open...':
@@ -132,7 +139,7 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
             file_path = self.mesh_file_paths[i]
             self.last_combobox_index = i
         if file_path:
-            self.set_brain_mesh(file_path)
+            self.set_brain_mesh_file(file_path)
 
     def get_all_nv_files(self):
         dir = abs_path_from_relative(__file__)

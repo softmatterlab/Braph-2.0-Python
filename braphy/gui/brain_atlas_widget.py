@@ -26,6 +26,7 @@ class BrainAtlasWidget(GLViewWidget):
         self.init_grid()
         self.interaction_enabled = True
         self.timer = None
+        self.brain_mesh = None
         self.brainBackgroundColor = (200, 200, 200, 255)
 
     def setBrainBackgroundColor(self, rgba):
@@ -35,15 +36,19 @@ class BrainAtlasWidget(GLViewWidget):
     def update_orbit(self):
         self.orbit(0.5, 0)
 
+    def set_locked(self, locked):
+        if locked:
+            self.interaction_enabled = False
+        else:
+            self.interaction_enabled = True
     def animate(self, on):
         if not self.timer:
             self.timer = QtCore.QTimer()
             self.timer.timeout.connect(self.update_orbit)
+        self.set_locked(on)
         if on:
-            self.interaction_enabled = False
             self.timer.start(10)
         else:
-            self.interaction_enabled = True
             self.timer.stop()
 
     def set_orthographic(self, orthographic):
@@ -56,11 +61,9 @@ class BrainAtlasWidget(GLViewWidget):
             self.opts['fov'] = 60
             self.setCameraPosition(distance = brain_distance_default)
 
-    def init_brain_view(self, mesh_data):
-        self.init_brain_mesh(mesh_data)
-
-    def change_brain_mesh(self, mesh_data):
-        self.removeItem(self.brain_mesh)
+    def set_brain_mesh(self, mesh_data):
+        if self.brain_mesh:
+            self.removeItem(self.brain_mesh)
         self.init_brain_mesh(mesh_data)
 
     def init_brain_regions(self, brain_regions, size, selected, show_brain_regions, show_only_selected):

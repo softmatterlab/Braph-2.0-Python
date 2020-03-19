@@ -1,4 +1,5 @@
 import sys
+import json
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from PyQt5.QtWidgets import *
 from braphy.utility.helper_functions import abs_path_from_relative, load_nv
@@ -13,8 +14,8 @@ from braphy.cohort.cohort import Cohort
 from braphy.cohort.subjects.subject_MRI import SubjectMRI
 
 qtCreatorFile = abs_path_from_relative(__file__, "ui_files/cohort_editor.ui")
-brain_mesh_file_name = "BrainMesh_ICBM152.nv"
-brain_mesh_file = abs_path_from_relative(__file__, brain_mesh_file_name)
+brain_mesh_file_name_default = "BrainMesh_ICBM152.nv"
+brain_mesh_file_default = abs_path_from_relative(__file__, brain_mesh_file_name_default)
 
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 subject_class = SubjectMRI
@@ -28,12 +29,14 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         else:
             self.cohort = cohort
         self.setupUi(self)
+        self.brain_mesh_data = load_nv(brain_mesh_file_default)
         self.init_buttons()
         self.init_actions()
         self.init_table()
         self.init_brain_widget()
 
-        self.atlas_loaded = False
+        self.atlas_dict = None
+        self.subject_data_labels = []
         self.disable_menu_bar(True)
         self.set_brain_view_actions_visible(False)
         self.tab_groups_and_demographics()
@@ -44,8 +47,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.subject_in_group_check_boxes = {}
 
     def init_brain_widget(self):
-        mesh_data = load_nv(brain_mesh_file)
-        self.brainWidget.init_brain_view(mesh_data)
+        self.brainWidget.set_brain_mesh(self.brain_mesh_data)
         self.brainWidget.change_transparency(0.5)
 
     def init_table(self):
@@ -267,10 +269,10 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.brainWidget.show_labels(state)
 
     def btn_brain_atlas(self):
-        if not self.atlas_loaded:
+        if not self.atlas_dict:
             self.load_atlas()
         else:
-            self.brain_atlas_gui = BrainAtlasGui(self)
+            self.brain_atlas_gui = BrainAtlasGui(self, atlas_dict = self.atlas_dict)
             self.brain_atlas_gui.set_locked(True)
             self.brain_atlas_gui.show()
 
@@ -279,7 +281,17 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         options |= QFileDialog.DontUseNativeDialog
         file_name, _ = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()", "","atlas files (*.atlas)", options=options)
         if file_name:
-            self.atlas_loaded = True
+            with open(file_name, 'r') as f:
+                self.atlas_dict = json.load(f)
+            vertices = np.asarray(self.atlas_dict['brain_mesh_data']['vertices'])
+            faces = np.asarray(self.atlas_dict['brain_mesh_data']['faces'])
+            brain_mesh_data = {'vertices': vertices, 'faces': faces}
+            self.brain_mesh_data = brain_mesh_data
+            self.init_brain_widget()
+            self.subject_data_labels = []
+            for region in self.atlas_dict['atlas']['brain_regions']:
+                self.subject_data_labels.append(region['label'])
+            self.update_subject_data_table()
             self.btnAtlas.setText("View Atlas")
             self.disable_menu_bar(False)
 
@@ -329,7 +341,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.update_group_table(selected_groups)
         self.update_groups_and_demographics_table(selected_subjects)
-        #self.update_subject_data_table()
+        self.update_subject_data_table()
         self.update_group_averages_table()
 
     def update_group_table(self, selected_groups = None):
@@ -448,14 +460,11 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.tableWidget_subject_data.setRowCount(0)
 
         #Update columns:
-        self.tableWidget_subject_data.setColumnCount(1)
-        item = QTableWidgetItem('Subject Code')
-        self.tableWidget_subject_data.setHorizontalHeaderItem(1, item)
-        data = self.cohort.subjects[0].data_dict['data']
-        for i in range(len(data)):
-            item = QTableWidgetItem('brain_region_' + str(i))
+        self.tableWidget_subject_data.setColumnCount(len(self.subject_data_labels)+1)
+        for i, label in enumerate(self.subject_data_labels):
+            item = QTableWidgetItem(label)
             self.tableWidget_subject_data.setHorizontalHeaderItem(i+1, item)
-
+        '''
         # Update subjects:
         for i in range(len(self.cohort.subjects)):
             item = QTableWidgetItem(self.cohort.subjects[i].id)
@@ -464,6 +473,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
             for j in range(len(self.cohort.subjects[i].data_dict['data'])):
                 item = QTableWidgetItem(str(self.cohort.subjects[i].data_dict['data'][j]))
                 self.tableWidget_subject_data.setItem(i, j+1, item)
+        '''
 
         self.tableWidget_subject_data.blockSignals(False)
 
