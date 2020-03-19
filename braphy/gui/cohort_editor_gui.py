@@ -46,6 +46,9 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.subject_check_boxes = []
         self.subject_in_group_check_boxes = {}
 
+        self.tableWidget_groups.cellChanged.connect(self.cell_changed_in_group_table)
+        self.tableWidget_groups_and_demographics.cellChanged.connect(self.cell_changed_in_groups_and_demographics_table)
+
     def init_brain_widget(self):
         self.brainWidget.set_brain_mesh(self.brain_mesh_data)
         self.brainWidget.change_transparency(0.5)
@@ -86,6 +89,8 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.btnRemove2.clicked.connect(self.remove_subjects)
         self.btnMoveUp2.clicked.connect(self.move_subjects_up)
         self.btnMoveDown2.clicked.connect(self.move_subjects_down)
+        self.btnMoveToTop.clicked.connect(self.move_subjects_to_top)
+        self.btnMoveToBottom.clicked.connect(self.move_subjects_to_bottom)
         self.btnNewGroup.clicked.connect(self.new_group)
 
         self.btnSaveSubjects.clicked.connect(self.save_subjects)
@@ -199,6 +204,16 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def tab_brain_view(self):
         self.tabWidget.setCurrentIndex(3)
+
+    def cell_changed_in_group_table(self, row, column):
+        if column == 1: #name
+            self.cohort.groups[row].name = self.tableWidget_groups.item(row, column).text()
+        elif column == 3: #notes
+            self.cohort.groups[row].description = self.tableWidget_groups.item(row, column).text()
+        self.update_tables()
+
+    def cell_changed_in_groups_and_demographics_table(self, row, column):
+        pass
 
     def open(self):
         pass
@@ -399,10 +414,9 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         except:
             keys = []
         for i in range(len(keys)):
-            key = keys[i]
-            if key == 'data':
+            if keys[i] == 'data':
                 continue
-            item = QTableWidgetItem(key)
+            item = QTableWidgetItem(keys[i])
             self.tableWidget_groups_and_demographics.setColumnCount(i+3)
             self.tableWidget_groups_and_demographics.setHorizontalHeaderItem(i+2, item)
 
@@ -420,7 +434,6 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
             layout = QHBoxLayout()
             layout.setAlignment(QtCore.Qt.AlignHCenter)
             check_box = QCheckBox()
-            #radio_button.stateChanged.connect(self.group_radio_button_changed)
             self.subject_check_boxes.append(check_box)
             if i in selected:
                 self.subject_check_boxes[i].setChecked(True)
@@ -432,10 +445,9 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
             self.tableWidget_groups_and_demographics.setItem(i, 1, item)
 
             for j in range(len(keys)):
-                key = keys[j]
-                if key == 'data':
+                if keys[j] == 'data':
                     continue
-                item = QTableWidgetItem(str(self.cohort.subjects[i].data_dict[key].value))
+                item = QTableWidgetItem(str(self.cohort.subjects[i].data_dict[keys[j]].value))
                 self.tableWidget_groups_and_demographics.setItem(i, j+2, item)
 
             for j in range(len(self.cohort.groups)):
@@ -597,6 +609,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def remove_subjects(self):
         selected_subjects = self.get_checked_subjects()
+        self.cohort.remove_subjects_from_all_groups(selected_subjects)
         selected_subjects = self.cohort.remove_subjects(selected_subjects)
         self.update_tables(self.get_checked_groups(), selected_subjects)
 

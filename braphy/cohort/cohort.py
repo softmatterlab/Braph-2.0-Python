@@ -33,6 +33,14 @@ class Cohort:
             del new_selected[i]
         return np.array(new_selected)
 
+    def remove_subjects_from_all_groups(self, selected):
+        for i in range(len(selected)):
+            subject = self.subjects[selected[i]]
+            for j in range(len(self.groups)):
+                group = self.groups[j]
+                if subject in group.subjects:
+                    group.remove_subject(subject)
+
     def invert_groups(self, i, j):
         tmp_group = self.groups[i]
         self.groups[i] = self.groups[j]
@@ -79,7 +87,7 @@ class Cohort:
         self.subjects.insert(i, subject)
 
     def remove_subject(self, i):
-        self.subjects.remove(i)
+        del self.subjects[i]
 
     def remove_subjects(self, selected):
         new_selected = list(selected)
@@ -97,9 +105,10 @@ class Cohort:
         self.subjects[j] = tmp_subject
 
     def move_to_subject(self, i, j):
-        subject = self.subjects[i]
-        self.remove_subject(i)
-        self.add_subject(subject, j)
+        if (i >= 0) & (i < len(self.subjects)) & (j >= 0) & (j < len(self.subjects)) & (i != j):
+            subject = self.subjects[i]
+            self.remove_subject(i)
+            self.add_subject(j, subject)
 
     def add_above_subjects(self, selected):
         for i in range(len(selected) - 1, -1, -1):
