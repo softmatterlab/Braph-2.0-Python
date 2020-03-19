@@ -62,7 +62,8 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.tableWidget_groups.setColumnWidth(3, 150)
 
     def init_buttons(self):
-        self.btnAtlas.clicked.connect(self.btn_brain_atlas)
+        self.btnSelectAtlas.clicked.connect(self.load_atlas)
+        self.btnViewAtlas.clicked.connect(self.view_atlas)
 
         self.btnLoadXls.clicked.connect(self.load_xls_subject_group)
         self.btnLoadTxt.clicked.connect(self.load_txt_subject_group)
@@ -269,13 +270,17 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
     def show_labels(self, state):
         self.brainWidget.show_labels(state)
 
-    def btn_brain_atlas(self):
-        if not self.atlas_dict:
-            self.load_atlas()
-        else:
+    def view_atlas(self):
+        if self.atlas_dict:
             self.brain_atlas_gui = BrainAtlasGui(self, atlas_dict = self.atlas_dict)
             self.brain_atlas_gui.set_locked(True)
             self.brain_atlas_gui.show()
+
+    def brain_region_number(self):
+        n = 0
+        if self.atlas_dict:
+            n = len(self.atlas_dict['atlas']['brain_regions'])
+        return n
 
     def load_atlas(self):
         options = QFileDialog.Options()
@@ -293,7 +298,9 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
             for region in self.atlas_dict['atlas']['brain_regions']:
                 self.subject_data_labels.append(region['label'])
             self.update_subject_data_table()
-            self.btnAtlas.setText("View Atlas")
+            self.btnViewAtlas.setEnabled(True)
+            self.labelAtlasName.setText(file_name.split('/')[-1])
+            self.labelRegionNumber.setText("Brain region number = {}".format(self.brain_region_number()))
             self.disable_menu_bar(False)
 
     def load_xls_subject_group(self):
