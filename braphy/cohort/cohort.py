@@ -171,6 +171,29 @@ class Cohort:
             selected = np.arange(len(self.subjects) - len(selected), len(self.subjects))
         return selected
 
+    def invert_group(self, group_idx):
+        group = self.groups[group_idx]
+        new_subjects = [subject for subject in self.subjects if subject not in group.subjects]
+        group.subjects = new_subjects
+
+    def merge_groups(self, group_idx_from, group_idx_to):
+        if group_idx_from == group_idx_to:
+            return
+        group_from = self.groups[group_idx_from]
+        group_to = self.groups[group_idx_to]
+        new_subjects = [subject for subject in group_from.subjects if subject not in group_to.subjects]
+        self.groups.remove(group_from)
+        group_to.add_subjects(new_subjects)
+
+    def intersect_groups(self, group_idx_from, group_idx_to):
+        if group_idx_from == group_idx_to:
+            return
+        group_from = self.groups[group_idx_from]
+        group_to = self.groups[group_idx_to]
+        new_subjects = [subject for subject in group_from.subjects if subject in group_to.subjects]
+        self.groups.remove(group_from)
+        group_to.add_subjects(new_subjects)
+
     def load_from_file(self, file_name, subject_load_function):
         group_name = file_name.split('/')[-1]
         group = Group(self.subject_class, name = group_name)
