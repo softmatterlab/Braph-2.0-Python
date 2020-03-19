@@ -12,11 +12,11 @@ class Cohort:
         else:
             self.subjects = []
 
-    def get_group(self, group_name):
+    def group_averages(self):
+        averages = []
         for group in self.groups:
-            if group.name == group_name:
-                return group
-        return None
+            averages.append(group.averages())
+        return np.array(averages)
 
     def add_new_group(self, group = None):
         if not group:
@@ -83,7 +83,7 @@ class Cohort:
         if not i:
             i = len(self.subjects)
         if not subject:
-            subject = Subject()
+            subject = SubjectMRI()
         self.subjects.insert(i, subject)
 
     def remove_subject(self, i):
@@ -175,9 +175,9 @@ class Cohort:
         group_name = file_name.split('/')[-1]
         group = Group(self.subject_class, name = group_name)
         subjects = subject_load_function(file_name)
-        self.subjects.extend(subjects)
         group.add_subjects(subjects)
         self.add_new_group(group=group)
+        self.subjects.extend(subjects)
 
     def load_from_txt(self, file_name):
         self.load_from_file(file_name, self.subject_class.from_txt)
