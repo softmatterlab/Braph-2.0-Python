@@ -33,6 +33,14 @@ class Cohort:
             del new_selected[i]
         return np.array(new_selected)
 
+    def remove_subjects_from_all_groups(self, selected):
+        for i in range(len(selected)):
+            subject = self.subjects[selected[i]]
+            for j in range(len(self.groups)):
+                group = self.groups[j]
+                if subject in group.subjects:
+                    group.remove_subject(subject)
+
     def invert_groups(self, i, j):
         tmp_group = self.groups[i]
         self.groups[i] = self.groups[j]
@@ -166,10 +174,10 @@ class Cohort:
     def load_from_file(self, file_name, subject_load_function):
         group_name = file_name.split('/')[-1]
         group = Group(self.subject_class, name = group_name)
-        self.add_new_group(group=group)
         subjects = subject_load_function(file_name)
         self.subjects.extend(subjects)
-        self.add_subjects_to_group(subjects, group_name)
+        group.add_subjects(subjects)
+        self.add_new_group(group=group)
 
     def load_from_txt(self, file_name):
         self.load_from_file(file_name, self.subject_class.from_txt)
