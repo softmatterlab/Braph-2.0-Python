@@ -41,6 +41,7 @@ class BrainAtlasWidget(GLViewWidget):
             self.interaction_enabled = False
         else:
             self.interaction_enabled = True
+
     def animate(self, on):
         if not self.timer:
             self.timer = QtCore.QTimer()
@@ -191,6 +192,11 @@ class BrainAtlasWidget(GLViewWidget):
 
     def deselect_region(self, index):
         self.gui_brain_regions[index].set_selected(False)
+        self.update_brain_regions_plot()
+
+    def deselect_all(self):
+        for region in self.gui_brain_regions:
+            region.set_selected(False)
         self.update_brain_regions_plot()
 
     def generate_figure(self):
