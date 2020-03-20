@@ -506,6 +506,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         else:
             self.cohort.groups[check_box.j].remove_subject(self.cohort.subjects[check_box.i])
         self.update_group_table()
+        self.update_group_averages_table()
 
     def update_subject_data_table(self):
         self.tableWidget_subject_data.blockSignals(True)
@@ -533,22 +534,34 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
     def update_group_averages_table(self):
         self.tableWidget_group_averages.blockSignals(True)
         self.tableWidget_group_averages.clearContents()
-        self.tableWidget_group_averages.setRowCount(len(self.cohort.groups))
 
+        # Add rows, columns and headers
+        self.tableWidget_group_averages.setRowCount(len(self.cohort.groups)*2)
         self.tableWidget_group_averages.setColumnCount(len(self.subject_data_labels))
         self.tableWidget_group_averages.setHorizontalHeaderLabels(self.subject_data_labels)
         group_names = [group.name for group in self.cohort.groups]
-        self.tableWidget_group_averages.setVerticalHeaderLabels(group_names)
+        vertical_headers = []
+        [vertical_headers.extend([group_name+'_mean', group_name+'_std']) for group_name in group_names]
+
+        self.tableWidget_group_averages.setVerticalHeaderLabels(vertical_headers)
+
+        # Add data
         averages = self.cohort.group_averages()
+        standard_deviations = self.cohort.group_standard_deviations()
         for i, group in enumerate(self.cohort.groups):
             group_average = averages[i]
+            group_standard_deviation = standard_deviations[i]
             for j in range(len(self.subject_data_labels)):
                 if len(group_average) <= j:
                     average = "-"
+                    standard_deviation = "-"
                 else:
                     average = str(group_average[j])
+                    standard_deviation = str(group_standard_deviation[j])
                 item = QTableWidgetItem(average)
-                self.tableWidget_group_averages.setItem(i, j, item)
+                self.tableWidget_group_averages.setItem(i*2, j, item)
+                item = QTableWidgetItem(standard_deviation)
+                self.tableWidget_group_averages.setItem(i*2+1, j, item)
 
         self.tableWidget_group_averages.blockSignals(False)
 

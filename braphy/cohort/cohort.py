@@ -55,6 +55,12 @@ class Cohort:
             averages.append(group.averages())
         return np.array(averages)
 
+    def group_standard_deviations(self):
+        standard_deviations = []
+        for group in self.groups:
+            standard_deviations.append(group.standard_deviations())
+        return np.array(standard_deviations)
+
     def new_group_name(self):
         return "Group_{}".format(len(self.groups))
 
