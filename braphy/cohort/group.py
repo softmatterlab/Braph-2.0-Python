@@ -57,6 +57,4 @@ class Group:
         values = np.array(values)
         if values.size == 0:
             return []
-
-        print(values.std(0))
         return values.std(0)
