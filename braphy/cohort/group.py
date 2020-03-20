@@ -1,5 +1,6 @@
 import numpy as np
 from braphy.cohort.subjects import *
+import statistics
 
 class Group:
     def __init__(self, subject_class, subjects = None, name = 'Group', description = '-'):
@@ -48,3 +49,14 @@ class Group:
         if values.size == 0:
             return []
         return values.mean(0)
+
+    def standard_deviations(self):
+        values = []
+        for subject in self.subjects:
+            values.append(subject.data_dict['data'].value)
+        values = np.array(values)
+        if values.size == 0:
+            return []
+
+        print(values.std(0))
+        return values.std(0)
