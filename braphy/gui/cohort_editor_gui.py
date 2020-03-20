@@ -44,7 +44,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.tab_groups_and_demographics()
         self.tabWidget.currentChanged.connect(self.tab_changed)
 
-        self.group_radio_buttons = []
+        self.group_check_boxes = []
         self.subject_check_boxes = []
         self.subject_in_group_check_boxes = {}
 
@@ -445,18 +445,18 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.tableWidget_groups.blockSignals(True)
         self.tableWidget_groups.clearContents()
         self.tableWidget_groups.setRowCount(0)
-        self.group_radio_buttons = []
+        self.group_check_boxes = []
 
         for i in range(len(self.cohort.groups)):
             self.tableWidget_groups.setRowCount(i+1)
             widget = QWidget()
             layout = QHBoxLayout()
             layout.setAlignment(QtCore.Qt.AlignHCenter)
-            radio_button = QRadioButton()
-            self.group_radio_buttons.append(radio_button)
+            check_box = QCheckBox()
+            self.group_check_boxes.append(check_box)
             if i in selected_groups:
-                self.group_radio_buttons[i].setChecked(True)
-            layout.addWidget(self.group_radio_buttons[i])
+                self.group_check_boxes[i].setChecked(True)
+            layout.addWidget(self.group_check_boxes[i])
             widget.setLayout(layout)
             self.tableWidget_groups.setCellWidget(i, 0, widget)
 
@@ -595,13 +595,10 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.tableWidget_group_averages.blockSignals(False)
 
-    def group_radio_button_changed(self):
-        pass
-
     def get_checked_groups(self):
         selected = []
-        for i in range(len(self.group_radio_buttons)):
-            if self.group_radio_buttons[i].isChecked():
+        for i in range(len(self.group_check_boxes)):
+            if self.group_check_boxes[i].isChecked():
                 selected.append(i)
         return np.array(selected)
 
@@ -620,11 +617,11 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.subject_check_boxes[i].setChecked(False)
 
     def set_checked_groups(self, selected):
-        for i in range(len(self.group_radio_buttons)):
+        for i in range(len(self.group_check_boxes)):
             if i in selected:
-                self.group_radio_buttons[i].setChecked(True)
+                self.group_check_boxes[i].setChecked(True)
             else:
-                self.group_radio_buttons[i].setChecked(False)
+                self.group_check_boxes[i].setChecked(False)
 
     def disable_menu_bar(self, b):
         self.menuGroups.setDisabled(b)
