@@ -159,14 +159,6 @@
             </property>
             <column>
              <property name="text">
-              <string/>
-             </property>
-             <property name="textAlignment">
-              <set>AlignTrailing|AlignVCenter</set>
-             </property>
-            </column>
-            <column>
-             <property name="text">
               <string>Group Name</string>
              </property>
             </column>
@@ -273,7 +265,7 @@
       <item>
        <widget class="QTabWidget" name="tabWidget">
         <property name="currentIndex">
-         <number>2</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="tabGroup">
          <attribute name="title">

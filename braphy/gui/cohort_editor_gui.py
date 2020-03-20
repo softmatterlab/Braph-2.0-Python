@@ -43,10 +43,11 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.tab_groups_and_demographics()
         self.tabWidget.currentChanged.connect(self.tab_changed)
 
-        self.group_check_boxes = []
         self.subject_check_boxes = []
         self.subject_in_group_check_boxes = {}
 
+        self.tableWidget_groups.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.tableWidget_groups.itemSelectionChanged.connect(self.update_group_operation_buttons)
         self.tableWidget_groups.cellChanged.connect(self.cell_changed_in_group_table)
         self.tableWidget_groups_and_demographics.cellChanged.connect(self.cell_changed_in_groups_and_demographics_table)
         self.tableWidget_subject_data.cellChanged.connect(self.cell_changed_in_subject_data_table)
@@ -60,11 +61,9 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         header.setSectionResizeMode(0, QtWidgets.QHeaderView.Fixed)
         header.setSectionResizeMode(1, QtWidgets.QHeaderView.Fixed)
         header.setSectionResizeMode(2, QtWidgets.QHeaderView.Fixed)
-        header.setSectionResizeMode(3, QtWidgets.QHeaderView.Fixed)
-        self.tableWidget_groups.setColumnWidth(0, 50)
-        self.tableWidget_groups.setColumnWidth(1, 100)
+        self.tableWidget_groups.setColumnWidth(0, 100)
+        self.tableWidget_groups.setColumnWidth(1, 150)
         self.tableWidget_groups.setColumnWidth(2, 150)
-        self.tableWidget_groups.setColumnWidth(3, 150)
 
     def init_buttons(self):
         self.btnSelectAtlas.clicked.connect(self.load_atlas)
@@ -411,30 +410,21 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.tableWidget_groups.blockSignals(True)
         self.tableWidget_groups.clearContents()
         self.tableWidget_groups.setRowCount(0)
-        self.group_check_boxes = []
 
         for i in range(len(self.cohort.groups)):
             self.tableWidget_groups.setRowCount(i+1)
             widget = QWidget()
             layout = QHBoxLayout()
             layout.setAlignment(QtCore.Qt.AlignHCenter)
-            check_box = QCheckBox()
-            check_box.stateChanged.connect(self.update_group_operation_buttons)
-            self.group_check_boxes.append(check_box)
-            if i in selected_groups:
-                self.group_check_boxes[i].setChecked(True)
-            layout.addWidget(self.group_check_boxes[i])
-            widget.setLayout(layout)
-            self.tableWidget_groups.setCellWidget(i, 0, widget)
 
             item = QTableWidgetItem(self.cohort.groups[i].name)
-            self.tableWidget_groups.setItem(i, 1, item)
+            self.tableWidget_groups.setItem(i, 0, item)
 
             item = QTableWidgetItem(str(len(self.cohort.groups[i].subjects)))
-            self.tableWidget_groups.setItem(i, 2, item)
+            self.tableWidget_groups.setItem(i, 1, item)
 
             item = QTableWidgetItem(self.cohort.groups[i].description)
-            self.tableWidget_groups.setItem(i, 3, item)
+            self.tableWidget_groups.setItem(i, 2, item)
 
         self.tableWidget_groups.blockSignals(False)
 
@@ -563,11 +553,8 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.tableWidget_group_averages.blockSignals(False)
 
     def get_checked_groups(self):
-        selected = []
-        for i in range(len(self.group_check_boxes)):
-            if self.group_check_boxes[i].isChecked():
-                selected.append(i)
-        return np.array(selected)
+        rows = [item.row() for item in self.tableWidget_groups.selectionModel().selectedRows()]
+        return np.array(rows)
 
     def get_checked_subjects(self):
         selected = []
@@ -582,13 +569,6 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.subject_check_boxes[i].setChecked(True)
             else:
                 self.subject_check_boxes[i].setChecked(False)
-
-    def set_checked_groups(self, selected):
-        for i in range(len(self.group_check_boxes)):
-            if i in selected:
-                self.group_check_boxes[i].setChecked(True)
-            else:
-                self.group_check_boxes[i].setChecked(False)
 
     def disable_menu_bar(self, b):
         self.menuGroups.setDisabled(b)
