@@ -679,7 +679,11 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.update_tables(self.get_checked_groups(), self.get_checked_subjects())
 
     def save_subjects(self):
-        pass
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        file_name, name = QFileDialog.getSaveFileName(self, "QFileDialog.saveFileName()", "", "txt files (*.txt)")
+        if file_name:
+            self.cohort.save_to_txt(file_name)
 
     def comparison(self):
         pass

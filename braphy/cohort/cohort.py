@@ -256,6 +256,13 @@ class Cohort:
         self.add_group(group=group)
         self.subjects.extend(subjects)
 
+    def save_to_txt(self, file_name):
+        s = " "
+        for subject in self.subjects:
+            s += "\n{}".format(str(subject))
+        with open(file_name, 'w') as f:
+            f.write(s)
+
     def load_from_txt(self, file_name):
         self.load_from_file(file_name, self.subject_class.from_txt)
 
