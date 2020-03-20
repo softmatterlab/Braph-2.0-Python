@@ -55,9 +55,12 @@ class Cohort:
             averages.append(group.averages())
         return np.array(averages)
 
+    def new_group_name(self):
+        return "Group_{}".format(len(self.groups))
+
     def add_group(self, group = None):
         if not group:
-            group = Group(self.subject_class, name = "Group_{}".format(len(self.groups)))
+            group = Group(self.subject_class, name = self.new_group_name())
         self.groups.append(group)
 
     def remove_group(self, i):
@@ -215,26 +218,27 @@ class Cohort:
 
     def invert_group(self, group_idx):
         group = self.groups[group_idx]
-        new_subjects = [subject for subject in self.subjects if subject not in group.subjects]
-        group.subjects = new_subjects
+        subjects = [subject for subject in self.subjects if subject not in group.subjects]
+        group.subjects = subjects
 
-    def merge_groups(self, group_idx_from, group_idx_to):
-        if group_idx_from == group_idx_to:
+    def merge_groups(self, group_idx1, group_idx2):
+        if group_idx1 == group_idx2:
             return
-        group_from = self.groups[group_idx_from]
-        group_to = self.groups[group_idx_to]
-        new_subjects = [subject for subject in group_from.subjects if subject not in group_to.subjects]
-        self.groups.remove(group_from)
-        group_to.add_subjects(new_subjects)
+        group1 = self.groups[group_idx1]
+        group2 = self.groups[group_idx2]
+        subjects = [subject for subject in group1.subjects]
+        subjects.extend([subject for subject in group2.subjects if subject not in subjects])
+        group = Group(self.subject_class, name = self.new_group_name(), subjects = subjects)
+        self.add_group(group = group)
 
-    def intersect_groups(self, group_idx_from, group_idx_to):
-        if group_idx_from == group_idx_to:
+    def intersect_groups(self, group_idx1, group_idx2):
+        if group_idx1 == group_idx2:
             return
-        group_from = self.groups[group_idx_from]
-        group_to = self.groups[group_idx_to]
-        new_subjects = [subject for subject in group_from.subjects if subject in group_to.subjects]
-        self.groups.remove(group_from)
-        group_to.add_subjects(new_subjects)
+        group1 = self.groups[group_idx1]
+        group2 = self.groups[group_idx2]
+        subjects = [subject for subject in group1.subjects if subject in group2.subjects]
+        group = Group(self.subject_class, name = self.new_group_name(), subjects = subjects)
+        self.add_group(group = group)
 
     def load_from_file(self, file_name, subject_load_function):
         group_name = file_name.split('/')[-1]
