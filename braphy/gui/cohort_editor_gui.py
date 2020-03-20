@@ -37,6 +37,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.init_group_combo_boxes()
 
         self.atlas_dict = None
+        self.file_name = None
         self.subject_data_labels = []
         self.disable_menu_bar(True)
         self.set_brain_view_actions_visible(False)
@@ -261,12 +262,27 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
             self.cohort.subjects[row].data_dict[column_header].value = new_value
 
     def open(self):
-        pass
-    def save(self):
-        pass
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        file_name, name = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()",
+                                                      "","cohort files (*.cohort)", options=options)
+        if file_name:
+            self.cohort = Cohort.from_file(file_name)
+            self.update_tables()
 
     def save_as(self):
-        pass
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        file_name, name = QFileDialog.getSaveFileName(self, "QFileDialog.saveFileName()", "", "cohort files (*.cohort)")
+        if file_name:
+            self.file_name = file_name
+            self.cohort.to_file(file_name)
+
+    def save(self):
+        if self.file_name:
+            self.cohort.to_file(self.file_name)
+        else:
+            self.save_as()
 
     def import_xml(self):
         pass

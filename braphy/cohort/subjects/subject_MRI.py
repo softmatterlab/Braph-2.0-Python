@@ -23,6 +23,7 @@ class SubjectMRI(Subject):
                 subject_id = line[0]
                 subject = SubjectMRI(id = subject_id)
                 mri_data = np.array(line[1:]).astype(float)
+                subject.data_dict['age'].set_value(0)
                 subject.data_dict['data'].set_value(mri_data)
                 subjects.append(subject)
         return subjects
@@ -49,6 +50,7 @@ class SubjectMRI(Subject):
             subject_id = item[0]
             subject = SubjectMRI(id = subject_id)
             mri_data = item[1:]
+            subject.data_dict['age'].set_value(0)
             subject.data_dict['data'].set_value(mri_data)
             subjects.append(subject)
         return subjects

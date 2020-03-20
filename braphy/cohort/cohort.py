@@ -1,17 +1,54 @@
+import json
 from braphy.cohort.subjects.subject import Subject
 from braphy.cohort.group import Group
 import numpy as np
 from braphy.cohort.subjects.subject_MRI import SubjectMRI
 
 class Cohort:
-    def __init__(self, name, subject_class, subjects = None):
+    def __init__(self, name, subject_class, subjects = None, groups = None):
         self.name = name
         self.subject_class = subject_class
-        self.groups = []
         if subjects:
             self.subjects = subjects
         else:
             self.subjects = []
+        if groups:
+            self.groups = groups
+        else:
+            self.groups = []
+
+    def to_dict(self):
+        d = {}
+        d['name'] = self.name
+        d['subject_class'] = self.subject_class.__name__
+        subjects = []
+        for subject in self.subjects:
+            subjects.append(subject.to_dict())
+        d['subjects'] = subjects
+        groups = []
+        for group in self.groups:
+            groups.append(group.to_dict())
+        d['groups'] = groups
+        return d
+
+    def from_dict(d):
+        subjects = []
+        subject_class = eval(d['subject_class'])
+        for subject_dict in d['subjects']:
+            subjects.append(subject_class.from_dict(subject_dict))
+        groups = []
+        for group_dict in d['groups']:
+            groups.append(Group.from_dict(group_dict, subjects))
+        return Cohort(d['name'], subject_class, subjects = subjects, groups = groups)
+
+    def to_file(self, cohort_file):
+        with open(cohort_file, 'w') as f:
+            json.dump(self.to_dict(), f, sort_keys=True, indent=4)
+
+    def from_file(cohort_file):
+        with open(cohort_file, 'r') as f:
+            d = json.load(f)
+        return Cohort.from_dict(d)
 
     def group_averages(self):
         averages = []
@@ -21,7 +58,7 @@ class Cohort:
 
     def add_new_group(self, group = None):
         if not group:
-            group = Group(self.subject_class)
+            group = Group()
         self.groups.append(group)
 
     def remove_group(self, i):
@@ -197,7 +234,7 @@ class Cohort:
 
     def load_from_file(self, file_name, subject_load_function):
         group_name = file_name.split('/')[-1]
-        group = Group(self.subject_class, name = group_name)
+        group = Group(name = group_name)
         subjects = subject_load_function(file_name)
         group.add_subjects(subjects)
         self.add_new_group(group=group)
