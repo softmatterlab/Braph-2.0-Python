@@ -116,6 +116,11 @@ class Cohort:
                 selected[i] = selected[i] + 1
         return selected
 
+    def new_group_from_selected(self, subject_indices):
+        self.add_group()
+        for index in subject_indices:
+            self.groups[-1].add_subject(self.subjects[index])
+
     def add_subject(self, i = None, subject = None):
         if not i:
             i = len(self.subjects)

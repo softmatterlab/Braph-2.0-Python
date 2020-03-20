@@ -94,7 +94,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.btnMoveDown2.clicked.connect(self.move_subjects_down)
         self.btnMoveToTop.clicked.connect(self.move_subjects_to_top)
         self.btnMoveToBottom.clicked.connect(self.move_subjects_to_bottom)
-        self.btnNewGroup.clicked.connect(self.new_group)
+        self.btnNewGroup.clicked.connect(self.new_group_from_selected)
 
         self.btnSaveSubjects.clicked.connect(self.save_subjects)
 
@@ -717,8 +717,9 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         selected_subjects = self.cohort.move_to_bottom_subjects(selected_subjects)
         self.update_tables(self.get_checked_groups(), selected_subjects)
 
-    def new_group(self):
-        self.cohort.add_group()
+    def new_group_from_selected(self):
+        selected_subjects = self.get_checked_subjects()
+        self.cohort.new_group_from_selected(selected_subjects)
         self.update_tables(self.get_checked_groups(), self.get_checked_subjects())
 
     def save_subjects(self):
