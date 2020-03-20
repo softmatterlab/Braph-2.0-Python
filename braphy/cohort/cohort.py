@@ -1,5 +1,6 @@
 import json
 from braphy.cohort.subjects.subject import Subject
+from braphy.cohort.subjects.subject_MRI import SubjectMRI
 from braphy.cohort.group import Group
 import numpy as np
 
