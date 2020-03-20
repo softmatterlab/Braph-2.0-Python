@@ -34,7 +34,6 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.init_actions()
         self.init_table()
         self.init_brain_widget()
-        self.init_group_combo_boxes()
 
         self.atlas_dict = None
         self.file_name = None
@@ -44,10 +43,11 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.tab_groups_and_demographics()
         self.tabWidget.currentChanged.connect(self.tab_changed)
 
-        self.group_check_boxes = []
         self.subject_check_boxes = []
         self.subject_in_group_check_boxes = {}
 
+        self.tableWidget_groups.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.tableWidget_groups.itemSelectionChanged.connect(self.update_group_operation_buttons)
         self.tableWidget_groups.cellChanged.connect(self.cell_changed_in_group_table)
         self.tableWidget_groups_and_demographics.cellChanged.connect(self.cell_changed_in_groups_and_demographics_table)
         self.tableWidget_subject_data.cellChanged.connect(self.cell_changed_in_subject_data_table)
@@ -61,11 +61,9 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         header.setSectionResizeMode(0, QtWidgets.QHeaderView.Fixed)
         header.setSectionResizeMode(1, QtWidgets.QHeaderView.Fixed)
         header.setSectionResizeMode(2, QtWidgets.QHeaderView.Fixed)
-        header.setSectionResizeMode(3, QtWidgets.QHeaderView.Fixed)
-        self.tableWidget_groups.setColumnWidth(0, 50)
-        self.tableWidget_groups.setColumnWidth(1, 100)
+        self.tableWidget_groups.setColumnWidth(0, 100)
+        self.tableWidget_groups.setColumnWidth(1, 150)
         self.tableWidget_groups.setColumnWidth(2, 150)
-        self.tableWidget_groups.setColumnWidth(3, 150)
 
     def init_buttons(self):
         self.btnSelectAtlas.clicked.connect(self.load_atlas)
@@ -190,42 +188,11 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.actionShow_brain.setChecked(state)
 
-    def init_group_combo_boxes(self):
-        combo_boxes = [self.comboBoxIntersect1,
-                       self.comboBoxIntersect2,
-                       self.comboBoxMerge1,
-                       self.comboBoxMerge2,
-                       self.comboBoxMerge2,
-                       self.comboBoxInvert]
-        for combo_box in combo_boxes:
-            combo_box.currentIndexChanged.connect(self.check_group_operation_buttons)
-
-    def update_group_combo_boxes(self):
-        combo_boxes = [self.comboBoxIntersect1,
-                       self.comboBoxIntersect2,
-                       self.comboBoxMerge1,
-                       self.comboBoxMerge2,
-                       self.comboBoxMerge2,
-                       self.comboBoxInvert]
-        for combo_box in combo_boxes:
-            combo_box.clear()
-            group_names = [group.name for group in self.cohort.groups]
-            combo_box.insertItems(0, group_names)
-
-    def check_group_operation_buttons(self):
-        invert_enabled = self.comboBoxInvert.currentIndex() != -1
-
-        merge_enabled = (self.comboBoxMerge1.currentIndex() != -1 and
-                         self.comboBoxMerge2.currentIndex() != -1 and
-                         self.comboBoxMerge1.currentIndex() != self.comboBoxMerge2.currentIndex())
-
-        intersect_enabled = (self.comboBoxIntersect1.currentIndex() != -1 and
-                             self.comboBoxIntersect2.currentIndex() != -1 and
-                             self.comboBoxIntersect1.currentIndex() != self.comboBoxIntersect2.currentIndex())
-
-        self.btnInvert.setEnabled(invert_enabled)
-        self.btnMerge.setEnabled(merge_enabled)
-        self.btnIntersect.setEnabled(intersect_enabled)
+    def update_group_operation_buttons(self):
+        checked_groups = len(self.get_checked_groups())
+        self.btnInvert.setEnabled(checked_groups > 0)
+        self.btnMerge.setEnabled(checked_groups > 1)
+        self.btnIntersect.setEnabled(checked_groups > 1)
 
     def tab_changed(self):
         if self.tabWidget.currentIndex() == 3:
@@ -270,7 +237,6 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
             new_value = float(self.tableWidget_subject_data.item(row, column).text())
             self.cohort.subjects[row].data_dict['data'].value[column-1] = new_value
         self.update_tables()
-            
 
     def open(self):
         options = QFileDialog.Options()
@@ -437,7 +403,6 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.update_groups_and_demographics_table(selected_subjects)
         self.update_subject_data_table()
         self.update_group_averages_table()
-        self.update_group_combo_boxes()
 
     def update_group_table(self, selected_groups = None):
         if np.any(selected_groups == None):
@@ -445,29 +410,21 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.tableWidget_groups.blockSignals(True)
         self.tableWidget_groups.clearContents()
         self.tableWidget_groups.setRowCount(0)
-        self.group_check_boxes = []
 
         for i in range(len(self.cohort.groups)):
             self.tableWidget_groups.setRowCount(i+1)
             widget = QWidget()
             layout = QHBoxLayout()
             layout.setAlignment(QtCore.Qt.AlignHCenter)
-            check_box = QCheckBox()
-            self.group_check_boxes.append(check_box)
-            if i in selected_groups:
-                self.group_check_boxes[i].setChecked(True)
-            layout.addWidget(self.group_check_boxes[i])
-            widget.setLayout(layout)
-            self.tableWidget_groups.setCellWidget(i, 0, widget)
 
             item = QTableWidgetItem(self.cohort.groups[i].name)
-            self.tableWidget_groups.setItem(i, 1, item)
+            self.tableWidget_groups.setItem(i, 0, item)
 
             item = QTableWidgetItem(str(len(self.cohort.groups[i].subjects)))
-            self.tableWidget_groups.setItem(i, 2, item)
+            self.tableWidget_groups.setItem(i, 1, item)
 
             item = QTableWidgetItem(self.cohort.groups[i].description)
-            self.tableWidget_groups.setItem(i, 3, item)
+            self.tableWidget_groups.setItem(i, 2, item)
 
         self.tableWidget_groups.blockSignals(False)
 
@@ -561,7 +518,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         for i, label in enumerate(self.subject_data_labels):
             item = QTableWidgetItem(label)
             self.tableWidget_subject_data.setHorizontalHeaderItem(i+1, item)
-        
+
         # Update subjects:
         for i in range(len(self.cohort.subjects)):
             self.tableWidget_subject_data.setRowCount(i+1)
@@ -609,11 +566,8 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.tableWidget_group_averages.blockSignals(False)
 
     def get_checked_groups(self):
-        selected = []
-        for i in range(len(self.group_check_boxes)):
-            if self.group_check_boxes[i].isChecked():
-                selected.append(i)
-        return np.array(selected)
+        rows = [item.row() for item in self.tableWidget_groups.selectionModel().selectedRows()]
+        return np.array(rows)
 
     def get_checked_subjects(self):
         selected = []
@@ -628,13 +582,6 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.subject_check_boxes[i].setChecked(True)
             else:
                 self.subject_check_boxes[i].setChecked(False)
-
-    def set_checked_groups(self, selected):
-        for i in range(len(self.group_check_boxes)):
-            if i in selected:
-                self.group_check_boxes[i].setChecked(True)
-            else:
-                self.group_check_boxes[i].setChecked(False)
 
     def disable_menu_bar(self, b):
         self.menuGroups.setDisabled(b)
@@ -660,26 +607,15 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.update_tables(selected_groups)
 
     def invert_group(self):
-        idx = self.comboBoxInvert.currentIndex()
-        if idx == -1:
-            return
-        self.cohort.invert_group(idx)
+        self.cohort.invert_groups(self.get_checked_groups())
         self.update_tables()
 
     def merge_groups(self):
-        idx_from = self.comboBoxMerge1.currentIndex()
-        idx_to = self.comboBoxMerge2.currentIndex()
-        if idx_from == -1 or idx_to == -1:
-            return
-        self.cohort.merge_groups(idx_from, idx_to)
+        self.cohort.merge_groups(self.get_checked_groups())
         self.update_tables()
 
     def intersect_groups(self):
-        idx_from = self.comboBoxMerge1.currentIndex()
-        idx_to = self.comboBoxMerge2.currentIndex()
-        if idx_from == -1 or idx_to == -1:
-            return
-        self.cohort.intersect_groups(idx_from, idx_to)
+        self.cohort.intersect_groups(self.get_checked_groups())
         self.update_tables()
 
     def select_all_subjects(self):
@@ -736,7 +672,11 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.update_tables(self.get_checked_groups(), self.get_checked_subjects())
 
     def save_subjects(self):
-        pass
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        file_name, name = QFileDialog.getSaveFileName(self, "QFileDialog.saveFileName()", "", "txt files (*.txt)")
+        if file_name:
+            self.cohort.save_to_txt(file_name)
 
     def comparison(self):
         pass

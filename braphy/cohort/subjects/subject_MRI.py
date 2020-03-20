@@ -13,6 +13,12 @@ class SubjectMRI(Subject):
         self.data_dict['age'] = DataScalar()
         self.data_dict['data'] = DataStructural()
 
+    def __str__(self):
+        s = str(self.id)
+        for value in self.data_dict['data'].value:
+            s += "\t{}".format(str(value))
+        return s
+
     def from_txt(file_txt):
         subjects = []
         with open(file_txt, 'r') as f:

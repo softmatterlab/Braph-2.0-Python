@@ -61,9 +61,12 @@ class Cohort:
             standard_deviations.append(group.standard_deviations())
         return np.array(standard_deviations)
 
+    def new_group_name(self):
+        return "Group_{}".format(len(self.groups))
+
     def add_group(self, group = None):
         if not group:
-            group = Group(self.subject_class, name = "Group_{}".format(len(self.groups)))
+            group = Group(self.subject_class, name = self.new_group_name())
         self.groups.append(group)
 
     def remove_group(self, i):
@@ -84,7 +87,7 @@ class Cohort:
                 if subject in group.subjects:
                     group.remove_subject(subject)
 
-    def invert_groups(self, i, j):
+    def swap_groups(self, i, j):
         tmp_group = self.groups[i]
         self.groups[i] = self.groups[j]
         self.groups[j] = tmp_group
@@ -104,7 +107,7 @@ class Cohort:
                 unprocessable_length = unprocessable_length + 1
 
             for i in range(first_index_to_process, len(selected)):
-                self.invert_groups(selected[i], selected[i] - 1)
+                self.swap_groups(selected[i], selected[i] - 1)
                 selected[i] = selected[i] - 1
         return selected
 
@@ -118,7 +121,7 @@ class Cohort:
                 unprocessable_length = unprocessable_length - 1
 
             for i in range(last_index_to_process, -1, -1):
-                self.invert_groups(selected[i], selected[i] + 1)
+                self.swap_groups(selected[i], selected[i] + 1)
                 selected[i] = selected[i] + 1
         return selected
 
@@ -147,7 +150,7 @@ class Cohort:
     def replace_subject(self, i, subject):
         self.subjects[i] = subject
 
-    def invert_subjects(self, i, j):
+    def swap_subjects(self, i, j):
         tmp_subject = self.subjects[i]
         self.subjects[i] = self.subjects[j]
         self.subjects[j] = tmp_subject
@@ -187,7 +190,7 @@ class Cohort:
                 unprocessable_length = unprocessable_length + 1
 
             for i in range(first_index_to_process, len(selected)):
-                self.invert_subjects(selected[i], selected[i] - 1)
+                self.swap_subjects(selected[i], selected[i] - 1)
                 selected[i] = selected[i] - 1
         return selected
 
@@ -201,7 +204,7 @@ class Cohort:
                 unprocessable_length = unprocessable_length - 1
 
             for i in range(last_index_to_process, -1, -1):
-                self.invert_subjects(selected[i], selected[i] + 1)
+                self.swap_subjects(selected[i], selected[i] + 1)
                 selected[i] = selected[i] + 1
         return selected
 
@@ -219,28 +222,37 @@ class Cohort:
             selected = np.arange(len(self.subjects) - len(selected), len(self.subjects))
         return selected
 
-    def invert_group(self, group_idx):
-        group = self.groups[group_idx]
-        new_subjects = [subject for subject in self.subjects if subject not in group.subjects]
-        group.subjects = new_subjects
+    def invert_groups(self, group_indices):
+        group_subjects = []
+        for group_idx in group_indices:
+            group = self.groups[group_idx]
+            group_subjects.extend([subject for subject in group.subjects])
+        subjects = [subject for subject in self.subjects if subject not in group_subjects]
+        group = Group(self.subject_class, name = self.new_group_name(), subjects = subjects)
+        self.add_group(group = group)
 
-    def merge_groups(self, group_idx_from, group_idx_to):
-        if group_idx_from == group_idx_to:
+    def merge_groups(self, group_indices):
+        if len(group_indices) < 2:
             return
-        group_from = self.groups[group_idx_from]
-        group_to = self.groups[group_idx_to]
-        new_subjects = [subject for subject in group_from.subjects if subject not in group_to.subjects]
-        self.groups.remove(group_from)
-        group_to.add_subjects(new_subjects)
+        subjects = []
+        for group_idx in group_indices:
+            group = self.groups[group_idx]
+            subjects.extend([subject for subject in group.subjects if subject not in subjects])
+        group = Group(self.subject_class, name = self.new_group_name(), subjects = subjects)
+        self.add_group(group = group)
 
-    def intersect_groups(self, group_idx_from, group_idx_to):
-        if group_idx_from == group_idx_to:
+    def intersect_groups(self, group_indices):
+        if len(group_indices) < 2:
             return
-        group_from = self.groups[group_idx_from]
-        group_to = self.groups[group_idx_to]
-        new_subjects = [subject for subject in group_from.subjects if subject in group_to.subjects]
-        self.groups.remove(group_from)
-        group_to.add_subjects(new_subjects)
+        group = self.groups[group_indices[0]]
+        subjects = set(group.subjects)
+        for i in range(1, len(group_indices)):
+            group_idx = group_indices[i]
+            group = self.groups[group_idx]
+            subjects = subjects.intersection(set(group.subjects))
+        subjects = list(subjects)
+        group = Group(self.subject_class, name = self.new_group_name(), subjects = subjects)
+        self.add_group(group = group)
 
     def load_from_file(self, file_name, subject_load_function):
         group_name = file_name.split('/')[-1]
@@ -249,6 +261,13 @@ class Cohort:
         group.add_subjects(subjects)
         self.add_group(group=group)
         self.subjects.extend(subjects)
+
+    def save_to_txt(self, file_name):
+        s = " "
+        for subject in self.subjects:
+            s += "\n{}".format(str(subject))
+        with open(file_name, 'w') as f:
+            f.write(s)
 
     def load_from_txt(self, file_name):
         self.load_from_file(file_name, self.subject_class.from_txt)
