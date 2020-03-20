@@ -120,7 +120,7 @@ class Cohort:
         if not i:
             i = len(self.subjects)
         if not subject:
-            subject = self.subject_class()
+            subject = self.subject_class(id = 'sub_{}'.format(len(self.subjects)))
         self.subjects.insert(i, subject)
 
     def remove_subject(self, i):
