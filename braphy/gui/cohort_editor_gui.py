@@ -75,7 +75,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.btnLoadTxt.clicked.connect(self.load_txt_subject_group)
         self.btnLoadXml.clicked.connect(self.load_xml_subject_group)
 
-        self.btnAdd.clicked.connect(self.add_new_group)
+        self.btnAdd.clicked.connect(self.add_group)
         self.btnRemove.clicked.connect(self.remove_group)
         self.btnMoveUp.clicked.connect(self.move_group_up)
         self.btnMoveDown.clicked.connect(self.move_group_down)
@@ -115,7 +115,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionLoad_subject_group_from_xls.triggered.connect(self.load_xls_subject_group)
         self.actionLoad_subject_group_from_txt.triggered.connect(self.load_txt_subject_group)
         self.actionLoad_subject_group_from_xml.triggered.connect(self.load_xml_subject_group)
-        self.actionAdd_group.triggered.connect(self.add_new_group)
+        self.actionAdd_group.triggered.connect(self.add_group)
         self.actionRemove_group.triggered.connect(self.remove_group)
         self.actionMove_group_up.triggered.connect(self.move_group_up)
         self.actionMove_group_down.triggered.connect(self.move_group_down)
@@ -633,8 +633,8 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.menuBrain_View.setDisabled(b)
         self.menuGraph_Analysis.setDisabled(b)
 
-    def add_new_group(self):
-        self.cohort.add_new_group()
+    def add_group(self):
+        self.cohort.add_group()
         self.update_tables(self.get_checked_groups())
 
     def remove_group(self):
@@ -721,7 +721,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.update_tables(self.get_checked_groups(), selected_subjects)
 
     def new_group(self):
-        self.cohort.add_new_group()
+        self.cohort.add_group()
         self.update_tables(self.get_checked_groups(), self.get_checked_subjects())
 
     def save_subjects(self):

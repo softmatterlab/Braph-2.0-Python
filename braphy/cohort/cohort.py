@@ -55,9 +55,9 @@ class Cohort:
             averages.append(group.averages())
         return np.array(averages)
 
-    def add_new_group(self, group = None):
+    def add_group(self, group = None):
         if not group:
-            group = Group()
+            group = Group(name = "Group_{}".format(len(self.groups)))
         self.groups.append(group)
 
     def remove_group(self, i):
@@ -236,7 +236,7 @@ class Cohort:
         group = Group(name = group_name)
         subjects = subject_load_function(file_name)
         group.add_subjects(subjects)
-        self.add_new_group(group=group)
+        self.add_group(group=group)
         self.subjects.extend(subjects)
 
     def load_from_txt(self, file_name):
