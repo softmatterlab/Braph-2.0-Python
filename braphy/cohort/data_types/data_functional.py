@@ -4,6 +4,7 @@ import numpy as np
 class DataFunctional(Data):
     def __init__(self):
         super().__init__()
+        self.value = []
 
     def to_dict(self):
         d = {}

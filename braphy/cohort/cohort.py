@@ -2,7 +2,6 @@ import json
 from braphy.cohort.subjects.subject import Subject
 from braphy.cohort.group import Group
 import numpy as np
-from braphy.cohort.subjects.subject_MRI import SubjectMRI
 
 class Cohort:
     def __init__(self, name, subject_class, subjects = None, groups = None):
@@ -121,7 +120,7 @@ class Cohort:
         if not i:
             i = len(self.subjects)
         if not subject:
-            subject = SubjectMRI()
+            subject = self.subject_class()
         self.subjects.insert(i, subject)
 
     def remove_subject(self, i):
