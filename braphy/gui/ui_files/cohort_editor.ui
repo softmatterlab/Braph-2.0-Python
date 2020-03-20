@@ -227,16 +227,7 @@
           <property name="bottomMargin">
            <number>0</number>
           </property>
-          <item row="1" column="1">
-           <widget class="QComboBox" name="comboBoxMerge2"/>
-          </item>
-          <item row="2" column="0">
-           <widget class="QComboBox" name="comboBoxIntersect1"/>
-          </item>
-          <item row="1" column="0">
-           <widget class="QComboBox" name="comboBoxMerge1"/>
-          </item>
-          <item row="1" column="2">
+          <item row="0" column="1">
            <widget class="QPushButton" name="btnMerge">
             <property name="enabled">
              <bool>false</bool>
@@ -246,20 +237,7 @@
             </property>
            </widget>
           </item>
-          <item row="2" column="1">
-           <widget class="QComboBox" name="comboBoxIntersect2"/>
-          </item>
-          <item row="2" column="2">
-           <widget class="QPushButton" name="btnIntersect">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="text">
-             <string>Intersect</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="2">
+          <item row="0" column="0">
            <widget class="QPushButton" name="btnInvert">
             <property name="enabled">
              <bool>false</bool>
@@ -269,8 +247,15 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="1">
-           <widget class="QComboBox" name="comboBoxInvert"/>
+          <item row="0" column="2">
+           <widget class="QPushButton" name="btnIntersect">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string>Intersect</string>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>
