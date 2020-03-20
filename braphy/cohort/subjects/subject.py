@@ -7,6 +7,21 @@ class Subject:
         self.data_dict = {}
         self.init_data_dict()
 
+    def to_dict(self):
+        d = {}
+        d['id'] = self.id
+        d['data_dict'] = {}
+        for key, value in self.data_dict.items():
+            d['data_dict'][key] = value.to_dict()
+        return d
+
+    @classmethod
+    def from_dict(cls, d):
+        subject = cls(id = d['id'])
+        for key, value in d['data_dict'].items():
+            subject.data_dict[key].from_dict(value)
+        return subject
+
     @abstractmethod
     def init_data_dict(self):
         self.data_dict['data'] = Data()

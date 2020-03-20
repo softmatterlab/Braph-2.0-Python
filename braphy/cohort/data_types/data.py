@@ -6,3 +6,13 @@ class Data:
 
     def set_value(self, value):
         self.value = value
+
+    @abstractmethod
+    def to_dict(self):
+        pass
+
+    @abstractmethod
+    def from_dict(self, d):
+        pass
+
+
