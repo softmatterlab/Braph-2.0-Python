@@ -654,19 +654,19 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.update_tables()
 
     def merge_groups(self):
-        idx_from = self.comboBoxMerge1.currentIndex()
-        idx_to = self.comboBoxMerge2.currentIndex()
-        if idx_from == -1 or idx_to == -1:
+        idx1 = self.comboBoxMerge1.currentIndex()
+        idx2 = self.comboBoxMerge2.currentIndex()
+        if idx1 == -1 or idx2 == -1:
             return
-        self.cohort.merge_groups(idx_from, idx_to)
+        self.cohort.merge_groups(idx1, idx2)
         self.update_tables()
 
     def intersect_groups(self):
-        idx_from = self.comboBoxMerge1.currentIndex()
-        idx_to = self.comboBoxMerge2.currentIndex()
-        if idx_from == -1 or idx_to == -1:
+        idx1 = self.comboBoxIntersect1.currentIndex()
+        idx2 = self.comboBoxIntersect2.currentIndex()
+        if idx1 == -1 or idx1 == -1:
             return
-        self.cohort.intersect_groups(idx_from, idx_to)
+        self.cohort.intersect_groups(idx1, idx2)
         self.update_tables()
 
     def select_all_subjects(self):
