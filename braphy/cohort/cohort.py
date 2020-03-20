@@ -81,7 +81,7 @@ class Cohort:
                 if subject in group.subjects:
                     group.remove_subject(subject)
 
-    def invert_groups(self, i, j):
+    def swap_groups(self, i, j):
         tmp_group = self.groups[i]
         self.groups[i] = self.groups[j]
         self.groups[j] = tmp_group
@@ -101,7 +101,7 @@ class Cohort:
                 unprocessable_length = unprocessable_length + 1
 
             for i in range(first_index_to_process, len(selected)):
-                self.invert_groups(selected[i], selected[i] - 1)
+                self.swap_groups(selected[i], selected[i] - 1)
                 selected[i] = selected[i] - 1
         return selected
 
@@ -115,7 +115,7 @@ class Cohort:
                 unprocessable_length = unprocessable_length - 1
 
             for i in range(last_index_to_process, -1, -1):
-                self.invert_groups(selected[i], selected[i] + 1)
+                self.swap_groups(selected[i], selected[i] + 1)
                 selected[i] = selected[i] + 1
         return selected
 
@@ -144,7 +144,7 @@ class Cohort:
     def replace_subject(self, i, subject):
         self.subjects[i] = subject
 
-    def invert_subjects(self, i, j):
+    def swap_subjects(self, i, j):
         tmp_subject = self.subjects[i]
         self.subjects[i] = self.subjects[j]
         self.subjects[j] = tmp_subject
@@ -184,7 +184,7 @@ class Cohort:
                 unprocessable_length = unprocessable_length + 1
 
             for i in range(first_index_to_process, len(selected)):
-                self.invert_subjects(selected[i], selected[i] - 1)
+                self.swap_subjects(selected[i], selected[i] - 1)
                 selected[i] = selected[i] - 1
         return selected
 
@@ -198,7 +198,7 @@ class Cohort:
                 unprocessable_length = unprocessable_length - 1
 
             for i in range(last_index_to_process, -1, -1):
-                self.invert_subjects(selected[i], selected[i] + 1)
+                self.swap_subjects(selected[i], selected[i] + 1)
                 selected[i] = selected[i] + 1
         return selected
 
@@ -216,27 +216,35 @@ class Cohort:
             selected = np.arange(len(self.subjects) - len(selected), len(self.subjects))
         return selected
 
-    def invert_group(self, group_idx):
-        group = self.groups[group_idx]
-        subjects = [subject for subject in self.subjects if subject not in group.subjects]
-        group.subjects = subjects
-
-    def merge_groups(self, group_idx1, group_idx2):
-        if group_idx1 == group_idx2:
-            return
-        group1 = self.groups[group_idx1]
-        group2 = self.groups[group_idx2]
-        subjects = [subject for subject in group1.subjects]
-        subjects.extend([subject for subject in group2.subjects if subject not in subjects])
+    def invert_groups(self, group_indices):
+        group_subjects = []
+        for group_idx in group_indices:
+            group = self.groups[group_idx]
+            group_subjects.extend([subject for subject in group.subjects])
+        subjects = [subject for subject in self.subjects if subject not in group_subjects]
         group = Group(self.subject_class, name = self.new_group_name(), subjects = subjects)
         self.add_group(group = group)
 
-    def intersect_groups(self, group_idx1, group_idx2):
-        if group_idx1 == group_idx2:
+    def merge_groups(self, group_indices):
+        if len(group_indices) < 2:
             return
-        group1 = self.groups[group_idx1]
-        group2 = self.groups[group_idx2]
-        subjects = [subject for subject in group1.subjects if subject in group2.subjects]
+        subjects = []
+        for group_idx in group_indices:
+            group = self.groups[group_idx]
+            subjects.extend([subject for subject in group.subjects if subject not in subjects])
+        group = Group(self.subject_class, name = self.new_group_name(), subjects = subjects)
+        self.add_group(group = group)
+
+    def intersect_groups(self, group_indices):
+        if len(group_indices) < 2:
+            return
+        group = self.groups[group_indices[0]]
+        subjects = set(group.subjects)
+        for i in range(1, len(group_indices)):
+            group_idx = group_indices[i]
+            group = self.groups[group_idx]
+            subjects = subjects.intersection(set(group.subjects))
+        subjects = list(subjects)
         group = Group(self.subject_class, name = self.new_group_name(), subjects = subjects)
         self.add_group(group = group)
 
