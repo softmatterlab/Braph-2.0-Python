@@ -48,6 +48,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.tableWidget_groups.cellChanged.connect(self.cell_changed_in_group_table)
         self.tableWidget_groups_and_demographics.cellChanged.connect(self.cell_changed_in_groups_and_demographics_table)
+        self.tableWidget_subject_data.cellChanged.connect(self.cell_changed_in_subject_data_table)
 
     def init_brain_widget(self):
         self.brainWidget.set_brain_mesh(self.brain_mesh_data)
@@ -221,6 +222,16 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
             column_header = self.tableWidget_groups_and_demographics.horizontalHeaderItem(column).text()
             new_value = float(self.tableWidget_groups_and_demographics.item(row, column).text())
             self.cohort.subjects[row].data_dict[column_header].value = new_value
+        self.update_subject_data_table()
+
+    def cell_changed_in_subject_data_table(self, row, column):
+        if column == 0: # subject code
+            self.cohort.subjects[row].id = self.tableWidget_subject_data.item(row, column).text()
+        else: # data
+            new_value = float(self.tableWidget_subject_data.item(row, column).text())
+            self.cohort.subjects[row].data_dict['data'].value[column-1] = new_value
+        self.update_tables()
+            
 
     def open(self):
         pass
