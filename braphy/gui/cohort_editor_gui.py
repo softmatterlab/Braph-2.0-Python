@@ -650,7 +650,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         idx = self.comboBoxInvert.currentIndex()
         if idx == -1:
             return
-        self.cohort.invert_group(idx)
+        self.cohort.invert_groups([idx])
         self.update_tables()
 
     def merge_groups(self):
@@ -658,7 +658,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         idx2 = self.comboBoxMerge2.currentIndex()
         if idx1 == -1 or idx2 == -1:
             return
-        self.cohort.merge_groups(idx1, idx2)
+        self.cohort.merge_groups([idx1, idx2])
         self.update_tables()
 
     def intersect_groups(self):
@@ -666,7 +666,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         idx2 = self.comboBoxIntersect2.currentIndex()
         if idx1 == -1 or idx1 == -1:
             return
-        self.cohort.intersect_groups(idx1, idx2)
+        self.cohort.intersect_groups([idx1, idx2])
         self.update_tables()
 
     def select_all_subjects(self):
