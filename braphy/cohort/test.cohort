@@ -3,6 +3,7 @@
         {
             "description": "-",
             "name": "gr1_MRI.txt",
+            "subject_class": "SubjectMRI",
             "subjects": [
                 {
                     "data_dict": {
@@ -4005,11 +4006,6 @@
                     "id": "'sub_50'"
                 }
             ]
-        },
-        {
-            "description": "-",
-            "name": "Group",
-            "subjects": []
         }
     ],
     "name": "Cohort",
