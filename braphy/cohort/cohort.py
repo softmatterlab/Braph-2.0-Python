@@ -1,6 +1,5 @@
 import json
-from braphy.cohort.subjects.subject import Subject
-from braphy.cohort.subjects.subject_MRI import SubjectMRI
+from braphy.cohort.subjects import *
 from braphy.cohort.group import Group
 import numpy as np
 
@@ -38,7 +37,7 @@ class Cohort:
             subjects.append(subject_class.from_dict(subject_dict))
         groups = []
         for group_dict in d['groups']:
-            groups.append(Group.from_dict(group_dict, subjects))
+            groups.append(Group.from_dict(group_dict))
         return Cohort(d['name'], subject_class, subjects = subjects, groups = groups)
 
     def to_file(self, cohort_file):
@@ -58,7 +57,7 @@ class Cohort:
 
     def add_group(self, group = None):
         if not group:
-            group = Group(name = "Group_{}".format(len(self.groups)))
+            group = Group(self.subject_class, name = "Group_{}".format(len(self.groups)))
         self.groups.append(group)
 
     def remove_group(self, i):
@@ -234,7 +233,7 @@ class Cohort:
 
     def load_from_file(self, file_name, subject_load_function):
         group_name = file_name.split('/')[-1]
-        group = Group(name = group_name)
+        group = Group(self.subject_class, name = group_name)
         subjects = subject_load_function(file_name)
         group.add_subjects(subjects)
         self.add_group(group=group)

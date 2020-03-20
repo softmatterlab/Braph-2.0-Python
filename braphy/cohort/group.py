@@ -1,8 +1,10 @@
 import numpy as np
+from braphy.cohort.subjects import *
 
 class Group:
-    def __init__(self, subjects = None, name = 'Group', description = '-'):
+    def __init__(self, subject_class, subjects = None, name = 'Group', description = '-'):
         self.name = name
+        self.subject_class = subject_class
         self.description = description
         if not subjects:
             subjects = []
@@ -11,15 +13,19 @@ class Group:
     def to_dict(self):
         d = {}
         d['name'] = self.name
+        d['subject_class'] = self.subject_class.__name__
         d['description'] = self.description
         d['subjects'] = []
         for subject in self.subjects:
             d['subjects'].append(subject.to_dict())
         return d
 
-    def from_dict(d, subjects):
-        # Pass subjects as argument list of instances to avoid importing all subjects
-        return Group(subjects=subjects, name=d['name'], description=d['description'])
+    def from_dict(d):
+        subjects = []
+        subject_class = eval(d['subject_class'])
+        for subject_dict in d['subjects']:
+            subjects.append(subject_class.from_dict(subject_dict))
+        return Group(subject_class, subjects=subjects, name=d['name'], description=d['description'])
 
     def add_subject(self, subject):
         self.subjects.append(subject)
