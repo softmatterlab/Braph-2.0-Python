@@ -37,6 +37,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.atlas_dict = None
         self.file_name = None
+        self.selected_groups_radio_button = None
         self.subject_data_labels = []
         self.disable_menu_bar(True)
         self.set_brain_view_actions_visible(False)
@@ -532,38 +533,46 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.tableWidget_subject_data.blockSignals(False)
 
     def update_group_averages_table(self):
+        self.tableWidget_group_comparison.setColumnCount(len(self.subject_data_labels))
+        self.tableWidget_group_comparison.setHorizontalHeaderLabels(self.subject_data_labels)
+
         self.tableWidget_group_averages.blockSignals(True)
         self.tableWidget_group_averages.clearContents()
 
-        # Add rows, columns and headers
-        self.tableWidget_group_averages.setRowCount(len(self.cohort.groups)*2)
-        self.tableWidget_group_averages.setColumnCount(len(self.subject_data_labels))
-        self.tableWidget_group_averages.setHorizontalHeaderLabels(self.subject_data_labels)
         group_names = [group.name for group in self.cohort.groups]
-        vertical_headers = []
-        [vertical_headers.extend([group_name+'_mean', group_name+'_std']) for group_name in group_names]
+        self.tableWidget_group_averages.setRowCount(len(group_names))
+        self.tableWidget_group_averages.setColumnCount(len(group_names))
+        self.tableWidget_group_averages.setVerticalHeaderLabels(group_names)
+        self.tableWidget_group_averages.setHorizontalHeaderLabels(group_names)
 
-        self.tableWidget_group_averages.setVerticalHeaderLabels(vertical_headers)
+        self.selected_groups_radio_button = None
 
-        # Add data
-        averages = self.cohort.group_averages()
-        standard_deviations = self.cohort.group_standard_deviations()
-        for i, group in enumerate(self.cohort.groups):
-            group_average = averages[i]
-            group_standard_deviation = standard_deviations[i]
-            for j in range(len(self.subject_data_labels)):
-                if len(group_average) <= j:
-                    average = "-"
-                    standard_deviation = "-"
+        for i, group1 in enumerate(self.cohort.groups):
+            for j, group2 in enumerate(self.cohort.groups):
+                if i == j:
+                    item = QTableWidgetItem("-")
+                    self.tableWidget_group_averages.setItem(i, j, item)
                 else:
-                    average = str(group_average[j])
-                    standard_deviation = str(group_standard_deviation[j])
-                item = QTableWidgetItem(average)
-                self.tableWidget_group_averages.setItem(i*2, j, item)
-                item = QTableWidgetItem(standard_deviation)
-                self.tableWidget_group_averages.setItem(i*2+1, j, item)
+                    widget = QWidget()
+                    layout = QHBoxLayout()
+                    layout.setAlignment(QtCore.Qt.AlignHCenter)
+                    radio_button = QRadioButton()
+                    radio_button.toggled.connect(self.group_average_select_toggled)
+                    radio_button.group1 = group1
+                    radio_button.group2 = group2
+                    layout.addWidget(radio_button)
+                    widget.setLayout(layout)
+                    self.tableWidget_group_averages.setCellWidget(i, j, widget)
 
-        self.tableWidget_group_averages.blockSignals(False)
+    def group_average_select_toggled(self, checked):
+        if not checked:
+            self.selected_groups_radio_button = None
+            self.btnComparison.setEnabled(False)
+        else:
+            if self.selected_groups_radio_button:
+                self.selected_groups_radio_button.setChecked(False)
+            self.selected_groups_radio_button = self.sender()
+            self.btnComparison.setEnabled(True)
 
     def get_checked_groups(self):
         rows = [item.row() for item in self.tableWidget_groups.selectionModel().selectedRows()]
@@ -679,7 +688,48 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
             self.cohort.save_to_txt(file_name)
 
     def comparison(self):
-        pass
+        group_button = self.selected_groups_radio_button
+        if group_button:
+            if not self.atlas_dict:
+                self.comparison_error("Atlas not loaded")
+                return
+            permutations = self.spinBoxPermutations.value()
+            group1 = group_button.group1
+            group2 = group_button.group2
+            data_labels = [group1 for group in self.cohort.groups]
+            labels = ["Average {}".format(group1.name), "Std {}".format(group1.name),
+                      "Average {}".format(group2.name), "Std {}".format(group2.name),
+                      "Difference", "p-value (single-tailed)", "p-value (double-tailed)"]
+            self.tableWidget_group_comparison.setVerticalHeaderLabels(labels)
+            try:
+                averages, stds, p_values = group1.comparison(group2, permutations=permutations)
+                for i in range(len(averages[0])):
+                    print(i)
+                    item = QTableWidgetItem(str(averages[0][i]))
+                    self.tableWidget_group_comparison.setItem(0, i, item)
+                    item = QTableWidgetItem(str(averages[1][i]))
+                    self.tableWidget_group_comparison.setItem(1, i, item)
+                    item = QTableWidgetItem(str(stds[0][i]))
+                    self.tableWidget_group_comparison.setItem(2, i, item)
+                    item = QTableWidgetItem(str(stds[1][i]))
+                    self.tableWidget_group_comparison.setItem(3, i, item)
+                    diff = averages[0][i] - averages[1][i]
+                    item = QTableWidgetItem(str(diff))
+                    self.tableWidget_group_comparison.setItem(4, i, item)
+                    item = QTableWidgetItem(str(p_values[0][i]))
+                    self.tableWidget_group_comparison.setItem(5, i, item)
+                    item = QTableWidgetItem(str(p_values[1][i]))
+                    self.tableWidget_group_comparison.setItem(6, i, item)
+
+            except AssertionError as e:
+                self.comparison_error(str(e))
+
+    def comparison_error(self, msg):
+        msg_box = QMessageBox()
+        msg_box.setIcon(QMessageBox.Critical)
+        msg_box.setText(msg)
+        msg_box.setWindowTitle("Comparison error")
+        msg_box.exec_()
 
     def view_subjects(self):
         pass
