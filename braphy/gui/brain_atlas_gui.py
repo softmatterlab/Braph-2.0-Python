@@ -19,6 +19,7 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.AppWindow = AppWindow
         QtWidgets.QMainWindow.__init__(self, parent = None)
         self.setupUi(self)
+        self.locked = False
         if atlas_dict:
             self.from_dict(atlas_dict)
         else:
@@ -105,20 +106,21 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.last_combobox_index = idx
 
     def set_locked(self, locked):
+        self.locked = locked
         lock_items = [self.comboBox, self.textAtlasName, self.actionOpen, self.actionImport_txt, self.actionImport_xls,
-                      self.actionImport_xml, self.btnAdd, self.btnAddAbove, self.btnAddBelow, self.btnRemove, self.btnMoveUp,
-                      self.btnMoveDown, self.btnMoveToTop, self.btnMoveToBottom, self.actionAdd, self.actionAdd_above,
-                      self.actionAdd_below, self.actionRemove, self.actionMove_up, self.actionMove_down, self.actionMove_to_top,
-                      self.actionMove_to_bottom]
+                      self.actionImport_xml, self.btnAdd, self.btnAddAbove, self.btnAddBelow, self.btnRemove,
+                      self.actionAdd, self.actionAdd_above, self.actionAdd_below, self.actionRemove]
         for item in lock_items:
-            item.setEnabled(not locked)
+            item.setEnabled(not self.locked)
 
-        for col in range(1, self.tableWidget.columnCount()):
+        self.tableWidget.blockSignals(True)
+        for col in range(self.tableWidget.columnCount()):
             for row in range(self.tableWidget.rowCount()):
-                flags = (QtCore.Qt.NoItemFlags) if locked else (QtCore.Qt.ItemIsSelectable |  QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable)
+                flags = (QtCore.Qt.ItemIsSelectable) if self.locked else (QtCore.Qt.ItemIsSelectable |  QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsEditable)
                 item = self.tableWidget.item(row, col)
                 if item:
                     item.setFlags(flags)
+        self.tableWidget.blockSignals(False)
 
     def select_brain_mesh(self, i):
         if self.comboBox.currentText() == 'Open...':
@@ -190,12 +192,13 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionZoom_in.triggered.connect(self.zoom_in)
         self.actionZoom_out.triggered.connect(self.zoom_out)
         self.actionPan.triggered.connect(self.pan)
+        self.actionPan_z.triggered.connect(self.pan_z)
         self.actionRotate.triggered.connect(self.rotate)
         self.actionFind.triggered.connect(self.find)
 
         group = QtWidgets.QActionGroup(self, exclusive = True)
         for action in (self.actionZoom_in, self.actionZoom_out, self.actionPan,
-                       self.actionRotate, self.actionFind):
+                       self.actionPan_z, self.actionRotate, self.actionFind):
             group.addAction(action)
 
         self.action3D.triggered.connect(self.brainWidget.show_3D)
@@ -390,6 +393,8 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.brainWidget.update_brain_regions(self.get_selected())
         self.tableWidget.blockSignals(False)
+        if self.locked:
+            self.set_locked(True)
 
     def region_selection_changed(self):
         selected = self.get_selected()
@@ -440,6 +445,10 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
     def pan(self):
         self.set_cursor('hand.png')
         self.brainWidget.mouse_mode = BrainAtlasWidget.MOUSE_MODE_PAN
+
+    def pan_z(self):
+        self.set_cursor('hand_xz.png')
+        self.brainWidget.mouse_mode = BrainAtlasWidget.MOUSE_MODE_PAN_Z
 
     def rotate(self):
         self.set_cursor('rotate.png')

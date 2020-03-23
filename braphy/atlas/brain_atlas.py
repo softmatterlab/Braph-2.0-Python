@@ -1,4 +1,5 @@
 from braphy.atlas.brain_region import BrainRegion
+from braphy.utility.helper_functions import ListManager as lm
 import numpy as np
 import pandas as pd
 import xml.etree.ElementTree as ET
@@ -73,78 +74,28 @@ class BrainAtlas():
         self.brain_regions[i] = br
 
     def invert_brain_regions(self, i, j):
-        if (i >= 0) & (i < self.brain_region_number()) & (j >= 0) & (j < self.brain_region_number()) & (i != j):
-            br_i = self.get_brain_region(i)
-            br_j = self.get_brain_region(j)
-            self.replace_brain_region(i, br_j)
-            self.replace_brain_region(j, br_i)
+        lm.swap(self.brain_regions, i, j)
 
     def move_to_brain_region(self, i, j):
-        if (i >= 0) & (i < self.brain_region_number()) & (j >= 0) & (j < self.brain_region_number()) & (i != j):
-            br = self.get_brain_region(i)
-            self.remove_brain_region(i)
-            self.add_brain_region(br, j)
+        lm.move_to(self.brain_regions, i, j)
 
     def add_above_brain_regions(self, selected):
-        for i in range(len(selected) - 1, -1, -1):
-            self.add_brain_region(BrainRegion(), selected[i])
-        selected = selected + np.array(range(1, len(selected) + 1))
-        added = selected - 1
-        return selected, added
+        return lm.add_above(self.brain_regions, selected, BrainRegion)
 
     def add_below_brain_regions(self, selected):
-        for i in range(len(selected) - 1, -1, -1):
-            self.add_brain_region(BrainRegion(), selected[i] + 1)
-        selected = selected + np.array(range(0, len(selected)))
-        added = selected + 1
-        return selected, added
+        return lm.add_below(self.brain_regions, selected, BrainRegion)
 
     def move_up_brain_regions(self, selected):
-        if len(selected) > 0:
-            first_index_to_process = 0
-            unprocessable_length = 0
-            while True:
-                if (first_index_to_process >= self.brain_region_number()):
-                    break
-                if (first_index_to_process >= len(selected)):
-                    break
-                if (selected[first_index_to_process] != unprocessable_length):
-                    break
-                first_index_to_process = first_index_to_process + 1
-                unprocessable_length = unprocessable_length + 1
-
-            for i in range(first_index_to_process, len(selected)):
-                self.invert_brain_regions(selected[i], selected[i] - 1)
-                selected[i] = selected[i] - 1
-        return selected
+        return lm.move_up(self.brain_regions, selected)
 
     def move_down_brain_regions(self, selected):
-        if (len(selected) > 0) & (len(selected) < self.brain_region_number()):
-            last_index_to_process = len(selected) - 1
-            unprocessable_length = self.brain_region_number() - 1
-            while (last_index_to_process >= 0) \
-                  & (selected[last_index_to_process] == unprocessable_length):
-                last_index_to_process = last_index_to_process - 1
-                unprocessable_length = unprocessable_length - 1
-
-            for i in range(last_index_to_process, -1, -1):
-                self.invert_brain_regions(selected[i], selected[i] + 1)
-                selected[i] = selected[i] + 1
-        return selected
+        return lm.move_down(self.brain_regions, selected)
 
     def move_to_top_brain_regions(self, selected):
-        if len(selected) > 0:
-            for i in range(len(selected)):
-                self.move_to_brain_region(selected[i], i)
-            selected = np.arange(0, len(selected))
-        return selected
+        return lm.move_to_top(self.brain_regions, selected)
 
     def move_to_bottom_brain_regions(self, selected):
-        if len(selected) > 0:
-            for i in range(len(selected) - 1, -1, -1):
-                self.move_to_brain_region(selected[i], self.brain_region_number() - (len(selected) - i))
-            selected = np.arange(self.brain_region_number() - len(selected), self.brain_region_number())
-        return selected
+        return lm.move_to_bottom(self.brain_regions, selected)
 
     def load_from_txt(self, file_path = '', file_name = ''):
         try:

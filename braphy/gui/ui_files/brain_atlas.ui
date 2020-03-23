@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1303</width>
+    <width>1054</width>
     <height>781</height>
    </rect>
   </property>
@@ -397,7 +397,7 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1303</width>
+     <width>1054</width>
      <height>22</height>
     </rect>
    </property>
@@ -488,6 +488,7 @@ p, li { white-space: pre-wrap; }
    <addaction name="actionZoom_in"/>
    <addaction name="actionZoom_out"/>
    <addaction name="actionPan"/>
+   <addaction name="actionPan_z"/>
    <addaction name="actionRotate"/>
    <addaction name="actionFind"/>
    <addaction name="separator"/>
@@ -518,7 +519,7 @@ p, li { white-space: pre-wrap; }
   </widget>
   <action name="actionSave">
    <property name="icon">
-    <iconset>
+    <iconset resource="../icons.qrc">
      <normaloff>:/buttons/save.png</normaloff>:/buttons/save.png</iconset>
    </property>
    <property name="text">
@@ -639,7 +640,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionOpen">
    <property name="icon">
-    <iconset>
+    <iconset resource="../icons.qrc">
      <normaloff>:/buttons/open.png</normaloff>:/buttons/open.png</iconset>
    </property>
    <property name="text">
@@ -687,7 +688,7 @@ p, li { white-space: pre-wrap; }
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset>
+    <iconset resource="../icons.qrc">
      <normaloff>:/buttons/zoom_in.png</normaloff>:/buttons/zoom_in.png</iconset>
    </property>
    <property name="text">
@@ -699,7 +700,7 @@ p, li { white-space: pre-wrap; }
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset>
+    <iconset resource="../icons.qrc">
      <normaloff>:/buttons/zoom_out.png</normaloff>:/buttons/zoom_out.png</iconset>
    </property>
    <property name="text">
@@ -711,14 +712,14 @@ p, li { white-space: pre-wrap; }
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset>
+    <iconset resource="../icons.qrc">
      <normaloff>:/buttons/hand.png</normaloff>:/buttons/hand.png</iconset>
    </property>
    <property name="text">
-    <string>Pan</string>
+    <string>Pan (x/y)</string>
    </property>
    <property name="toolTip">
-    <string>Pan</string>
+    <string>Pan (x/y)</string>
    </property>
   </action>
   <action name="actionRotate">
@@ -726,7 +727,7 @@ p, li { white-space: pre-wrap; }
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset>
+    <iconset resource="../icons.qrc">
      <normaloff>:/buttons/rotate.png</normaloff>:/buttons/rotate.png</iconset>
    </property>
    <property name="text">
@@ -738,7 +739,7 @@ p, li { white-space: pre-wrap; }
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset>
+    <iconset resource="../icons.qrc">
      <normaloff>:/buttons/cursor.png</normaloff>:/buttons/cursor.png</iconset>
    </property>
    <property name="text">
@@ -747,7 +748,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionSagittal_left">
    <property name="icon">
-    <iconset>
+    <iconset resource="../icons.qrc">
      <normaloff>:/buttons/icon_view_sl.png</normaloff>:/buttons/icon_view_sl.png</iconset>
    </property>
    <property name="text">
@@ -756,7 +757,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionSagittal_right">
    <property name="icon">
-    <iconset>
+    <iconset resource="../icons.qrc">
      <normaloff>:/buttons/icon_view_sr.png</normaloff>:/buttons/icon_view_sr.png</iconset>
    </property>
    <property name="text">
@@ -765,7 +766,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionAxial_dorsal">
    <property name="icon">
-    <iconset>
+    <iconset resource="../icons.qrc">
      <normaloff>:/buttons/icon_view_ad.png</normaloff>:/buttons/icon_view_ad.png</iconset>
    </property>
    <property name="text">
@@ -774,7 +775,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionAxial_ventral">
    <property name="icon">
-    <iconset>
+    <iconset resource="../icons.qrc">
      <normaloff>:/buttons/icon_view_av.png</normaloff>:/buttons/icon_view_av.png</iconset>
    </property>
    <property name="text">
@@ -783,7 +784,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionCoronal_anterior">
    <property name="icon">
-    <iconset>
+    <iconset resource="../icons.qrc">
      <normaloff>:/buttons/icon_view_ca.png</normaloff>:/buttons/icon_view_ca.png</iconset>
    </property>
    <property name="text">
@@ -792,7 +793,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionCoronal_posterior">
    <property name="icon">
-    <iconset>
+    <iconset resource="../icons.qrc">
      <normaloff>:/buttons/icon_view_cp.png</normaloff>:/buttons/icon_view_cp.png</iconset>
    </property>
    <property name="text">
@@ -804,7 +805,7 @@ p, li { white-space: pre-wrap; }
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset>
+    <iconset resource="../icons.qrc">
      <normaloff>:/buttons/icon_brain.png</normaloff>:/buttons/icon_brain.png</iconset>
    </property>
    <property name="text">
@@ -816,7 +817,7 @@ p, li { white-space: pre-wrap; }
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset>
+    <iconset resource="../icons.qrc">
      <normaloff>:/buttons/icon_axis.png</normaloff>:/buttons/icon_axis.png</iconset>
    </property>
    <property name="text">
@@ -828,7 +829,7 @@ p, li { white-space: pre-wrap; }
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset>
+    <iconset resource="../icons.qrc">
      <normaloff>:/buttons/icon_grid.png</normaloff>:/buttons/icon_grid.png</iconset>
    </property>
    <property name="text">
@@ -840,7 +841,7 @@ p, li { white-space: pre-wrap; }
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset>
+    <iconset resource="../icons.qrc">
      <normaloff>:/buttons/icon_br.png</normaloff>:/buttons/icon_br.png</iconset>
    </property>
    <property name="text">
@@ -852,7 +853,7 @@ p, li { white-space: pre-wrap; }
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset>
+    <iconset resource="../icons.qrc">
      <normaloff>:/buttons/icon_label.png</normaloff>:/buttons/icon_label.png</iconset>
    </property>
    <property name="text">
@@ -861,7 +862,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="action3D">
    <property name="icon">
-    <iconset>
+    <iconset resource="../icons.qrc">
      <normaloff>:/buttons/icon_view_3d.png</normaloff>:/buttons/icon_view_3d.png</iconset>
    </property>
    <property name="text">
@@ -878,6 +879,21 @@ p, li { white-space: pre-wrap; }
     <string>Open...</string>
    </property>
   </action>
+  <action name="actionPan_z">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/buttons/hand_xz.png</normaloff>:/buttons/hand_xz.png</iconset>
+   </property>
+   <property name="text">
+    <string>Pan (x/z)</string>
+   </property>
+   <property name="toolTip">
+    <string>Pan (x/z)</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -886,6 +902,8 @@ p, li { white-space: pre-wrap; }
    <header>braphy.gui.brain_atlas_widget</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../icons.qrc"/>
+ </resources>
  <connections/>
 </ui>

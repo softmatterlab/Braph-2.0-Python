@@ -54,7 +54,7 @@ class SubjectMRI(Subject):
         for item in data:
             subject_id = item[0]
             subject = SubjectMRI(id = subject_id)
-            mri_data = item[1:]
+            mri_data = item[1:].astype(float)
             subject.data_dict['data'].set_value(mri_data)
             subjects.append(subject)
         return subjects
