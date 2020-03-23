@@ -14,7 +14,8 @@ class BrainAtlasWidget(GLViewWidget):
     MOUSE_MODE_ZOOM_IN = 1
     MOUSE_MODE_ZOOM_OUT = 2
     MOUSE_MODE_PAN = 3
-    MOUSE_MODE_ROTATE = 4
+    MOUSE_MODE_PAN_Z = 4
+    MOUSE_MODE_ROTATE = 5
     def __init__(self, parent = None):
         super(BrainAtlasWidget, self).__init__(parent)
         self.brain_color = [0.7, 0.6, 0.55, 1]
@@ -259,6 +260,8 @@ class BrainAtlasWidget(GLViewWidget):
             pass
         elif self.mouse_mode == BrainAtlasWidget.MOUSE_MODE_PAN:
             self.mouseMoveEventPan(ev)
+        elif self.mouse_mode == BrainAtlasWidget.MOUSE_MODE_PAN_Z:
+            self.mouseMoveEventPan(ev, invert=True)
         elif self.mouse_mode == BrainAtlasWidget.MOUSE_MODE_ROTATE:
             self.mouseMoveEventRotate(ev)
 
@@ -293,12 +296,13 @@ class BrainAtlasWidget(GLViewWidget):
     def mouseReleaseEventZoomOut(self, ev):
         self.mouseReleaseEventZoom(ev, -500)
 
-    def mouseMoveEventPan(self, ev):
+    def mouseMoveEventPan(self, ev, invert = False):
         diff = ev.pos() - self.mousePos
         self.mousePos = ev.pos()
 
         if ev.buttons() == QtCore.Qt.LeftButton:
-            if (ev.modifiers() & QtCore.Qt.ControlModifier):
+            pan_z = bool(ev.modifiers() & QtCore.Qt.ControlModifier) ^ invert
+            if pan_z:
                 self.pan(diff.x(), 0, diff.y(), relative=True)
             else:
                 self.pan(diff.x(), diff.y(), 0, relative=True)

@@ -192,12 +192,13 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionZoom_in.triggered.connect(self.zoom_in)
         self.actionZoom_out.triggered.connect(self.zoom_out)
         self.actionPan.triggered.connect(self.pan)
+        self.actionPan_z.triggered.connect(self.pan_z)
         self.actionRotate.triggered.connect(self.rotate)
         self.actionFind.triggered.connect(self.find)
 
         group = QtWidgets.QActionGroup(self, exclusive = True)
         for action in (self.actionZoom_in, self.actionZoom_out, self.actionPan,
-                       self.actionRotate, self.actionFind):
+                       self.actionPan_z, self.actionRotate, self.actionFind):
             group.addAction(action)
 
         self.action3D.triggered.connect(self.brainWidget.show_3D)
@@ -444,6 +445,10 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
     def pan(self):
         self.set_cursor('hand.png')
         self.brainWidget.mouse_mode = BrainAtlasWidget.MOUSE_MODE_PAN
+
+    def pan_z(self):
+        self.set_cursor('hand_xz.png')
+        self.brainWidget.mouse_mode = BrainAtlasWidget.MOUSE_MODE_PAN_Z
 
     def rotate(self):
         self.set_cursor('rotate.png')

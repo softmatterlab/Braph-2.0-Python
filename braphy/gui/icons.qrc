@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="buttons">
+    <file>hand_xz.png</file>
     <file>cursor.png</file>
     <file>rotate.png</file>
     <file>hand.png</file>
