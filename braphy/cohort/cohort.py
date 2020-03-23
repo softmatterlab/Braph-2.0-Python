@@ -1,6 +1,7 @@
 import json
 from braphy.cohort.subjects import *
 from braphy.cohort.group import Group
+from braphy.utility.helper_functions import ListManager as lm
 import numpy as np
 
 class Cohort:
@@ -88,47 +89,21 @@ class Cohort:
                     group.remove_subject(subject)
 
     def swap_groups(self, i, j):
-        tmp_group = self.groups[i]
-        self.groups[i] = self.groups[j]
-        self.groups[j] = tmp_group
+        lm.swap(self.groups, i, j)
 
     def move_up_groups(self, selected):
-        if len(selected) > 0:
-            first_index_to_process = 0
-            unprocessable_length = 0
-            while True:
-                if (first_index_to_process >= len(self.groups)):
-                    break
-                if (first_index_to_process >= len(selected)):
-                    break
-                if (selected[first_index_to_process] != unprocessable_length):
-                    break
-                first_index_to_process = first_index_to_process + 1
-                unprocessable_length = unprocessable_length + 1
-
-            for i in range(first_index_to_process, len(selected)):
-                self.swap_groups(selected[i], selected[i] - 1)
-                selected[i] = selected[i] - 1
-        return selected
+        return lm.move_up(self.groups, selected)
 
     def move_down_groups(self, selected):
-        if (len(selected) > 0) & (len(selected) < len(self.groups)):
-            last_index_to_process = len(selected) - 1
-            unprocessable_length = len(self.groups) - 1
-            while (last_index_to_process >= 0) \
-                  & (selected[last_index_to_process] == unprocessable_length):
-                last_index_to_process = last_index_to_process - 1
-                unprocessable_length = unprocessable_length - 1
-
-            for i in range(last_index_to_process, -1, -1):
-                self.swap_groups(selected[i], selected[i] + 1)
-                selected[i] = selected[i] + 1
-        return selected
+        return lm.move_down(self.groups)
 
     def new_group_from_selected(self, subject_indices):
         self.add_group()
         for index in subject_indices:
             self.groups[-1].add_subject(self.subjects[index])
+
+    def new_subject(self):
+        return self.subject_class(id = 'sub_{}'.format(len(self.subjects)))
 
     def add_subject(self, i = None, subject = None):
         if not i:
@@ -151,76 +126,28 @@ class Cohort:
         self.subjects[i] = subject
 
     def swap_subjects(self, i, j):
-        tmp_subject = self.subjects[i]
-        self.subjects[i] = self.subjects[j]
-        self.subjects[j] = tmp_subject
+        lm.swap(self.subjects, i, j)
 
     def move_to_subject(self, i, j):
-        if (i >= 0) & (i < len(self.subjects)) & (j >= 0) & (j < len(self.subjects)) & (i != j):
-            subject = self.subjects[i]
-            self.remove_subject(i)
-            self.add_subject(j, subject)
+        lm.move_to(self.subjects, i, j)
 
     def add_above_subjects(self, selected):
-        for i in range(len(selected) - 1, -1, -1):
-            self.add_subject(i)
-        selected = selected + np.array(range(1, len(selected) + 1))
-        added = selected - 1
-        return selected, added
+        return lm.add_above(self.subjects, selected, self.new_subject)
 
     def add_below_subjects(self, selected):
-        for i in range(len(selected) - 1, -1, -1):
-            self.add_subject(i + 1)
-        selected = selected + np.array(range(0, len(selected)))
-        added = selected + 1
-        return selected, added
+        return lm.add_below(self.subjects, selected, self.new_subject)
 
     def move_up_subjects(self, selected):
-        if len(selected) > 0:
-            first_index_to_process = 0
-            unprocessable_length = 0
-            while True:
-                if (first_index_to_process >= len(self.subjects)):
-                    break
-                if (first_index_to_process >= len(selected)):
-                    break
-                if (selected[first_index_to_process] != unprocessable_length):
-                    break
-                first_index_to_process = first_index_to_process + 1
-                unprocessable_length = unprocessable_length + 1
-
-            for i in range(first_index_to_process, len(selected)):
-                self.swap_subjects(selected[i], selected[i] - 1)
-                selected[i] = selected[i] - 1
-        return selected
+        return lm.move_up(self.subjects, selected)
 
     def move_down_subjects(self, selected):
-        if (len(selected) > 0) & (len(selected) < len(self.subjects)):
-            last_index_to_process = len(selected) - 1
-            unprocessable_length = len(self.subjects) - 1
-            while (last_index_to_process >= 0) \
-                  & (selected[last_index_to_process] == unprocessable_length):
-                last_index_to_process = last_index_to_process - 1
-                unprocessable_length = unprocessable_length - 1
-
-            for i in range(last_index_to_process, -1, -1):
-                self.swap_subjects(selected[i], selected[i] + 1)
-                selected[i] = selected[i] + 1
-        return selected
+        return lm.move_down(self.subjects, selected)
 
     def move_to_top_subjects(self, selected):
-        if len(selected) > 0:
-            for i in range(len(selected)):
-                self.move_to_subject(selected[i], i)
-            selected = np.arange(0, len(selected))
-        return selected
+        return lm.move_to_top(self.subjects, selected)
 
     def move_to_bottom_subjects(self, selected):
-        if len(selected) > 0:
-            for i in range(len(selected) - 1, -1, -1):
-                self.move_to_subject(selected[i], len(self.subjects) - (len(selected) - i))
-            selected = np.arange(len(self.subjects) - len(selected), len(self.subjects))
-        return selected
+        return lm.move_to_bottom(self.subjects, selected)
 
     def invert_groups(self, group_indices):
         group_subjects = []
