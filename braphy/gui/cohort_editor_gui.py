@@ -70,9 +70,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.btnSelectAtlas.clicked.connect(self.load_atlas)
         self.btnViewAtlas.clicked.connect(self.view_atlas)
 
-        self.btnLoadXls.clicked.connect(self.load_xls_subject_group)
-        self.btnLoadTxt.clicked.connect(self.load_txt_subject_group)
-        self.btnLoadXml.clicked.connect(self.load_xml_subject_group)
+        self.btnLoadSubject.clicked.connect(self.load_subject_group)
 
         self.btnAdd.clicked.connect(self.add_group)
         self.btnRemove.clicked.connect(self.remove_group)
@@ -111,9 +109,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionExport_xml.triggered.connect(self.export_xml)
         self.actionClose.triggered.connect(self.close)
 
-        self.actionLoad_subject_group_from_xls.triggered.connect(self.load_xls_subject_group)
-        self.actionLoad_subject_group_from_txt.triggered.connect(self.load_txt_subject_group)
-        self.actionLoad_subject_group_from_xml.triggered.connect(self.load_xml_subject_group)
+        self.actionLoad_subject_group_from_file.triggered.connect(self.load_subject_group)
         self.actionAdd_group.triggered.connect(self.add_group)
         self.actionRemove_group.triggered.connect(self.remove_group)
         self.actionMove_group_up.triggered.connect(self.move_group_up)
@@ -356,28 +352,22 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
             self.labelRegionNumber.setText("Brain region number = {}".format(self.brain_region_number()))
             self.disable_menu_bar(False)
 
-    def load_xls_subject_group(self):
+    def load_subject_group(self):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
-        file_name, _ = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()", "","xlsx files (*.xlsx)", options=options)
-        if file_name:
-            self.cohort.load_from_xlsx(file_name)
-            self.update_tables()
-
-    def load_txt_subject_group(self):
-        options = QFileDialog.Options()
-        options |= QFileDialog.DontUseNativeDialog
-        file_name, _ = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()", "","txt files (*.txt)", options=options)
-        if file_name:
-            self.cohort.load_from_txt(file_name)
-            self.update_tables()
-
-    def load_xml_subject_group(self):
-        options = QFileDialog.Options()
-        options |= QFileDialog.DontUseNativeDialog
-        file_name, _ = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()", "","xml files (*.xml)", options=options)
-        if file_name:
-            self.cohort.load_from_xml(file_name)
+        file_names, _ = QFileDialog.getOpenFileNames(self,"QFileDialog.getOpenFileName()", "","Subject files (*.txt *.xml *.xlsx);; \
+                                                                                               Text files (*.txt);; \
+                                                                                               XML files (*.xml);; \
+                                                                                               XLSX files (*.xlsx)", options=options)
+        for file_name in file_names:
+            extension = file_name.split(".")[-1]
+            if extension == "txt":
+                self.cohort.load_from_txt(file_name)
+            elif extension == "xml":
+                self.cohort.load_from_xml(file_name)
+            elif extension == "xlsx":
+                self.cohort.load_from_xlsx(file_name)
+        if len(file_names) > 0:
             self.update_tables()
 
     def string_to_list_of_floats(self, str):

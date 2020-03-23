@@ -129,23 +129,9 @@
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="btnLoadXls">
+           <widget class="QPushButton" name="btnLoadSubject">
             <property name="text">
-             <string>Load subject group from xls ...</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="btnLoadTxt">
-            <property name="text">
-             <string>Load subject group from txt ...</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="btnLoadXml">
-            <property name="text">
-             <string>Load subject group from xml ...</string>
+             <string>Load subject group from file ...</string>
             </property>
            </widget>
           </item>
@@ -980,9 +966,7 @@
     <property name="title">
      <string>Groups</string>
     </property>
-    <addaction name="actionLoad_subject_group_from_xls"/>
-    <addaction name="actionLoad_subject_group_from_txt"/>
-    <addaction name="actionLoad_subject_group_from_xml"/>
+    <addaction name="actionLoad_subject_group_from_file"/>
     <addaction name="separator"/>
     <addaction name="actionAdd_group"/>
     <addaction name="actionRemove_group"/>
@@ -1122,19 +1106,9 @@
     <string>Close</string>
    </property>
   </action>
-  <action name="actionLoad_subject_group_from_xls">
+  <action name="actionLoad_subject_group_from_file">
    <property name="text">
-    <string>Load subject group from xls ...</string>
-   </property>
-  </action>
-  <action name="actionLoad_subject_group_from_txt">
-   <property name="text">
-    <string>Load subject group from txt ...</string>
-   </property>
-  </action>
-  <action name="actionLoad_subject_group_from_xml">
-   <property name="text">
-    <string>Load subject group from xml ...</string>
+    <string>Load subject group from file ...</string>
    </property>
   </action>
   <action name="actionMove_group_up">
