@@ -544,7 +544,9 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         for i, group1 in enumerate(self.cohort.groups):
             for j, group2 in enumerate(self.cohort.groups):
                 if i == j:
-                    item = QTableWidgetItem("-")
+                    item = QTableWidgetItem(" ")
+                    item.setBackground(QtCore.Qt.lightGray)
+                    item.setFlags(QtCore.Qt.NoItemFlags)
                     self.tableWidget_group_averages.setItem(i, j, item)
                 else:
                     widget = QWidget()
