@@ -15,9 +15,6 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
-     <widget class="BrainAtlasWidget" name="brainWidget"/>
-    </item>
     <item row="0" column="1">
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
@@ -341,39 +338,45 @@
       </item>
      </layout>
     </item>
-    <item row="1" column="0">
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <widget class="QRadioButton" name="btnAnimation">
-        <property name="font">
-         <font>
-          <family>Sans Serif</family>
-         </font>
+    <item row="0" column="0">
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="tabPosition">
+       <enum>QTabWidget::South</enum>
+      </property>
+      <property name="currentIndex">
+       <number>1</number>
+      </property>
+      <widget class="QWidget" name="animation">
+       <attribute name="title">
+        <string>Animation</string>
+       </attribute>
+       <widget class="BrainAtlasWidget" name="brainWidget">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>-20</y>
+          <width>787</width>
+          <height>671</height>
+         </rect>
         </property>
-        <property name="text">
-         <string>animation</string>
-        </property>
-        <attribute name="buttonGroup">
-         <string notr="true">buttonGroup</string>
-        </attribute>
        </widget>
-      </item>
-      <item>
-       <widget class="QRadioButton" name="btnSlideShow">
-        <property name="font">
-         <font>
-          <family>Sans Serif</family>
-         </font>
+      </widget>
+      <widget class="QWidget" name="slideShow">
+       <attribute name="title">
+        <string>Slide show</string>
+       </attribute>
+       <widget class="SlideShowWidget" name="slideShowWidget" native="true">
+        <property name="geometry">
+         <rect>
+          <x>-1</x>
+          <y>-1</y>
+          <width>791</width>
+          <height>651</height>
+         </rect>
         </property>
-        <property name="text">
-         <string>slide show</string>
-        </property>
-        <attribute name="buttonGroup">
-         <string notr="true">buttonGroup</string>
-        </attribute>
        </widget>
-      </item>
-     </layout>
+      </widget>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -406,11 +409,16 @@
    <extends>QGraphicsView</extends>
    <header>braphy.gui.brain_atlas_widget</header>
   </customwidget>
+  <customwidget>
+   <class>SlideShowWidget</class>
+   <extends>QWidget</extends>
+   <header>braphy.gui.slide_show_widget</header>
+   <container>1</container>
+  </customwidget>
  </customwidgets>
  <resources/>
  <connections/>
  <buttongroups>
   <buttongroup name="buttonGroup_2"/>
-  <buttongroup name="buttonGroup"/>
  </buttongroups>
 </ui>
