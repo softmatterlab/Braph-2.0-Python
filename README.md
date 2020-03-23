@@ -2,6 +2,8 @@
 
 ## Installation
 
+    sudo apt install python3-pyqt5.qtopengl
+
     pip3 install .
 
 ## Tests
