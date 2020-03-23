@@ -698,7 +698,6 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
             try:
                 averages, stds, p_values = group1.comparison(group2, permutations=permutations)
                 for i in range(len(averages[0])):
-                    print(i)
                     item = QTableWidgetItem(str(averages[0][i]))
                     self.tableWidget_group_comparison.setItem(0, i, item)
                     item = QTableWidgetItem(str(averages[1][i]))
