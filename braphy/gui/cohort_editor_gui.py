@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import *
 from braphy.utility.helper_functions import abs_path_from_relative, load_nv
 from braphy.gui.brain_atlas_widget import BrainAtlasWidget
 from braphy.gui.brain_atlas_gui import BrainAtlasGui
+from braphy.atlas.brain_region import BrainRegion
 import braphy.gui.icons_rc
 from functools import partial
 import xml.etree.ElementTree as ET
@@ -344,13 +345,16 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
             self.brain_mesh_data = brain_mesh_data
             self.init_brain_widget()
             self.subject_data_labels = []
+            brain_regions = []
             for region in self.atlas_dict['atlas']['brain_regions']:
                 self.subject_data_labels.append(region['label'])
+                brain_regions.append(BrainRegion.from_dict(region))
             self.update_tables()
             self.btnViewAtlas.setEnabled(True)
             self.labelAtlasName.setText(file_name.split('/')[-1])
             self.labelRegionNumber.setText("Brain region number = {}".format(self.brain_region_number()))
             self.disable_menu_bar(False)
+            self.brainWidget.init_brain_regions(brain_regions, 4, [], True, False)
 
     def load_subject_group(self):
         options = QFileDialog.Options()
