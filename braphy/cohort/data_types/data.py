@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from braphy.utility.helper_functions import equal_around
 
 class Data:
     def __init__(self):
@@ -7,6 +8,11 @@ class Data:
     def set_value(self, value):
         self.value = value
 
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+        return equal_around(self.value, other.value)
+
     @abstractmethod
     def to_dict(self):
         pass
@@ -14,5 +20,4 @@ class Data:
     @abstractmethod
     def from_dict(self, d):
         pass
-
 
