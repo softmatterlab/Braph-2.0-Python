@@ -31,7 +31,7 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.init_combo_box()
         self.init_sliders()
-        self.tableWidget.cellChanged.connect(self.changeCell)
+        self.tableWidget.cellChanged.connect(self.change_cell)
         self.tableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.tableWidget.itemSelectionChanged.connect(self.region_selection_changed)
 
@@ -346,20 +346,20 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
     def atlas_name_change(self):
         self.atlas.name = self.textAtlasName.toPlainText()
 
-    def changeCell(self, row, column):
-        if column == 1:
+    def change_cell(self, row, column):
+        if column == 0:
             self.atlas.brain_regions[row].set(label = self.tableWidget.item(row, column).text())
-        elif column == 2:
+        elif column == 1:
             self.atlas.brain_regions[row].set(name = self.tableWidget.item(row, column).text())
-        elif column == 3:
+        elif column == 2:
             self.atlas.brain_regions[row].set(x = float(self.tableWidget.item(row, column).text()))
-        elif column == 4:
+        elif column == 3:
             self.atlas.brain_regions[row].set(y = float(self.tableWidget.item(row, column).text()))
-        elif column == 5:
+        elif column == 4:
             self.atlas.brain_regions[row].set(z = float(self.tableWidget.item(row, column).text()))
-        elif column == 6:
+        elif column == 5:
             pass #left/right
-        elif column == 7:
+        elif column == 6:
             pass #Notes
 
     def update_table(self, selected = None):
