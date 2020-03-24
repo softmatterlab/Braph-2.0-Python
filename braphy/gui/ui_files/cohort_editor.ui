@@ -985,9 +985,6 @@
     <addaction name="actionSave"/>
     <addaction name="actionSave_as"/>
     <addaction name="separator"/>
-    <addaction name="actionImport_xml"/>
-    <addaction name="actionExport_xml"/>
-    <addaction name="separator"/>
     <addaction name="actionClose"/>
    </widget>
    <widget class="QMenu" name="menuGroups">
