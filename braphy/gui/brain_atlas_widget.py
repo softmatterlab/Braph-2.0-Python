@@ -1,6 +1,7 @@
 import pyqtgraph.opengl as gl
 from PyQt5 import QtCore
 from pyqtgraph.opengl import GLViewWidget
+import PyQt5.QtGui as QtGui
 from PyQt5.QtGui import QColor
 from PyQt5.QtWidgets import QFileDialog
 from braphy.utility.helper_functions import abs_path_from_relative
@@ -265,6 +266,24 @@ class BrainAtlasWidget(GLViewWidget):
         elif self.mouse_mode == BrainAtlasWidget.MOUSE_MODE_ROTATE:
             self.mouseMoveEventRotate(ev)
 
+    def gui_brain_region_at(self, pos_2D, camera_pos):
+        closest_region = None
+        closest_region_distance = np.inf
+        m = self.projectionMatrix() * self.viewMatrix()
+        for gui_brain_region in self.gui_brain_regions:
+            pos = gui_brain_region.pos()
+            pt = m.map(QtGui.QVector3D(pos[0], pos[1], pos[2]))
+            dist = pow(pow(pt[0]-pos_2D[0], 2) + pow(pt[1]-pos_2D[1], 2), 0.5)
+            camera_distance = pow(pow(pos[0]-camera_pos[0],2)+pow(pos[1]-camera_pos[1],2)+pow(pos[2]-camera_pos[2],2),0.5)
+            scale_size = 0.0356
+            scale_dist = 0.00035
+            threshold = scale_size*gui_brain_region.size - scale_dist*camera_distance
+            if dist < threshold:
+                if camera_distance < closest_region_distance:
+                    closest_region_distance = camera_distance
+                    closest_region = gui_brain_region
+        return closest_region
+
     def mouseReleaseEvent(self, ev):
         if not self.interaction_enabled:
             return
@@ -272,12 +291,26 @@ class BrainAtlasWidget(GLViewWidget):
             self.mouseReleaseEventZoomIn(ev)
         elif self.mouse_mode == BrainAtlasWidget.MOUSE_MODE_ZOOM_OUT:
             self.mouseReleaseEventZoomOut(ev)
+        self.mouseReleaseEventDefault(ev)
+
+    def mouseReleaseEventDefault(self, ev):
+        if ev.button() == QtCore.Qt.RightButton:
+            mouse_travel_distance = (ev.pos() - self.mousePos).manhattanLength()
+            if mouse_travel_distance > 15:
+                return
+            x = (ev.pos().x()-300)/300
+            y = -(ev.pos().y()-262)/262
+            m = self.projectionMatrix() * self.viewMatrix()
+            camera_pos = m.inverted()[0].map(QtGui.QVector3D(0,0,0))
+            closest_region = self.gui_brain_region_at([x,y], camera_pos)
+            if closest_region:
+                closest_region.toggle_selected()
 
     def mouseMoveEventDefault(self, ev):
-        diff = ev.pos() - self.mousePos
-        self.mousePos = ev.pos()
 
         if ev.buttons() == QtCore.Qt.LeftButton:
+            diff = ev.pos() - self.mousePos
+            self.mousePos = ev.pos()
             if self.orthographic:
                 self.set_orthographic(False)
             self.orbit(-diff.x(), diff.y())
@@ -332,6 +365,7 @@ class GUIBrainRegion(gl.GLMeshItem):
         self.x = self.brain_region.x
         self.y = self.brain_region.y
         self.z = self.brain_region.z
+        self.size = size
         meshdata = gl.MeshData.sphere(8, 8, radius=size)
         super().__init__(meshdata=meshdata, shader='shaded')
         self.set_selected(selected)
@@ -363,6 +397,9 @@ class GUIBrainRegion(gl.GLMeshItem):
     def pos(self):
         return (self.x ,self.y, self.z)
 
+    def toggle_selected(self):
+        self.set_selected(not self.selected)
+
     def set_selected(self, selected):
         self.selected = selected
         COLOR_PINK = [1.0, 0.0, 2.0/3, 1.0]
@@ -371,5 +408,6 @@ class GUIBrainRegion(gl.GLMeshItem):
         self.setColor(color)
 
     def set_size(self, size):
+        self.size = size
         meshdata = gl.MeshData.sphere(8, 8, radius=size)
         self.setMeshData(meshdata=meshdata)
