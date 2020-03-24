@@ -105,12 +105,22 @@ class Cohort:
     def new_subject(self):
         return self.subject_class(id = 'sub_{}'.format(len(self.subjects)))
 
+    def add_subjects(self, subjects):
+        added_subjects = []
+        for subject in subjects:
+            added_subjects.append(self.add_subject(subject = subject))
+        return added_subjects
+
     def add_subject(self, i = None, subject = None):
         if not i:
             i = len(self.subjects)
         if not subject:
             subject = self.subject_class(id = 'sub_{}'.format(len(self.subjects)))
+        for existing_subject in self.subjects:
+            if subject == existing_subject:
+                return existing_subject
         self.subjects.insert(i, subject)
+        return subject
 
     def remove_subject(self, i):
         del self.subjects[i]
@@ -185,9 +195,9 @@ class Cohort:
         group_name = file_name.split('/')[-1]
         group = Group(self.subject_class, name = group_name)
         subjects = subject_load_function(file_name)
+        subjects = self.add_subjects(subjects)
         group.add_subjects(subjects)
         self.add_group(group=group)
-        self.subjects.extend(subjects)
 
     def save_to_txt(self, file_name):
         s = " "
