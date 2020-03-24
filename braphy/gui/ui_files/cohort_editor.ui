@@ -251,7 +251,7 @@
       <item>
        <widget class="QTabWidget" name="tabWidget">
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="tabGroup">
          <attribute name="title">
@@ -997,12 +997,17 @@
     <addaction name="actionRemove_group"/>
     <addaction name="actionMove_group_up"/>
     <addaction name="actionMove_group_down"/>
+    <addaction name="separator"/>
+    <addaction name="actionInvert"/>
+    <addaction name="actionMerge"/>
+    <addaction name="actionIntersect"/>
    </widget>
    <widget class="QMenu" name="menuSubjects">
     <property name="title">
      <string>Subjects</string>
     </property>
     <addaction name="actionSelect_all_subjects"/>
+    <addaction name="actionClear_selection"/>
     <addaction name="separator"/>
     <addaction name="actionAdd_subject"/>
     <addaction name="actionAdd_subject_above"/>
@@ -1014,6 +1019,8 @@
     <addaction name="actionMove_subject_down"/>
     <addaction name="actionMove_subject_to_top"/>
     <addaction name="actionMove_subject_to_bottom"/>
+    <addaction name="separator"/>
+    <addaction name="actionNew_group_from_selection"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
@@ -1454,6 +1461,31 @@
    </property>
    <property name="text">
     <string>3D</string>
+   </property>
+  </action>
+  <action name="actionClear_selection">
+   <property name="text">
+    <string>Clear selection</string>
+   </property>
+  </action>
+  <action name="actionNew_group_from_selection">
+   <property name="text">
+    <string>New group from selection</string>
+   </property>
+  </action>
+  <action name="actionInvert">
+   <property name="text">
+    <string>Invert</string>
+   </property>
+  </action>
+  <action name="actionMerge">
+   <property name="text">
+    <string>Merge</string>
+   </property>
+  </action>
+  <action name="actionIntersect">
+   <property name="text">
+    <string>Intersect</string>
    </property>
   </action>
  </widget>

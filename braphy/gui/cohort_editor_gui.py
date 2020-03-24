@@ -122,7 +122,16 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionRemove_group.triggered.connect(self.remove_group)
         self.actionMove_group_up.triggered.connect(self.move_group_up)
         self.actionMove_group_down.triggered.connect(self.move_group_down)
+        self.actionInvert.triggered.connect(self.invert_group)
+        self.actionMerge.triggered.connect(self.merge_groups)
+        self.actionIntersect.triggered.connect(self.intersect_groups)
 
+        self.actionInvert.setEnabled(False)
+        self.actionMerge.setEnabled(False)
+        self.actionIntersect.setEnabled(False)
+
+        self.actionSelect_all_subjects.triggered.connect(self.select_all_subjects)
+        self.actionClear_selection.triggered.connect(self.clear_subject_selection)
         self.actionAdd_subject.triggered.connect(self.add_subject)
         self.actionAdd_subject_above.triggered.connect(self.add_subjects_above)
         self.actionAdd_subject_below.triggered.connect(self.add_subjects_below)
@@ -131,6 +140,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionMove_subject_down.triggered.connect(self.move_subjects_down)
         self.actionMove_subject_to_top.triggered.connect(self.move_subjects_to_top)
         self.actionMove_subject_to_bottom.triggered.connect(self.move_subjects_to_bottom)
+        self.actionNew_group_from_selection.triggered.connect(self.new_group_from_selected)
 
         self.actionGroups_and_Demographics.triggered.connect(self.tab_groups_and_demographics)
         self.actionSubject_Data.triggered.connect(self.tab_subject_data)
@@ -194,8 +204,11 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
     def update_group_operation_buttons(self):
         checked_groups = len(self.get_checked_groups())
         self.btnInvert.setEnabled(checked_groups > 0)
+        self.actionInvert.setEnabled(checked_groups > 0)
         self.btnMerge.setEnabled(checked_groups > 1)
+        self.actionMerge.setEnabled(checked_groups > 1)
         self.btnIntersect.setEnabled(checked_groups > 1)
+        self.actionIntersect.setEnabled(checked_groups > 1)
 
     def tab_changed(self):
         if self.tabWidget.currentIndex() == 3:
