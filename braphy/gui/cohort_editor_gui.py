@@ -30,6 +30,13 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         else:
             self.cohort = cohort
         self.setupUi(self)
+        fMRI = False
+        if fMRI:
+            self.tabWidget.tabBar().setTabEnabled(2, False)
+            self.tabWidget.tabBar().setTabEnabled(3, False)
+            self.tabWidget.tabBar().setStyleSheet("QTabBar::tab::disabled {width: 0; height: 0; margin: 0; padding: 0; border: none;} ")
+        else:
+            self.listSubjects.hide()
         self.brain_mesh_data = load_nv(brain_mesh_file_default)
         self.init_buttons()
         self.init_actions()
