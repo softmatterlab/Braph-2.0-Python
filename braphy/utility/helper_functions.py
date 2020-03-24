@@ -68,6 +68,16 @@ def load_nv(filename):
     faces = np.loadtxt(filename, skiprows = number_of_vertices+2, max_rows = number_of_faces).astype(int) -1
     return {'vertices':vertices, 'faces':faces}
 
+def equal_around(a, b, decimals = 3):
+    if np.isscalar(a) != np.isscalar(b):
+        return False
+    round_a = np.around(a, decimals)
+    round_b = np.around(b, decimals)
+    if np.isscalar(a):
+        return round_a == round_b
+    else:
+        return np.array_equal(round_a, round_b)
+
 class ListManager:
 
     def check_bounds(lst, i, j):

@@ -7,6 +7,16 @@ class Subject:
         self.data_dict = {}
         self.init_data_dict()
 
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+        if self.id != other.id:
+            return False
+        for key, value in self.data_dict.items():
+            if value != other.data_dict[key]:
+                return False
+        return True
+
     def to_dict(self):
         d = {}
         d['id'] = self.id
