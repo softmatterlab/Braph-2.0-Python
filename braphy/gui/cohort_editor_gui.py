@@ -317,7 +317,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.brainWidget.show_grid(state)
 
     def show_regions(self, state):
-        pass
+        self.brainWidget.set_brain_regions_visible(state != 0)
 
     def show_labels(self, state):
         self.brainWidget.show_labels(state)
@@ -356,7 +356,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
             self.labelAtlasName.setText(file_name.split('/')[-1])
             self.labelRegionNumber.setText("Brain region number = {}".format(self.brain_region_number()))
             self.disable_menu_bar(False)
-            self.brainWidget.init_brain_regions(brain_regions, 4, [], True, False)
+            self.brainWidget.init_brain_regions(brain_regions, 4, [], False, False)
 
     def load_subject_group(self):
         options = QFileDialog.Options()
