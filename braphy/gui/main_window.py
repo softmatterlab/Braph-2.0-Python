@@ -27,9 +27,7 @@ class MainWindow(ExitDialog, Ui_MainWindow):
         self.init_buttons()
         self.init_animation()
         self.init_slide_show(self.palette().color(QtGui.QPalette.Window))
-        self.tabWidget.currentChanged.connect(self.tab_changed)
-        self.tabWidget.setCurrentIndex(0)
-        self.tabWidget.setStyleSheet("QTabWidget::pane { border: 0; }");
+        self.stackedWidget.setCurrentIndex(0)
 
     def init_animation(self):
         mesh_data = load_nv(brain_mesh_file)
@@ -52,12 +50,6 @@ class MainWindow(ExitDialog, Ui_MainWindow):
     def init_slide_show(self, color):
         self.slideShowWidget.set_background_color(color)
 
-    def tab_changed(self):
-        if self.tabWidget.currentIndex() == 0:
-            pass
-        elif self.tabWidget.currentIndex() == 1:
-            pass
-
     def init_buttons(self):
         self.btnBrainAtlas.clicked.connect(self.brain_atlas)
         self.btnCohort.clicked.connect(self.cohort)
@@ -68,7 +60,11 @@ class MainWindow(ExitDialog, Ui_MainWindow):
         self.btnPET.clicked.connect(self.set_PET_btn_options)
         self.btnEEG.clicked.connect(self.set_EEG_btn_options)
 
+        self.btnAnimation.clicked.connect(self.show_animation)
+        self.btnSlideShow.clicked.connect(self.show_slide_show)
+
         self.btnMRI.setChecked(True)
+        self.btnAnimation.setChecked(True)
 
     def brain_atlas(self):
         self.brain_atlas_gui = BrainAtlasGui(self)
@@ -105,6 +101,12 @@ class MainWindow(ExitDialog, Ui_MainWindow):
             self.subtitle.setText("PET Analysis Workflow")
         else:
             self.subtitle.setText("EEG Analysis Workflow")
+
+    def show_animation(self):
+        self.stackedWidget.setCurrentIndex(0)
+
+    def show_slide_show(self):
+        self.stackedWidget.setCurrentIndex(1)
 
 def braphy_run_gui():
     app = QtWidgets.QApplication(sys.argv)
