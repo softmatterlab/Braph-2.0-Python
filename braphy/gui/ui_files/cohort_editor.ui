@@ -1129,6 +1129,9 @@
    <property name="text">
     <string>Close</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+C</string>
+   </property>
   </action>
   <action name="actionLoad_subject_group_from_file">
    <property name="text">
@@ -1235,6 +1238,9 @@
   <action name="actionGenerate_figure">
    <property name="text">
     <string>Generate figure</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F</string>
    </property>
   </action>
   <action name="actionNew_MRI_graph_analysis">
