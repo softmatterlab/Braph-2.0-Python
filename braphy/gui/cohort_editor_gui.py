@@ -166,7 +166,6 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionShow_brain.triggered.connect(self.show_brain)
         self.actionShow_axis.triggered.connect(self.show_axis)
         self.actionShow_grid.triggered.connect(self.show_grid)
-        self.actionShow_symbols.triggered.connect(self.show_symbols)
         self.actionShow_regions.triggered.connect(self.show_regions)
         self.actionShow_labels.triggered.connect(self.show_labels)
 
@@ -187,7 +186,6 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionShow_brain.setVisible(state)
         self.actionShow_axis.setVisible(state)
         self.actionShow_grid.setVisible(state)
-        self.actionShow_symbols.setVisible(state)
         self.actionShow_regions.setVisible(state)
         self.actionShow_labels.setVisible(state)
 
@@ -317,9 +315,6 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def show_grid(self, state):
         self.brainWidget.show_grid(state)
-
-    def show_symbols(self, state):
-        pass
 
     def show_regions(self, state):
         pass
