@@ -30,6 +30,10 @@ class BrainAtlasWidget(GLViewWidget):
         self.timer = None
         self.brain_mesh = None
         self.brainBackgroundColor = (200, 200, 200, 255)
+        self.selected_observers = []
+
+    def add_selected_observer(self, observer):
+        self.selected_observers.append(observer)
 
     def setBrainBackgroundColor(self, rgba):
         self.brainBackgroundColor = rgba
@@ -235,8 +239,17 @@ class BrainAtlasWidget(GLViewWidget):
             brain_region = self.brain_regions[i]
             gui_brain_region = GUIBrainRegion(brain_region, self.brain_region_size, selected)
             gui_brain_region.add_observer(self.update)
+            gui_brain_region.add_selected_observer(self.selected_updated)
             self.gui_brain_regions.append(gui_brain_region)
         self.update_brain_regions_plot()
+
+    def selected_updated(self):
+        selected = []
+        for i, gui_brain_region in enumerate(self.gui_brain_regions):
+            if gui_brain_region.selected:
+                selected.append(i)
+        for observer in self.selected_observers:
+            observer(selected)
 
     def wheelEvent(self, ev):
         if not self.interaction_enabled:
@@ -378,6 +391,7 @@ class GUIBrainRegion(gl.GLMeshItem):
         self.translate(self.x, self.y, self.z)
         brain_region.add_observer(self.brain_region_changed)
         self.observers = []
+        self.selected_observers = []
 
     def brain_region_changed(self):
         self.label = self.brain_region.label
@@ -396,8 +410,15 @@ class GUIBrainRegion(gl.GLMeshItem):
     def add_observer(self, observer):
         self.observers.append(observer)
 
+    def add_selected_observer(self, observer):
+        self.selected_observers.append(observer)
+
     def notify_observers(self):
         for observer in self.observers:
+            observer()
+
+    def notify_selected_observers(self):
+        for observer in self.selected_observers:
             observer()
 
     def pos(self):
@@ -405,6 +426,7 @@ class GUIBrainRegion(gl.GLMeshItem):
 
     def toggle_selected(self):
         self.set_selected(not self.selected)
+        self.notify_selected_observers()
 
     def set_selected(self, selected):
         self.selected = selected

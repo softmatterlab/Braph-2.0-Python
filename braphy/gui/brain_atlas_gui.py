@@ -40,6 +40,8 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.textAtlasName.textChanged.connect(self.atlas_name_change)
         self.file_name = None
 
+        self.brainWidget.add_selected_observer(self.set_selected)
+
     def from_file(self, atlas_file):
         with open(atlas_file, 'r') as f:
             d = json.load(f)
@@ -405,11 +407,14 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
             self.brainWidget.select_region(index)
 
     def set_selected(self, selected):
+        self.tableWidget.blockSignals(True)
+        self.clear_selection()
         mode = self.tableWidget.selectionMode()
         self.tableWidget.setSelectionMode(QtGui.QAbstractItemView.MultiSelection)
         for row in selected:
             self.tableWidget.selectRow(row)
         self.tableWidget.setSelectionMode(mode)
+        self.tableWidget.blockSignals(False)
 
     def get_selected(self):
         rows = [item.row() for item in self.tableWidget.selectionModel().selectedRows()]
