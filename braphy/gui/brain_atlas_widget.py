@@ -355,8 +355,9 @@ class BrainAtlasWidget(GLViewWidget):
         closest_region = self.gui_brain_region_at([x,y], camera_pos)
         if closest_region:
             closest_region.toggle_selected()
-
-    
+            if closest_region.selected:
+                tool_tip_label = "{}\n{}\n{}".format(closest_region.label, closest_region.brain_region.name, closest_region.pos())
+                QtGui.QToolTip.showText(self.mapToGlobal(ev.pos()), tool_tip_label, self)
 
     def mouseMoveEventPan(self, ev, invert = False):
         diff = ev.pos() - self.mousePos
