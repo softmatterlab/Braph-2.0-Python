@@ -108,7 +108,6 @@ class BrainAtlasWidget(GLViewWidget):
         self.addItem(self.brain_mesh)
 
     def paintGL(self, *args, **kwds):
-
         GLViewWidget.paintGL(self, *args, **kwds)
         self.qglColor(QColor("k"))
         if self.show_labels_bool:
@@ -315,6 +314,7 @@ class BrainAtlasWidget(GLViewWidget):
             self.mouseReleaseEventZoomOut(ev)
         elif self.mouse_mode == BrainAtlasWidget.MOUSE_MODE_FIND:
             self.mouseReleaseEventFind(ev)
+            return
         self.mouseReleaseEventDefault(ev)
 
     def mouseReleaseEventDefault(self, ev):
@@ -322,7 +322,6 @@ class BrainAtlasWidget(GLViewWidget):
             self.mouseReleaseEventFind(ev)
 
     def mouseMoveEventDefault(self, ev):
-
         if ev.buttons() == QtCore.Qt.LeftButton:
             diff = ev.pos() - self.mousePos
             self.mousePos = ev.pos()
