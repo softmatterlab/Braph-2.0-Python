@@ -189,8 +189,6 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionShow_regions.setVisible(state)
         self.actionShow_labels.setVisible(state)
 
-        self.actionShow_brain.setChecked(state)
-
     def update_group_operation_buttons(self):
         checked_groups = len(self.get_checked_groups())
         self.btnInvert.setEnabled(checked_groups > 0)

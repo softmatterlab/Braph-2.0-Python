@@ -985,6 +985,9 @@
     <addaction name="actionSave"/>
     <addaction name="actionSave_as"/>
     <addaction name="separator"/>
+    <addaction name="actionImport_xml"/>
+    <addaction name="actionExport_xml"/>
+    <addaction name="separator"/>
     <addaction name="actionClose"/>
    </widget>
    <widget class="QMenu" name="menuGroups">
@@ -1083,6 +1086,7 @@
    <addaction name="actionShow_brain"/>
    <addaction name="actionShow_axis"/>
    <addaction name="actionShow_grid"/>
+   <addaction name="actionShow_symbols"/>
    <addaction name="actionShow_regions"/>
    <addaction name="actionShow_labels"/>
   </widget>
@@ -1383,7 +1387,7 @@
     <bool>true</bool>
    </property>
    <property name="checked">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="icon">
     <iconset resource="../icons.qrc">
@@ -1417,13 +1421,25 @@
     <string>Show grid</string>
    </property>
   </action>
+  <action name="actionShow_symbols">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/buttons/icon_symbol.png</normaloff>:/buttons/icon_symbol.png</iconset>
+   </property>
+   <property name="text">
+    <string>Show symbols</string>
+   </property>
+  </action>
   <action name="actionShow_regions">
    <property name="checkable">
     <bool>true</bool>
    </property>
    <property name="icon">
     <iconset resource="../icons.qrc">
-     <normaloff>:/buttons/icon_br.png</normaloff>:/buttons/icon_br.png</iconset>
+     <normaloff>:/buttons/icon_sphere.png</normaloff>:/buttons/icon_sphere.png</iconset>
    </property>
    <property name="text">
     <string>Regions</string>
