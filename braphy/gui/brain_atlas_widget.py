@@ -17,6 +17,7 @@ class BrainAtlasWidget(GLViewWidget):
     MOUSE_MODE_PAN = 3
     MOUSE_MODE_PAN_Z = 4
     MOUSE_MODE_ROTATE = 5
+    MOUSE_MODE_FIND = 6
     def __init__(self, parent = None):
         super(BrainAtlasWidget, self).__init__(parent)
         self.brain_color = [0.7, 0.6, 0.55, 1]
@@ -278,6 +279,8 @@ class BrainAtlasWidget(GLViewWidget):
             self.mouseMoveEventPan(ev, invert=True)
         elif self.mouse_mode == BrainAtlasWidget.MOUSE_MODE_ROTATE:
             self.mouseMoveEventRotate(ev)
+        elif self.mouse_mode == BrainAtlasWidget.MOUSE_MODE_FIND:
+            pass
 
     def gui_brain_region_at(self, click_pos_2D, camera_pos):
         closest_region = None
@@ -310,20 +313,13 @@ class BrainAtlasWidget(GLViewWidget):
             self.mouseReleaseEventZoomIn(ev)
         elif self.mouse_mode == BrainAtlasWidget.MOUSE_MODE_ZOOM_OUT:
             self.mouseReleaseEventZoomOut(ev)
+        elif self.mouse_mode == BrainAtlasWidget.MOUSE_MODE_FIND:
+            self.mouseReleaseEventFind(ev)
         self.mouseReleaseEventDefault(ev)
 
     def mouseReleaseEventDefault(self, ev):
         if ev.button() == QtCore.Qt.RightButton:
-            mouse_travel_distance = (ev.pos() - self.mousePos).manhattanLength()
-            if mouse_travel_distance > 15:
-                return
-            x = (ev.pos().x()-300)/300
-            y = -(ev.pos().y()-262)/262
-            m = self.projectionMatrix() * self.viewMatrix()
-            camera_pos = m.inverted()[0].map(QtGui.QVector3D(0,0,0))
-            closest_region = self.gui_brain_region_at([x,y], camera_pos)
-            if closest_region:
-                closest_region.toggle_selected()
+            self.mouseReleaseEventFind(ev)
 
     def mouseMoveEventDefault(self, ev):
 
@@ -348,6 +344,20 @@ class BrainAtlasWidget(GLViewWidget):
     def mouseReleaseEventZoomOut(self, ev):
         self.mouseReleaseEventZoom(ev, -500)
 
+    def mouseReleaseEventFind(self, ev):
+        mouse_travel_distance = (ev.pos() - self.mousePos).manhattanLength()
+        if mouse_travel_distance > 15:
+            return
+        x = (ev.pos().x()-300)/300
+        y = -(ev.pos().y()-262)/262
+        m = self.projectionMatrix() * self.viewMatrix()
+        camera_pos = m.inverted()[0].map(QtGui.QVector3D(0,0,0))
+        closest_region = self.gui_brain_region_at([x,y], camera_pos)
+        if closest_region:
+            closest_region.toggle_selected()
+
+    
+
     def mouseMoveEventPan(self, ev, invert = False):
         diff = ev.pos() - self.mousePos
         self.mousePos = ev.pos()
@@ -365,6 +375,8 @@ class BrainAtlasWidget(GLViewWidget):
 
         if ev.buttons() == QtCore.Qt.LeftButton:
             self.orbit(-diff.x(), diff.y())
+
+
 
     def get_gui_brain_region_items(self):
         gui_brain_region_items = []

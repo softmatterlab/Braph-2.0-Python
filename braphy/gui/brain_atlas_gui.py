@@ -470,6 +470,8 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def find(self):
         self.set_cursor('cursor.png')
+        print('find')
+        self.brainWidget.mouse_mode = BrainAtlasWidget.MOUSE_MODE_FIND
 
     def import_txt(self):
         options = QFileDialog.Options()
