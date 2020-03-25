@@ -435,6 +435,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
             item = QTableWidgetItem(self.cohort.groups[i].description)
             self.tableWidget_groups.setItem(i, 2, item)
 
+        self.set_checked_groups(selected_groups)
         self.tableWidget_groups.blockSignals(False)
 
     def update_groups_and_demographics_table(self, selected):
@@ -602,6 +603,13 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.selected_groups_radio_button.setChecked(False)
             self.selected_groups_radio_button = self.sender()
             self.btnComparison.setEnabled(True)
+
+    def set_checked_groups(self, selected):
+        mode = self.tableWidget_groups.selectionMode()
+        self.tableWidget_groups.setSelectionMode(QtGui.QAbstractItemView.MultiSelection)
+        for row in selected:
+            self.tableWidget_groups.selectRow(row)
+        self.tableWidget_groups.setSelectionMode(mode)
 
     def get_checked_groups(self):
         rows = [item.row() for item in self.tableWidget_groups.selectionModel().selectedRows()]
