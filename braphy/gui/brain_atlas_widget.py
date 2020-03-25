@@ -266,19 +266,25 @@ class BrainAtlasWidget(GLViewWidget):
         elif self.mouse_mode == BrainAtlasWidget.MOUSE_MODE_ROTATE:
             self.mouseMoveEventRotate(ev)
 
-    def gui_brain_region_at(self, pos_2D, camera_pos):
+    def gui_brain_region_at(self, click_pos_2D, camera_pos):
         closest_region = None
         closest_region_distance = np.inf
         m = self.projectionMatrix() * self.viewMatrix()
         for gui_brain_region in self.gui_brain_regions:
             pos = gui_brain_region.pos()
-            pt = m.map(QtGui.QVector3D(pos[0], pos[1], pos[2]))
-            dist = pow(pow(pt[0]-pos_2D[0], 2) + pow(pt[1]-pos_2D[1], 2), 0.5)
-            camera_distance = pow(pow(pos[0]-camera_pos[0],2)+pow(pos[1]-camera_pos[1],2)+pow(pos[2]-camera_pos[2],2),0.5)
-            scale_size = 0.0356
-            scale_dist = 0.00035
-            threshold = scale_size*gui_brain_region.size - scale_dist*camera_distance
-            if dist < threshold:
+            pos = QtGui.QVector3D(pos[0], pos[1], pos[2])
+            orthogonal_direction = QtGui.QVector3D(0, pos.z() - camera_pos.z(), camera_pos.y() - pos.y())
+            orthonormal_direction = orthogonal_direction.normalized()
+            sphere_surface_pos = pos + gui_brain_region.size * orthonormal_direction
+
+            pos_2D = m.map(pos)
+            sphere_surface_pos_2D = m.map(sphere_surface_pos)
+            sphere_radius_2D = pos_2D.distanceToPoint(sphere_surface_pos_2D)
+
+            dist_to_click = pow(pow(click_pos_2D[0]-pos_2D[0], 2) + pow(click_pos_2D[1]-pos_2D[1], 2), 0.5)
+            camera_distance = pos.distanceToPoint(camera_pos)
+
+            if dist_to_click < sphere_radius_2D:
                 if camera_distance < closest_region_distance:
                     closest_region_distance = camera_distance
                     closest_region = gui_brain_region
