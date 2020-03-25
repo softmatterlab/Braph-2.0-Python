@@ -391,7 +391,9 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
             item = QTableWidgetItem(str(self.atlas.brain_regions[i].z))
             self.tableWidget.setItem(i, 4, item)
 
-        self.brainWidget.update_brain_regions(self.get_selected())
+        self.set_selected(selected)
+        self.brainWidget.update_brain_regions(selected)
+
         self.tableWidget.blockSignals(False)
         if self.locked:
             self.set_locked(True)
@@ -401,6 +403,13 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.brainWidget.deselect_all()
         for index in selected:
             self.brainWidget.select_region(index)
+
+    def set_selected(self, selected):
+        mode = self.tableWidget.selectionMode()
+        self.tableWidget.setSelectionMode(QtGui.QAbstractItemView.MultiSelection)
+        for row in selected:
+            self.tableWidget.selectRow(row)
+        self.tableWidget.setSelectionMode(mode)
 
     def get_selected(self):
         rows = [item.row() for item in self.tableWidget.selectionModel().selectedRows()]
