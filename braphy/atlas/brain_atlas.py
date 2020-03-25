@@ -52,11 +52,16 @@ class BrainAtlas():
             br_positions[i, :] = self.get_brain_region(i).get_position()
         return br_positions
 
+    def new_brain_region(self):
+        label = "BR_{}".format(self.brain_region_number())
+        name = "brain_region_{}".format(self.brain_region_number())
+        return BrainRegion(label = label, name = name)
+
     def add_brain_region(self, br = None, i = None):
         if i == None:
             i = len(self.brain_regions)
         if br == None:
-            br = BrainRegion()
+            br = self.new_brain_region()
         self.brain_regions.insert(i, br)
 
     def remove_brain_region(self, i):
@@ -80,10 +85,10 @@ class BrainAtlas():
         lm.move_to(self.brain_regions, i, j)
 
     def add_above_brain_regions(self, selected):
-        return lm.add_above(self.brain_regions, selected, BrainRegion)
+        return lm.add_above(self.brain_regions, selected, self.new_brain_region)
 
     def add_below_brain_regions(self, selected):
-        return lm.add_below(self.brain_regions, selected, BrainRegion)
+        return lm.add_below(self.brain_regions, selected, self.new_brain_region)
 
     def move_up_brain_regions(self, selected):
         return lm.move_up(self.brain_regions, selected)
