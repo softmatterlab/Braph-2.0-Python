@@ -95,7 +95,7 @@ class Cohort:
         return lm.move_up(self.groups, selected)
 
     def move_down_groups(self, selected):
-        return lm.move_down(self.groups)
+        return lm.move_down(self.groups, selected)
 
     def new_group_from_selected(self, subject_indices):
         self.add_group()
