@@ -161,7 +161,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionData_cursor.triggered.connect(self.data_cursor)
         self.actionInsert_colorbar.triggered.connect(self.insert_colorbar)
 
-        group = QtWidgets.QActionGroup(self, exclusive = True)
+        group = QtWidgets.QActionGroup(self)
         for action in (self.actionZoom_in, self.actionZoom_out, self.actionPan,
                        self.action3D_rotation, self.actionData_cursor):
             group.addAction(action)

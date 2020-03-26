@@ -199,7 +199,7 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionRotate.triggered.connect(self.rotate)
         self.actionFind.triggered.connect(self.find)
 
-        group = QtWidgets.QActionGroup(self, exclusive = True)
+        group = QtWidgets.QActionGroup(self)
         for action in (self.actionZoom_in, self.actionZoom_out, self.actionPan,
                        self.actionPan_z, self.actionRotate, self.actionFind):
             group.addAction(action)
