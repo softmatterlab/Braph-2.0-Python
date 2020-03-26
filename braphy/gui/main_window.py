@@ -46,6 +46,7 @@ class MainWindow(ExitDialog, Ui_MainWindow):
             brain_regions.append(BrainRegion(x=c[0], y=c[1], z=c[2]))
         self.brainWidget.init_brain_regions(brain_regions, 8, [], True, False)
         self.brainWidget.change_transparency(0.6)
+        self.brainWidget.setCameraPosition(distance = 275)
 
     def init_slide_show(self, color):
         self.slideShowWidget.set_background_color(color)

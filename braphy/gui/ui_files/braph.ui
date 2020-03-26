@@ -26,10 +26,16 @@
       <item>
        <widget class="QStackedWidget" name="stackedWidget">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>600</width>
+          <height>600</height>
+         </size>
         </property>
         <widget class="QWidget" name="Animation">
          <property name="sizePolicy">
@@ -38,16 +44,24 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
-         <widget class="BrainAtlasWidget" name="brainWidget">
-          <property name="geometry">
-           <rect>
-            <x>-10</x>
-            <y>0</y>
-            <width>801</width>
-            <height>631</height>
-           </rect>
-          </property>
-         </widget>
+         <layout class="QGridLayout" name="gridLayout">
+          <item row="0" column="0">
+           <widget class="BrainAtlasWidget" name="brainWidget">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </widget>
         <widget class="SlideShowWidget" name="slideShowWidget">
          <property name="sizePolicy">

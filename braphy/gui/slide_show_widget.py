@@ -37,11 +37,9 @@ class SlideShowWidget(QWidget):
             self.image_files.append(abs_path_from_relative(__file__, image))
 
         self.label = QLabel(self)
-        self.label.setGeometry(100, 50, 1000, 600)
 
         self.text_label = QLabel(self)
         self.text_label.setWordWrap(True)
-        self.text_label.setGeometry(100, 550, 600, 100)
 
         self.timer = QtCore.QBasicTimer()
         self.step = 0
@@ -69,3 +67,9 @@ class SlideShowWidget(QWidget):
         self.step += 1
         if self.step >= len(images):
             self.step = 0
+
+    def resizeEvent(self, event):
+        width = self.width()
+        height = self.height()
+        self.label.setGeometry(0.5*width - 300, 0.5*height - 300, 1000, 600)
+        self.text_label.setGeometry(0.5*width - 250, 0.5*height + 200, 500, 100)
