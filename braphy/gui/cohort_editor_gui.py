@@ -12,17 +12,16 @@ import xml.etree.ElementTree as ET
 import numpy as np
 
 from braphy.cohort.cohort import Cohort
-from braphy.cohort.subjects.subject_MRI import SubjectMRI
+from braphy.cohort.subjects import *
 
 qtCreatorFile = abs_path_from_relative(__file__, "ui_files/cohort_editor.ui")
 brain_mesh_file_name_default = "meshes/BrainMesh_ICBM152.nv"
 brain_mesh_file_default = abs_path_from_relative(__file__, brain_mesh_file_name_default)
 
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
-subject_class = SubjectMRI
 
 class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
-    def __init__(self, AppWindow = None, cohort = None):
+    def __init__(self, AppWindow = None, subject_class = SubjectMRI, cohort = None):
         if AppWindow:
             self.AppWindow = AppWindow
         QtWidgets.QMainWindow.__init__(self, parent = None)
@@ -31,8 +30,8 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         else:
             self.cohort = cohort
         self.setupUi(self)
-        fMRI = False
-        if fMRI:
+        self.subject_class = subject_class
+        if subject_class == SubjectfMRI:
             self.tabWidget.tabBar().setTabEnabled(2, False)
             self.tabWidget.tabBar().setTabEnabled(3, False)
             self.tabWidget.tabBar().setStyleSheet("QTabBar::tab::disabled {width: 0; height: 0; margin: 0; padding: 0; border: none;} ")
@@ -526,12 +525,50 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.update_group_comparison_table()
 
     def update_subject_data_table(self):
+        if self.subject_class == SubjectMRI:
+            self.update_subject_data_table_structural()
+        else:
+            self.update_subject_data_table_functional()
+
+    def update_subject_data_table_functional(self):
+        if len(self.cohort.subjects) == 0:
+            return
+        self.tableWidget_subject_data.blockSignals(True)
+        self.tableWidget_subject_data.clearContents()
+        self.tableWidget_subject_data.setRowCount(0)
+
+        # Update subjects
+        self.listSubjects.clear()
+        for subject in self.cohort.subjects:
+            item = QListWidgetItem(subject.id)
+            self.listSubjects.addItem(item)
+        self.listSubjects.setCurrentRow(0)
+
+        # Update columns:
+        self.tableWidget_subject_data.setColumnCount(len(self.subject_data_labels))
+        for i, label in enumerate(self.subject_data_labels):
+            item = QTableWidgetItem(label)
+            self.tableWidget_subject_data.setHorizontalHeaderItem(i, item)
+
+        # Update subject:
+        subject = self.cohort.subjects[self.listSubjects.currentRow()]
+        data = subject.data_dict['data'].value
+        self.tableWidget_subject_data.setRowCount(data.shape[0])
+        for (i, j), value in np.ndenumerate(data):
+            item = QTableWidgetItem(str(value))
+            self.tableWidget_subject_data.setItem(i, j, item)
+
+        self.tableWidget_subject_data.blockSignals(False)
+
+    def update_subject_data_table_structural(self):
         self.tableWidget_subject_data.blockSignals(True)
         self.tableWidget_subject_data.clearContents()
         self.tableWidget_subject_data.setRowCount(0)
 
         #Update columns:
         self.tableWidget_subject_data.setColumnCount(len(self.subject_data_labels)+1)
+        item = QTableWidgetItem('Subject code')
+        self.tableWidget_subject_data.setHorizontalHeaderItem(0, item)
         for i, label in enumerate(self.subject_data_labels):
             item = QTableWidgetItem(label)
             self.tableWidget_subject_data.setHorizontalHeaderItem(i+1, item)

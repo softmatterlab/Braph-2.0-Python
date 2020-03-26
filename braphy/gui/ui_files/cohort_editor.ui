@@ -254,7 +254,7 @@
       <item>
        <widget class="QTabWidget" name="tabWidget">
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="tabGroup">
          <attribute name="title">
@@ -670,13 +670,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QTableWidget" name="tableWidget_subject_data">
-              <column>
-               <property name="text">
-                <string>index</string>
-               </property>
-              </column>
-             </widget>
+             <widget class="QTableWidget" name="tableWidget_subject_data"/>
             </item>
            </layout>
           </item>

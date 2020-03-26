@@ -31,6 +31,7 @@ class SubjectfMRI(Subject):
                     fmri_data.append(v.split())
                 fmri_data = np.array(fmri_data).astype(float)
                 subject.data_dict['data'].set_value(fmri_data)
+                subject.data_dict['age'].set_value(int(item['age']))
                 subjects.append(subject)
         return subjects
 
