@@ -448,27 +448,27 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.brainWidget.setCursor(cursor)
 
     def zoom_in(self):
-        self.set_cursor('zoom_in.png')
+        self.set_cursor('icons/zoom_in.png')
         self.brainWidget.mouse_mode = BrainAtlasWidget.MOUSE_MODE_ZOOM_IN
 
     def zoom_out(self):
-        self.set_cursor('zoom_out.png')
+        self.set_cursor('icons/zoom_out.png')
         self.brainWidget.mouse_mode = BrainAtlasWidget.MOUSE_MODE_ZOOM_OUT
 
     def pan(self):
-        self.set_cursor('hand.png')
+        self.set_cursor('icons/hand.png')
         self.brainWidget.mouse_mode = BrainAtlasWidget.MOUSE_MODE_PAN
 
     def pan_z(self):
-        self.set_cursor('hand_xz.png')
+        self.set_cursor('icons/hand_xz.png')
         self.brainWidget.mouse_mode = BrainAtlasWidget.MOUSE_MODE_PAN_Z
 
     def rotate(self):
-        self.set_cursor('rotate.png')
+        self.set_cursor('icons/rotate.png')
         self.brainWidget.mouse_mode = BrainAtlasWidget.MOUSE_MODE_ROTATE
 
     def find(self):
-        self.set_cursor('cursor.png')
+        self.set_cursor('icons/cursor.png')
         self.brainWidget.mouse_mode = BrainAtlasWidget.MOUSE_MODE_FIND
 
 

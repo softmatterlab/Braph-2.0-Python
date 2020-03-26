@@ -1080,6 +1080,7 @@
    <addaction name="actionZoom_in"/>
    <addaction name="actionZoom_out"/>
    <addaction name="actionPan"/>
+   <addaction name="actionPanZ"/>
    <addaction name="action3D_rotation"/>
    <addaction name="actionData_cursor"/>
    <addaction name="separator"/>
@@ -1492,6 +1493,21 @@
   <action name="actionIntersect">
    <property name="text">
     <string>Intersect</string>
+   </property>
+  </action>
+  <action name="actionPanZ">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../icons/icons.qrc">
+     <normaloff>:/buttons/hand_xz.png</normaloff>:/buttons/hand_xz.png</iconset>
+   </property>
+   <property name="text">
+    <string>PanZ</string>
+   </property>
+   <property name="toolTip">
+    <string>PanZ</string>
    </property>
   </action>
  </widget>
