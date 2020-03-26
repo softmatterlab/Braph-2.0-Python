@@ -35,6 +35,8 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
             self.tabWidget.tabBar().setTabEnabled(2, False)
             self.tabWidget.tabBar().setTabEnabled(3, False)
             self.tabWidget.tabBar().setStyleSheet("QTabBar::tab::disabled {width: 0; height: 0; margin: 0; padding: 0; border: none;} ")
+            self.listSubjects.currentRowChanged.connect(self.subject_list_row_changed)
+            self.selected_subject = None
         else:
             self.listSubjects.hide()
         self.brain_mesh_data = load_nv(brain_mesh_file_default)
@@ -528,21 +530,29 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         if self.subject_class == SubjectMRI:
             self.update_subject_data_table_structural()
         else:
-            self.update_subject_data_table_functional()
+            self.update_subject_list_functional()
+
+    def update_subject_list_functional(self):
+        self.listSubjects.blockSignals(True)
+        self.listSubjects.clear()
+        select_row = 0
+        for i, subject in enumerate(self.cohort.subjects):
+            if subject == self.selected_subject:
+                select_row = i
+            item = QListWidgetItem(subject.id)
+            self.listSubjects.addItem(item)
+        self.listSubjects.blockSignals(False)
+        if len(self.cohort.subjects) > 0:
+            self.listSubjects.setCurrentRow(select_row)
+
+    def subject_list_row_changed(self, row):
+        self.selected_subject = self.cohort.subjects[row]
+        self.update_subject_data_table_functional()
 
     def update_subject_data_table_functional(self):
-        if len(self.cohort.subjects) == 0:
-            return
         self.tableWidget_subject_data.blockSignals(True)
         self.tableWidget_subject_data.clearContents()
         self.tableWidget_subject_data.setRowCount(0)
-
-        # Update subjects
-        self.listSubjects.clear()
-        for subject in self.cohort.subjects:
-            item = QListWidgetItem(subject.id)
-            self.listSubjects.addItem(item)
-        self.listSubjects.setCurrentRow(0)
 
         # Update columns:
         self.tableWidget_subject_data.setColumnCount(len(self.subject_data_labels))
@@ -551,8 +561,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
             self.tableWidget_subject_data.setHorizontalHeaderItem(i, item)
 
         # Update subject:
-        subject = self.cohort.subjects[self.listSubjects.currentRow()]
-        data = subject.data_dict['data'].value
+        data = self.selected_subject.data_dict['data'].value
         self.tableWidget_subject_data.setRowCount(data.shape[0])
         for (i, j), value in np.ndenumerate(data):
             item = QTableWidgetItem(str(value))
