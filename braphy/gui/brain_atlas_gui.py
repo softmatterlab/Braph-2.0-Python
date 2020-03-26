@@ -15,8 +15,9 @@ brain_mesh_file_default = abs_path_from_relative(__file__, brain_mesh_file_name_
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 
 class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
-    def __init__(self, AppWindow, atlas_dict = None): # should be able to input atlas
-        self.AppWindow = AppWindow
+    def __init__(self, AppWindow = None, atlas_dict = None): # should be able to input atlas
+        if AppWindow:
+            self.AppWindow = AppWindow
         QtWidgets.QMainWindow.__init__(self, parent = None)
         self.setupUi(self)
         self.locked = False

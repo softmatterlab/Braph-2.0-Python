@@ -8,8 +8,9 @@ qtCreatorFile = abs_path_from_relative(__file__, "ui_files/graph_analysis.ui")
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 
 class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
-    def __init__(self, AppWindow):
-        self.AppWindow = AppWindow
+    def __init__(self, AppWindow = None):
+        if AppWindow:
+            self.AppWindow = AppWindow
         QtWidgets.QMainWindow.__init__(self, parent = None)
         self.setupUi(self)
         self.init_buttons()

@@ -22,8 +22,9 @@ Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 subject_class = SubjectMRI
 
 class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
-    def __init__(self, AppWindow, cohort = None):
-        self.AppWindow = AppWindow
+    def __init__(self, AppWindow = None, cohort = None):
+        if AppWindow:
+            self.AppWindow = AppWindow
         QtWidgets.QMainWindow.__init__(self, parent = None)
         if cohort == None:
             self.cohort = Cohort('Cohort', subject_class)
