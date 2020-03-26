@@ -376,8 +376,6 @@ class BrainAtlasWidget(GLViewWidget):
         if ev.buttons() == QtCore.Qt.LeftButton:
             self.orbit(-diff.x(), diff.y())
 
-
-
     def get_gui_brain_region_items(self):
         gui_brain_region_items = []
         for item in self.items:

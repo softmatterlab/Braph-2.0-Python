@@ -2,16 +2,16 @@ from PyQt5.QtWidgets import *
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from braphy.utility.helper_functions import abs_path_from_relative
 
-image_1 = "figures/degree.png"
-image_2 = "figures/strength.png"
-image_3 = "figures/eccentricity.png"
-image_4 = "figures/untitled.png"
-image_5 = "figures/triangles.png"
-image_6 = "figures/clustering.png"
-image_7 = "figures/participation.png"
-image_8 = "figures/betweeness.png"
-image_9 = "figures/modularity.png"
-image_10 = "figures/zscore.png"
+image_1 = "slide_show/degree.png"
+image_2 = "slide_show/strength.png"
+image_3 = "slide_show/eccentricity.png"
+image_4 = "slide_show/untitled.png"
+image_5 = "slide_show/triangles.png"
+image_6 = "slide_show/clustering.png"
+image_7 = "slide_show/participation.png"
+image_8 = "slide_show/betweeness.png"
+image_9 = "slide_show/modularity.png"
+image_10 = "slide_show/zscore.png"
 images = [image_1, image_2, image_3, image_4, image_5, image_6, image_7, image_8, image_9, image_10]
 
 string_1 = 'DEGREE of a node is the number of edges connected to the node. Connection weights are ignored in calculations.'

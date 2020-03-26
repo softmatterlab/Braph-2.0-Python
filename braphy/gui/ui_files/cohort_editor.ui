@@ -1099,7 +1099,7 @@
   </widget>
   <action name="actionOpen">
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset resource="../icons/icons.qrc">
      <normaloff>:/buttons/open.png</normaloff>:/buttons/open.png</iconset>
    </property>
    <property name="text">
@@ -1111,7 +1111,7 @@
   </action>
   <action name="actionSave">
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset resource="../icons/icons.qrc">
      <normaloff>:/buttons/save.png</normaloff>:/buttons/save.png</iconset>
    </property>
    <property name="text">
@@ -1269,7 +1269,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset resource="../icons/icons.qrc">
      <normaloff>:/buttons/zoom_in.png</normaloff>:/buttons/zoom_in.png</iconset>
    </property>
    <property name="text">
@@ -1281,7 +1281,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset resource="../icons/icons.qrc">
      <normaloff>:/buttons/zoom_out.png</normaloff>:/buttons/zoom_out.png</iconset>
    </property>
    <property name="text">
@@ -1293,7 +1293,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset resource="../icons/icons.qrc">
      <normaloff>:/buttons/hand.png</normaloff>:/buttons/hand.png</iconset>
    </property>
    <property name="text">
@@ -1305,7 +1305,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset resource="../icons/icons.qrc">
      <normaloff>:/buttons/rotate.png</normaloff>:/buttons/rotate.png</iconset>
    </property>
    <property name="text">
@@ -1317,7 +1317,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset resource="../icons/icons.qrc">
      <normaloff>:/buttons/cursor.png</normaloff>:/buttons/cursor.png</iconset>
    </property>
    <property name="text">
@@ -1334,7 +1334,7 @@
   </action>
   <action name="action3D">
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset resource="../icons/icons.qrc">
      <normaloff>:/buttons/icon_view_3d.png</normaloff>:/buttons/icon_view_3d.png</iconset>
    </property>
    <property name="text">
@@ -1343,7 +1343,7 @@
   </action>
   <action name="actionSagittal_left">
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset resource="../icons/icons.qrc">
      <normaloff>:/buttons/icon_view_sl.png</normaloff>:/buttons/icon_view_sl.png</iconset>
    </property>
    <property name="text">
@@ -1352,7 +1352,7 @@
   </action>
   <action name="actionSagittal_right">
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset resource="../icons/icons.qrc">
      <normaloff>:/buttons/icon_view_sr.png</normaloff>:/buttons/icon_view_sr.png</iconset>
    </property>
    <property name="text">
@@ -1361,7 +1361,7 @@
   </action>
   <action name="actionAxial_dorsal">
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset resource="../icons/icons.qrc">
      <normaloff>:/buttons/icon_view_ad.png</normaloff>:/buttons/icon_view_ad.png</iconset>
    </property>
    <property name="text">
@@ -1370,7 +1370,7 @@
   </action>
   <action name="actionAxial_ventral">
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset resource="../icons/icons.qrc">
      <normaloff>:/buttons/icon_view_av.png</normaloff>:/buttons/icon_view_av.png</iconset>
    </property>
    <property name="text">
@@ -1379,7 +1379,7 @@
   </action>
   <action name="actionCoronal_anterior">
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset resource="../icons/icons.qrc">
      <normaloff>:/buttons/icon_view_ca.png</normaloff>:/buttons/icon_view_ca.png</iconset>
    </property>
    <property name="text">
@@ -1388,7 +1388,7 @@
   </action>
   <action name="actionCoronal_posterior">
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset resource="../icons/icons.qrc">
      <normaloff>:/buttons/icon_view_cp.png</normaloff>:/buttons/icon_view_cp.png</iconset>
    </property>
    <property name="text">
@@ -1403,7 +1403,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset resource="../icons/icons.qrc">
      <normaloff>:/buttons/icon_brain.png</normaloff>:/buttons/icon_brain.png</iconset>
    </property>
    <property name="text">
@@ -1415,7 +1415,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset resource="../icons/icons.qrc">
      <normaloff>:/buttons/icon_axis.png</normaloff>:/buttons/icon_axis.png</iconset>
    </property>
    <property name="text">
@@ -1427,7 +1427,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset resource="../icons/icons.qrc">
      <normaloff>:/buttons/icon_grid.png</normaloff>:/buttons/icon_grid.png</iconset>
    </property>
    <property name="text">
@@ -1439,7 +1439,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset resource="../icons/icons.qrc">
      <normaloff>:/buttons/icon_symbol.png</normaloff>:/buttons/icon_symbol.png</iconset>
    </property>
    <property name="text">
@@ -1451,7 +1451,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset resource="../icons/icons.qrc">
      <normaloff>:/buttons/icon_sphere.png</normaloff>:/buttons/icon_sphere.png</iconset>
    </property>
    <property name="text">
@@ -1463,7 +1463,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset resource="../icons/icons.qrc">
      <normaloff>:/buttons/icon_label.png</normaloff>:/buttons/icon_label.png</iconset>
    </property>
    <property name="text">
@@ -1472,7 +1472,7 @@
   </action>
   <action name="action3D_2">
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset resource="../icons/icons.qrc">
      <normaloff>:/buttons/icon_view_3d.png</normaloff>:/buttons/icon_view_3d.png</iconset>
    </property>
    <property name="text">
@@ -1513,7 +1513,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../icons.qrc"/>
+  <include location="../icons/icons.qrc"/>
  </resources>
  <connections/>
 </ui>

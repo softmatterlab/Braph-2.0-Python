@@ -15,7 +15,7 @@ from braphy.cohort.cohort import Cohort
 from braphy.cohort.subjects.subject_MRI import SubjectMRI
 
 qtCreatorFile = abs_path_from_relative(__file__, "ui_files/cohort_editor.ui")
-brain_mesh_file_name_default = "BrainMesh_ICBM152.nv"
+brain_mesh_file_name_default = "meshes/BrainMesh_ICBM152.nv"
 brain_mesh_file_default = abs_path_from_relative(__file__, brain_mesh_file_name_default)
 
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)

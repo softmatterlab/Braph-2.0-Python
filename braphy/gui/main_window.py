@@ -9,7 +9,7 @@ from braphy.gui.exit_dialog import ExitDialog
 from braphy.gui.slide_show_widget import SlideShowWidget
 from PyQt5.QtCore import Qt
 
-brain_mesh_file_name = "BrainMesh_ICBM152.nv"
+brain_mesh_file_name = "meshes/BrainMesh_ICBM152.nv"
 brain_mesh_file = abs_path_from_relative(__file__, brain_mesh_file_name)
 
 qtCreatorFile = abs_path_from_relative(__file__, "ui_files/braph.ui")

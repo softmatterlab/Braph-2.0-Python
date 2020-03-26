@@ -9,7 +9,7 @@ import numpy as np
 from braphy.gui.brain_atlas_widget import BrainAtlasWidget
 
 qtCreatorFile = abs_path_from_relative(__file__, "ui_files/brain_atlas.ui")
-brain_mesh_file_name_default = "BrainMesh_ICBM152.nv"
+brain_mesh_file_name_default = "meshes/BrainMesh_ICBM152.nv"
 brain_mesh_file_default = abs_path_from_relative(__file__, brain_mesh_file_name_default)
 
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
@@ -150,7 +150,7 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
             self.set_brain_mesh_file(file_path)
 
     def get_all_nv_files(self):
-        dir = abs_path_from_relative(__file__)
+        dir = abs_path_from_relative(__file__, 'meshes')
         nv_files = [f for f in os.listdir(dir) if f.endswith('.nv')]
         return nv_files
 

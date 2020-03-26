@@ -48,12 +48,12 @@ class TestBrainAtlas(TestUtility):
         atlas.move_to_brain_region(6, 6)
         atlas.move_to_brain_region(6, 0)
         selected, added = atlas.add_above_brain_regions(np.array([0, 4]))
-        self.assertSequenceEqual(atlas.get_brain_region_labels().tolist(), ['BR', 'BR8', 'BR1', 'BR3', 'BR7', 'BR', 'BR4', 'BR9', 'BR1'])
+        self.assertSequenceEqual(atlas.get_brain_region_labels().tolist(), ['BR_8', 'BR8', 'BR1', 'BR3', 'BR7', 'BR_7', 'BR4', 'BR9', 'BR1'])
         self.assertSequenceEqual(selected.tolist(), [1, 6])
         self.assertSequenceEqual(added.tolist(), [0, 5])
 
         selected, added = atlas.add_below_brain_regions(np.array([2, 8]))
-        self.assertSequenceEqual(atlas.get_brain_region_labels().tolist(), ['BR', 'BR8', 'BR1', 'BR', 'BR3', 'BR7', 'BR', 'BR4', 'BR9', 'BR1', 'BR'])
+        self.assertSequenceEqual(atlas.get_brain_region_labels().tolist(), ['BR_8', 'BR8', 'BR1', 'BR_10', 'BR3', 'BR7', 'BR_7', 'BR4', 'BR9', 'BR1', 'BR_9'])
         self.assertSequenceEqual(selected.tolist(), [2, 9])
         self.assertSequenceEqual(added.tolist(), [3, 10])
 
