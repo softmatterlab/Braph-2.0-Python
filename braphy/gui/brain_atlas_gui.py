@@ -225,9 +225,7 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
 
         # MENU BAR:
         self.actionSave_as.triggered.connect(self.save_as)
-        self.actionImport_txt.triggered.connect(self.import_txt)
-        self.actionImport_xls.triggered.connect(self.import_xls)
-        self.actionImport_xml.triggered.connect(self.import_xml)
+        self.actionImport_file.triggered.connect(self.import_file)
         self.actionExport_xml.triggered.connect(self.export_xml)
         self.actionExport_txt.triggered.connect(self.export_txt)
         self.actionClose.triggered.connect(self.close)
@@ -473,31 +471,23 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.set_cursor('cursor.png')
         self.brainWidget.mouse_mode = BrainAtlasWidget.MOUSE_MODE_FIND
 
-    def import_txt(self):
-        options = QFileDialog.Options()
-        options |= QFileDialog.DontUseNativeDialog
-        file_name, name = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()",
-                                                      "","txt files (*.txt)", options=options)
-        if file_name:
-            self.atlas.load_from_txt(file_name)
-            self.update_table()
 
-    def import_xls(self):
+    def import_file(self):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
         file_name, name = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()",
-                                                      "","xls files (*.xls)", options=options)
+                                                      "","Atlas files (*.txt *.xml *.xls) ;; \
+                                                          Text files (*.txt,);; \
+                                                          xml files (*.xml);; \
+                                                          xls files (*.xls", options=options)
         if file_name:
-            self.atlas.load_from_xls(file_name)
-            self.update_table()
-
-    def import_xml(self):
-        options = QFileDialog.Options()
-        options |= QFileDialog.DontUseNativeDialog
-        file_name, name = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()",
-                                                      "","xml files (*.xml)", options=options)
-        if file_name:
-            self.atlas.load_from_xml(file_name)
+            extension = file_name.split(".")[-1]
+            if extension == "txt":
+                self.atlas.load_from_txt(file_name)
+            elif extension == "xml":
+                self.atlas.load_from_xml(file_name)
+            elif extension == "xls":
+                self.atlas.load_from_xls(file_name)
             self.update_table()
 
     def export_xml(self):

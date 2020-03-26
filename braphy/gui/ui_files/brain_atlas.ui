@@ -412,9 +412,7 @@ p, li { white-space: pre-wrap; }
     <addaction name="actionSave"/>
     <addaction name="actionSave_as"/>
     <addaction name="separator"/>
-    <addaction name="actionImport_txt"/>
-    <addaction name="actionImport_xls"/>
-    <addaction name="actionImport_xml"/>
+    <addaction name="actionImport_file"/>
     <addaction name="actionExport_xml"/>
     <addaction name="actionExport_txt"/>
     <addaction name="separator"/>
@@ -650,19 +648,9 @@ p, li { white-space: pre-wrap; }
     <string>Ctrl+O</string>
    </property>
   </action>
-  <action name="actionImport_xml">
+  <action name="actionImport_file">
    <property name="text">
-    <string>Import (xml) ...</string>
-   </property>
-  </action>
-  <action name="actionImport_txt">
-   <property name="text">
-    <string>Import (txt) ...</string>
-   </property>
-  </action>
-  <action name="actionImport_xls">
-   <property name="text">
-    <string>Import (xls) ...</string>
+    <string>Import ...</string>
    </property>
   </action>
   <action name="actionExport_xml">
