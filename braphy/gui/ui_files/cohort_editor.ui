@@ -10,6 +10,9 @@
     <height>721</height>
    </rect>
   </property>
+  <property name="contextMenuPolicy">
+   <enum>Qt::PreventContextMenu</enum>
+  </property>
   <property name="windowTitle">
    <string>Cohort Editor</string>
   </property>
