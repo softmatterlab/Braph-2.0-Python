@@ -39,6 +39,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
             self.selected_subject = None
         else:
             self.listSubjects.hide()
+            self.labelSubjects.hide()
         self.brain_mesh_data = load_nv(brain_mesh_file_default)
         self.init_buttons()
         self.init_actions()
