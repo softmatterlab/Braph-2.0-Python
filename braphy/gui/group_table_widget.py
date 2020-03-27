@@ -44,9 +44,10 @@ class GroupTableWidget(Base, Form):
     def set_callback(self, callback_function):
         self.update_callback_function = callback_function
 
-    def update(self):
+    def update(self, selected = None):
         if self.update_callback_function:
             self.update_callback_function()
+        self.update_table(selected)
 
     def update_group_operation_buttons(self):
         checked_groups = len(self.get_selected())
@@ -79,14 +80,13 @@ class GroupTableWidget(Base, Form):
 
         self.set_selected(selected_groups)
         self.tableWidget_groups.blockSignals(False)
-        self.update()
 
     def cell_changed_in_group_table(self, row, column):
         if column == 1: # name
             self.cohort.groups[row].name = self.tableWidget_groups.item(row, column).text()
         elif column == 3: # notes
             self.cohort.groups[row].description = self.tableWidget_groups.item(row, column).text()
-        self.update_table()
+        self.update()
 
     def load_subject_group(self):
         options = QFileDialog.Options()
@@ -104,8 +104,7 @@ class GroupTableWidget(Base, Form):
             elif extension == "xlsx":
                 self.cohort.load_from_xlsx(file_name)
         if len(file_names) > 0:
-            pass
-            self.update_table()
+            self.update()
 
     def get_selected(self):
         rows = [item.row() for item in self.tableWidget_groups.selectionModel().selectedRows()]
@@ -120,30 +119,30 @@ class GroupTableWidget(Base, Form):
 
     def add_group(self):
         self.cohort.add_group()
-        self.update_table(self.get_selected())
+        self.update(self.get_selected())
 
     def remove_group(self):
         selected_groups = self.cohort.remove_groups(self.get_selected())
-        self.update_table(selected_groups)
+        self.update(selected_groups)
 
     def move_group_up(self):
         selected_groups = self.cohort.move_up_groups(self.get_selected())
-        self.update_table(selected_groups)
+        self.update(selected_groups)
 
     def move_group_down(self):
         selected_groups = self.cohort.move_down_groups(self.get_selected())
-        self.update_table(selected_groups)
+        self.update(selected_groups)
 
     def invert_group(self):
         self.cohort.invert_groups(self.get_selected())
-        self.update_table(self.get_selected())
+        self.update(self.get_selected())
 
     def merge_groups(self):
         self.cohort.merge_groups(self.get_selected())
-        self.update_table(self.get_selected())
+        self.update(self.get_selected())
 
     def intersect_groups(self):
         self.cohort.intersect_groups(self.get_selected())
-        self.update_table(self.get_selected())
+        self.update(self.get_selected())
 
 

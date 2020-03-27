@@ -45,6 +45,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.init_actions()
         self.init_brain_widget()
         self.groupTableWidget.init(self.cohort)
+        self.groupsAndDemographicsWidget.init(self.cohort)
 
         self.atlas_dict = None
         self.file_name = None
@@ -58,10 +59,10 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.subject_check_boxes = []
         self.subject_in_group_check_boxes = {}
 
-        self.tableWidget_groups_and_demographics.cellChanged.connect(self.cell_changed_in_groups_and_demographics_table)
         self.tableWidget_subject_data.cellChanged.connect(self.cell_changed_in_subject_data_table)
 
         self.groupTableWidget.set_callback(self.group_table_widget_updated)
+        self.groupsAndDemographicsWidget.set_callback(self.groups_and_demographics_table_updated)
 
     def init_brain_widget(self):
         self.brainWidget.set_brain_mesh(self.brain_mesh_data)
@@ -70,18 +71,6 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
     def init_buttons(self):
         self.btnSelectAtlas.clicked.connect(self.load_atlas)
         self.btnViewAtlas.clicked.connect(self.view_atlas)
-
-        self.btnSelectAll.clicked.connect(self.select_all_subjects)
-        self.btnClearSelection.clicked.connect(self.clear_subject_selection)
-        self.btnAddSubject.clicked.connect(self.add_subject)
-        self.btnAddAbove.clicked.connect(self.add_subjects_above)
-        self.btnAddBelow.clicked.connect(self.add_subjects_below)
-        self.btnRemove2.clicked.connect(self.remove_subjects)
-        self.btnMoveUp2.clicked.connect(self.move_subjects_up)
-        self.btnMoveDown2.clicked.connect(self.move_subjects_down)
-        self.btnMoveToTop.clicked.connect(self.move_subjects_to_top)
-        self.btnMoveToBottom.clicked.connect(self.move_subjects_to_bottom)
-        self.btnNewGroup.clicked.connect(self.new_group_from_selected)
 
         self.btnSaveSubjects.clicked.connect(self.save_subjects)
 
@@ -112,17 +101,17 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionMerge.setEnabled(False)
         self.actionIntersect.setEnabled(False)
 
-        self.actionSelect_all_subjects.triggered.connect(self.select_all_subjects)
-        self.actionClear_selection.triggered.connect(self.clear_subject_selection)
-        self.actionAdd_subject.triggered.connect(self.add_subject)
-        self.actionAdd_subject_above.triggered.connect(self.add_subjects_above)
-        self.actionAdd_subject_below.triggered.connect(self.add_subjects_below)
-        self.actionRemove_subject.triggered.connect(self.remove_subjects)
-        self.actionMove_subject_up.triggered.connect(self.move_subjects_up)
-        self.actionMove_subject_down.triggered.connect(self.move_subjects_down)
-        self.actionMove_subject_to_top.triggered.connect(self.move_subjects_to_top)
-        self.actionMove_subject_to_bottom.triggered.connect(self.move_subjects_to_bottom)
-        self.actionNew_group_from_selection.triggered.connect(self.new_group_from_selected)
+        self.actionSelect_all_subjects.triggered.connect(self.groupsAndDemographicsWidget.select_all_subjects)
+        self.actionClear_selection.triggered.connect(self.groupsAndDemographicsWidget.clear_subject_selection)
+        self.actionAdd_subject.triggered.connect(self.groupsAndDemographicsWidget.add_subject)
+        self.actionAdd_subject_above.triggered.connect(self.groupsAndDemographicsWidget.add_subjects_above)
+        self.actionAdd_subject_below.triggered.connect(self.groupsAndDemographicsWidget.add_subjects_below)
+        self.actionRemove_subject.triggered.connect(self.groupsAndDemographicsWidget.remove_subjects)
+        self.actionMove_subject_up.triggered.connect(self.groupsAndDemographicsWidget.move_subjects_up)
+        self.actionMove_subject_down.triggered.connect(self.groupsAndDemographicsWidget.move_subjects_down)
+        self.actionMove_subject_to_top.triggered.connect(self.groupsAndDemographicsWidget.move_subjects_to_top)
+        self.actionMove_subject_to_bottom.triggered.connect(self.groupsAndDemographicsWidget.move_subjects_to_bottom)
+        self.actionNew_group_from_selection.triggered.connect(self.groupsAndDemographicsWidget.new_group_from_selected)
 
         self.actionGroups_and_Demographics.triggered.connect(self.tab_groups_and_demographics)
         self.actionSubject_Data.triggered.connect(self.tab_subject_data)
@@ -189,10 +178,17 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionMerge.setEnabled(checked_groups > 1)
         self.actionIntersect.setEnabled(checked_groups > 1)
 
-        self.update_groups_and_demographics_table()
+        self.groupsAndDemographicsWidget.update_table()
         self.update_group_comparison_table()
         self.update_group_averages_table()
         self.update_subject_data_table()
+
+    def groups_and_demographics_table_updated(self):
+        self.update_group_comparison_table()
+        self.update_group_averages_table()
+        self.update_subject_data_table()
+
+        self.groupTableWidget.update_table()
 
     def tab_changed(self):
         if self.tabWidget.currentIndex() == 3:
@@ -211,17 +207,6 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def tab_brain_view(self):
         self.tabWidget.setCurrentIndex(3)
-
-    def cell_changed_in_groups_and_demographics_table(self, row, column):
-        if column == 0: # check box
-            pass
-        elif column == 1: # subject code
-            self.cohort.subjects[row].id = self.tableWidget_groups_and_demographics.item(row, column).text()
-        else: # scalar data
-            column_header = self.tableWidget_groups_and_demographics.horizontalHeaderItem(column).text()
-            new_value = float(self.tableWidget_groups_and_demographics.item(row, column).text())
-            self.cohort.subjects[row].data_dict[column_header].value = new_value
-        self.update_subject_data_table()
 
     def cell_changed_in_subject_data_table(self, row, column):
         if self.subject_class == SubjectMRI:
@@ -384,93 +369,10 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
             selected_subjects = self.get_checked_subjects()
 
         self.groupTableWidget.update_table(selected_groups)
-        self.update_groups_and_demographics_table(selected_subjects)
+        self.groupsAndDemographicsWidget.update_table(selected_subjects)
         self.update_subject_data_table()
         self.update_group_comparison_table()
         self.update_group_averages_table()
-
-    def update_groups_and_demographics_table(self, selected = None):
-        if np.any(selected == None):
-            selected = self.get_checked_subjects()
-
-        self.tableWidget_groups_and_demographics.blockSignals(True)
-        self.tableWidget_groups_and_demographics.clearContents()
-        self.tableWidget_groups_and_demographics.setRowCount(0)
-        self.subject_check_boxes = []
-        self.subject_in_group_check_boxes = {}
-
-        #Update columns:
-        self.tableWidget_groups_and_demographics.setColumnCount(2)
-        item = QTableWidgetItem('Subject Code')
-        self.tableWidget_groups_and_demographics.setHorizontalHeaderItem(1, item)
-        try:
-            keys = list(self.cohort.subjects[0].data_dict.keys())
-        except:
-            keys = []
-        for i in range(len(keys)):
-            if keys[i] == 'data':
-                continue
-            item = QTableWidgetItem(keys[i])
-            self.tableWidget_groups_and_demographics.setColumnCount(i+3)
-            self.tableWidget_groups_and_demographics.setHorizontalHeaderItem(i+2, item)
-
-        nbr_columns = self.tableWidget_groups_and_demographics.columnCount()
-        for i in range(len(self.cohort.groups)):
-            item = QTableWidgetItem(self.cohort.groups[i].name)
-            self.tableWidget_groups_and_demographics.setColumnCount(nbr_columns+i+1)
-            self.tableWidget_groups_and_demographics.setHorizontalHeaderItem(nbr_columns+i, item)
-            self.subject_in_group_check_boxes[self.cohort.groups[i]] = []
-
-        # Update subjects:
-        for i in range(len(self.cohort.subjects)):
-            self.tableWidget_groups_and_demographics.setRowCount(i+1)
-            widget = QWidget()
-            layout = QHBoxLayout()
-            layout.setAlignment(QtCore.Qt.AlignHCenter)
-            check_box = QCheckBox()
-            self.subject_check_boxes.append(check_box)
-            if i in selected:
-                self.subject_check_boxes[i].setChecked(True)
-            layout.addWidget(self.subject_check_boxes[i])
-            widget.setLayout(layout)
-            self.tableWidget_groups_and_demographics.setCellWidget(i, 0, widget)
-
-            item = QTableWidgetItem(self.cohort.subjects[i].id)
-            self.tableWidget_groups_and_demographics.setItem(i, 1, item)
-
-            for j in range(len(keys)):
-                if keys[j] == 'data':
-                    continue
-                item = QTableWidgetItem(str(self.cohort.subjects[i].data_dict[keys[j]].value))
-                self.tableWidget_groups_and_demographics.setItem(i, j+2, item)
-
-            for j in range(len(self.cohort.groups)):
-                widget = QWidget()
-                layout = QHBoxLayout()
-                layout.setAlignment(QtCore.Qt.AlignHCenter)
-                check_box = QCheckBox()
-                check_box.i = i
-                check_box.j = j
-                self.subject_in_group_check_boxes[self.cohort.groups[j]].append(check_box)
-                self.subject_in_group_check_boxes[self.cohort.groups[j]][i].stateChanged.connect(self.subject_in_group_check_box_changed)
-                if self.cohort.subjects[i] in self.cohort.groups[j].subjects:
-                    self.subject_in_group_check_boxes[self.cohort.groups[j]][i].blockSignals(True)
-                    self.subject_in_group_check_boxes[self.cohort.groups[j]][i].setChecked(True)
-                    self.subject_in_group_check_boxes[self.cohort.groups[j]][i].blockSignals(False)
-                layout.addWidget(self.subject_in_group_check_boxes[self.cohort.groups[j]][i])
-                widget.setLayout(layout)
-                self.tableWidget_groups_and_demographics.setCellWidget(i, nbr_columns+j, widget)
-
-        self.tableWidget_groups_and_demographics.blockSignals(False)
-
-    def subject_in_group_check_box_changed(self):
-        check_box = self.sender()
-        if check_box.isChecked():
-            self.cohort.groups[check_box.j].add_subject(self.cohort.subjects[check_box.i])
-        else:
-            self.cohort.groups[check_box.j].remove_subject(self.cohort.subjects[check_box.i])
-        self.groupTableWidget.update_table()
-        self.update_group_comparison_table()
 
     def update_subject_data_table(self):
         if self.subject_class == SubjectMRI:
@@ -604,18 +506,10 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
             self.btnComparison.setEnabled(True)
 
     def get_checked_subjects(self):
-        selected = []
-        for i in range(len(self.subject_check_boxes)):
-            if self.subject_check_boxes[i].isChecked():
-                selected.append(i)
-        return np.array(selected)
+        return self.groupsAndDemographicsWidget.get_selected()
 
     def set_checked_subjects(self, selected):
-        for i in range(len(self.subject_check_boxes)):
-            if i in selected:
-                self.subject_check_boxes[i].setChecked(True)
-            else:
-                self.subject_check_boxes[i].setChecked(False)
+        self.groupsAndDemographicsWidget.set_selected(selected)
 
     def disable_menu_bar(self, b):
         self.menuGroups.setDisabled(b)
@@ -624,61 +518,8 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.menuBrain_View.setDisabled(b)
         self.menuGraph_Analysis.setDisabled(b)
 
-    def select_all_subjects(self):
-        for check_box in self.subject_check_boxes:
-            check_box.setChecked(True)
-
     def get_checked_groups(self):
         return self.groupTableWidget.get_selected()
-
-    def clear_subject_selection(self):
-        for check_box in self.subject_check_boxes:
-            check_box.setChecked(False)
-
-    def add_subject(self):
-        self.cohort.add_subject()
-        self.update_tables(self.get_checked_groups(), self.get_checked_subjects())
-
-    def add_subjects_above(self):
-        selected_subjects = self.get_checked_subjects()
-        selected_subjects, added_subjects = self.cohort.add_above_subjects(selected_subjects)
-        self.update_tables(self.get_checked_groups(), selected_subjects)
-
-    def add_subjects_below(self):
-        selected_subjects = self.get_checked_subjects()
-        selected_subjects, added_subjects = self.cohort.add_below_subjects(selected_subjects)
-        self.update_tables(self.get_checked_groups(), selected_subjects)
-
-    def remove_subjects(self):
-        selected_subjects = self.get_checked_subjects()
-        self.cohort.remove_subjects_from_all_groups(selected_subjects)
-        selected_subjects = self.cohort.remove_subjects(selected_subjects)
-        self.update_tables(self.get_checked_groups(), selected_subjects)
-
-    def move_subjects_up(self):
-        selected_subjects = self.get_checked_subjects()
-        selected_subjects = self.cohort.move_up_subjects(selected_subjects)
-        self.update_tables(self.get_checked_groups(), selected_subjects)
-
-    def move_subjects_down(self):
-        selected_subjects = self.get_checked_subjects()
-        selected_subjects = self.cohort.move_down_subjects(selected_subjects)
-        self.update_tables(self.get_checked_groups(), selected_subjects)
-
-    def move_subjects_to_top(self):
-        selected_subjects = self.get_checked_subjects()
-        selected_subjects = self.cohort.move_to_top_subjects(selected_subjects)
-        self.update_tables(self.get_checked_groups(), selected_subjects)
-
-    def move_subjects_to_bottom(self):
-        selected_subjects = self.get_checked_subjects()
-        selected_subjects = self.cohort.move_to_bottom_subjects(selected_subjects)
-        self.update_tables(self.get_checked_groups(), selected_subjects)
-
-    def new_group_from_selected(self):
-        selected_subjects = self.get_checked_subjects()
-        self.cohort.new_group_from_selected(selected_subjects)
-        self.update_tables(self.get_checked_groups(), self.get_checked_subjects())
 
     def save_subjects(self):
         options = QFileDialog.Options()
