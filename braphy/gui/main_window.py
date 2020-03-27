@@ -10,7 +10,6 @@ from braphy.gui.slide_show_widget import SlideShowWidget
 from braphy.cohort.subjects import *
 from PyQt5.QtCore import Qt
 
-
 brain_mesh_file_name = "meshes/BrainMesh_ICBM152.nv"
 brain_mesh_file = abs_path_from_relative(__file__, brain_mesh_file_name)
 
