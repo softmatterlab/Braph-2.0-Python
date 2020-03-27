@@ -35,31 +35,22 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
             self.tabWidget.tabBar().setTabEnabled(2, False)
             self.tabWidget.tabBar().setTabEnabled(3, False)
             self.tabWidget.tabBar().setStyleSheet("QTabBar::tab::disabled {width: 0; height: 0; margin: 0; padding: 0; border: none;} ")
-            self.listSubjects.currentRowChanged.connect(self.subject_list_row_changed)
-            self.selected_subject = None
-        else:
-            self.listSubjects.hide()
-            self.labelSubjects.hide()
+
         self.brain_mesh_data = load_nv(brain_mesh_file_default)
         self.init_buttons()
         self.init_actions()
         self.init_brain_widget()
         self.groupTableWidget.init(self.cohort)
         self.groupsAndDemographicsWidget.init(self.cohort)
+        self.subjectDataWidget.init(self.cohort)
 
         self.atlas_dict = None
         self.file_name = None
         self.selected_groups_radio_button = None
-        self.subject_data_labels = []
         self.disable_menu_bar(True)
         self.set_brain_view_actions_visible(False)
         self.tab_groups_and_demographics()
         self.tabWidget.currentChanged.connect(self.tab_changed)
-
-        self.subject_check_boxes = []
-        self.subject_in_group_check_boxes = {}
-
-        self.tableWidget_subject_data.cellChanged.connect(self.cell_changed_in_subject_data_table)
 
         self.groupTableWidget.set_callback(self.group_table_widget_updated)
         self.groupsAndDemographicsWidget.set_callback(self.groups_and_demographics_table_updated)
@@ -71,8 +62,6 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
     def init_buttons(self):
         self.btnSelectAtlas.clicked.connect(self.load_atlas)
         self.btnViewAtlas.clicked.connect(self.view_atlas)
-
-        self.btnSaveSubjects.clicked.connect(self.save_subjects)
 
         self.btnComparison.clicked.connect(self.comparison)
 
@@ -179,16 +168,15 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionIntersect.setEnabled(checked_groups > 1)
 
         self.groupsAndDemographicsWidget.update_table()
+        self.subjectDataWidget.update_table()
         self.update_group_comparison_table()
         self.update_group_averages_table()
-        self.update_subject_data_table()
 
     def groups_and_demographics_table_updated(self):
+        self.groupTableWidget.update_table()
+        self.subjectDataWidget.update_table()
         self.update_group_comparison_table()
         self.update_group_averages_table()
-        self.update_subject_data_table()
-
-        self.groupTableWidget.update_table()
 
     def tab_changed(self):
         if self.tabWidget.currentIndex() == 3:
@@ -207,25 +195,6 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def tab_brain_view(self):
         self.tabWidget.setCurrentIndex(3)
-
-    def cell_changed_in_subject_data_table(self, row, column):
-        if self.subject_class == SubjectMRI:
-            self.cell_changed_in_subject_data_table_structural(row, column)
-        else:
-            self.cell_changed_in_subject_data_table_functional(row, column)
-
-    def cell_changed_in_subject_data_table_structural(self, row, column):
-        if column == 0: # subject code
-            self.cohort.subjects[row].id = self.tableWidget_subject_data.item(row, column).text()
-        else: # data
-            new_value = float(self.tableWidget_subject_data.item(row, column).text())
-            self.cohort.subjects[row].data_dict['data'].value[column-1] = new_value
-        self.update_tables()
-
-    def cell_changed_in_subject_data_table_functional(self, row, column):
-        new_value = float(self.tableWidget_subject_data.item(row, column).text())
-        self.selected_subject.data_dict['data'].value[row, column] = new_value
-        self.update_tables()
 
     def open(self):
         options = QFileDialog.Options()
@@ -336,10 +305,10 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
             brain_mesh_data = {'vertices': vertices, 'faces': faces}
             self.brain_mesh_data = brain_mesh_data
             self.init_brain_widget()
-            self.subject_data_labels = []
+            self.cohort.subject_data_labels = []
             brain_regions = []
             for region in self.atlas_dict['atlas']['brain_regions']:
-                self.subject_data_labels.append(region['label'])
+                self.cohort.subject_data_labels.append(region['label'])
                 brain_regions.append(BrainRegion.from_dict(region))
             self.update_tables()
             self.btnViewAtlas.setEnabled(True)
@@ -370,81 +339,13 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.groupTableWidget.update_table(selected_groups)
         self.groupsAndDemographicsWidget.update_table(selected_subjects)
-        self.update_subject_data_table()
+        self.subjectDataWidget.update_table()
         self.update_group_comparison_table()
         self.update_group_averages_table()
 
-    def update_subject_data_table(self):
-        if self.subject_class == SubjectMRI:
-            self.update_subject_data_table_structural()
-        else:
-            self.update_subject_list_functional()
-
-    def update_subject_list_functional(self):
-        self.listSubjects.blockSignals(True)
-        self.listSubjects.clear()
-        select_row = 0
-        for i, subject in enumerate(self.cohort.subjects):
-            if subject == self.selected_subject:
-                select_row = i
-            item = QListWidgetItem(subject.id)
-            self.listSubjects.addItem(item)
-        self.listSubjects.blockSignals(False)
-        if len(self.cohort.subjects) > 0:
-            self.listSubjects.setCurrentRow(select_row)
-
-    def subject_list_row_changed(self, row):
-        self.selected_subject = self.cohort.subjects[row]
-        self.update_subject_data_table_functional()
-
-    def update_subject_data_table_functional(self):
-        self.tableWidget_subject_data.blockSignals(True)
-        self.tableWidget_subject_data.clearContents()
-        self.tableWidget_subject_data.setRowCount(0)
-
-        # Update columns:
-        self.tableWidget_subject_data.setColumnCount(len(self.subject_data_labels))
-        for i, label in enumerate(self.subject_data_labels):
-            item = QTableWidgetItem(label)
-            self.tableWidget_subject_data.setHorizontalHeaderItem(i, item)
-
-        # Update subject:
-        data = self.selected_subject.data_dict['data'].value
-        self.tableWidget_subject_data.setRowCount(data.shape[0])
-        for (i, j), value in np.ndenumerate(data):
-            item = QTableWidgetItem(str(value))
-            self.tableWidget_subject_data.setItem(i, j, item)
-
-        self.tableWidget_subject_data.blockSignals(False)
-
-    def update_subject_data_table_structural(self):
-        self.tableWidget_subject_data.blockSignals(True)
-        self.tableWidget_subject_data.clearContents()
-        self.tableWidget_subject_data.setRowCount(0)
-
-        #Update columns:
-        self.tableWidget_subject_data.setColumnCount(len(self.subject_data_labels)+1)
-        item = QTableWidgetItem('Subject code')
-        self.tableWidget_subject_data.setHorizontalHeaderItem(0, item)
-        for i, label in enumerate(self.subject_data_labels):
-            item = QTableWidgetItem(label)
-            self.tableWidget_subject_data.setHorizontalHeaderItem(i+1, item)
-
-        # Update subjects:
-        for i in range(len(self.cohort.subjects)):
-            self.tableWidget_subject_data.setRowCount(i+1)
-            item = QTableWidgetItem(self.cohort.subjects[i].id)
-            self.tableWidget_subject_data.setItem(i, 0, item)
-
-            for j in range(len(self.cohort.subjects[i].data_dict['data'].value)):
-                item = QTableWidgetItem(str(self.cohort.subjects[i].data_dict['data'].value[j]))
-                self.tableWidget_subject_data.setItem(i, j+1, item)
-
-        self.tableWidget_subject_data.blockSignals(False)
-
     def update_group_averages_table(self):
-        self.tableWidget_group_averages.setColumnCount(len(self.subject_data_labels))
-        self.tableWidget_group_averages.setHorizontalHeaderLabels(self.subject_data_labels)
+        self.tableWidget_group_averages.setColumnCount(len(self.cohort.subject_data_labels))
+        self.tableWidget_group_averages.setHorizontalHeaderLabels(self.cohort.subject_data_labels)
         self.tableWidget_group_averages.setRowCount(len(self.cohort.groups)*2)
         for i, group in enumerate(self.cohort.groups):
             item = QTableWidgetItem("Average {}".format(group.name))
@@ -462,8 +363,8 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.tableWidget_group_averages.setItem(2*i+1, j, item)
 
     def update_group_comparison_table(self):
-        self.tableWidget_group_comparison.setColumnCount(len(self.subject_data_labels))
-        self.tableWidget_group_comparison.setHorizontalHeaderLabels(self.subject_data_labels)
+        self.tableWidget_group_comparison.setColumnCount(len(self.cohort.subject_data_labels))
+        self.tableWidget_group_comparison.setHorizontalHeaderLabels(self.cohort.subject_data_labels)
 
         self.tableWidget_group_comparison_select.blockSignals(True)
         self.tableWidget_group_comparison_select.clearContents()
@@ -520,13 +421,6 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def get_checked_groups(self):
         return self.groupTableWidget.get_selected()
-
-    def save_subjects(self):
-        options = QFileDialog.Options()
-        options |= QFileDialog.DontUseNativeDialog
-        file_name, name = QFileDialog.getSaveFileName(self, "QFileDialog.saveFileName()", "", "txt files (*.txt)")
-        if file_name:
-            self.cohort.save_to_txt(file_name)
 
     def comparison(self):
         group_button = self.selected_groups_radio_button

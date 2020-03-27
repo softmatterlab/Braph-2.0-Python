@@ -16,6 +16,7 @@ class Cohort:
             self.groups = groups
         else:
             self.groups = []
+        self.subject_data_labels = []
 
     def to_dict(self):
         d = {}
