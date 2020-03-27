@@ -250,11 +250,22 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.update_subject_data_table()
 
     def cell_changed_in_subject_data_table(self, row, column):
+        if self.subject_class == SubjectMRI:
+            self.cell_changed_in_subject_data_table_structural(row, column)
+        else:
+            self.cell_changed_in_subject_data_table_functional(row, column)
+
+    def cell_changed_in_subject_data_table_structural(self, row, column):
         if column == 0: # subject code
             self.cohort.subjects[row].id = self.tableWidget_subject_data.item(row, column).text()
         else: # data
             new_value = float(self.tableWidget_subject_data.item(row, column).text())
             self.cohort.subjects[row].data_dict['data'].value[column-1] = new_value
+        self.update_tables()
+
+    def cell_changed_in_subject_data_table_functional(self, row, column):
+        new_value = float(self.tableWidget_subject_data.item(row, column).text())
+        self.selected_subject.data_dict['data'].value[row, column] = new_value
         self.update_tables()
 
     def open(self):
