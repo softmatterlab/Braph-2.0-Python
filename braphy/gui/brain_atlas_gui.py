@@ -99,7 +99,7 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         nv_files = self.get_all_nv_files()
         for file in nv_files:
             self.comboBox.addItem(file)
-            self.mesh_file_paths.append(abs_path_from_relative(__file__, file))
+            self.mesh_file_paths.append(abs_path_from_relative(__file__, 'meshes/{}'.format(file)))
 
         self.comboBox.insertSeparator(self.comboBox.count())
         self.comboBox.addItem('Open...')
