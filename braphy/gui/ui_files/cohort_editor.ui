@@ -141,7 +141,7 @@
       <item>
        <widget class="QTabWidget" name="tabWidget">
         <property name="currentIndex">
-         <number>3</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="tabGroup">
          <attribute name="title">
@@ -781,30 +781,30 @@
   <customwidget>
    <class>BrainAtlasWidget</class>
    <extends>QGraphicsView</extends>
-   <header>braphy.gui.brain_atlas_widget</header>
+   <header>braphy.gui.widgets.brain_atlas_widget</header>
   </customwidget>
   <customwidget>
    <class>GroupTableWidget</class>
    <extends>QWidget</extends>
-   <header>braphy.gui.group_table_widget</header>
+   <header>braphy.gui.widgets.group_table_widget</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>GroupsAndDemographicsWidget</class>
    <extends>QWidget</extends>
-   <header>braphy.gui.groups_and_demographics_widget</header>
+   <header>braphy.gui.widgets.groups_and_demographics_widget</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>SubjectDataWidget</class>
    <extends>QWidget</extends>
-   <header>braphy.gui.subject_data_widget</header>
+   <header>braphy.gui.widgets.subject_data_widget</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>GroupAveragesWidget</class>
    <extends>QWidget</extends>
-   <header>braphy.gui.group_averages_widget</header>
+   <header>braphy.gui.widgets.group_averages_widget</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

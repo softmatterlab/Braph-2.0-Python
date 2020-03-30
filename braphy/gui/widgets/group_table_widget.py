@@ -3,7 +3,7 @@ from PyQt5 import QtCore, QtGui, uic, QtWidgets
 import numpy as np
 from braphy.utility.helper_functions import abs_path_from_relative
 
-ui_file = abs_path_from_relative(__file__, "ui_files/group_table_widget.ui")
+ui_file = abs_path_from_relative(__file__, "../ui_files/group_table_widget.ui")
 Form, Base = uic.loadUiType(ui_file)
 
 class GroupTableWidget(Base, Form):

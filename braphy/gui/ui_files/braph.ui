@@ -480,12 +480,12 @@
   <customwidget>
    <class>BrainAtlasWidget</class>
    <extends>QGraphicsView</extends>
-   <header>braphy.gui.brain_atlas_widget</header>
+   <header>braphy.gui.widgets.brain_atlas_widget</header>
   </customwidget>
   <customwidget>
    <class>SlideShowWidget</class>
    <extends>QWidget</extends>
-   <header>braphy.gui.slide_show_widget</header>
+   <header>braphy.gui.widgets.slide_show_widget</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

@@ -882,7 +882,7 @@ p, li { white-space: pre-wrap; }
   <customwidget>
    <class>BrainAtlasWidget</class>
    <extends>QGraphicsView</extends>
-   <header>braphy.gui.brain_atlas_widget</header>
+   <header>braphy.gui.widgets.brain_atlas_widget</header>
   </customwidget>
  </customwidgets>
  <resources>

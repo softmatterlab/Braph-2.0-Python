@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import *
 from braphy.atlas.brain_atlas import BrainAtlas
 from braphy.utility.helper_functions import abs_path_from_relative, load_nv, get_version_info
 import numpy as np
-from braphy.gui.brain_atlas_widget import BrainAtlasWidget
+#from braphy.gui.brain_atlas_widget import BrainAtlasWidget
 
 qtCreatorFile = abs_path_from_relative(__file__, "ui_files/brain_atlas.ui")
 brain_mesh_file_name_default = "meshes/BrainMesh_ICBM152.nv"

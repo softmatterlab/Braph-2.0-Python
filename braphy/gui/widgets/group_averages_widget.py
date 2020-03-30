@@ -4,7 +4,7 @@ import numpy as np
 from braphy.utility.helper_functions import abs_path_from_relative
 from braphy.cohort.subjects import *
 
-ui_file = abs_path_from_relative(__file__, "ui_files/group_averages_widget.ui")
+ui_file = abs_path_from_relative(__file__, "../ui_files/group_averages_widget.ui")
 Form, Base = uic.loadUiType(ui_file)
 
 class GroupAveragesWidget(Base, Form):

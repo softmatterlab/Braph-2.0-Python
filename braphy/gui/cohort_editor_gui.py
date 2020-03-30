@@ -3,7 +3,7 @@ import json
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from PyQt5.QtWidgets import *
 from braphy.utility.helper_functions import abs_path_from_relative, load_nv
-from braphy.gui.brain_atlas_widget import BrainAtlasWidget
+#from braphy.gui.brain_atlas_widget import BrainAtlasWidget
 from braphy.gui.brain_atlas_gui import BrainAtlasGui
 from braphy.atlas.brain_region import BrainRegion
 import braphy.gui.icons_rc
