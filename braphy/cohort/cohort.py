@@ -17,6 +17,8 @@ class Cohort:
         else:
             self.groups = []
         self.subject_data_labels = []
+        self.new_groups_added = 0
+        self.new_subjects_added = 0
 
     def to_dict(self):
         d = {}
@@ -64,7 +66,9 @@ class Cohort:
         return np.array(standard_deviations)
 
     def new_group_name(self):
-        return "Group_{}".format(len(self.groups))
+        name = "Group_{}".format(self.new_groups_added)
+        self.new_groups_added += 1
+        return name
 
     def add_group(self, group = None):
         if not group:
@@ -103,8 +107,13 @@ class Cohort:
         for index in subject_indices:
             self.groups[-1].add_subject(self.subjects[index])
 
+    def new_subject_id(self):
+        subject_id = 'sub_{}'.format(self.new_subjects_added)
+        self.new_subjects_added += 1
+        return subject_id
+
     def new_subject(self):
-        return self.subject_class(id = 'sub_{}'.format(len(self.subjects)))
+        return self.subject_class(id = self.new_subject_id())
 
     def add_subjects(self, subjects):
         added_subjects = []
@@ -116,7 +125,7 @@ class Cohort:
         if not i:
             i = len(self.subjects)
         if not subject:
-            subject = self.subject_class(id = 'sub_{}'.format(len(self.subjects)))
+            subject = self.new_subject()
         for existing_subject in self.subjects:
             if subject == existing_subject:
                 return existing_subject
