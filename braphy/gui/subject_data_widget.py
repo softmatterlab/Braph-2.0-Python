@@ -40,28 +40,17 @@ class SubjectDataWidget(Base, Form):
     def set_callback(self, callback_function):
         self.update_callback_function = callback_function
 
-    def update(self, selected = None):
+    def update(self):
         if self.update_callback_function:
             self.update_callback_function()
-        self.update_table(selected)
+        self.update_table()
 
     def cell_changed_in_table(self, row, column):
-        if self.cohort.subject_class == SubjectMRI:
-            self.cell_changed_in_table_structural(row, column)
-        else:
-            self.cell_changed_in_table_functional(row, column)
-
-    def cell_changed_in_table_structural(self, row, column):
-        if column == 0: # subject code
-            self.cohort.subjects[row].id = self.tableWidget.item(row, column).text()
-        else: # data
-            new_value = float(self.tableWidget.item(row, column).text())
-            self.cohort.subjects[row].data_dict['data'].value[column-1] = new_value
-        self.update()
-
-    def cell_changed_in_table_functional(self, row, column):
         new_value = float(self.tableWidget.item(row, column).text())
-        self.selected_subject.data_dict['data'].value[row, column] = new_value
+        if self.cohort.subject_class == SubjectMRI:
+            self.cohort.subjects[row].data_dict['data'].value[column] = new_value
+        else:
+            self.selected_subject.data_dict['data'].value[row, column] = new_value
         self.update()
 
     def update_table(self):
@@ -70,7 +59,7 @@ class SubjectDataWidget(Base, Form):
         else:
             self.update_subject_list()
 
-    def update_subject_data_table_functional(self):
+    def update_table_functional(self):
         self.tableWidget.blockSignals(True)
         self.tableWidget.clearContents()
         self.tableWidget.setRowCount(0)
@@ -96,22 +85,20 @@ class SubjectDataWidget(Base, Form):
         self.tableWidget.setRowCount(0)
 
         #Update columns:
-        self.tableWidget.setColumnCount(len(self.cohort.subject_data_labels)+1)
-        item = QTableWidgetItem('Subject code')
-        self.tableWidget.setHorizontalHeaderItem(0, item)
+        self.tableWidget.setColumnCount(len(self.cohort.subject_data_labels))
         for i, label in enumerate(self.cohort.subject_data_labels):
             item = QTableWidgetItem(label)
-            self.tableWidget.setHorizontalHeaderItem(i+1, item)
+            self.tableWidget.setHorizontalHeaderItem(i, item)
 
         # Update subjects:
+        self.tableWidget.setRowCount(len(self.cohort.subjects))
         for i in range(len(self.cohort.subjects)):
-            self.tableWidget.setRowCount(i+1)
             item = QTableWidgetItem(self.cohort.subjects[i].id)
-            self.tableWidget.setItem(i, 0, item)
+            self.tableWidget.setVerticalHeaderItem(i, item)
 
             for j in range(len(self.cohort.subjects[i].data_dict['data'].value)):
                 item = QTableWidgetItem(str(self.cohort.subjects[i].data_dict['data'].value[j]))
-                self.tableWidget.setItem(i, j+1, item)
+                self.tableWidget.setItem(i, j, item)
 
         self.tableWidget.blockSignals(False)
 

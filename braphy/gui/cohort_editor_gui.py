@@ -56,6 +56,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.groupTableWidget.set_callback(self.group_table_widget_updated)
         self.groupsAndDemographicsWidget.set_callback(self.groups_and_demographics_table_updated)
+        self.subjectDataWidget.set_callback(self.subject_data_table_updated)
 
     def init_brain_widget(self):
         self.brainWidget.set_brain_mesh(self.brain_mesh_data)
@@ -174,6 +175,9 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
     def groups_and_demographics_table_updated(self):
         self.groupTableWidget.update_table()
         self.subjectDataWidget.update_table()
+        self.groupAveragesWidget.update_tables()
+
+    def subject_data_table_updated(self):
         self.groupAveragesWidget.update_tables()
 
     def tab_changed(self):
