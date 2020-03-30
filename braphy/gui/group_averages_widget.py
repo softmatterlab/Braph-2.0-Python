@@ -34,7 +34,7 @@ class GroupAveragesWidget(Base, Form):
 
     def update_tables(self):
         self.update_averages_table()
-        self.update_comparison_table()
+        self.update_selection_table()
 
     def update_averages_table(self):
         self.tableWidget_averages.setColumnCount(len(self.cohort.subject_data_labels))
@@ -46,6 +46,7 @@ class GroupAveragesWidget(Base, Form):
             averages = group.averages()
             for j in range(len(averages)):
                 item = QTableWidgetItem(str(averages[j]))
+                item.setFlags(QtCore.Qt.ItemIsEnabled)
                 self.tableWidget_averages.setItem(2*i, j, item)
 
             item = QTableWidgetItem("Std {}".format(group.name))
@@ -53,9 +54,10 @@ class GroupAveragesWidget(Base, Form):
             stds = group.standard_deviations()
             for j in range(len(stds)):
                 item = QTableWidgetItem(str(stds[j]))
+                item.setFlags(QtCore.Qt.ItemIsEnabled)
                 self.tableWidget_averages.setItem(2*i+1, j, item)
 
-    def update_comparison_table(self):
+    def update_selection_table(self):
         self.tableWidget_comparison.setColumnCount(len(self.cohort.subject_data_labels))
         self.tableWidget_comparison.setHorizontalHeaderLabels(self.cohort.subject_data_labels)
 
@@ -116,10 +118,13 @@ class GroupAveragesWidget(Base, Form):
                 for i in range(len(averages[0])):
                     diff = averages[0][i] - averages[1][i]
                     item = QTableWidgetItem(str(diff))
+                    item.setFlags(QtCore.Qt.ItemIsEnabled)
                     self.tableWidget_comparison.setItem(0, i, item)
                     item = QTableWidgetItem(str(p_values[0][i]))
+                    item.setFlags(QtCore.Qt.ItemIsEnabled)
                     self.tableWidget_comparison.setItem(1, i, item)
                     item = QTableWidgetItem(str(p_values[1][i]))
+                    item.setFlags(QtCore.Qt.ItemIsEnabled)
                     self.tableWidget_comparison.setItem(2, i, item)
 
             except AssertionError as e:
