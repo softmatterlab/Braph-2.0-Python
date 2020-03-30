@@ -160,36 +160,68 @@ class Cohort:
     def move_to_bottom_subjects(self, selected):
         return lm.move_to_bottom(self.subjects, selected)
 
+    def invert_group_name(self, group_names):
+        invert_name = "("
+        for idx, name in enumerate(group_names):
+            invert_name += name
+            if idx < len(group_names)-1:
+                invert_name += " ∪ "
+            else:
+                invert_name += ")'"
+        return invert_name
+
     def invert_groups(self, group_indices):
         group_subjects = []
+        group_names = []
         for group_idx in group_indices:
             group = self.groups[group_idx]
             group_subjects.extend([subject for subject in group.subjects])
+            group_names.append(group.name)
         subjects = [subject for subject in self.subjects if subject not in group_subjects]
-        group = Group(self.subject_class, name = self.new_group_name(), subjects = subjects)
+        group = Group(self.subject_class, name = self.invert_group_name(group_names), subjects = subjects, description = "Group complement")
         self.add_group(group = group)
+
+    def merge_group_name(self, group_names):
+        merge_name = ""
+        for idx, name in enumerate(group_names):
+            merge_name += name
+            if idx < len(group_names)-1:
+                merge_name += " ∪ "
+        return merge_name
 
     def merge_groups(self, group_indices):
         if len(group_indices) < 2:
             return
         subjects = []
+        group_names = []
         for group_idx in group_indices:
             group = self.groups[group_idx]
             subjects.extend([subject for subject in group.subjects if subject not in subjects])
-        group = Group(self.subject_class, name = self.new_group_name(), subjects = subjects)
+            group_names.append(group.name)
+        group = Group(self.subject_class, name = self.merge_group_name(group_names), subjects = subjects, description = "Group union")
         self.add_group(group = group)
+
+    def intersect_group_name(self, group_names):
+        intersect_name = ""
+        for idx, name in enumerate(group_names):
+            intersect_name += name
+            if idx < len(group_names)-1:
+                intersect_name += " ∩ "
+        return intersect_name
 
     def intersect_groups(self, group_indices):
         if len(group_indices) < 2:
             return
         group = self.groups[group_indices[0]]
         subjects = set(group.subjects)
+        group_names = [group.name]
         for i in range(1, len(group_indices)):
             group_idx = group_indices[i]
             group = self.groups[group_idx]
             subjects = subjects.intersection(set(group.subjects))
+            group_names.append(group.name)
         subjects = list(subjects)
-        group = Group(self.subject_class, name = self.new_group_name(), subjects = subjects)
+        group = Group(self.subject_class, name = self.intersect_group_name(group_names), subjects = subjects, description = "Group intersection")
         self.add_group(group = group)
 
     def load_from_file(self, file_name, subject_load_function):
