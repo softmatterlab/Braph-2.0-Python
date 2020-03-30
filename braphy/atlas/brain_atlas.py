@@ -54,9 +54,9 @@ class BrainAtlas():
         return br_positions
 
     def new_brain_region(self):
+        self.new_brain_regions_added += 1
         label = "BR_{}".format(self.new_brain_regions_added)
         name = "brain_region_{}".format(self.new_brain_regions_added)
-        self.new_brain_regions_added += 1
         return BrainRegion(label = label, name = name)
 
     def add_brain_region(self, br = None, i = None):

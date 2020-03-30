@@ -66,9 +66,8 @@ class Cohort:
         return np.array(standard_deviations)
 
     def new_group_name(self):
-        name = "Group_{}".format(self.new_groups_added)
         self.new_groups_added += 1
-        return name
+        return "Group_{}".format(self.new_groups_added)
 
     def add_group(self, group = None):
         if not group:
@@ -108,9 +107,8 @@ class Cohort:
             self.groups[-1].add_subject(self.subjects[index])
 
     def new_subject_id(self):
-        subject_id = 'sub_{}'.format(self.new_subjects_added)
         self.new_subjects_added += 1
-        return subject_id
+        return 'sub_{}'.format(self.new_subjects_added)
 
     def new_subject(self):
         return self.subject_class(id = self.new_subject_id())
