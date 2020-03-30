@@ -6,7 +6,6 @@ from braphy.utility.helper_functions import abs_path_from_relative, load_nv
 from braphy.gui.cohort_editor_gui import CohortEditor
 from braphy.gui.graph_analysis_gui import GraphAnalysis
 from braphy.gui.exit_dialog import ExitDialog
-#from braphy.gui.slide_show_widget import SlideShowWidget
 from braphy.cohort.subjects import *
 from PyQt5.QtCore import Qt
 
