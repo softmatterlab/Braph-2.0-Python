@@ -141,7 +141,7 @@
       <item>
        <widget class="QTabWidget" name="tabWidget">
         <property name="currentIndex">
-         <number>2</number>
+         <number>3</number>
         </property>
         <widget class="QWidget" name="tabGroup">
          <attribute name="title">
@@ -264,12 +264,8 @@
      <string>File</string>
     </property>
     <addaction name="actionOpen"/>
-    <addaction name="separator"/>
     <addaction name="actionSave"/>
     <addaction name="actionSave_as"/>
-    <addaction name="separator"/>
-    <addaction name="actionImport_xml"/>
-    <addaction name="actionExport_xml"/>
     <addaction name="separator"/>
     <addaction name="actionClose"/>
    </widget>
@@ -407,16 +403,6 @@
   <action name="actionSave_as">
    <property name="text">
     <string>Save as ...</string>
-   </property>
-  </action>
-  <action name="actionImport_xml">
-   <property name="text">
-    <string>Import (xml) ...</string>
-   </property>
-  </action>
-  <action name="actionExport_xml">
-   <property name="text">
-    <string>Export (xml) ...</string>
    </property>
   </action>
   <action name="actionClose">

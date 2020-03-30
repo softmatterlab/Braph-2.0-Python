@@ -74,8 +74,6 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionOpen.triggered.connect(self.open)
         self.actionSave.triggered.connect(self.save)
         self.actionSave_as.triggered.connect(self.save_as)
-        self.actionImport_xml.triggered.connect(self.import_xml)
-        self.actionExport_xml.triggered.connect(self.export_xml)
         self.actionClose.triggered.connect(self.close)
 
         self.actionLoad_subject_group_from_file.triggered.connect(self.groupTableWidget.load_subject_group)
@@ -221,12 +219,6 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         else:
             self.save_as()
 
-    def import_xml(self):
-        pass
-
-    def export_xml(self):
-        pass
-
     def close(self):
         pass
 
@@ -335,20 +327,14 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def update_tables(self, selected_groups = None, selected_subjects = None):
         if np.any(selected_groups == None):
-            selected_groups = self.get_checked_groups()
+            selected_groups = self.groupTableWidget.get_selected()
         if np.any(selected_subjects == None):
-            selected_subjects = self.get_checked_subjects()
+            selected_subjects = self.groupsAndDemographicsWidget.get_selected()
 
         self.groupTableWidget.update_table(selected_groups)
         self.groupsAndDemographicsWidget.update_table(selected_subjects)
         self.subjectDataWidget.update_table()
         self.groupAveragesWidget.update_tables()
-
-    def get_checked_subjects(self):
-        return self.groupsAndDemographicsWidget.get_selected()
-
-    def set_checked_subjects(self, selected):
-        self.groupsAndDemographicsWidget.set_selected(selected)
 
     def disable_menu_bar(self, b):
         self.menuGroups.setDisabled(b)
@@ -356,9 +342,6 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.menuView.setDisabled(b)
         self.menuBrain_View.setDisabled(b)
         self.menuGraph_Analysis.setDisabled(b)
-
-    def get_checked_groups(self):
-        return self.groupTableWidget.get_selected()
 
     def view_subjects(self):
         pass
