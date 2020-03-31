@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1293</width>
-    <height>773</height>
+    <width>1395</width>
+    <height>971</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,6 +17,75 @@
    <layout class="QGridLayout" name="gridLayout_2">
     <item row="0" column="0">
      <layout class="QGridLayout" name="gridLayout">
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item row="3" column="0">
+       <layout class="QGridLayout" name="gridLayout_4">
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="horizontalSpacing">
+         <number>0</number>
+        </property>
+        <item row="1" column="1">
+         <widget class="QListWidget" name="listWidgetGlobal">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>100</width>
+            <height>16777215</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="QTextBrowser" name="textBrowser"/>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_8">
+          <property name="text">
+           <string>Measure</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLabel" name="label_9">
+          <property name="text">
+           <string>Global/nodal</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QLabel" name="label_10">
+          <property name="text">
+           <string>Description</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QListWidget" name="listWidgetMeasures">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>50</width>
+            <height>0</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
       <item row="0" column="0">
        <layout class="QHBoxLayout" name="upperHalf">
         <item>
@@ -32,14 +101,21 @@
                <item>
                 <layout class="QVBoxLayout" name="verticalLayout_5">
                  <item>
-                  <widget class="QLabel" name="label_2">
+                  <widget class="QLabel" name="repetitionLabel">
+                   <property name="text">
+                    <string>repetition time = 1</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="subjectLabel">
                    <property name="text">
                     <string>subject number = 0</string>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLabel" name="label">
+                  <widget class="QLabel" name="groupLabel">
                    <property name="text">
                     <string>group number = 0</string>
                    </property>
@@ -72,24 +148,32 @@
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="label_11">
-            <property name="font">
-             <font>
-              <underline>true</underline>
-             </font>
+           <widget class="QTextEdit" name="textEditName">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
             </property>
-            <property name="text">
-             <string>MRI Graph Analysis</string>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>30</height>
+             </size>
             </property>
-            <property name="alignment">
-             <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+            <property name="html">
+             <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;MRI Graph Analysis&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
            </widget>
           </item>
           <item>
            <layout class="QFormLayout" name="formLayout">
             <item row="0" column="1">
-             <widget class="QComboBox" name="comboBox"/>
+             <widget class="QComboBox" name="comboBoxGraph"/>
             </item>
             <item row="0" column="0">
              <widget class="QLabel" name="label_3">
@@ -113,10 +197,10 @@
              </widget>
             </item>
             <item row="1" column="1">
-             <widget class="QComboBox" name="comboBox_2"/>
+             <widget class="QComboBox" name="comboBoxCorrelation"/>
             </item>
             <item row="2" column="1">
-             <widget class="QComboBox" name="comboBox_3"/>
+             <widget class="QComboBox" name="comboBoxNegative"/>
             </item>
            </layout>
           </item>
@@ -139,34 +223,34 @@
           <item>
            <widget class="QGroupBox" name="groupBox">
             <property name="title">
-             <string>Community</string>
+             <string>Community structure</string>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_7">
              <item>
               <layout class="QVBoxLayout" name="verticalLayout_6">
                <item>
-                <widget class="QLabel" name="label_8">
+                <widget class="QLabel" name="labelStructure">
                  <property name="text">
                   <string>structure = ---</string>
                  </property>
                 </widget>
                </item>
                <item>
-                <widget class="QLabel" name="label_9">
+                <widget class="QLabel" name="labelAlgorithm">
                  <property name="text">
                   <string>algorithm = Louvain</string>
                  </property>
                 </widget>
                </item>
                <item>
-                <widget class="QLabel" name="label_7">
+                <widget class="QLabel" name="labelGamma">
                  <property name="text">
                   <string>gamma = 1</string>
                  </property>
                 </widget>
                </item>
                <item>
-                <widget class="QLabel" name="label_6">
+                <widget class="QLabel" name="labelCommunity">
                  <property name="text">
                   <string>community number = 0</string>
                  </property>
@@ -247,186 +331,275 @@
         </item>
         <item>
          <widget class="QGroupBox" name="CorrelationMatrix">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>1100</width>
+            <height>0</height>
+           </size>
+          </property>
           <property name="title">
            <string>Correlation Matrix</string>
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_2">
            <item>
+            <spacer name="horizontalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Maximum</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
             <layout class="QHBoxLayout" name="horizontalLayout">
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
              <item>
-              <widget class="QGraphicsView" name="graphicsView"/>
-             </item>
-             <item>
-              <widget class="QGroupBox" name="groupBox_2">
+              <widget class="QGraphicsView" name="graphicsView">
                <property name="sizePolicy">
-                <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
-               <property name="title">
-                <string/>
-               </property>
-               <layout class="QVBoxLayout" name="verticalLayout_2">
-                <item>
-                 <layout class="QVBoxLayout" name="verticalLayout_8">
-                  <item>
-                   <widget class="QRadioButton" name="radioButton_5">
-                    <property name="text">
-                     <string>Group average</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QComboBox" name="comboBox_4"/>
-                  </item>
-                  <item>
-                   <widget class="QRadioButton" name="radioButton_6">
-                    <property name="text">
-                     <string>Subject</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QComboBox" name="comboBox_5"/>
-                  </item>
-                 </layout>
-                </item>
-                <item>
-                 <widget class="QGroupBox" name="groupBox_3">
-                  <property name="title">
-                   <string/>
-                  </property>
-                  <layout class="QVBoxLayout" name="verticalLayout_3">
-                   <item>
-                    <widget class="QRadioButton" name="radioButton_2">
-                     <property name="text">
-                      <string>weighted correlation matrix</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QRadioButton" name="radioButton_4">
-                     <property name="text">
-                      <string>histogram</string>
-                     </property>
-                     <property name="checked">
-                      <bool>true</bool>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QRadioButton" name="radioButton_3">
-                     <property name="text">
-                      <string>binary correlation matrix (set density)</string>
-                     </property>
-                     <property name="checked">
-                      <bool>false</bool>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <layout class="QHBoxLayout" name="horizontalLayout_6">
-                     <property name="topMargin">
-                      <number>0</number>
-                     </property>
-                     <item>
-                      <widget class="QTextEdit" name="textEdit">
-                       <property name="enabled">
-                        <bool>true</bool>
-                       </property>
-                       <property name="sizePolicy">
-                        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                         <horstretch>0</horstretch>
-                         <verstretch>0</verstretch>
-                        </sizepolicy>
-                       </property>
-                       <property name="maximumSize">
-                        <size>
-                         <width>80</width>
-                         <height>20</height>
-                        </size>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QSlider" name="horizontalSlider">
-                       <property name="enabled">
-                        <bool>true</bool>
-                       </property>
-                       <property name="orientation">
-                        <enum>Qt::Horizontal</enum>
-                       </property>
-                      </widget>
-                     </item>
-                    </layout>
-                   </item>
-                   <item>
-                    <widget class="QRadioButton" name="radioButton">
-                     <property name="text">
-                      <string>binary correlation amtrix (set threshold)</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <layout class="QHBoxLayout" name="horizontalLayout_8">
-                     <property name="leftMargin">
-                      <number>0</number>
-                     </property>
-                     <property name="topMargin">
-                      <number>0</number>
-                     </property>
-                     <item>
-                      <widget class="QTextEdit" name="textEdit_2">
-                       <property name="maximumSize">
-                        <size>
-                         <width>80</width>
-                         <height>20</height>
-                        </size>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QSlider" name="horizontalSlider_2">
-                       <property name="orientation">
-                        <enum>Qt::Horizontal</enum>
-                       </property>
-                      </widget>
-                     </item>
-                    </layout>
-                   </item>
-                  </layout>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QCheckBox" name="checkBox_2">
-                  <property name="text">
-                   <string>rearrange to reflect community structure</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QCheckBox" name="checkBox">
-                  <property name="text">
-                   <string>divide communities</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <spacer name="verticalSpacer_3">
-                  <property name="orientation">
-                   <enum>Qt::Vertical</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>20</width>
-                    <height>40</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-               </layout>
               </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Maximum</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout">
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>20</number>
+               </property>
+               <item>
+                <layout class="QGridLayout" name="gridLayout_3">
+                 <property name="sizeConstraint">
+                  <enum>QLayout::SetMaximumSize</enum>
+                 </property>
+                 <property name="topMargin">
+                  <number>20</number>
+                 </property>
+                 <item row="1" column="0">
+                  <widget class="QRadioButton" name="radioButtonGroup">
+                   <property name="text">
+                    <string>Group average</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="0">
+                  <widget class="QLabel" name="label_2">
+                   <property name="text">
+                    <string>Choose group:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="1">
+                  <widget class="QRadioButton" name="radioButtonSubject">
+                   <property name="text">
+                    <string>Subject</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="1">
+                  <widget class="QComboBox" name="comboBoxGroup"/>
+                 </item>
+                 <item row="2" column="1">
+                  <widget class="QComboBox" name="comboBoxSubject"/>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <spacer name="verticalSpacer_4">
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                 <property name="sizeType">
+                  <enum>QSizePolicy::Maximum</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>40</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_6">
+                 <property name="text">
+                  <string>Choose type of correlation:</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QRadioButton" name="radioButtonWeighted">
+                 <property name="text">
+                  <string>weighted correlation matrix</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QRadioButton" name="radioButtonHistogram">
+                 <property name="text">
+                  <string>histogram</string>
+                 </property>
+                 <property name="checked">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QRadioButton" name="radioButtonDensity">
+                 <property name="text">
+                  <string>binary correlation matrix (set density)</string>
+                 </property>
+                 <property name="checked">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_6">
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <item>
+                  <widget class="QTextEdit" name="textEditDensity">
+                   <property name="enabled">
+                    <bool>true</bool>
+                   </property>
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>80</width>
+                     <height>20</height>
+                    </size>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSlider" name="horizontalSliderDensity">
+                   <property name="enabled">
+                    <bool>true</bool>
+                   </property>
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <widget class="QRadioButton" name="radioButtonThreshold">
+                 <property name="text">
+                  <string>binary correlation matrix (set threshold)</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_8">
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <item>
+                  <widget class="QTextEdit" name="textEditThreshold">
+                   <property name="maximumSize">
+                    <size>
+                     <width>80</width>
+                     <height>20</height>
+                    </size>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSlider" name="horizontalSliderThreshold">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <spacer name="verticalSpacer_5">
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>40</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="checkBoxRearrange">
+                 <property name="text">
+                  <string>rearrange to reflect community structure</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="checkBoxDivide">
+                 <property name="text">
+                  <string>divide communities</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="verticalSpacer_3">
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>40</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
              </item>
             </layout>
            </item>
@@ -434,6 +607,26 @@
          </widget>
         </item>
        </layout>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_7">
+        <property name="text">
+         <string>Available graph measures:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <spacer name="verticalSpacer_6">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
       </item>
      </layout>
     </item>
@@ -444,11 +637,11 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1293</width>
+     <width>1395</width>
      <height>22</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuSKOT">
+   <widget class="QMenu" name="menuFile">
     <property name="title">
      <string>File</string>
     </property>
@@ -462,18 +655,20 @@
     <addaction name="separator"/>
     <addaction name="actionClose"/>
    </widget>
-   <widget class="QMenu" name="menuPOP">
+   <widget class="QMenu" name="menuFigure">
     <property name="title">
      <string>Figure</string>
     </property>
+    <addaction name="actionGenerate_figure"/>
    </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="title">
      <string>About</string>
     </property>
+    <addaction name="actionAbout"/>
    </widget>
-   <addaction name="menuSKOT"/>
-   <addaction name="menuPOP"/>
+   <addaction name="menuFile"/>
+   <addaction name="menuFigure"/>
    <addaction name="menuAbout"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -495,17 +690,33 @@
    <addaction name="separator"/>
    <addaction name="actionZoom_in"/>
    <addaction name="actionZoom_out"/>
-   <addaction name="actionHand"/>
+   <addaction name="actionPan"/>
+   <addaction name="actionPan_x_y"/>
    <addaction name="separator"/>
+   <addaction name="actionInsert_colorbar"/>
   </widget>
   <action name="actionOpen">
+   <property name="icon">
+    <iconset resource="../icons/icons.qrc">
+     <normaloff>:/buttons/open.png</normaloff>:/buttons/open.png</iconset>
+   </property>
    <property name="text">
     <string>Open...</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
   </action>
   <action name="actionSave">
+   <property name="icon">
+    <iconset resource="../icons/icons.qrc">
+     <normaloff>:/buttons/save.png</normaloff>:/buttons/save.png</iconset>
+   </property>
    <property name="text">
     <string>Save</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
    </property>
   </action>
   <action name="actionSave_as">
@@ -527,23 +738,73 @@
    <property name="text">
     <string>Close</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+C</string>
+   </property>
   </action>
   <action name="actionZoom_in">
+   <property name="icon">
+    <iconset resource="../icons/icons.qrc">
+     <normaloff>:/buttons/zoom_in.png</normaloff>:/buttons/zoom_in.png</iconset>
+   </property>
    <property name="text">
     <string>Zoom in</string>
    </property>
   </action>
   <action name="actionZoom_out">
+   <property name="icon">
+    <iconset resource="../icons/icons.qrc">
+     <normaloff>:/buttons/zoom_out.png</normaloff>:/buttons/zoom_out.png</iconset>
+   </property>
    <property name="text">
     <string>Zoom out</string>
    </property>
   </action>
-  <action name="actionHand">
+  <action name="actionPan">
+   <property name="icon">
+    <iconset resource="../icons/icons.qrc">
+     <normaloff>:/buttons/hand_xz.png</normaloff>:/buttons/hand_xz.png</iconset>
+   </property>
    <property name="text">
-    <string>Hand</string>
+    <string>Pan (z/x)</string>
+   </property>
+   <property name="toolTip">
+    <string>Pan (z/x)</string>
+   </property>
+  </action>
+  <action name="actionInsert_colorbar">
+   <property name="text">
+    <string>Insert colorbar</string>
+   </property>
+  </action>
+  <action name="actionPan_x_y">
+   <property name="icon">
+    <iconset resource="../icons/icons.qrc">
+     <normaloff>:/buttons/hand_xy.png</normaloff>:/buttons/hand_xy.png</iconset>
+   </property>
+   <property name="text">
+    <string>Pan (x/y)</string>
+   </property>
+   <property name="toolTip">
+    <string>Pan (x/y)</string>
+   </property>
+  </action>
+  <action name="actionGenerate_figure">
+   <property name="text">
+    <string>Generate figure</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About ...</string>
    </property>
   </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="../icons/icons.qrc"/>
+ </resources>
  <connections/>
 </ui>
