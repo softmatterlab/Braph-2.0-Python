@@ -247,7 +247,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.brainWidget.mouse_mode = BrainAtlasWidget.MOUSE_MODE_PAN_Y
 
     def pan_z(self):
-        self.set_cursor('icons/hand_xz.png')
+        self.set_cursor('icons/hand.png')
         self.brainWidget.mouse_mode = BrainAtlasWidget.MOUSE_MODE_PAN_Z
 
     def rotation(self):
