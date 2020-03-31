@@ -491,8 +491,8 @@ p, li { white-space: pre-wrap; }
    <addaction name="separator"/>
    <addaction name="actionZoom_in"/>
    <addaction name="actionZoom_out"/>
-   <addaction name="actionPan"/>
-   <addaction name="actionPan_z"/>
+   <addaction name="actionPanZ"/>
+   <addaction name="actionPanY"/>
    <addaction name="actionRotate"/>
    <addaction name="actionFind"/>
    <addaction name="separator"/>
@@ -690,13 +690,13 @@ p, li { white-space: pre-wrap; }
     <string>Zoom out</string>
    </property>
   </action>
-  <action name="actionPan">
+  <action name="actionPanZ">
    <property name="checkable">
     <bool>true</bool>
    </property>
    <property name="icon">
     <iconset resource="../icons/icons.qrc">
-     <normaloff>:/buttons/hand.png</normaloff>:/buttons/hand.png</iconset>
+     <normaloff>:/buttons/hand_xz.png</normaloff>:/buttons/hand_xz.png</iconset>
    </property>
    <property name="text">
     <string>Pan (x/y)</string>
@@ -862,13 +862,13 @@ p, li { white-space: pre-wrap; }
     <string>Open...</string>
    </property>
   </action>
-  <action name="actionPan_z">
+  <action name="actionPanY">
    <property name="checkable">
     <bool>true</bool>
    </property>
    <property name="icon">
     <iconset resource="../icons/icons.qrc">
-     <normaloff>:/buttons/hand_xz.png</normaloff>:/buttons/hand_xz.png</iconset>
+     <normaloff>:/buttons/hand_xy.png</normaloff>:/buttons/hand_xy.png</iconset>
    </property>
    <property name="text">
     <string>Pan (x/z)</string>

@@ -15,7 +15,7 @@ class BrainAtlasWidget(GLViewWidget):
     MOUSE_MODE_DEFAULT = 0
     MOUSE_MODE_ZOOM_IN = 1
     MOUSE_MODE_ZOOM_OUT = 2
-    MOUSE_MODE_PAN = 3
+    MOUSE_MODE_PAN_Y = 3
     MOUSE_MODE_PAN_Z = 4
     MOUSE_MODE_ROTATE = 5
     MOUSE_MODE_FIND = 6
@@ -273,7 +273,7 @@ class BrainAtlasWidget(GLViewWidget):
             pass
         elif self.mouse_mode == BrainAtlasWidget.MOUSE_MODE_ZOOM_OUT:
             pass
-        elif self.mouse_mode == BrainAtlasWidget.MOUSE_MODE_PAN:
+        elif self.mouse_mode == BrainAtlasWidget.MOUSE_MODE_PAN_Y:
             self.mouseMoveEventPan(ev)
         elif self.mouse_mode == BrainAtlasWidget.MOUSE_MODE_PAN_Z:
             self.mouseMoveEventPan(ev, invert=True)

@@ -194,14 +194,14 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.actionZoom_in.triggered.connect(self.zoom_in)
         self.actionZoom_out.triggered.connect(self.zoom_out)
-        self.actionPan.triggered.connect(self.pan)
-        self.actionPan_z.triggered.connect(self.pan_z)
+        self.actionPanY.triggered.connect(self.pan_y)
+        self.actionPanZ.triggered.connect(self.pan_z)
         self.actionRotate.triggered.connect(self.rotate)
         self.actionFind.triggered.connect(self.find)
 
         group = QtWidgets.QActionGroup(self)
-        for action in (self.actionZoom_in, self.actionZoom_out, self.actionPan,
-                       self.actionPan_z, self.actionRotate, self.actionFind):
+        for action in (self.actionZoom_in, self.actionZoom_out, self.actionPanY,
+                       self.actionPanZ, self.actionRotate, self.actionFind):
             group.addAction(action)
 
         self.action3D.triggered.connect(self.brainWidget.show_3D)
@@ -455,9 +455,9 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.set_cursor('icons/zoom_out.png')
         self.brainWidget.mouse_mode = BrainAtlasWidget.MOUSE_MODE_ZOOM_OUT
 
-    def pan(self):
-        self.set_cursor('icons/hand.png')
-        self.brainWidget.mouse_mode = BrainAtlasWidget.MOUSE_MODE_PAN
+    def pan_y(self):
+        self.set_cursor('icons/hand_xy.png')
+        self.brainWidget.mouse_mode = BrainAtlasWidget.MOUSE_MODE_PAN_Y
 
     def pan_z(self):
         self.set_cursor('icons/hand_xz.png')

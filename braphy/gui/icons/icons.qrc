@@ -1,9 +1,9 @@
 <RCC>
   <qresource prefix="buttons">
+    <file>hand_xy.png</file>
     <file>hand_xz.png</file>
     <file>cursor.png</file>
     <file>rotate.png</file>
-    <file>hand.png</file>
     <file>zoom_out.png</file>
     <file>zoom_in.png</file>
     <file>save.png</file>

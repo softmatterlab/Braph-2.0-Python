@@ -114,14 +114,14 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.actionZoom_in.triggered.connect(self.zoom_in)
         self.actionZoom_out.triggered.connect(self.zoom_out)
-        self.actionPan.triggered.connect(self.pan)
+        self.actionPanY.triggered.connect(self.pan_y)
         self.actionPanZ.triggered.connect(self.pan_z)
         self.action3D_rotation.triggered.connect(self.rotation)
         self.actionData_cursor.triggered.connect(self.data_cursor)
         self.actionInsert_colorbar.triggered.connect(self.insert_colorbar)
 
         group = QtWidgets.QActionGroup(self)
-        for action in (self.actionZoom_in, self.actionZoom_out, self.actionPan,
+        for action in (self.actionZoom_in, self.actionZoom_out, self.actionPanY,
                        self.actionPanZ, self.action3D_rotation, self.actionData_cursor):
             group.addAction(action)
 
@@ -142,7 +142,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
     def set_brain_view_actions_visible(self, state):
         self.actionZoom_in.setVisible(state)
         self.actionZoom_out.setVisible(state)
-        self.actionPan.setVisible(state)
+        self.actionPanY.setVisible(state)
         self.actionPanZ.setVisible(state)
         self.action3D_rotation.setVisible(state)
         self.actionData_cursor.setVisible(state)
@@ -242,9 +242,9 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.set_cursor('icons/zoom_out.png')
         self.brainWidget.mouse_mode = BrainAtlasWidget.MOUSE_MODE_ZOOM_OUT
 
-    def pan(self):
-        self.set_cursor('icons/hand.png')
-        self.brainWidget.mouse_mode = BrainAtlasWidget.MOUSE_MODE_PAN
+    def pan_y(self):
+        self.set_cursor('icons/hand_xy.png')
+        self.brainWidget.mouse_mode = BrainAtlasWidget.MOUSE_MODE_PAN_Y
 
     def pan_z(self):
         self.set_cursor('icons/hand_xz.png')
