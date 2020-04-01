@@ -49,7 +49,6 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.atlas_dict = None
         self.file_name = None
-        self.disable_menu_bar(True)
         self.set_brain_view_actions_visible(False)
         self.tab_groups_and_demographics()
         self.tabWidget.currentChanged.connect(self.tab_changed)
@@ -57,6 +56,8 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.groupTableWidget.set_callback(self.group_table_widget_updated)
         self.groupsAndDemographicsWidget.set_callback(self.groups_and_demographics_table_updated)
         self.subjectDataWidget.set_callback(self.subject_data_table_updated)
+
+        self.set_locked(True)
 
     def init_brain_widget(self):
         self.brainWidget.set_brain_mesh(self.brain_mesh_data)
@@ -160,6 +161,15 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionShow_regions.setVisible(state)
         self.actionShow_labels.setVisible(state)
 
+    def set_locked(self, locked):
+        self.locked = locked
+        lock_items = [self.btnViewAtlas, self.groupTableWidget, self.groupsAndDemographicsWidget,
+                      self.subjectDataWidget, self.groupAveragesWidget, self.btnViewSubjects,
+                      self.btnViewGroup, self.btnViewComparison]
+        for item in lock_items:
+            item.setEnabled(not self.locked)
+        self.disable_menu_bar(locked)
+
     def group_table_widget_updated(self):
         checked_groups = len(self.groupTableWidget.get_selected())
         self.actionInvert.setEnabled(checked_groups > 0)
@@ -170,10 +180,13 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.subjectDataWidget.update_table()
         self.groupAveragesWidget.update_tables()
 
+        self.btnSelectAtlas.setEnabled(len(self.cohort.groups) == 0 and len(self.cohort.subjects) == 0)
+
     def groups_and_demographics_table_updated(self):
         self.groupTableWidget.update_table()
         self.subjectDataWidget.update_table()
         self.groupAveragesWidget.update_tables()
+        self.btnSelectAtlas.setEnabled(len(self.cohort.groups) == 0 and len(self.cohort.subjects) == 0)
 
     def subject_data_table_updated(self):
         self.groupAveragesWidget.update_tables()
@@ -309,7 +322,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
             self.btnViewAtlas.setEnabled(True)
             self.labelAtlasName.setText(file_name.split('/')[-1])
             self.labelRegionNumber.setText("Brain region number = {}".format(self.brain_region_number()))
-            self.disable_menu_bar(False)
+            self.set_locked(False)
             self.brainWidget.init_brain_regions(brain_regions, 4, [], False, False)
 
     def string_to_list_of_floats(self, str):
