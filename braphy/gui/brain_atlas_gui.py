@@ -15,14 +15,14 @@ brain_mesh_file_default = abs_path_from_relative(__file__, brain_mesh_file_name_
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 
 class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
-    def __init__(self, AppWindow = None, atlas_dict = None): # should be able to input atlas
+    def __init__(self, AppWindow = None, atlas = None): # should be able to input atlas
         if AppWindow:
             self.AppWindow = AppWindow
         QtWidgets.QMainWindow.__init__(self, parent = None)
         self.setupUi(self)
         self.locked = False
-        if atlas_dict:
-            self.from_dict(atlas_dict)
+        if atlas:
+            self.atlas = atlas
         else:
             self.atlas = BrainAtlas(mesh_file = brain_mesh_file_name_default)
         self.init_check_boxes()

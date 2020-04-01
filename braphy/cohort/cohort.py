@@ -5,9 +5,10 @@ from braphy.utility.helper_functions import ListManager as lm
 import numpy as np
 
 class Cohort:
-    def __init__(self, name, subject_class, subjects = None, groups = None):
+    def __init__(self, name, subject_class, atlas, subjects = None, groups = None):
         self.name = name
         self.subject_class = subject_class
+        self.atlas = atlas
         if subjects:
             self.subjects = subjects
         else:
@@ -32,6 +33,7 @@ class Cohort:
         for group in self.groups:
             groups.append(group.to_dict())
         d['groups'] = groups
+        d['atlas'] = self.atlas.to_dict()
         return d
 
     def from_dict(d):
@@ -42,7 +44,7 @@ class Cohort:
         groups = []
         for group_dict in d['groups']:
             groups.append(Group.from_dict(group_dict))
-        return Cohort(d['name'], subject_class, subjects = subjects, groups = groups)
+        return Cohort(d['name'], subject_class, d['atlas'], subjects = subjects, groups = groups)
 
     def to_file(self, cohort_file):
         with open(cohort_file, 'w') as f:
