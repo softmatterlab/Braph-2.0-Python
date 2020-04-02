@@ -15,14 +15,14 @@ brain_mesh_file_default = abs_path_from_relative(__file__, brain_mesh_file_name_
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 
 class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
-    def __init__(self, AppWindow = None, atlas_dict = None): # should be able to input atlas
+    def __init__(self, AppWindow = None, atlas = None): # should be able to input atlas
         if AppWindow:
             self.AppWindow = AppWindow
         QtWidgets.QMainWindow.__init__(self, parent = None)
         self.setupUi(self)
         self.locked = False
-        if atlas_dict:
-            self.from_dict(atlas_dict)
+        if atlas:
+            self.atlas = atlas
         else:
             self.atlas = BrainAtlas(mesh_file = brain_mesh_file_name_default)
         self.init_check_boxes()
@@ -43,10 +43,9 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.brainWidget.add_selected_observer(self.set_selected)
 
-    def from_file(self, atlas_file):
-        with open(atlas_file, 'r') as f:
-            d = json.load(f)
-        self.from_dict(d)
+    def to_file(self, atlas_file):
+        with open(atlas_file, 'w') as f:
+            json.dump(self.to_dict(), f, sort_keys=True, indent=4)
 
     def to_dict(self):
         d = {}
@@ -58,9 +57,10 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         d['atlas'] = self.atlas.to_dict()
         return d
 
-    def to_file(self, atlas_file):
-        with open(atlas_file, 'w') as f:
-            json.dump(self.to_dict(), f, sort_keys=True, indent=4)
+    def from_file(self, atlas_file):
+        with open(atlas_file, 'r') as f:
+            d = json.load(f)
+        self.from_dict(d)
 
     def from_dict(self, d):
         self.atlas = BrainAtlas.from_dict(d['atlas'])

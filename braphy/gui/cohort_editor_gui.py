@@ -3,6 +3,7 @@ import json
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from PyQt5.QtWidgets import *
 from braphy.utility.helper_functions import abs_path_from_relative, load_nv
+from braphy.atlas.brain_atlas import BrainAtlas
 from braphy.gui.widgets.brain_atlas_widget import BrainAtlasWidget
 from braphy.gui.brain_atlas_gui import BrainAtlasGui
 from braphy.atlas.brain_region import BrainRegion
@@ -21,15 +22,25 @@ brain_mesh_file_default = abs_path_from_relative(__file__, brain_mesh_file_name_
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 
 class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
-    def __init__(self, AppWindow = None, subject_class = SubjectMRI, cohort = None):
+    def __init__(self, AppWindow = None, subject_class = SubjectMRI, cohort = None, atlas = None):
         if AppWindow:
             self.AppWindow = AppWindow
         QtWidgets.QMainWindow.__init__(self, parent = None)
-        if cohort == None:
-            self.cohort = Cohort('Cohort', subject_class)
-        else:
-            self.cohort = cohort
         self.setupUi(self)
+
+        if cohort:
+            self.cohort = cohort
+            self.init_widgets()
+            #self.init_cohort(cohort)
+            self.set_locked(False)
+        elif atlas:
+            self.cohort = Cohort('Cohort', subject_class, atlas)
+            self.init_widgets()
+            #self.init_cohort(atlas)
+            self.set_locked(False)
+        else:
+            self.set_locked(True)
+
         self.subject_class = subject_class
         if subject_class == SubjectfMRI:
             self.tabWidget.tabBar().setTabEnabled(2, False)
@@ -42,12 +53,6 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.init_actions()
         self.init_brain_widget()
 
-        self.groupTableWidget.init(self.cohort)
-        self.groupsAndDemographicsWidget.init(self.cohort)
-        self.subjectDataWidget.init(self.cohort)
-        self.groupAveragesWidget.init(self.cohort)
-
-        self.atlas_dict = None
         self.file_name = None
         self.set_brain_view_actions_visible(False)
         self.tab_groups_and_demographics()
@@ -57,7 +62,16 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.groupsAndDemographicsWidget.set_callback(self.groups_and_demographics_table_updated)
         self.subjectDataWidget.set_callback(self.subject_data_table_updated)
 
-        self.set_locked(True)
+    def to_dict(self):
+        d = self.cohort.to_dict()
+        return d
+
+    def to_file(self, file_name):
+        self.file_name = file_name
+        d = {}
+        d['cohort'] = self.to_dict()
+        with open(file_name, 'w') as f:
+            json.dump(d, f, sort_keys=True, indent=4)
 
     def init_brain_widget(self):
         self.brainWidget.set_brain_mesh(self.brain_mesh_data)
@@ -216,6 +230,8 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
                                                       "","cohort files (*.cohort)", options=options)
         if file_name:
             self.cohort = Cohort.from_file(file_name)
+            self.init_widgets()
+            self.set_locked(False)
             self.update_tables()
 
     def save_as(self):
@@ -224,11 +240,11 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         file_name, name = QFileDialog.getSaveFileName(self, "QFileDialog.saveFileName()", "", "cohort files (*.cohort)")
         if file_name:
             self.file_name = file_name
-            self.cohort.to_file(file_name)
+            self.to_file(file_name)
 
     def save(self):
         if self.file_name:
-            self.cohort.to_file(self.file_name)
+            self.to_file(self.file_name)
         else:
             self.save_as()
 
@@ -290,15 +306,15 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.brainWidget.show_labels(state)
 
     def view_atlas(self):
-        if self.atlas_dict:
-            self.brain_atlas_gui = BrainAtlasGui(self, atlas_dict = self.atlas_dict)
+        if self.cohort:
+            self.brain_atlas_gui = BrainAtlasGui(self, atlas = self.cohort.atlas)
             self.brain_atlas_gui.set_locked(True)
             self.brain_atlas_gui.show()
 
     def brain_region_number(self):
         n = 0
-        if self.atlas_dict:
-            n = len(self.atlas_dict['atlas']['brain_regions'])
+        if self.cohort.atlas:
+            n = len(self.cohort.atlas.brain_regions)
         return n
 
     def load_atlas(self):
@@ -307,37 +323,31 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         file_name, _ = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()", "","atlas files (*.atlas)", options=options)
         if file_name:
             with open(file_name, 'r') as f:
-                self.atlas_dict = json.load(f)
-            vertices = np.asarray(self.atlas_dict['brain_mesh_data']['vertices'])
-            faces = np.asarray(self.atlas_dict['brain_mesh_data']['faces'])
-            brain_mesh_data = {'vertices': vertices, 'faces': faces}
-            self.brain_mesh_data = brain_mesh_data
-            self.init_brain_widget()
-            self.cohort.subject_data_labels = []
-            brain_regions = []
-            for region in self.atlas_dict['atlas']['brain_regions']:
-                self.cohort.subject_data_labels.append(region['label'])
-                brain_regions.append(BrainRegion.from_dict(region))
+                atlas_dict = json.load(f)
+
+            if 'brain_mesh' in atlas_dict.keys():
+                vertices = np.asarray(atlas_dict['brain_mesh_data']['vertices'])
+                faces = np.asarray(atlas_dict['brain_mesh_data']['faces'])
+                brain_mesh_data = {'vertices': vertices, 'faces': faces}
+                self.brain_mesh_data = brain_mesh_data
+                self.init_brain_widget()
+
+            atlas = BrainAtlas.from_dict(atlas_dict['atlas'])
+            self.cohort = Cohort('Cohort', self.subject_class, atlas)
+            self.init_widgets()
+            self.set_locked(False)
+
             self.update_tables()
             self.btnViewAtlas.setEnabled(True)
             self.labelAtlasName.setText(file_name.split('/')[-1])
             self.labelRegionNumber.setText("Brain region number = {}".format(self.brain_region_number()))
-            self.set_locked(False)
-            self.brainWidget.init_brain_regions(brain_regions, 4, [], False, False)
+            self.brainWidget.init_brain_regions(self.cohort.atlas.brain_regions, 4, [], False, False)
 
-    def string_to_list_of_floats(self, str):
-        string_list = str.split()
-        float_list = []
-        for i in string_list:
-            float_list.append(float(i))
-        return float_list
-
-    def string_to_list_of_ints(self, str):
-        string_list = str.split()
-        float_list = []
-        for i in string_list:
-            float_list.append(int(i))
-        return float_list
+    def init_widgets(self):
+        self.groupTableWidget.init(self.cohort)
+        self.groupsAndDemographicsWidget.init(self.cohort)
+        self.subjectDataWidget.init(self.cohort)
+        self.groupAveragesWidget.init(self.cohort)
 
     def update_tables(self, selected_groups = None, selected_subjects = None):
         if np.any(selected_groups == None):

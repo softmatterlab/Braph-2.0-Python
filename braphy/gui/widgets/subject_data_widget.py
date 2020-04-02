@@ -65,8 +65,8 @@ class SubjectDataWidget(Base, Form):
         self.tableWidget.setRowCount(0)
 
         # Update columns:
-        self.tableWidget.setColumnCount(len(self.cohort.subject_data_labels))
-        for i, label in enumerate(self.cohort.subject_data_labels):
+        self.tableWidget.setColumnCount(len(self.cohort.atlas.get_brain_region_labels()))
+        for i, label in enumerate(self.cohort.atlas.get_brain_region_labels()):
             item = QTableWidgetItem(label)
             self.tableWidget.setHorizontalHeaderItem(i, item)
 
@@ -85,8 +85,8 @@ class SubjectDataWidget(Base, Form):
         self.tableWidget.setRowCount(0)
 
         #Update columns:
-        self.tableWidget.setColumnCount(len(self.cohort.subject_data_labels))
-        for i, label in enumerate(self.cohort.subject_data_labels):
+        self.tableWidget.setColumnCount(len(self.cohort.atlas.brain_regions))
+        for i, label in enumerate(self.cohort.atlas.get_brain_region_labels()):
             item = QTableWidgetItem(label)
             self.tableWidget.setHorizontalHeaderItem(i, item)
 

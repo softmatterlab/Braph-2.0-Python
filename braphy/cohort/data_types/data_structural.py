@@ -4,7 +4,7 @@ import numpy as np
 class DataStructural(Data):
     def __init__(self):
         super().__init__()
-        self.value = []
+        self.value = np.array([])
 
     def to_dict(self):
         d = {}
