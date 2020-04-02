@@ -178,6 +178,12 @@ class BrainAtlas():
         tree = ET.ElementTree(root)
         tree.write(file_name, encoding="utf-8", xml_declaration=True)
 
+    def to_file(self, atlas_file):
+        d = {}
+        d['atlas'] = self.to_dict()
+        with open(atlas_file, 'w') as f:
+            json.dump(d, f, sort_keys=True, indent=4)
+
     def to_dict(self):
         d = {}
         d['mesh_file'] = self.mesh_file
@@ -186,6 +192,11 @@ class BrainAtlas():
         for brain_region in self.brain_regions:
             d['brain_regions'].append(brain_region.to_dict())
         return d
+
+    def from_file(self, atlas_file):
+        with open(atlas_file, 'r') as f:
+            d = json.load(f)
+        return BrainAtlas.from_dict(d['atlas'])
 
     def from_dict(d):
         brain_regions = []

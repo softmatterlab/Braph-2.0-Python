@@ -37,8 +37,8 @@ class GroupAveragesWidget(Base, Form):
         self.update_selection_table()
 
     def update_averages_table(self):
-        self.tableWidget_averages.setColumnCount(len(self.cohort.subject_data_labels))
-        self.tableWidget_averages.setHorizontalHeaderLabels(self.cohort.subject_data_labels)
+        self.tableWidget_averages.setColumnCount(len(self.cohort.atlas.brain_regions))
+        self.tableWidget_averages.setHorizontalHeaderLabels(self.cohort.atlas.get_brain_region_labels())
         self.tableWidget_averages.setRowCount(len(self.cohort.groups)*2)
         for i, group in enumerate(self.cohort.groups):
             item = QTableWidgetItem("Average {}".format(group.name))
@@ -58,8 +58,8 @@ class GroupAveragesWidget(Base, Form):
                 self.tableWidget_averages.setItem(2*i+1, j, item)
 
     def update_selection_table(self):
-        self.tableWidget_comparison.setColumnCount(len(self.cohort.subject_data_labels))
-        self.tableWidget_comparison.setHorizontalHeaderLabels(self.cohort.subject_data_labels)
+        self.tableWidget_comparison.setColumnCount(len(self.cohort.atlas.brain_regions))
+        self.tableWidget_comparison.setHorizontalHeaderLabels(self.cohort.atlas.get_brain_region_labels())
 
         self.tableWidget_selection.blockSignals(True)
         self.tableWidget_selection.clearContents()
@@ -104,7 +104,7 @@ class GroupAveragesWidget(Base, Form):
     def comparison(self):
         group_button = self.selected_groups_radio_button
         if group_button:
-            if len(self.cohort.subject_data_labels) == 0:
+            if len(self.cohort.atlas.brain_regions) == 0:
                 self.comparison_error("Atlas not loaded")
                 return
             permutations = self.spinBoxPermutations.value()

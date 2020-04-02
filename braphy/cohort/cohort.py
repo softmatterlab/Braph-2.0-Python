@@ -1,6 +1,7 @@
 import json
 from braphy.cohort.subjects import *
 from braphy.cohort.group import Group
+from braphy.atlas.brain_atlas import BrainAtlas
 from braphy.utility.helper_functions import ListManager as lm
 import numpy as np
 
@@ -17,9 +18,14 @@ class Cohort:
             self.groups = groups
         else:
             self.groups = []
-        self.subject_data_labels = []
         self.new_groups_added = 0
         self.new_subjects_added = 0
+
+    def to_file(self):
+        d = {}
+        d['cohort'] = self.to_dict()
+        with open(atlas_file, 'w') as f:
+            json.dump(d, f, sort_keys=True, indent=4)
 
     def to_dict(self):
         d = {}
@@ -36,6 +42,11 @@ class Cohort:
         d['atlas'] = self.atlas.to_dict()
         return d
 
+    def from_file(cohort_file):
+        with open(cohort_file, 'r') as f:
+            d = json.load(f)
+        return Cohort.from_dict(d['cohort'])
+
     def from_dict(d):
         subjects = []
         subject_class = eval(d['subject_class'])
@@ -44,16 +55,7 @@ class Cohort:
         groups = []
         for group_dict in d['groups']:
             groups.append(Group.from_dict(group_dict))
-        return Cohort(d['name'], subject_class, d['atlas'], subjects = subjects, groups = groups)
-
-    def to_file(self, cohort_file):
-        with open(cohort_file, 'w') as f:
-            json.dump(self.to_dict(), f, sort_keys=True, indent=4)
-
-    def from_file(cohort_file):
-        with open(cohort_file, 'r') as f:
-            d = json.load(f)
-        return Cohort.from_dict(d)
+        return Cohort(d['name'], subject_class, BrainAtlas.from_dict(d['atlas']), subjects = subjects, groups = groups)
 
     def group_averages(self):
         averages = []

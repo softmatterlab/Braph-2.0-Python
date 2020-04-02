@@ -43,10 +43,9 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.brainWidget.add_selected_observer(self.set_selected)
 
-    def from_file(self, atlas_file):
-        with open(atlas_file, 'r') as f:
-            d = json.load(f)
-        self.from_dict(d)
+    def to_file(self, atlas_file):
+        with open(atlas_file, 'w') as f:
+            json.dump(self.to_dict(), f, sort_keys=True, indent=4)
 
     def to_dict(self):
         d = {}
@@ -58,9 +57,10 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         d['atlas'] = self.atlas.to_dict()
         return d
 
-    def to_file(self, atlas_file):
-        with open(atlas_file, 'w') as f:
-            json.dump(self.to_dict(), f, sort_keys=True, indent=4)
+    def from_file(self, atlas_file):
+        with open(atlas_file, 'r') as f:
+            d = json.load(f)
+        self.from_dict(d)
 
     def from_dict(self, d):
         self.atlas = BrainAtlas.from_dict(d['atlas'])
