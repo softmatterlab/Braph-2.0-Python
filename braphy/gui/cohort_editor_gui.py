@@ -66,12 +66,39 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         d = self.cohort.to_dict()
         return d
 
+    def from_file(self, file_name):
+        with open(file_name, 'r') as f:
+            d = json.load(f)
+        self.from_dict(d)
+        self.init_widgets()
+        self.set_locked(False)
+        self.update_tables()
+
+    def from_dict(self, d):
+        self.cohort = Cohort.from_dict(d['cohort'])
+        if 'brain_mesh_data' in d.keys():
+            vertices = np.asarray(d['brain_mesh_data']['vertices'])
+            faces = np.asarray(d['brain_mesh_data']['faces'])
+            brain_mesh_data = {'vertices': vertices, 'faces': faces}
+            self.brain_mesh_data = brain_mesh_data
+            self.set_brain_mesh_data()
+        self.labelRegionNumber.setText("Brain region number = {}".format(self.brain_region_number()))
+        self.brainWidget.init_brain_regions(self.cohort.atlas.brain_regions, 4, [], False, False)
+
     def to_file(self, file_name):
         self.file_name = file_name
         d = {}
         d['cohort'] = self.to_dict()
+        brain_mesh_data = {}
+        brain_mesh_data['vertices'] = self.brain_mesh_data['vertices'].tolist()
+        brain_mesh_data['faces'] = self.brain_mesh_data['faces'].tolist()
+        d['brain_mesh_data'] = brain_mesh_data
         with open(file_name, 'w') as f:
             json.dump(d, f, sort_keys=True, indent=4)
+
+    def set_brain_mesh_data(self):
+        self.brainWidget.set_brain_mesh(self.brain_mesh_data)
+        self.change_transparency()
 
     def init_brain_widget(self):
         self.brainWidget.set_brain_mesh(self.brain_mesh_data)
@@ -229,10 +256,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         file_name, name = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()",
                                                       "","cohort files (*.cohort)", options=options)
         if file_name:
-            self.cohort = Cohort.from_file(file_name)
-            self.init_widgets()
-            self.set_locked(False)
-            self.update_tables()
+            self.from_file(file_name)
 
     def save_as(self):
         options = QFileDialog.Options()
@@ -308,6 +332,8 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
     def view_atlas(self):
         if self.cohort:
             self.brain_atlas_gui = BrainAtlasGui(self, atlas = self.cohort.atlas)
+            self.brain_atlas_gui.brain_mesh_data = self.brain_mesh_data
+            self.brain_atlas_gui.set_brain_mesh_data()
             self.brain_atlas_gui.set_locked(True)
             self.brain_atlas_gui.show()
 
@@ -325,7 +351,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
             with open(file_name, 'r') as f:
                 atlas_dict = json.load(f)
 
-            if 'brain_mesh' in atlas_dict.keys():
+            if 'brain_mesh_data' in atlas_dict.keys():
                 vertices = np.asarray(atlas_dict['brain_mesh_data']['vertices'])
                 faces = np.asarray(atlas_dict['brain_mesh_data']['faces'])
                 brain_mesh_data = {'vertices': vertices, 'faces': faces}
