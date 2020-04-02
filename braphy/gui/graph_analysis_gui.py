@@ -19,16 +19,13 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.init_buttons()
         self.init_actions()
+        self.correlationMatrixWidget.init()
+        self.graphMeasuresWidget.init()
 
         if subject_class == SubjectMRI:
-            self.radioButtonGroup.hide()
-            self.radioButtonSubject.hide()
-            self.comboBoxSubject.hide()
+            self.correlationMatrixWidget.set_structural_view()
 
-        self.radioButtonWeighted.setChecked(True)
-        self.radioButtonGroup.setChecked(True)
         self.btnViewCohort.setEnabled(False)
-        self.checkBoxDivide.setEnabled(False)
 
     def init_buttons(self):
         self.btnSelectCohort.clicked.connect(self.select_cohort)
@@ -37,18 +34,6 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         self.btnDefault.clicked.connect(self.default)
         self.btnSubgraphAnalysis.clicked.connect(self.subgraph_analysis)
         self.btnStartAnalysis.clicked.connect(self.start_analysis)
-
-        self.radioButtonGroup.toggled.connect(self.analyse_group)
-        self.radioButtonSubject.toggled.connect(self.analyse_subject)
-        self.radioButtonWeighted.toggled.connect(self.weighted_correlation)
-        self.radioButtonHistogram.toggled.connect(self.histogram)
-        self.radioButtonSubject.toggled.connect(self.analyse_subject)
-        self.radioButtonDensity.toggled.connect(self.binary_correlation_density)
-        self.radioButtonThreshold.toggled.connect(self.binary_correlation_threshold)
-
-        self.checkBoxRearrange.stateChanged.connect(self.rearrange)
-        self.checkBoxDivide.stateChanged.connect(self.divide)
-
 
     def init_actions(self):
         self.actionOpen.triggered.connect(self.open)
@@ -91,46 +76,6 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         pass
 
     def start_analysis(self):
-        pass
-
-    def analyse_group(self):
-        self.comboBoxSubject.setEnabled(False)
-
-    def analyse_subject(self):
-        self.comboBoxSubject.setEnabled(True)
-
-    def weighted_correlation(self):
-        self.textEditThreshold.setEnabled(False)
-        self.horizontalSliderThreshold.setEnabled(False)
-        self.textEditDensity.setEnabled(False)
-        self.horizontalSliderDensity.setEnabled(False)
-
-    def histogram(self):
-        self.textEditThreshold.setEnabled(False)
-        self.horizontalSliderThreshold.setEnabled(False)
-        self.textEditDensity.setEnabled(False)
-        self.horizontalSliderDensity.setEnabled(False)
-
-    def binary_correlation_density(self):
-        self.textEditDensity.setEnabled(True)
-        self.horizontalSliderDensity.setEnabled(True)
-        self.textEditThreshold.setEnabled(False)
-        self.horizontalSliderThreshold.setEnabled(False)
-
-    def binary_correlation_threshold(self):
-        self.textEditThreshold.setEnabled(True)
-        self.horizontalSliderThreshold.setEnabled(True)
-        self.textEditDensity.setEnabled(False)
-        self.horizontalSliderDensity.setEnabled(False)
-
-
-    def rearrange(self):
-        if self.checkBoxRearrange.isChecked():
-            self.checkBoxDivide.setEnabled(True)
-        else:
-            self.checkBoxDivide.setEnabled(False)
-
-    def divide(self):
         pass
 
     def open(self):
