@@ -1,5 +1,9 @@
 import sys
+import json
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
+from PyQt5.QtWidgets import *
+from braphy.graph import *
+from braphy.cohort.subjects import *
 from braphy.gui.community_structure_gui import CommunityStructure
 from braphy.utility.helper_functions import abs_path_from_relative
 
@@ -8,7 +12,7 @@ qtCreatorFile = abs_path_from_relative(__file__, "ui_files/graph_analysis.ui")
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 
 class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
-    def __init__(self, AppWindow = None):
+    def __init__(self, AppWindow = None, subject_class = SubjectMRI):
         if AppWindow:
             self.AppWindow = AppWindow
         QtWidgets.QMainWindow.__init__(self, parent = None)
@@ -16,9 +20,19 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         self.init_buttons()
         self.init_actions()
 
+        if subject_class == SubjectMRI:
+            self.radioButtonGroup.hide()
+            self.radioButtonSubject.hide()
+            self.comboBoxSubject.hide()
+
+        self.radioButtonWeighted.setChecked(True)
+        self.radioButtonGroup.setChecked(True)
+        self.btnViewCohort.setEnabled(False)
+        self.checkBoxDivide.setEnabled(False)
 
     def init_buttons(self):
         self.btnSelectCohort.clicked.connect(self.select_cohort)
+        self.btnViewCohort.clicked.connect(self.view_cohort)
         self.btnEdit.clicked.connect(self.edit_community)
         self.btnDefault.clicked.connect(self.default)
         self.btnSubgraphAnalysis.clicked.connect(self.subgraph_analysis)
@@ -55,6 +69,15 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionInsert_colorbar.triggered.connect(self.insert_colorbar)
 
     def select_cohort(self):
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        file_name, _ = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()", "","cohort files (*.cohort)", options=options)
+        if file_name:
+            with open(file_name, 'r') as f:
+                self.cohort_dict = json.load(f)
+            self.btnViewCohort.setEnabled(True)
+
+    def view_cohort(self):
         pass
 
     def edit_community(self):
@@ -71,28 +94,41 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         pass
 
     def analyse_group(self):
-        pass
+        self.comboBoxSubject.setEnabled(False)
 
     def analyse_subject(self):
-        pass
+        self.comboBoxSubject.setEnabled(True)
 
     def weighted_correlation(self):
-        pass
+        self.textEditThreshold.setEnabled(False)
+        self.horizontalSliderThreshold.setEnabled(False)
+        self.textEditDensity.setEnabled(False)
+        self.horizontalSliderDensity.setEnabled(False)
 
     def histogram(self):
-        pass
-
-    def analyse_subject(self):
-        pass
+        self.textEditThreshold.setEnabled(False)
+        self.horizontalSliderThreshold.setEnabled(False)
+        self.textEditDensity.setEnabled(False)
+        self.horizontalSliderDensity.setEnabled(False)
 
     def binary_correlation_density(self):
-        pass
+        self.textEditDensity.setEnabled(True)
+        self.horizontalSliderDensity.setEnabled(True)
+        self.textEditThreshold.setEnabled(False)
+        self.horizontalSliderThreshold.setEnabled(False)
 
     def binary_correlation_threshold(self):
-        pass
+        self.textEditThreshold.setEnabled(True)
+        self.horizontalSliderThreshold.setEnabled(True)
+        self.textEditDensity.setEnabled(False)
+        self.horizontalSliderDensity.setEnabled(False)
+
 
     def rearrange(self):
-        pass
+        if self.checkBoxRearrange.isChecked():
+            self.checkBoxDivide.setEnabled(True)
+        else:
+            self.checkBoxDivide.setEnabled(False)
 
     def divide(self):
         pass
