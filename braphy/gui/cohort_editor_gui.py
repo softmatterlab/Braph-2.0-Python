@@ -73,6 +73,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.init_widgets()
         self.set_locked(False)
         self.update_tables()
+        self.file_name = file_name
 
     def from_dict(self, d):
         self.cohort = Cohort.from_dict(d['cohort'])

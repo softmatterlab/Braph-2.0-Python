@@ -62,6 +62,7 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         with open(atlas_file, 'r') as f:
             d = json.load(f)
         self.from_dict(d)
+        self.file_name = atlas_file
 
     def from_dict(self, d):
         self.atlas = BrainAtlas.from_dict(d['atlas'])
