@@ -24,7 +24,7 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         if atlas:
             self.atlas = atlas
         else:
-            self.atlas = BrainAtlas(mesh_file = brain_mesh_file_name_default)
+            self.atlas = BrainAtlas(mesh_file = brain_mesh_file_name_default.split('/')[-1])
         self.init_check_boxes()
         self.init_brain_widget(brain_mesh_file_default)
         self.init_buttons()
@@ -71,10 +71,23 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.set_brain_mesh_data()
         self.set_brain_regions()
         self.atlas_name_change()
+        self.add_mesh_to_combobox(self.atlas.mesh_file)
         self.update_table()
+
+    def add_mesh_to_combobox(self, mesh_file_name):
+        self.comboBox.blockSignals(True)
+        idx = self.comboBox.findText(mesh_file_name)
+        if idx > -1:
+            self.comboBox.setCurrentIndex(idx)
+        else:
+            self.comboBox.insertItem(self.comboBox.count() - 2, mesh_file_name)
+            self.comboBox.setCurrentText(mesh_file_name)
+        self.comboBox.blockSignals(False)
 
     def set_brain_mesh_file(self, brain_mesh_file):
         self.brain_mesh_file_name = brain_mesh_file.split('/')[-1]
+        self.atlas.mesh_file = self.brain_mesh_file_name
+        print(self.atlas.mesh_file)
         self.brain_mesh_data = load_nv(brain_mesh_file)
         self.set_brain_mesh_data()
 
