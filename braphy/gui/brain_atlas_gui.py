@@ -40,6 +40,7 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.meshName.setText('Brain View')
         self.textAtlasName.textChanged.connect(self.atlas_name_change)
         self.file_name = None
+        self.loaded_mesh_data = None
 
         self.brainWidget.add_selected_observer(self.set_selected)
 
@@ -72,6 +73,7 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.set_brain_regions()
         self.atlas_name_change()
         self.add_mesh_to_combobox(self.atlas.mesh_file)
+        self.loaded_mesh_data = (self.atlas.mesh_file, brain_mesh_data)
         self.update_table()
 
     def add_mesh_to_combobox(self, mesh_file_name):
@@ -87,7 +89,6 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
     def set_brain_mesh_file(self, brain_mesh_file):
         self.brain_mesh_file_name = brain_mesh_file.split('/')[-1]
         self.atlas.mesh_file = self.brain_mesh_file_name
-        print(self.atlas.mesh_file)
         self.brain_mesh_data = load_nv(brain_mesh_file)
         self.set_brain_mesh_data()
 
@@ -157,6 +158,11 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.comboBox.setCurrentIndex(self.last_combobox_index)
                 self.comboBox.blockSignals(False)
         else:
+            if self.loaded_mesh_data:
+                if i == self.comboBox.findText(self.loaded_mesh_data[0]):
+                    self.brain_mesh_data = self.loaded_mesh_data[1]
+                    self.set_brain_mesh_data()
+                    return
             file_path = self.mesh_file_paths[i]
             self.last_combobox_index = i
         if file_path:
