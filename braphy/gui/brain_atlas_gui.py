@@ -43,6 +43,7 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.loaded_mesh_data = None
 
         self.brainWidget.add_selected_observer(self.set_selected)
+        self.update_table()
 
     def to_file(self, atlas_file):
         with open(atlas_file, 'w') as f:
