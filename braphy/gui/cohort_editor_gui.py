@@ -81,7 +81,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
             faces = np.asarray(d['brain_mesh_data']['faces'])
             brain_mesh_data = {'vertices': vertices, 'faces': faces}
             self.brain_mesh_data = brain_mesh_data
-            self.set_brain_mesh_data()
+            self.init_brain_widget()
         self.labelRegionNumber.setText("Brain region number = {}".format(self.brain_region_number()))
         self.brainWidget.init_brain_regions(self.cohort.atlas.brain_regions, 4, [], False, False)
 
@@ -95,10 +95,6 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         d['brain_mesh_data'] = brain_mesh_data
         with open(file_name, 'w') as f:
             json.dump(d, f, sort_keys=True, indent=4)
-
-    def set_brain_mesh_data(self):
-        self.brainWidget.set_brain_mesh(self.brain_mesh_data)
-        self.change_transparency()
 
     def init_brain_widget(self):
         self.brainWidget.set_brain_mesh(self.brain_mesh_data)
@@ -333,7 +329,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         if self.cohort:
             self.brain_atlas_gui = BrainAtlasGui(self, atlas = self.cohort.atlas)
             self.brain_atlas_gui.brain_mesh_data = self.brain_mesh_data
-            self.brain_atlas_gui.set_brain_mesh_data()
+            self.init_brain_widget()
             self.brain_atlas_gui.set_locked(True)
             self.brain_atlas_gui.show()
 

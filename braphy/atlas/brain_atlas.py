@@ -120,7 +120,7 @@ class BrainAtlas():
         except:
             print('Could not open file and add brain regions.')
 
-    def load_from_xls(self, file_path = '', file_name = ''):
+    def load_from_xlsx(self, file_path = '', file_name = ''):
 
         try:
             data = pd.read_excel(file_path + file_name)
@@ -131,7 +131,7 @@ class BrainAtlas():
 
             br = np.array( data.apply(lambda x: BrainRegion(x[0], x[1], x[2], x[3], x[4]),
                                     axis = 1)).tolist()
-            self.brain_regions = br
+            self.brain_regions.extend(br)
         except:
             print('Could not open file and add brain regions.')
 

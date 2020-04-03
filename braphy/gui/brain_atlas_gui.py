@@ -476,18 +476,18 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
         file_name, name = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()",
-                                                      "","Atlas files (*.txt *.xml *.xls) ;; \
+                                                      "","Atlas files (*.txt *.xml *.xlsx) ;; \
                                                           Text files (*.txt,);; \
                                                           xml files (*.xml);; \
-                                                          xls files (*.xls", options=options)
+                                                          xlsx files (*.xlsx", options=options)
         if file_name:
             extension = file_name.split(".")[-1]
             if extension == "txt":
                 self.atlas.load_from_txt(file_name)
             elif extension == "xml":
                 self.atlas.load_from_xml(file_name)
-            elif extension == "xls":
-                self.atlas.load_from_xls(file_name)
+            elif extension == "xlsx":
+                self.atlas.load_from_xlsx(file_name)
             self.update_table()
 
     def export_xml(self):
