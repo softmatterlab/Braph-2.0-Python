@@ -15,6 +15,8 @@ import numpy as np
 from braphy.cohort.cohort import Cohort
 from braphy.cohort.subjects import *
 
+from braphy.gui.widgets.brain_view_options_widget import BrainViewOptionsWidget
+
 qtCreatorFile = abs_path_from_relative(__file__, "ui_files/cohort_editor.ui")
 brain_mesh_file_name_default = "meshes/BrainMesh_ICBM152.nv"
 brain_mesh_file_default = abs_path_from_relative(__file__, brain_mesh_file_name_default)
@@ -62,6 +64,9 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.groupsAndDemographicsWidget.set_callback(self.groups_and_demographics_table_updated)
         self.subjectDataWidget.set_callback(self.subject_data_table_updated)
 
+        self.brain_view_options_widget = BrainViewOptionsWidget(parent=self.tabBrain)
+        self.brain_view_options_widget.show()
+
     def to_dict(self):
         d = self.cohort.to_dict()
         return d
@@ -104,10 +109,6 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
     def init_buttons(self):
         self.btnSelectAtlas.clicked.connect(self.load_atlas)
         self.btnViewAtlas.clicked.connect(self.view_atlas)
-
-        self.btnViewSubjects.clicked.connect(self.view_subjects)
-        self.btnViewGroup.clicked.connect(self.view_group)
-        self.btnViewComparison.clicked.connect(self.view_comparison)
 
     def init_actions(self):
         self.actionOpen.triggered.connect(self.open)
@@ -202,8 +203,8 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
     def set_locked(self, locked):
         self.locked = locked
         lock_items = [self.btnViewAtlas, self.groupTableWidget, self.groupsAndDemographicsWidget,
-                      self.subjectDataWidget, self.groupAveragesWidget, self.btnViewSubjects,
-                      self.btnViewGroup, self.btnViewComparison]
+                      self.subjectDataWidget, self.groupAveragesWidget]
+
         for item in lock_items:
             item.setEnabled(not self.locked)
         self.disable_menu_bar(locked)
@@ -230,6 +231,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.groupAveragesWidget.update_tables()
 
     def tab_changed(self):
+        self.brain_view_options_widget.update_move()
         if self.tabWidget.currentIndex() == 3:
             self.set_brain_view_actions_visible(True)
         else:
@@ -398,6 +400,9 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def view_comparison(self):
         pass
+
+    def resizeEvent(self, event):
+        self.brain_view_options_widget.update_move()
 
 def run():
     app = QtWidgets.QApplication(sys.argv)
