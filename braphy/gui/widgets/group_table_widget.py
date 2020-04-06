@@ -82,9 +82,9 @@ class GroupTableWidget(Base, Form):
         self.tableWidget_groups.blockSignals(False)
 
     def cell_changed_in_group_table(self, row, column):
-        if column == 1: # name
+        if column == 0: # name
             self.cohort.groups[row].name = self.tableWidget_groups.item(row, column).text()
-        elif column == 3: # notes
+        elif column == 2: # notes
             self.cohort.groups[row].description = self.tableWidget_groups.item(row, column).text()
         self.update()
 
