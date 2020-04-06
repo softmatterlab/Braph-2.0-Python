@@ -10,16 +10,10 @@ class Cohort:
         self.name = name
         self.subject_class = subject_class
         self.atlas = atlas
-        if subjects:
-            self.subjects = subjects
-        else:
-            self.subjects = []
-        if groups:
-            self.groups = groups
-        else:
-            self.groups = []
-        self.new_groups_added = 0
-        self.new_subjects_added = 0
+        self.subjects = subjects if subjects else []
+        self.groups = groups if groups else []
+        self.new_groups_added = len(self.subjects)
+        self.new_subjects_added = len(self.groups)
 
     def to_file(self):
         d = {}
@@ -70,7 +64,14 @@ class Cohort:
         return np.array(standard_deviations)
 
     def new_group_name(self):
-        self.new_groups_added += 1
+        unique = False
+        while not unique:
+            self.new_groups_added += 1
+            name = "Group_{}".format(self.new_groups_added)
+            unique = True
+            for group in self.groups:
+                if group.name == name:
+                    unique = False
         return "Group_{}".format(self.new_groups_added)
 
     def add_group(self, group = None):
@@ -111,7 +112,14 @@ class Cohort:
             self.groups[-1].add_subject(self.subjects[index])
 
     def new_subject_id(self):
-        self.new_subjects_added += 1
+        unique = False
+        while not unique:
+            self.new_subjects_added += 1
+            id = "sub_{}".format(self.new_subjects_added)
+            unique = True
+            for subject in self.subjects:
+                if subject.id == id:
+                    unique = False
         return 'sub_{}'.format(self.new_subjects_added)
 
     def new_subject(self):

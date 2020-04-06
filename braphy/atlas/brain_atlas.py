@@ -9,7 +9,7 @@ class BrainAtlas():
         self.mesh_file = mesh_file
         self.name = name
         self.brain_regions = brain_regions if brain_regions else []
-        self.new_brain_regions_added = 0
+        self.new_brain_regions_added = len(self.brain_regions)
 
     def brain_region_number(self):
         return len(self.brain_regions)
@@ -54,9 +54,15 @@ class BrainAtlas():
         return br_positions
 
     def new_brain_region(self):
-        self.new_brain_regions_added += 1
-        label = "BR_{}".format(self.new_brain_regions_added)
-        name = "brain_region_{}".format(self.new_brain_regions_added)
+        unique = False
+        while not unique:
+            self.new_brain_regions_added += 1
+            label = "BR_{}".format(self.new_brain_regions_added)
+            name = "brain_region_{}".format(self.new_brain_regions_added)
+            unique = True
+            for region in self.brain_regions:
+                if region.label == label or region.name == name:
+                    unique = False
         return BrainRegion(label = label, name = name)
 
     def add_brain_region(self, br = None, i = None):
