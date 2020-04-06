@@ -33,7 +33,7 @@ class SubjectDataWidget(Base, Form):
     def save_subjects(self):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
-        file_name, name = QFileDialog.getSaveFileName(self, "QFileDialog.saveFileName()", "", "txt files (*.txt)")
+        file_name, name = QFileDialog.getSaveFileName(self, "QFileDialog.saveFileName()", "subjects.txt", "txt files (*.txt)")
         if file_name:
             self.cohort.save_to_txt(file_name)
 

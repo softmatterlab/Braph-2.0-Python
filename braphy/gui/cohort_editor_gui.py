@@ -258,7 +258,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
     def save_as(self):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
-        file_name, name = QFileDialog.getSaveFileName(self, "QFileDialog.saveFileName()", "", "cohort files (*.cohort)")
+        file_name, name = QFileDialog.getSaveFileName(self, "QFileDialog.saveFileName()", "untitled.cohort", "cohort files (*.cohort)")
         if file_name:
             self.file_name = file_name
             self.to_file(file_name)

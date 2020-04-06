@@ -443,7 +443,7 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
     def save_as(self):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
-        file_name, name = QFileDialog.getSaveFileName(self, "QFileDialog.saveFileName()", "", "atlas files (*.atlas)")
+        file_name, name = QFileDialog.getSaveFileName(self, "QFileDialog.saveFileName()", "untitled.atlas", "atlas files (*.atlas)")
         if file_name:
             self.file_name = file_name
             self.to_file(file_name)
@@ -514,14 +514,14 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
     def export_xml(self):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
-        file_name, name = QFileDialog.getSaveFileName(self, "QFileDialog.saveFileName()", "", "xml files (*.xml)")
+        file_name, name = QFileDialog.getSaveFileName(self, "QFileDialog.saveFileName()", "untitled_atlas.xml", "xml files (*.xml)")
         if file_name:
             self.atlas.save_to_xml(file_name)
 
     def export_txt(self):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
-        file_name, name = QFileDialog.getSaveFileName(self, "QFileDialog.saveFileName()", "", "txt files (*.txt)")
+        file_name, name = QFileDialog.getSaveFileName(self, "QFileDialog.saveFileName()", "untitled_atlas.txt", "txt files (*.txt)")
         if file_name:
             self.atlas.save_to_txt(file_name)
 
