@@ -133,6 +133,13 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.comboBoxRegions.setCurrentText('blue')
         self.comboBoxRegionsSelected.setCurrentText('pink')
 
+        shaders = ['shaded', 'normalColor', 'balloon', 'viewNormalColor', 'edgeHilight', 'pointSprite']
+        for shader in shaders:
+            self.comboBoxMesh.addItem(shader)
+        self.comboBoxMesh.currentIndexChanged.connect(self.set_brain_mesh_shader)
+        self.comboBoxMesh.setCurrentText('normalColor')
+
+
     def get_brain_region_colors(self):
         colors = {}
         colors['black'] = [0.0, 0.0, 0.0, 1.0]
@@ -154,6 +161,9 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
     def set_selected_brain_region_color(self):
         colors = self.get_brain_region_colors()
         self.brainWidget.set_selected_brain_region_color(colors[self.comboBoxRegionsSelected.currentText()], self.get_selected())
+
+    def set_brain_mesh_shader(self):
+        self.brainWidget.set_shader(self.comboBoxMesh.currentText())
 
     def set_locked(self, locked):
         self.locked = locked

@@ -110,6 +110,9 @@ class BrainAtlasWidget(GLViewWidget):
         self.brain_mesh.setGLOptions('translucent')
         self.addItem(self.brain_mesh)
 
+    def set_shader(self, shader):
+        self.brain_mesh.setShader(shader)
+
     def paintGL(self, *args, **kwds):
         GLViewWidget.paintGL(self, *args, **kwds)
         self.qglColor(QColor("k"))
