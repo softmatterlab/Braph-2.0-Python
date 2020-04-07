@@ -30,7 +30,7 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.init_buttons()
         self.init_actions()
 
-        self.init_combo_box()
+        self.init_combo_boxes()
         self.init_sliders()
         self.tableWidget.cellChanged.connect(self.change_cell)
         self.tableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
@@ -79,14 +79,14 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.update_table()
 
     def add_mesh_to_combobox(self, mesh_file_name):
-        self.comboBox.blockSignals(True)
-        idx = self.comboBox.findText(mesh_file_name)
+        self.comboBoxMeshFile.blockSignals(True)
+        idx = self.comboBoxMeshFile.findText(mesh_file_name)
         if idx > -1:
-            self.comboBox.setCurrentIndex(idx)
+            self.comboBoxMeshFile.setCurrentIndex(idx)
         else:
-            self.comboBox.insertItem(self.comboBox.count() - 2, mesh_file_name)
-            self.comboBox.setCurrentText(mesh_file_name)
-        self.comboBox.blockSignals(False)
+            self.comboBoxMeshFile.insertItem(self.comboBoxMeshFile.count() - 2, mesh_file_name)
+            self.comboBoxMeshFile.setCurrentText(mesh_file_name)
+        self.comboBoxMeshFile.blockSignals(False)
 
     def set_brain_mesh_file(self, brain_mesh_file):
         self.brain_mesh_file_name = brain_mesh_file.split('/')[-1]
@@ -110,23 +110,54 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.brainWidget.set_brain_mesh(self.brain_mesh_data)
         self.set_brain_regions()
 
-    def init_combo_box(self):
+    def init_combo_boxes(self):
         self.mesh_file_paths = []
         nv_files = self.get_all_nv_files()
         for file in nv_files:
-            self.comboBox.addItem(file)
+            self.comboBoxMeshFile.addItem(file)
             self.mesh_file_paths.append(abs_path_from_relative(__file__, 'meshes/{}'.format(file)))
 
-        self.comboBox.insertSeparator(self.comboBox.count())
-        self.comboBox.addItem('Open...')
-        idx = self.comboBox.findText(self.brain_mesh_file_name)
-        self.comboBox.setCurrentIndex(idx)
-        self.comboBox.currentIndexChanged.connect(self.select_brain_mesh)
+        self.comboBoxMeshFile.insertSeparator(self.comboBoxMeshFile.count())
+        self.comboBoxMeshFile.addItem('Open...')
+        idx = self.comboBoxMeshFile.findText(self.brain_mesh_file_name)
+        self.comboBoxMeshFile.setCurrentIndex(idx)
+        self.comboBoxMeshFile.currentIndexChanged.connect(self.select_brain_mesh)
         self.last_combobox_index = idx
+
+        colors = self.get_brain_region_colors()
+        for color in colors.keys():
+            self.comboBoxRegions.addItem(color)
+            self.comboBoxRegionsSelected.addItem(color)
+        self.comboBoxRegions.currentIndexChanged.connect(self.set_brain_region_color)
+        self.comboBoxRegionsSelected.currentIndexChanged.connect(self.set_selected_brain_region_color)
+        self.comboBoxRegions.setCurrentText('blue')
+        self.comboBoxRegionsSelected.setCurrentText('pink')
+
+    def get_brain_region_colors(self):
+        colors = {}
+        colors['black'] = [0.0, 0.0, 0.0, 1.0]
+        colors['white'] = [1.0, 1.0, 1.0, 1.0]
+        colors['yellow'] = [1.0, 1.0, 0.2, 1.0]
+        colors['turquoise'] = [0.0, 0.6, 0.6, 1.0]
+        colors['red'] = [1.0, 0.2, 0.2, 1.0]
+        colors['green'] = [0.1, 0.4, 0.15, 1.0]
+        colors['blue'] = [0.3, 0.3, 1.0, 1.0]
+        colors['pink'] = [1.0, 0.0, 0.67, 1.0]
+        colors['purple'] = [0.5, 0.05, 0.67, 1.0]
+        colors['orange'] = [1.0, 0.5, 0.0, 1.0]
+        return colors
+
+    def set_brain_region_color(self):
+        colors = self.get_brain_region_colors()
+        self.brainWidget.set_brain_region_color(colors[self.comboBoxRegions.currentText()], self.get_selected())
+
+    def set_selected_brain_region_color(self):
+        colors = self.get_brain_region_colors()
+        self.brainWidget.set_selected_brain_region_color(colors[self.comboBoxRegionsSelected.currentText()], self.get_selected())
 
     def set_locked(self, locked):
         self.locked = locked
-        lock_items = [self.comboBox, self.textAtlasName, self.actionOpen, self.actionImport_file,
+        lock_items = [self.comboBoxMeshFile, self.textAtlasName, self.actionOpen, self.actionImport_file,
                       self.btnAdd, self.btnAddAbove, self.btnAddBelow, self.btnRemove,
                       self.actionAdd, self.actionAdd_above, self.actionAdd_below, self.actionRemove]
         for item in lock_items:
@@ -142,26 +173,26 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.tableWidget.blockSignals(False)
 
     def select_brain_mesh(self, i):
-        if self.comboBox.currentText() == 'Open...':
+        if self.comboBoxMeshFile.currentText() == 'Open...':
             options = QFileDialog.Options()
             options |= QFileDialog.DontUseNativeDialog
             file_path, name = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()",
                                                       "","nv files (*.nv)", options=options)
             if file_path:
                 file_name = file_path.split('/')[-1]
-                self.comboBox.blockSignals(True)
-                self.comboBox.insertItem(self.comboBox.count() - 2, file_name)
-                self.comboBox.setCurrentText(file_name)
-                self.comboBox.blockSignals(False)
+                self.comboBoxMeshFile.blockSignals(True)
+                self.comboBoxMeshFile.insertItem(self.comboBoxMeshFile.count() - 2, file_name)
+                self.comboBoxMeshFile.setCurrentText(file_name)
+                self.comboBoxMeshFile.blockSignals(False)
                 self.mesh_file_paths.append(file_path)
-                self.last_combobox_index = self.comboBox.count() - 3
+                self.last_combobox_index = self.comboBoxMeshFile.count() - 3
             else:
-                self.comboBox.blockSignals(True)
-                self.comboBox.setCurrentIndex(self.last_combobox_index)
-                self.comboBox.blockSignals(False)
+                self.comboBoxMeshFile.blockSignals(True)
+                self.comboBoxMeshFile.setCurrentIndex(self.last_combobox_index)
+                self.comboBoxMeshFile.blockSignals(False)
         else:
             if self.loaded_mesh_data:
-                if i == self.comboBox.findText(self.loaded_mesh_data[0]):
+                if i == self.comboBoxMeshFile.findText(self.loaded_mesh_data[0]):
                     self.brain_mesh_data = self.loaded_mesh_data[1]
                     self.set_brain_mesh_data()
                     return
@@ -529,7 +560,7 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         pass
 
     def brain_view_open(self):
-        self.comboBox.setCurrentText('Open...')
+        self.comboBoxMeshFile.setCurrentText('Open...')
 
     def new_mri_cohort(self):
         pass
