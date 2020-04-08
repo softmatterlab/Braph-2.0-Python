@@ -59,7 +59,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.file_name = None
         self.set_brain_view_actions_visible(False)
-        self.tab_groups_and_demographics()
+        self.tabWidget.setCurrentIndex(0)
         self.tabWidget.currentChanged.connect(self.tab_changed)
 
         self.groupTableWidget.set_callback(self.group_table_widget_updated)
@@ -148,10 +148,10 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionMove_subject_to_bottom.triggered.connect(self.groupsAndDemographicsWidget.move_subjects_to_bottom)
         self.actionNew_group_from_selection.triggered.connect(self.groupsAndDemographicsWidget.new_group_from_selected)
 
-        self.actionGroups_and_Demographics.triggered.connect(self.tab_groups_and_demographics)
-        self.actionSubject_Data.triggered.connect(self.tab_subject_data)
-        self.actionGroup_Averages.triggered.connect(self.tab_group_averages)
-        self.actionBrain_View.triggered.connect(self.tab_brain_view)
+        self.actionGroups_and_Demographics.triggered.connect(lambda state, x=0: self.tabWidget.setCurrentIndex(x))
+        self.actionSubject_Data.triggered.connect(lambda state, x=1: self.tabWidget.setCurrentIndex(x))
+        self.actionGroup_Averages.triggered.connect(lambda state, x=2: self.tabWidget.setCurrentIndex(x))
+        self.actionBrain_View.triggered.connect(lambda state, x=3: self.tabWidget.setCurrentIndex(x))
 
         self.actionGenerate_figure.triggered.connect(self.brainWidget.generate_figure)
 
@@ -202,18 +202,6 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
             self.set_brain_view_actions_visible(True)
         else:
             self.set_brain_view_actions_visible(False)
-
-    def tab_groups_and_demographics(self):
-        self.tabWidget.setCurrentIndex(0)
-
-    def tab_subject_data(self):
-        self.tabWidget.setCurrentIndex(1)
-
-    def tab_group_averages(self):
-        self.tabWidget.setCurrentIndex(2)
-
-    def tab_brain_view(self):
-        self.tabWidget.setCurrentIndex(3)
 
     def open(self):
         options = QFileDialog.Options()
