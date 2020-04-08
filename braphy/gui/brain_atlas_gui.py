@@ -190,18 +190,14 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         # TOOL BAR:
         self.actionSave.triggered.connect(self.save)
         self.actionOpen.triggered.connect(self.open)
+        self.toolBar.addSeparator()
 
-        self.actionZoom_in.triggered.connect(self.zoom_in)
-        self.actionZoom_out.triggered.connect(self.zoom_out)
-        self.actionPanY.triggered.connect(self.pan_y)
-        self.actionPanZ.triggered.connect(self.pan_z)
-        self.actionRotate.triggered.connect(self.rotate)
-        self.actionFind.triggered.connect(self.find)
+        for action in self.brainWidget.get_actions():
+             self.toolBar.addAction(action)
+        self.toolBar.addSeparator()
 
-        group = QtWidgets.QActionGroup(self)
-        for action in (self.actionZoom_in, self.actionZoom_out, self.actionPanY,
-                       self.actionPanZ, self.actionRotate, self.actionFind):
-            group.addAction(action)
+        for action in self.settingsWidget.get_actions():
+            self.toolBar.addAction(action)
 
         # MENU BAR:
         self.actionSave_as.triggered.connect(self.save_as)
@@ -230,9 +226,6 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionNew_PET_Cohort.triggered.connect(self.new_pet_cohort)
 
         self.actionAbout.triggered.connect(self.about)
-
-        for action in self.settingsWidget.get_actions():
-            self.toolBar.addAction(action)
 
     def select_all(self):
         self.tableWidget.selectAll()
@@ -368,37 +361,6 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
                                                       "","atlas files (*.atlas)", options=options)
         if file_name:
             self.from_file(file_name)
-
-    def set_cursor(self, file_name):
-        cursor_file = abs_path_from_relative(__file__, file_name)
-        pm = QtGui.QPixmap(cursor_file)
-        cursor = QtGui.QCursor(pm)
-        self.brainWidget.setCursor(cursor)
-
-    def zoom_in(self):
-        self.set_cursor('icons/zoom_in.png')
-        self.brainWidget.mouse_mode = BrainAtlasWidget.MOUSE_MODE_ZOOM_IN
-
-    def zoom_out(self):
-        self.set_cursor('icons/zoom_out.png')
-        self.brainWidget.mouse_mode = BrainAtlasWidget.MOUSE_MODE_ZOOM_OUT
-
-    def pan_y(self):
-        self.set_cursor('icons/hand_xy.png')
-        self.brainWidget.mouse_mode = BrainAtlasWidget.MOUSE_MODE_PAN_Y
-
-    def pan_z(self):
-        self.set_cursor('icons/hand_xz.png')
-        self.brainWidget.mouse_mode = BrainAtlasWidget.MOUSE_MODE_PAN_Z
-
-    def rotate(self):
-        self.set_cursor('icons/rotate.png')
-        self.brainWidget.mouse_mode = BrainAtlasWidget.MOUSE_MODE_ROTATE
-
-    def find(self):
-        self.set_cursor('icons/cursor.png')
-        self.brainWidget.mouse_mode = BrainAtlasWidget.MOUSE_MODE_FIND
-
 
     def import_file(self):
         options = QFileDialog.Options()

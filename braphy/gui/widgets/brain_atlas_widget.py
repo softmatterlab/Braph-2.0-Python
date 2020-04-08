@@ -1,5 +1,5 @@
 import pyqtgraph.opengl as gl
-from PyQt5 import QtCore
+from PyQt5 import QtCore, uic, QtWidgets
 from pyqtgraph.opengl import GLViewWidget
 import PyQt5.QtGui as QtGui
 from PyQt5.QtGui import QColor
@@ -8,6 +8,9 @@ from braphy.utility.helper_functions import abs_path_from_relative
 from braphy.gui.gui_brain_region import GUIBrainRegion
 import pyqtgraph.Vector
 import numpy as np
+
+ui_file = abs_path_from_relative(__file__, "../ui_files/brain_atlas_widget.ui")
+Form, Base = uic.loadUiType(ui_file)
 
 brain_distance_default = 235
 
@@ -35,6 +38,7 @@ class BrainAtlasWidget(GLViewWidget):
         self.selected_observers = []
         self.region_color = [0.3, 0.3, 1.0, 1.0] # blue
         self.selected_region_color = [1.0, 0.0, 2.0/3, 1.0] # pink
+        self.tool_bar = BrainAtlasWidgetToolBar(self)
 
     def add_selected_observer(self, observer):
         self.selected_observers.append(observer)
@@ -42,6 +46,9 @@ class BrainAtlasWidget(GLViewWidget):
     def setBrainBackgroundColor(self, rgba):
         self.brainBackgroundColor = rgba
         self.setBackgroundColor(self.brainBackgroundColor)
+
+    def get_actions(self):
+        return self.tool_bar.get_actions()
 
     def update_orbit(self):
         self.orbit(0.5, 0)
@@ -406,3 +413,59 @@ class BrainAtlasWidget(GLViewWidget):
     def clear_gui_brain_regions(self):
         for item in self.get_gui_brain_region_items():
             self.removeItem(item)
+
+    def set_cursor(self, file_name):
+        cursor_file = abs_path_from_relative(__file__, file_name)
+        pm = QtGui.QPixmap(cursor_file)
+        cursor = QtGui.QCursor(pm)
+        self.setCursor(cursor)
+
+    def zoom_in(self):
+        self.set_cursor('../icons/zoom_in.png')
+        self.mouse_mode = BrainAtlasWidget.MOUSE_MODE_ZOOM_IN
+
+    def zoom_out(self):
+        self.set_cursor('../icons/zoom_out.png')
+        self.mouse_mode = BrainAtlasWidget.MOUSE_MODE_ZOOM_OUT
+
+    def pan_y(self):
+        self.set_cursor('../icons/hand_xy.png')
+        self.mouse_mode = BrainAtlasWidget.MOUSE_MODE_PAN_Y
+
+    def pan_z(self):
+        self.set_cursor('../icons/hand_xz.png')
+        self.mouse_mode = BrainAtlasWidget.MOUSE_MODE_PAN_Z
+
+    def rotate(self):
+        self.set_cursor('../icons/rotate.png')
+        self.mouse_mode = BrainAtlasWidget.MOUSE_MODE_ROTATE
+
+    def find(self):
+        self.set_cursor('../icons/cursor.png')
+        self.mouse_mode = BrainAtlasWidget.MOUSE_MODE_FIND
+
+class BrainAtlasWidgetToolBar(Base, Form):
+    def __init__(self, brain_atlas_widget, parent = None):
+        super(BrainAtlasWidgetToolBar, self).__init__(parent)
+        self.setupUi(self)
+        self.brain_atlas_widget = brain_atlas_widget
+        self.init_actions()
+
+    def init_actions(self):
+        group = QtWidgets.QActionGroup(self)
+        for action in (self.actionZoom_in, self.actionZoom_out, self.actionPan_x_y,
+                       self.actionPan_z, self.actionRotate, self.actionFind):
+            group.addAction(action)
+        self.actionZoom_in.triggered.connect(self.brain_atlas_widget.zoom_in)
+        self.actionZoom_out.triggered.connect(self.brain_atlas_widget.zoom_out)
+        self.actionPan_x_y.triggered.connect(self.brain_atlas_widget.pan_y)
+        self.actionPan_z.triggered.connect(self.brain_atlas_widget.pan_z)
+        self.actionRotate.triggered.connect(self.brain_atlas_widget.rotate)
+        self.actionFind.triggered.connect(self.brain_atlas_widget.find)
+
+    def get_actions(self):
+        actions = [self.actionZoom_in, self.actionZoom_out, self.actionPan_x_y, self.actionPan_z,
+                   self.actionRotate, self.actionFind]
+        return actions
+
+

@@ -330,15 +330,6 @@ p, li { white-space: pre-wrap; }
    </attribute>
    <addaction name="actionSave"/>
    <addaction name="actionOpen"/>
-   <addaction name="separator"/>
-   <addaction name="actionZoom_in"/>
-   <addaction name="actionZoom_out"/>
-   <addaction name="actionPanZ"/>
-   <addaction name="actionPanY"/>
-   <addaction name="actionRotate"/>
-   <addaction name="actionFind"/>
-   <addaction name="separator"/>
-   <addaction name="separator"/>
   </widget>
   <action name="actionSave">
    <property name="icon">
@@ -496,69 +487,6 @@ p, li { white-space: pre-wrap; }
     <string>Ctrl+C</string>
    </property>
   </action>
-  <action name="actionZoom_in">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../icons/icons.qrc">
-     <normaloff>:/buttons/zoom_in.png</normaloff>:/buttons/zoom_in.png</iconset>
-   </property>
-   <property name="text">
-    <string>Zoom in</string>
-   </property>
-  </action>
-  <action name="actionZoom_out">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../icons/icons.qrc">
-     <normaloff>:/buttons/zoom_out.png</normaloff>:/buttons/zoom_out.png</iconset>
-   </property>
-   <property name="text">
-    <string>Zoom out</string>
-   </property>
-  </action>
-  <action name="actionPanZ">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../icons/icons.qrc">
-     <normaloff>:/buttons/hand_xz.png</normaloff>:/buttons/hand_xz.png</iconset>
-   </property>
-   <property name="text">
-    <string>Pan (x/y)</string>
-   </property>
-   <property name="toolTip">
-    <string>Pan (x/y)</string>
-   </property>
-  </action>
-  <action name="actionRotate">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../icons/icons.qrc">
-     <normaloff>:/buttons/rotate.png</normaloff>:/buttons/rotate.png</iconset>
-   </property>
-   <property name="text">
-    <string>Rotate</string>
-   </property>
-  </action>
-  <action name="actionFind">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../icons/icons.qrc">
-     <normaloff>:/buttons/cursor.png</normaloff>:/buttons/cursor.png</iconset>
-   </property>
-   <property name="text">
-    <string>Find</string>
-   </property>
-  </action>
   <action name="actionOpen_2">
    <property name="text">
     <string>Open...</string>
@@ -567,21 +495,6 @@ p, li { white-space: pre-wrap; }
   <action name="actionBrainViewOpen">
    <property name="text">
     <string>Open...</string>
-   </property>
-  </action>
-  <action name="actionPanY">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../icons/icons.qrc">
-     <normaloff>:/buttons/hand_xy.png</normaloff>:/buttons/hand_xy.png</iconset>
-   </property>
-   <property name="text">
-    <string>Pan (x/z)</string>
-   </property>
-   <property name="toolTip">
-    <string>Pan (x/z)</string>
    </property>
   </action>
  </widget>
