@@ -135,18 +135,18 @@ class BrainAtlasWidget(GLViewWidget):
         for gui_brain_region in self.gui_brain_regions:
             gui_brain_region.set_size(size)
 
-    def set_brain_region_color(self, color, selected):
+    def set_brain_region_color(self, color):
         self.region_color = color
-        for i, gui_brain_region in enumerate(self.gui_brain_regions):
+        for gui_brain_region in self.gui_brain_regions:
             gui_brain_region.color = color
-            if i not in selected:
+            if not gui_brain_region.selected:
                 gui_brain_region.setColor(color)
 
-    def set_selected_brain_region_color(self, color, selected):
+    def set_selected_brain_region_color(self, color):
         self.selected_region_color = color
-        for i, gui_brain_region in enumerate(self.gui_brain_regions):
+        for gui_brain_region in self.gui_brain_regions:
             gui_brain_region.selected_color = color
-            if i in selected:
+            if gui_brain_region.selected:
                 gui_brain_region.setColor(color)
 
     def show_3D(self):

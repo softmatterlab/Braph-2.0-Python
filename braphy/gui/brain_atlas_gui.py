@@ -25,13 +25,12 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
             self.atlas = atlas
         else:
             self.atlas = BrainAtlas(mesh_file = brain_mesh_file_name_default.split('/')[-1])
-        self.init_check_boxes()
         self.init_brain_widget(brain_mesh_file_default)
+        self.settingsWidget.init(self.brainWidget)
         self.init_buttons()
         self.init_actions()
-
         self.init_combo_boxes()
-        self.init_sliders()
+        
         self.tableWidget.cellChanged.connect(self.change_cell)
         self.tableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.tableWidget.itemSelectionChanged.connect(self.region_selection_changed)
@@ -96,12 +95,12 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def set_brain_mesh_data(self):
         self.brainWidget.set_brain_mesh(self.brain_mesh_data)
-        self.change_transparency()
+        self.settingsWidget.change_transparency()
 
     def set_brain_regions(self):
-        size = self.sliderRegions.value()/10.0
-        show_only_selected = self.checkBoxShowOnlySelected.isChecked()
-        show_brain_regions = self.actionShow_brain_regions.isChecked()
+        size = self.settingsWidget.sliderRegions.value()/10.0
+        show_only_selected = self.settingsWidget.checkBoxShowOnlySelected.isChecked()
+        show_brain_regions = self.settingsWidget.actionShow_brain_regions.isChecked()
         self.brainWidget.init_brain_regions(self.atlas.brain_regions, size, self.get_selected(), show_brain_regions, show_only_selected)
 
     def init_brain_widget(self, brain_mesh_file):
@@ -123,47 +122,6 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.comboBoxMeshFile.setCurrentIndex(idx)
         self.comboBoxMeshFile.currentIndexChanged.connect(self.select_brain_mesh)
         self.last_combobox_index = idx
-
-        colors = self.get_brain_region_colors()
-        for color in colors.keys():
-            self.comboBoxRegions.addItem(color)
-            self.comboBoxRegionsSelected.addItem(color)
-        self.comboBoxRegions.currentIndexChanged.connect(self.set_brain_region_color)
-        self.comboBoxRegionsSelected.currentIndexChanged.connect(self.set_selected_brain_region_color)
-        self.comboBoxRegions.setCurrentText('blue')
-        self.comboBoxRegionsSelected.setCurrentText('pink')
-
-        shaders = ['shaded', 'normalColor', 'balloon', 'viewNormalColor', 'edgeHilight', 'pointSprite']
-        for shader in shaders:
-            self.comboBoxMesh.addItem(shader)
-        self.comboBoxMesh.currentIndexChanged.connect(self.set_brain_mesh_shader)
-        self.comboBoxMesh.setCurrentText('normalColor')
-
-
-    def get_brain_region_colors(self):
-        colors = {}
-        colors['black'] = [0.0, 0.0, 0.0, 1.0]
-        colors['white'] = [1.0, 1.0, 1.0, 1.0]
-        colors['yellow'] = [1.0, 1.0, 0.2, 1.0]
-        colors['turquoise'] = [0.0, 0.6, 0.6, 1.0]
-        colors['red'] = [1.0, 0.2, 0.2, 1.0]
-        colors['green'] = [0.1, 0.4, 0.15, 1.0]
-        colors['blue'] = [0.3, 0.3, 1.0, 1.0]
-        colors['pink'] = [1.0, 0.0, 0.67, 1.0]
-        colors['purple'] = [0.5, 0.05, 0.67, 1.0]
-        colors['orange'] = [1.0, 0.5, 0.0, 1.0]
-        return colors
-
-    def set_brain_region_color(self):
-        colors = self.get_brain_region_colors()
-        self.brainWidget.set_brain_region_color(colors[self.comboBoxRegions.currentText()], self.get_selected())
-
-    def set_selected_brain_region_color(self):
-        colors = self.get_brain_region_colors()
-        self.brainWidget.set_selected_brain_region_color(colors[self.comboBoxRegionsSelected.currentText()], self.get_selected())
-
-    def set_brain_mesh_shader(self):
-        self.brainWidget.set_shader(self.comboBoxMesh.currentText())
 
     def set_locked(self, locked):
         self.locked = locked
@@ -216,19 +174,6 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         nv_files = [f for f in os.listdir(dir) if f.endswith('.nv')]
         return nv_files
 
-    def init_sliders(self):
-        self.sliderBrain.valueChanged.connect(self.change_transparency)
-        self.sliderBrain.setValue(50)
-        self.sliderRegions.valueChanged.connect(self.change_brain_region_size)
-
-    def change_transparency(self):
-        alpha = self.sliderBrain.value()/100.0
-        self.brainWidget.change_transparency(alpha)
-
-    def change_brain_region_size(self):
-        size = self.sliderRegions.value()/10.0
-        self.brainWidget.change_brain_region_size(size)
-
     def init_buttons(self):
         self.btnSelectAll.clicked.connect(self.select_all)
         self.btnClearSelection.clicked.connect(self.clear_selection)
@@ -240,14 +185,6 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.btnMoveDown.clicked.connect(self.move_down)
         self.btnMoveToTop.clicked.connect(self.move_to_top)
         self.btnMoveToBottom.clicked.connect(self.move_to_bottom)
-
-        self.btn3D.clicked.connect(self.brainWidget.show_3D)
-        self.btnSagittalLeft.clicked.connect(self.brainWidget.sagittal_left)
-        self.btnSagittalRight.clicked.connect(self.brainWidget.sagittal_right)
-        self.btnAxialDorsal.clicked.connect(self.brainWidget.axial_dorsal)
-        self.btnAxialVentral.clicked.connect(self.brainWidget.axial_ventral)
-        self.btnCoronalAnterior.clicked.connect(self.brainWidget.coronal_anterior)
-        self.btnCoronalPosterior.clicked.connect(self.brainWidget.coronal_posterior)
 
     def init_actions(self):
         # TOOL BAR:
@@ -265,25 +202,6 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         for action in (self.actionZoom_in, self.actionZoom_out, self.actionPanY,
                        self.actionPanZ, self.actionRotate, self.actionFind):
             group.addAction(action)
-
-        self.action3D.triggered.connect(self.brainWidget.show_3D)
-        self.actionSagittal_left.triggered.connect(self.brainWidget.sagittal_left)
-        self.actionSagittal_right.triggered.connect(self.brainWidget.sagittal_right)
-        self.actionAxial_dorsal.triggered.connect(self.brainWidget.axial_dorsal)
-        self.actionAxial_ventral.triggered.connect(self.brainWidget.axial_ventral)
-        self.actionCoronal_anterior.triggered.connect(self.brainWidget.coronal_anterior)
-        self.actionCoronal_posterior.triggered.connect(self.brainWidget.coronal_posterior)
-
-        self.actionView_brain.triggered.connect(self.show_brain)
-        self.actionView_brain.setChecked(True)
-        self.actionShow_axis.triggered.connect(self.show_axis)
-        self.actionShow_axis.setChecked(True)
-        self.actionShow_grid.triggered.connect(self.show_grid)
-        self.actionShow_grid.setChecked(True)
-        self.actionShow_brain_regions.triggered.connect(self.show_brain_regions)
-        self.actionShow_brain_regions.setChecked(True)
-        self.actionShow_labels.triggered.connect(self.show_labels)
-        self.actionShow_labels.setChecked(True)
 
         # MENU BAR:
         self.actionSave_as.triggered.connect(self.save_as)
@@ -313,60 +231,8 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.actionAbout.triggered.connect(self.about)
 
-    def init_check_boxes(self):
-        self.checkBoxShowBrainRegions.stateChanged.connect(self.show_brain_regions)
-        self.checkBoxShowBrainRegions.setChecked(True)
-        self.checkBoxShowBrain.stateChanged.connect(self.show_brain)
-        self.checkBoxShowBrain.setChecked(True)
-        self.checkBoxShowAxis.stateChanged.connect(self.show_axis)
-        self.checkBoxShowAxis.setChecked(True)
-        self.checkBoxShowGrid.stateChanged.connect(self.show_grid)
-        self.checkBoxShowGrid.setChecked(True)
-        self.checkBoxShowLabels.stateChanged.connect(self.show_labels)
-        self.checkBoxShowLabels.setChecked(True)
-        self.checkBoxShowOnlySelected.stateChanged.connect(self.show_only_selected)
-
-    def show_brain(self, state):
-        if (self.actionView_brain.isChecked() != self.checkBoxShowBrain.isChecked()):
-            self.brainWidget.show_brain(state)
-            self.actionView_brain.setChecked(state != 0)
-            self.checkBoxShowBrain.setChecked(state != 0)
-
-    def show_axis(self, state):
-        if (self.actionShow_axis.isChecked() != self.checkBoxShowAxis.isChecked()):
-            self.brainWidget.show_axis(state)
-            self.actionShow_axis.setChecked(state != 0)
-            self.checkBoxShowAxis.setChecked(state != 0)
-
-    def show_grid(self, state):
-        if (self.actionShow_grid.isChecked() != self.checkBoxShowGrid.isChecked()):
-            self.brainWidget.show_grid(state)
-            self.actionShow_grid.setChecked(state != 0)
-            self.checkBoxShowGrid.setChecked(state != 0)
-
-    def show_brain_regions(self, state):
-        if (self.actionShow_brain_regions.isChecked() != self.checkBoxShowBrainRegions.isChecked()):
-            self.brainWidget.set_brain_regions_visible(state != 0)
-            self.actionShow_brain_regions.setChecked(state != 0)
-            self.checkBoxShowBrainRegions.setChecked(state != 0)
-            if state == 0:
-                self.checkBoxShowLabels.setChecked(False)
-                self.checkBoxShowLabels.setEnabled(False)
-                self.checkBoxShowOnlySelected.setChecked(False)
-                self.checkBoxShowOnlySelected.setEnabled(False)
-            else:
-                self.checkBoxShowLabels.setEnabled(True)
-                self.checkBoxShowOnlySelected.setEnabled(True)
-
-    def show_labels(self, state):
-        if (self.actionShow_labels.isChecked() != self.checkBoxShowLabels.isChecked()):
-            self.brainWidget.show_labels(state)
-            self.actionShow_labels.setChecked(state != 0)
-            self.checkBoxShowLabels.setChecked(state != 0)
-
-    def show_only_selected(self, state):
-        self.brainWidget.show_only_selected = (state != 0)
-        self.brainWidget.update_brain_regions_plot()
+        for action in self.settingsWidget.get_actions():
+            self.toolBar.addAction(action)
 
     def select_all(self):
         self.tableWidget.selectAll()

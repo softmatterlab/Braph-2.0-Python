@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1259</width>
-    <height>762</height>
+    <width>1265</width>
+    <height>749</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -209,9 +209,12 @@ p, li { white-space: pre-wrap; }
           <widget class="BrainAtlasWidget" name="brainWidget"/>
          </item>
          <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <layout class="QVBoxLayout" name="verticalLayout_2">
            <property name="leftMargin">
             <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>20</number>
            </property>
            <property name="rightMargin">
             <number>0</number>
@@ -220,203 +223,7 @@ p, li { white-space: pre-wrap; }
             <number>0</number>
            </property>
            <item>
-            <layout class="QGridLayout" name="gridLayout_5">
-             <property name="rightMargin">
-              <number>20</number>
-             </property>
-             <item row="1" column="1">
-              <widget class="QPushButton" name="btnSagittalRight">
-               <property name="text">
-                <string>Sagittal right</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0">
-              <widget class="QPushButton" name="btnSagittalLeft">
-               <property name="text">
-                <string>Sagittal left</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="1">
-              <widget class="QPushButton" name="btnAxialVentral">
-               <property name="text">
-                <string>Axial ventral</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="0">
-              <widget class="QPushButton" name="btnAxialDorsal">
-               <property name="text">
-                <string>Axial dorsal</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="0">
-              <widget class="QPushButton" name="btn3D">
-               <property name="text">
-                <string>3D</string>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="0">
-              <widget class="QPushButton" name="btnCoronalAnterior">
-               <property name="text">
-                <string>Coronal anterior</string>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="1">
-              <widget class="QPushButton" name="btnCoronalPosterior">
-               <property name="text">
-                <string>Coronal posterior</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <spacer name="horizontalSpacer_2">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <layout class="QVBoxLayout" name="verticalLayout_6">
-             <property name="bottomMargin">
-              <number>0</number>
-             </property>
-             <item>
-              <layout class="QGridLayout" name="gridLayout_3">
-               <item row="2" column="0">
-                <widget class="QCheckBox" name="checkBoxShowBrainRegions">
-                 <property name="text">
-                  <string>Show brain regions</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="1">
-                <widget class="QSlider" name="sliderRegions">
-                 <property name="minimum">
-                  <number>1</number>
-                 </property>
-                 <property name="maximum">
-                  <number>80</number>
-                 </property>
-                 <property name="singleStep">
-                  <number>1</number>
-                 </property>
-                 <property name="pageStep">
-                  <number>10</number>
-                 </property>
-                 <property name="value">
-                  <number>40</number>
-                 </property>
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                </widget>
-               </item>
-               <item row="4" column="1">
-                <layout class="QGridLayout" name="gridLayout_4">
-                 <property name="topMargin">
-                  <number>0</number>
-                 </property>
-                 <item row="0" column="0">
-                  <widget class="QComboBox" name="comboBoxRegions"/>
-                 </item>
-                 <item row="0" column="1">
-                  <widget class="QComboBox" name="comboBoxRegionsSelected"/>
-                 </item>
-                </layout>
-               </item>
-               <item row="0" column="1">
-                <widget class="QSlider" name="sliderBrain">
-                 <property name="maximum">
-                  <number>100</number>
-                 </property>
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="0">
-                <widget class="QCheckBox" name="checkBoxShowBrain">
-                 <property name="text">
-                  <string>Show brain</string>
-                 </property>
-                 <property name="checked">
-                  <bool>true</bool>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="1">
-                <widget class="QComboBox" name="comboBoxMesh"/>
-               </item>
-              </layout>
-             </item>
-             <item>
-              <layout class="QGridLayout" name="gridLayout_2"/>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <spacer name="horizontalSpacer">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <layout class="QVBoxLayout" name="verticalLayout_4">
-             <property name="rightMargin">
-              <number>0</number>
-             </property>
-             <property name="bottomMargin">
-              <number>0</number>
-             </property>
-             <item>
-              <widget class="QCheckBox" name="checkBoxShowAxis">
-               <property name="text">
-                <string>Show axis</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QCheckBox" name="checkBoxShowGrid">
-               <property name="text">
-                <string>Show grid</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QCheckBox" name="checkBoxShowLabels">
-               <property name="text">
-                <string>Show labels</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QCheckBox" name="checkBoxShowOnlySelected">
-               <property name="text">
-                <string>Show only selected</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
+            <widget class="BrainAtlasSettingsWidget" name="settingsWidget" native="true"/>
            </item>
           </layout>
          </item>
@@ -432,7 +239,7 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1259</width>
+     <width>1265</width>
      <height>22</height>
     </rect>
    </property>
@@ -531,19 +338,7 @@ p, li { white-space: pre-wrap; }
    <addaction name="actionRotate"/>
    <addaction name="actionFind"/>
    <addaction name="separator"/>
-   <addaction name="action3D"/>
-   <addaction name="actionSagittal_left"/>
-   <addaction name="actionSagittal_right"/>
-   <addaction name="actionAxial_dorsal"/>
-   <addaction name="actionAxial_ventral"/>
-   <addaction name="actionCoronal_anterior"/>
-   <addaction name="actionCoronal_posterior"/>
    <addaction name="separator"/>
-   <addaction name="actionView_brain"/>
-   <addaction name="actionShow_axis"/>
-   <addaction name="actionShow_grid"/>
-   <addaction name="actionShow_brain_regions"/>
-   <addaction name="actionShow_labels"/>
   </widget>
   <action name="actionSave">
    <property name="icon">
@@ -764,129 +559,6 @@ p, li { white-space: pre-wrap; }
     <string>Find</string>
    </property>
   </action>
-  <action name="actionSagittal_left">
-   <property name="icon">
-    <iconset resource="../icons/icons.qrc">
-     <normaloff>:/buttons/icon_view_sl.png</normaloff>:/buttons/icon_view_sl.png</iconset>
-   </property>
-   <property name="text">
-    <string>Sagittal left</string>
-   </property>
-  </action>
-  <action name="actionSagittal_right">
-   <property name="icon">
-    <iconset resource="../icons/icons.qrc">
-     <normaloff>:/buttons/icon_view_sr.png</normaloff>:/buttons/icon_view_sr.png</iconset>
-   </property>
-   <property name="text">
-    <string>Sagittal right</string>
-   </property>
-  </action>
-  <action name="actionAxial_dorsal">
-   <property name="icon">
-    <iconset resource="../icons/icons.qrc">
-     <normaloff>:/buttons/icon_view_ad.png</normaloff>:/buttons/icon_view_ad.png</iconset>
-   </property>
-   <property name="text">
-    <string>Axial dorsal</string>
-   </property>
-  </action>
-  <action name="actionAxial_ventral">
-   <property name="icon">
-    <iconset resource="../icons/icons.qrc">
-     <normaloff>:/buttons/icon_view_av.png</normaloff>:/buttons/icon_view_av.png</iconset>
-   </property>
-   <property name="text">
-    <string>Axial ventral</string>
-   </property>
-  </action>
-  <action name="actionCoronal_anterior">
-   <property name="icon">
-    <iconset resource="../icons/icons.qrc">
-     <normaloff>:/buttons/icon_view_ca.png</normaloff>:/buttons/icon_view_ca.png</iconset>
-   </property>
-   <property name="text">
-    <string>Coronal anterior</string>
-   </property>
-  </action>
-  <action name="actionCoronal_posterior">
-   <property name="icon">
-    <iconset resource="../icons/icons.qrc">
-     <normaloff>:/buttons/icon_view_cp.png</normaloff>:/buttons/icon_view_cp.png</iconset>
-   </property>
-   <property name="text">
-    <string>Coronal posterior</string>
-   </property>
-  </action>
-  <action name="actionView_brain">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../icons/icons.qrc">
-     <normaloff>:/buttons/icon_brain.png</normaloff>:/buttons/icon_brain.png</iconset>
-   </property>
-   <property name="text">
-    <string>Show brain</string>
-   </property>
-  </action>
-  <action name="actionShow_axis">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../icons/icons.qrc">
-     <normaloff>:/buttons/icon_axis.png</normaloff>:/buttons/icon_axis.png</iconset>
-   </property>
-   <property name="text">
-    <string>Show axis</string>
-   </property>
-  </action>
-  <action name="actionShow_grid">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../icons/icons.qrc">
-     <normaloff>:/buttons/icon_grid.png</normaloff>:/buttons/icon_grid.png</iconset>
-   </property>
-   <property name="text">
-    <string>Show grid</string>
-   </property>
-  </action>
-  <action name="actionShow_brain_regions">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../icons/icons.qrc">
-     <normaloff>:/buttons/icon_br.png</normaloff>:/buttons/icon_br.png</iconset>
-   </property>
-   <property name="text">
-    <string>Show brain regions</string>
-   </property>
-  </action>
-  <action name="actionShow_labels">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../icons/icons.qrc">
-     <normaloff>:/buttons/icon_label.png</normaloff>:/buttons/icon_label.png</iconset>
-   </property>
-   <property name="text">
-    <string>Show labels</string>
-   </property>
-  </action>
-  <action name="action3D">
-   <property name="icon">
-    <iconset resource="../icons/icons.qrc">
-     <normaloff>:/buttons/icon_view_3d.png</normaloff>:/buttons/icon_view_3d.png</iconset>
-   </property>
-   <property name="text">
-    <string>3D</string>
-   </property>
-  </action>
   <action name="actionOpen_2">
    <property name="text">
     <string>Open...</string>
@@ -918,6 +590,12 @@ p, li { white-space: pre-wrap; }
    <class>BrainAtlasWidget</class>
    <extends>QGraphicsView</extends>
    <header>braphy.gui.widgets.brain_atlas_widget</header>
+  </customwidget>
+  <customwidget>
+   <class>BrainAtlasSettingsWidget</class>
+   <extends>QWidget</extends>
+   <header>braphy.gui.widgets.brain_atlas_settings_widget</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>

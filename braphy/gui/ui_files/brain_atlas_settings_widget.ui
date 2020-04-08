@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>824</width>
+    <height>147</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <item>
+    <layout class="QGridLayout" name="gridLayout_9">
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <item row="1" column="1">
+      <widget class="QPushButton" name="btnSagittalRight">
+       <property name="text">
+        <string>Sagittal right</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QPushButton" name="btnSagittalLeft">
+       <property name="text">
+        <string>Sagittal left</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QPushButton" name="btnAxialVentral">
+       <property name="text">
+        <string>Axial ventral</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QPushButton" name="btnAxialDorsal">
+       <property name="text">
+        <string>Axial dorsal</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QPushButton" name="btn3D">
+       <property name="text">
+        <string>3D</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QPushButton" name="btnCoronalAnterior">
+       <property name="text">
+        <string>Coronal anterior</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QPushButton" name="btnCoronalPosterior">
+       <property name="text">
+        <string>Coronal posterior</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <spacer name="horizontalSpacer_2">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>59</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout_7">
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+     <item>
+      <layout class="QGridLayout" name="gridLayout_6">
+       <item row="2" column="0">
+        <widget class="QCheckBox" name="checkBoxShowBrainRegions">
+         <property name="text">
+          <string>Show brain regions</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QSlider" name="sliderRegions">
+         <property name="minimum">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <number>80</number>
+         </property>
+         <property name="singleStep">
+          <number>1</number>
+         </property>
+         <property name="pageStep">
+          <number>10</number>
+         </property>
+         <property name="value">
+          <number>40</number>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <layout class="QGridLayout" name="gridLayout_7">
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <item row="0" column="0">
+          <widget class="QComboBox" name="comboBoxRegions"/>
+         </item>
+         <item row="0" column="1">
+          <widget class="QComboBox" name="comboBoxRegionsSelected"/>
+         </item>
+        </layout>
+       </item>
+       <item row="0" column="1">
+        <widget class="QSlider" name="sliderBrain">
+         <property name="maximum">
+          <number>100</number>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QCheckBox" name="checkBoxShowBrain">
+         <property name="text">
+          <string>Show brain</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QComboBox" name="comboBoxMesh"/>
+       </item>
+       <item row="2" column="2">
+        <widget class="QCheckBox" name="checkBoxShowLabels">
+         <property name="text">
+          <string>Show labels</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="2">
+        <widget class="QCheckBox" name="checkBoxShowOnlySelected">
+         <property name="text">
+          <string>Show only selected</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="2">
+        <widget class="QCheckBox" name="checkBoxShowGrid">
+         <property name="text">
+          <string>Show grid</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QCheckBox" name="checkBoxShowAxis">
+         <property name="text">
+          <string>Show axis</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>0</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+  <action name="action3D">
+   <property name="icon">
+    <iconset resource="../icons/icons.qrc">
+     <normaloff>:/buttons/icon_view_3d.png</normaloff>:/buttons/icon_view_3d.png</iconset>
+   </property>
+   <property name="text">
+    <string>3D</string>
+   </property>
+   <property name="toolTip">
+    <string>show 3D</string>
+   </property>
+  </action>
+  <action name="actionSagittal_left">
+   <property name="icon">
+    <iconset resource="../icons/icons.qrc">
+     <normaloff>:/buttons/icon_view_sl.png</normaloff>:/buttons/icon_view_sl.png</iconset>
+   </property>
+   <property name="text">
+    <string>Sagittal left</string>
+   </property>
+   <property name="toolTip">
+    <string>Sagittal left</string>
+   </property>
+  </action>
+  <action name="actionSagittal_right">
+   <property name="icon">
+    <iconset resource="../icons/icons.qrc">
+     <normaloff>:/buttons/icon_view_sr.png</normaloff>:/buttons/icon_view_sr.png</iconset>
+   </property>
+   <property name="text">
+    <string>Sagittal right</string>
+   </property>
+   <property name="toolTip">
+    <string>Sagittal right</string>
+   </property>
+  </action>
+  <action name="actionAxial_dorsal">
+   <property name="icon">
+    <iconset resource="../icons/icons.qrc">
+     <normaloff>:/buttons/icon_view_ad.png</normaloff>:/buttons/icon_view_ad.png</iconset>
+   </property>
+   <property name="text">
+    <string>Axial dorsal</string>
+   </property>
+   <property name="toolTip">
+    <string>Axial dorsal</string>
+   </property>
+  </action>
+  <action name="actionAxial_ventral">
+   <property name="icon">
+    <iconset resource="../icons/icons.qrc">
+     <normaloff>:/buttons/icon_view_av.png</normaloff>:/buttons/icon_view_av.png</iconset>
+   </property>
+   <property name="text">
+    <string>Axial ventral</string>
+   </property>
+   <property name="toolTip">
+    <string>Axial ventral</string>
+   </property>
+  </action>
+  <action name="actionCoronal_anterior">
+   <property name="icon">
+    <iconset resource="../icons/icons.qrc">
+     <normaloff>:/buttons/icon_view_ca.png</normaloff>:/buttons/icon_view_ca.png</iconset>
+   </property>
+   <property name="text">
+    <string>Coronal anterior</string>
+   </property>
+   <property name="toolTip">
+    <string>Coronal anterior</string>
+   </property>
+  </action>
+  <action name="actionCoronal_posterior">
+   <property name="icon">
+    <iconset resource="../icons/icons.qrc">
+     <normaloff>:/buttons/icon_view_cp.png</normaloff>:/buttons/icon_view_cp.png</iconset>
+   </property>
+   <property name="text">
+    <string>Coronal posterior</string>
+   </property>
+   <property name="toolTip">
+    <string>Coronal posterior</string>
+   </property>
+  </action>
+  <action name="actionShow_brain">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../icons/icons.qrc">
+     <normaloff>:/buttons/icon_brain.png</normaloff>:/buttons/icon_brain.png</iconset>
+   </property>
+   <property name="text">
+    <string>Show brain</string>
+   </property>
+   <property name="toolTip">
+    <string>Show brain</string>
+   </property>
+  </action>
+  <action name="actionShow_axis">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../icons/icons.qrc">
+     <normaloff>:/buttons/icon_axis.png</normaloff>:/buttons/icon_axis.png</iconset>
+   </property>
+   <property name="text">
+    <string>Show axis</string>
+   </property>
+   <property name="toolTip">
+    <string>Show axis</string>
+   </property>
+  </action>
+  <action name="actionShow_grid">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../icons/icons.qrc">
+     <normaloff>:/buttons/icon_grid.png</normaloff>:/buttons/icon_grid.png</iconset>
+   </property>
+   <property name="text">
+    <string>Show grid</string>
+   </property>
+   <property name="toolTip">
+    <string>Show grid</string>
+   </property>
+  </action>
+  <action name="actionShow_brain_regions">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../icons/icons.qrc">
+     <normaloff>:/buttons/icon_br.png</normaloff>:/buttons/icon_br.png</iconset>
+   </property>
+   <property name="text">
+    <string>Show brain regions</string>
+   </property>
+   <property name="toolTip">
+    <string>Show brain regions</string>
+   </property>
+  </action>
+  <action name="actionShow_labels">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../icons/icons.qrc">
+     <normaloff>:/buttons/icon_label.png</normaloff>:/buttons/icon_label.png</iconset>
+   </property>
+   <property name="text">
+    <string>Show labels</string>
+   </property>
+   <property name="toolTip">
+    <string>Show labels</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="../icons/icons.qrc"/>
+ </resources>
+ <connections/>
+</ui>
