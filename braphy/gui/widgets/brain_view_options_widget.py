@@ -20,12 +20,22 @@ class BrainViewOptionsWidget(Base, Form):
         self.tabWidget.hide()
         self.resize(self.sizeHint())
         self.groupBox.clicked.connect(self.update_visible)
+        self.update_visible(False)
 
     def update_move(self):
-        self.move(0, self.parent().height()-self.height())
+        self.move(9, self.parent().height()-self.height() - 9)
 
     def update_visible(self, visible):
-        self.tabWidget.setVisible(visible)
-        self.groupBox.resize(self.groupBox.sizeHint())
-        self.resize(self.sizeHint())
+        if visible:
+            self.tabWidget.show()
+            self.groupBox.resize(self.groupBox.sizeHint())
+            self.resize(self.sizeHint())
+        else:
+            self.tabWidget.hide()
+            self.resize(80, 20)
         self.update_move()
+
+    def paintEvent(self, e):
+        painter = QtGui.QPainter(self)
+        painter.drawRoundedRect(0, 0, self.width()-1, self.height()-1, 3, 3)
+        QWidget.paintEvent(self, e)
