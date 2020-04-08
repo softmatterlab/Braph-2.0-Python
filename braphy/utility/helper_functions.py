@@ -100,6 +100,7 @@ class ListManager:
         lst.insert(j, spam)
 
     def add_above(lst, indices, obj_constructor):
+        indices.sort()
         for i in range(len(indices) - 1, -1, -1):
             lst.insert(indices[i], obj_constructor())
         indices = indices + np.array(range(1, len(indices) + 1))
@@ -107,6 +108,7 @@ class ListManager:
         return indices, added
 
     def add_below(lst, indices, obj_constructor):
+        indices.sort()
         for i in range(len(indices) - 1, -1, -1):
             lst.insert(indices[i] + 1, obj_constructor())
         indices = indices + np.array(range(0, len(indices)))
@@ -114,6 +116,7 @@ class ListManager:
         return indices, added
 
     def move_up(lst, indices):
+        indices.sort()
         if len(indices) > 0:
             first_index_to_process = 0
             unprocessable_length = 0
@@ -133,6 +136,7 @@ class ListManager:
         return indices
 
     def move_down(lst, indices):
+        indices.sort()
         if (len(indices) > 0) & (len(indices) < len(lst)):
             last_index_to_process = len(indices) - 1
             unprocessable_length = len(lst) - 1
@@ -148,6 +152,7 @@ class ListManager:
 
     def move_to_top(lst, indices):
         if len(indices) > 0:
+            indices.sort()
             for i in range(len(indices)):
                 ListManager.move_to(lst, indices[i], i)
             indices = np.arange(0, len(indices))
@@ -155,6 +160,7 @@ class ListManager:
 
     def move_to_bottom(lst, indices):
         if len(indices) > 0:
+            indices.sort()
             for i in range(len(indices) - 1, -1, -1):
                 ListManager.move_to(lst, indices[i], len(lst) - (len(indices) - i))
             indices = np.arange(len(lst) - len(indices), len(lst))
