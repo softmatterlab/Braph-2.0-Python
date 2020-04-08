@@ -39,6 +39,18 @@
         </property>
         <item>
          <widget class="QGroupBox" name="groupBoxAtlas">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>500</width>
+            <height>16777215</height>
+           </size>
+          </property>
           <property name="title">
            <string>Brain Atlas</string>
           </property>
@@ -126,13 +138,38 @@
           </property>
           <item>
            <widget class="QLineEdit" name="textCohortName">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>500</width>
+              <height>16777215</height>
+             </size>
+            </property>
             <property name="text">
              <string>MRI Cohort</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="GroupTableWidget" name="groupTableWidget" native="true"/>
+           <widget class="GroupTableWidget" name="groupTableWidget" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>500</width>
+              <height>16777215</height>
+             </size>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>
@@ -140,6 +177,18 @@
       </item>
       <item>
        <widget class="QTabWidget" name="tabWidget">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>850</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="currentIndex">
          <number>3</number>
         </property>

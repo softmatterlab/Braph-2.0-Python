@@ -48,11 +48,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
             self.tabWidget.tabBar().setStyleSheet("QTabBar::tab::disabled {width: 0; height: 0; \
                                                    margin: 0; padding: 0; border: none;} ")
 
-        self.brain_mesh_data = load_nv(brain_mesh_file_default)
         self.init_brain_widget()
-        self.brain_view_options_widget = BrainViewOptionsWidget(parent=self.tabBrain)
-        self.brain_view_options_widget.settingsWidget.init(self.brainWidget)
-        self.brain_view_options_widget.show()
 
         self.init_buttons()
         self.init_actions()
@@ -102,8 +98,14 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
             json.dump(d, f, sort_keys=True, indent=4)
 
     def init_brain_widget(self):
+        self.brain_mesh_data = load_nv(brain_mesh_file_default)
         self.brainWidget.set_brain_mesh(self.brain_mesh_data)
-        self.brainWidget.change_transparency(0.5)
+
+        self.brain_view_options_widget = BrainViewOptionsWidget(parent=self.tabBrain)
+
+        self.brain_view_options_widget.init(self.brainWidget)
+        self.brain_view_options_widget.settingsWidget.change_transparency()
+        self.brain_view_options_widget.show()
 
     def init_buttons(self):
         self.btnSelectAtlas.clicked.connect(self.load_atlas)
@@ -272,7 +274,9 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
             self.btnViewAtlas.setEnabled(True)
             self.labelAtlasName.setText(file_name.split('/')[-1])
             self.labelRegionNumber.setText("Brain region number = {}".format(self.brain_region_number()))
-            self.brainWidget.init_brain_regions(self.cohort.atlas.brain_regions, 4, [], False, False)
+            show_only_selected = self.brain_view_options_widget.settingsWidget.checkBoxShowOnlySelected.isChecked()
+            show_brain_regions = self.brain_view_options_widget.settingsWidget.actionShow_brain_regions.isChecked()
+            self.brainWidget.init_brain_regions(self.cohort.atlas.brain_regions, 4, [], show_brain_regions, show_only_selected)
 
     def init_widgets(self):
         self.groupTableWidget.init(self.cohort)

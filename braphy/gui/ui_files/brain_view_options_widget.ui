@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>604</width>
+    <width>824</width>
     <height>289</height>
    </rect>
   </property>
@@ -48,18 +48,18 @@
         </property>
         <property name="minimumSize">
          <size>
-          <width>580</width>
+          <width>800</width>
           <height>245</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>580</width>
+          <width>800</width>
           <height>245</height>
          </size>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>2</number>
         </property>
         <widget class="QWidget" name="tabPlot">
          <attribute name="title">

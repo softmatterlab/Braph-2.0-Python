@@ -7,7 +7,7 @@ ui_file = abs_path_from_relative(__file__, "../ui_files/brain_atlas_settings_wid
 Form, Base = uic.loadUiType(ui_file)
 
 class BrainAtlasSettingsWidget(Base, Form):
-    def __init__(self, cohort, parent = None):
+    def __init__(self, parent = None):
         super(BrainAtlasSettingsWidget, self).__init__(parent)
         self.setupUi(self)
 
