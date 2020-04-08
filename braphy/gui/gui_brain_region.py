@@ -1,14 +1,16 @@
 import pyqtgraph.opengl as gl
 
 class GUIBrainRegion(gl.GLMeshItem):
-    def __init__(self, brain_region, size, selected):
+    def __init__(self, brain_region, size, selected, color, selected_color, ):
         self.brain_region = brain_region
         self.label = self.brain_region.label
         self.x = self.brain_region.x
         self.y = self.brain_region.y
         self.z = self.brain_region.z
         self.size = size
-        meshdata = gl.MeshData.sphere(8, 8, radius=size)
+        self.color = color
+        self.selected_color = selected_color
+        meshdata = gl.MeshData.sphere(16, 16, radius=size)
         super().__init__(meshdata=meshdata, shader='shaded')
         self.set_selected(selected)
         self.translate(self.x, self.y, self.z)
@@ -53,12 +55,10 @@ class GUIBrainRegion(gl.GLMeshItem):
 
     def set_selected(self, selected):
         self.selected = selected
-        COLOR_PINK = [1.0, 0.0, 2.0/3, 1.0]
-        COLOR_BLUE = [0.3, 0.3, 1.0, 1.0]
-        color = COLOR_PINK if selected else COLOR_BLUE
+        color = self.selected_color if selected else self.color
         self.setColor(color)
 
     def set_size(self, size):
         self.size = size
-        meshdata = gl.MeshData.sphere(8, 8, radius=size)
+        meshdata = gl.MeshData.sphere(16, 16, radius=size)
         self.setMeshData(meshdata=meshdata)

@@ -33,6 +33,8 @@ class BrainAtlasWidget(GLViewWidget):
         self.brain_mesh = None
         self.brainBackgroundColor = (200, 200, 200, 255)
         self.selected_observers = []
+        self.region_color = [0.3, 0.3, 1.0, 1.0] # blue
+        self.selected_region_color = [1.0, 0.0, 2.0/3, 1.0] # pink
 
     def add_selected_observer(self, observer):
         self.selected_observers.append(observer)
@@ -108,6 +110,9 @@ class BrainAtlasWidget(GLViewWidget):
         self.brain_mesh.setGLOptions('translucent')
         self.addItem(self.brain_mesh)
 
+    def set_shader(self, shader):
+        self.brain_mesh.setShader(shader)
+
     def paintGL(self, *args, **kwds):
         GLViewWidget.paintGL(self, *args, **kwds)
         self.qglColor(QColor("k"))
@@ -129,6 +134,20 @@ class BrainAtlasWidget(GLViewWidget):
     def change_brain_region_size(self, size):
         for gui_brain_region in self.gui_brain_regions:
             gui_brain_region.set_size(size)
+
+    def set_brain_region_color(self, color, selected):
+        self.region_color = color
+        for i, gui_brain_region in enumerate(self.gui_brain_regions):
+            gui_brain_region.color = color
+            if i not in selected:
+                gui_brain_region.setColor(color)
+
+    def set_selected_brain_region_color(self, color, selected):
+        self.selected_region_color = color
+        for i, gui_brain_region in enumerate(self.gui_brain_regions):
+            gui_brain_region.selected_color = color
+            if i in selected:
+                gui_brain_region.setColor(color)
 
     def show_3D(self):
         self.set_orthographic(False)
@@ -238,7 +257,7 @@ class BrainAtlasWidget(GLViewWidget):
         for i in range(len(self.brain_regions)):
             selected = (i in selected_regions)
             brain_region = self.brain_regions[i]
-            gui_brain_region = GUIBrainRegion(brain_region, self.brain_region_size, selected)
+            gui_brain_region = GUIBrainRegion(brain_region, self.brain_region_size, selected, self.region_color, self.selected_region_color)
             gui_brain_region.add_observer(self.update)
             gui_brain_region.add_selected_observer(self.selected_updated)
             self.gui_brain_regions.append(gui_brain_region)
