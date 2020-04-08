@@ -33,12 +33,10 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         if cohort:
             self.cohort = cohort
             self.init_widgets()
-            #self.init_cohort(cohort)
             self.set_locked(False)
         elif atlas:
             self.cohort = Cohort('Cohort', subject_class, atlas)
             self.init_widgets()
-            #self.init_cohort(atlas)
             self.set_locked(False)
         else:
             self.set_locked(True)
@@ -51,9 +49,13 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
                                                    margin: 0; padding: 0; border: none;} ")
 
         self.brain_mesh_data = load_nv(brain_mesh_file_default)
+        self.init_brain_widget()
+        self.brain_view_options_widget = BrainViewOptionsWidget(parent=self.tabBrain)
+        self.brain_view_options_widget.settingsWidget.init(self.brainWidget)
+        self.brain_view_options_widget.show()
+
         self.init_buttons()
         self.init_actions()
-        self.init_brain_widget()
 
         self.file_name = None
         self.set_brain_view_actions_visible(False)
@@ -63,9 +65,6 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.groupTableWidget.set_callback(self.group_table_widget_updated)
         self.groupsAndDemographicsWidget.set_callback(self.groups_and_demographics_table_updated)
         self.subjectDataWidget.set_callback(self.subject_data_table_updated)
-
-        self.brain_view_options_widget = BrainViewOptionsWidget(parent=self.tabBrain)
-        self.brain_view_options_widget.show()
 
     def to_dict(self):
         d = self.cohort.to_dict()
@@ -116,6 +115,14 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionSave_as.triggered.connect(self.save_as)
         self.actionClose.triggered.connect(self.close)
 
+        for action in self.brainWidget.get_actions():
+            self.toolBar.addAction(action)
+        self.toolBar.addSeparator()
+
+        for action in self.brain_view_options_widget.settingsWidget.get_actions():
+            self.toolBar.addAction(action)
+        self.toolBar.addSeparator()
+
         self.actionLoad_subject_group_from_file.triggered.connect(self.groupTableWidget.load_subject_group)
         self.actionAdd_group.triggered.connect(self.groupTableWidget.add_group)
         self.actionRemove_group.triggered.connect(self.groupTableWidget.remove_group)
@@ -152,53 +159,12 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.actionAbout.triggered.connect(self.about)
 
-        self.actionZoom_in.triggered.connect(self.zoom_in)
-        self.actionZoom_out.triggered.connect(self.zoom_out)
-        self.actionPanY.triggered.connect(self.pan_y)
-        self.actionPanZ.triggered.connect(self.pan_z)
-        self.action3D_rotation.triggered.connect(self.rotation)
-        self.actionData_cursor.triggered.connect(self.data_cursor)
-        self.actionInsert_colorbar.triggered.connect(self.insert_colorbar)
-
-        group = QtWidgets.QActionGroup(self)
-        for action in (self.actionZoom_in, self.actionZoom_out, self.actionPanY,
-                       self.actionPanZ, self.action3D_rotation, self.actionData_cursor):
-            group.addAction(action)
-
-        self.action3D.triggered.connect(self.brainWidget.show_3D)
-        self.actionSagittal_left.triggered.connect(self.brainWidget.sagittal_left)
-        self.actionSagittal_right.triggered.connect(self.brainWidget.sagittal_right)
-        self.actionAxial_dorsal.triggered.connect(self.brainWidget.axial_dorsal)
-        self.actionAxial_ventral.triggered.connect(self.brainWidget.axial_ventral)
-        self.actionCoronal_anterior.triggered.connect(self.brainWidget.coronal_anterior)
-        self.actionCoronal_posterior.triggered.connect(self.brainWidget.coronal_posterior)
-
-        self.actionShow_brain.triggered.connect(self.show_brain)
-        self.actionShow_axis.triggered.connect(self.show_axis)
-        self.actionShow_grid.triggered.connect(self.show_grid)
-        self.actionShow_regions.triggered.connect(self.show_regions)
-        self.actionShow_labels.triggered.connect(self.show_labels)
-
     def set_brain_view_actions_visible(self, state):
-        self.actionZoom_in.setVisible(state)
-        self.actionZoom_out.setVisible(state)
-        self.actionPanY.setVisible(state)
-        self.actionPanZ.setVisible(state)
-        self.action3D_rotation.setVisible(state)
-        self.actionData_cursor.setVisible(state)
-        self.actionInsert_colorbar.setVisible(state)
-        self.action3D.setVisible(state)
-        self.actionSagittal_left.setVisible(state)
-        self.actionSagittal_right.setVisible(state)
-        self.actionAxial_dorsal.setVisible(state)
-        self.actionAxial_ventral.setVisible(state)
-        self.actionCoronal_anterior.setVisible(state)
-        self.actionCoronal_posterior.setVisible(state)
-        self.actionShow_brain.setVisible(state)
-        self.actionShow_axis.setVisible(state)
-        self.actionShow_grid.setVisible(state)
-        self.actionShow_regions.setVisible(state)
-        self.actionShow_labels.setVisible(state)
+        for action in self.brainWidget.get_actions():
+            action.setVisible(state)
+
+        for action in self.brain_view_options_widget.settingsWidget.get_actions():
+            action.setVisible(state)
 
     def set_locked(self, locked):
         self.locked = locked
@@ -279,54 +245,6 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def about(self):
         pass
-
-    def set_cursor(self, file_name):
-        cursor_file = abs_path_from_relative(__file__, file_name)
-        pm = QtGui.QPixmap(cursor_file)
-        cursor = QtGui.QCursor(pm)
-        self.brainWidget.setCursor(cursor)
-
-    def zoom_in(self):
-        self.set_cursor('icons/zoom_in.png')
-        self.brainWidget.mouse_mode = BrainAtlasWidget.MOUSE_MODE_ZOOM_IN
-
-    def zoom_out(self):
-        self.set_cursor('icons/zoom_out.png')
-        self.brainWidget.mouse_mode = BrainAtlasWidget.MOUSE_MODE_ZOOM_OUT
-
-    def pan_y(self):
-        self.set_cursor('icons/hand_xy.png')
-        self.brainWidget.mouse_mode = BrainAtlasWidget.MOUSE_MODE_PAN_Y
-
-    def pan_z(self):
-        self.set_cursor('icons/hand.png')
-        self.brainWidget.mouse_mode = BrainAtlasWidget.MOUSE_MODE_PAN_Z
-
-    def rotation(self):
-        self.set_cursor('icons/rotate.png')
-        self.brainWidget.mouse_mode = BrainAtlasWidget.MOUSE_MODE_ROTATE
-
-    def data_cursor(self):
-        self.set_cursor('icons/cursor.png')
-        self.brainWidget.mouse_mode = BrainAtlasWidget.MOUSE_MODE_FIND
-
-    def insert_colorbar(self):
-        pass
-
-    def show_brain(self, state):
-        self.brainWidget.show_brain(state)
-
-    def show_axis(self, state):
-        self.brainWidget.show_axis(state)
-
-    def show_grid(self, state):
-        self.brainWidget.show_grid(state)
-
-    def show_regions(self, state):
-        self.brainWidget.set_brain_regions_visible(state != 0)
-
-    def show_labels(self, state):
-        self.brainWidget.show_labels(state)
 
     def view_atlas(self):
         if self.cohort:
