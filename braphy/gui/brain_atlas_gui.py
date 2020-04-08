@@ -175,8 +175,8 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         return nv_files
 
     def init_buttons(self):
-        self.btnSelectAll.clicked.connect(self.select_all)
-        self.btnClearSelection.clicked.connect(self.clear_selection)
+        self.btnSelectAll.clicked.connect(self.tableWidget.selectAll)
+        self.btnClearSelection.clicked.connect(self.tableWidget.clearSelection)
         self.btnAdd.clicked.connect(self.add)
         self.btnAddAbove.clicked.connect(self.add_above)
         self.btnAddBelow.clicked.connect(self.add_below)
@@ -206,8 +206,8 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionExport_txt.triggered.connect(self.export_txt)
         self.actionClose.triggered.connect(self.close)
 
-        self.actionSelect_all.triggered.connect(self.select_all)
-        self.actionClear_selection.triggered.connect(self.clear_selection)
+        self.actionSelect_all.triggered.connect(self.tableWidget.selectAll)
+        self.actionClear_selection.triggered.connect(self.tableWidget.clearSelection)
         self.actionAdd.triggered.connect(self.add)
         self.actionAdd_above.triggered.connect(self.add_above)
         self.actionAdd_below.triggered.connect(self.add_below)
@@ -226,12 +226,6 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionNew_PET_Cohort.triggered.connect(self.new_pet_cohort)
 
         self.actionAbout.triggered.connect(self.about)
-
-    def select_all(self):
-        self.tableWidget.selectAll()
-
-    def clear_selection(self):
-        self.tableWidget.clearSelection()
 
     def add(self):
         self.atlas.add_brain_region()
@@ -328,7 +322,7 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def set_selected(self, selected):
         self.tableWidget.blockSignals(True)
-        self.clear_selection()
+        self.tableWidget.clearSelection()
         mode = self.tableWidget.selectionMode()
         self.tableWidget.setSelectionMode(QtGui.QAbstractItemView.MultiSelection)
         for row in selected:
