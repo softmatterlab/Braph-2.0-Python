@@ -89,6 +89,8 @@ class BrainViewOptionsWidget(Base, Form):
             item = QListWidgetItem(group.name)
             self.listWidgetGroup.addItem(item)
         self.listWidgetGroup.blockSignals(False)
+        self.listWidgetGroup.setCurrentRow(0)
+        self.listWidgetGroup.currentRowChanged.connect(self.update_group_visualization)
 
     def set_groups(self, groups):
         self.groups = groups
@@ -103,14 +105,14 @@ class BrainViewOptionsWidget(Base, Form):
             self.comboBoxStdGroup.blockSignals(True)
             self.comboBoxStdGroup.setCurrentIndex(-1)
             self.comboBoxStdGroup.blockSignals(False)
-
-        self.set_visualization()
+        self.update_group_visualization()
 
     def set_std_visualization_group(self, index): # combo box
         if self.comboBoxAverageGroup.currentIndex() == index:
             self.comboBoxAverageGroup.blockSignals(True)
             self.comboBoxAverageGroup.setCurrentIndex(-1)
             self.comboBoxAverageGroup.blockSignals(False)
+        self.update_group_visualization()
 
     def set_group_color(self):
         pass
@@ -126,9 +128,11 @@ class BrainViewOptionsWidget(Base, Form):
 
     def visualize_average_group(self, state): # check box
         self.comboBoxAverageGroup.setEnabled(state)
+        self.update_group_visualization()
 
     def visualize_std_group(self, state): # check box
         self.comboBoxStdGroup.setEnabled(state)
+        self.update_group_visualization()
 
     def set_group_size(self):
         pass
@@ -160,19 +164,29 @@ class BrainViewOptionsWidget(Base, Form):
         painter.drawRoundedRect(0, 0, self.width()-1, self.height()-1, 3, 3)
         QWidget.paintEvent(self, e)
 
-    def set_visualization(self):
+    def update_group_visualization(self):
+        for i, region in enumerate(self.brain_widget.gui_brain_regions):
+                self.settingsWidget.set_brain_region_color()
+                self.settingsWidget.set_selected_brain_region_color()
+                self.settingsWidget.change_brain_region_size()
+
+        current_group = self.groups[self.listWidgetGroup.currentRow()]
         if self.checkBoxAverageGroup.isChecked():
-            current_group = self.groups[self.listWidgetGroup.currentRow()]
-            averages = current_group.averages()
-            average_min = np.min(averages)
-            average_max = np.max(averages)
-            averages = (averages-average_min)/(average_max - average_min)
-            visualization_type = self.comboBoxAverageGroup.currentText()
+            values = current_group.averages()
+            self.set_visualization(self.comboBoxAverageGroup, values)
+
+        if self.checkBoxStdGroup.isChecked():
+            values = current_group.standard_deviations()
+            self.set_visualization(self.comboBoxStdGroup, values)
+
+    def set_visualization(self, combo_box, values):
+        values_min = np.min(values)
+        values_max = np.max(values)
+        values = (values - values_min)/(values_max - values_min)
+        visualization_type = combo_box.currentText()
+        for i, region in enumerate(self.brain_widget.gui_brain_regions):
             if visualization_type == 'Color':
-                for i, region in enumerate(self.brain_widget.gui_brain_regions):
-                    region.setColor([averages[i], averages[i], averages[i], 1.0])
-
-        if self.checkBoxstdGroup.isChecked():
-            pass
-
+                region.set_color([values[i], 0, 1-values[i], 1.0])
+            if visualization_type == 'Size':
+                region.set_size(values[i] * 7 + 1)
 
