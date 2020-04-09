@@ -165,10 +165,9 @@ class BrainViewOptionsWidget(Base, Form):
         QWidget.paintEvent(self, e)
 
     def update_group_visualization(self):
-        for i, region in enumerate(self.brain_widget.gui_brain_regions):
-                self.settingsWidget.set_brain_region_color()
-                self.settingsWidget.set_selected_brain_region_color()
-                self.settingsWidget.change_brain_region_size()
+        self.settingsWidget.set_brain_region_color()
+        self.settingsWidget.set_selected_brain_region_color()
+        self.settingsWidget.change_brain_region_size()
 
         current_group = self.groups[self.listWidgetGroup.currentRow()]
         if self.checkBoxAverageGroup.isChecked():
