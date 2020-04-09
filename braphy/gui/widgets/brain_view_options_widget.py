@@ -15,6 +15,7 @@ class BrainViewOptionsWidget(Base, Form):
                             QGroupBox::indicator:checked {image: url({icon_location_up});} \
                             QGroupBox::indicator:Unchecked {image: url({icon_location_down});}")
         '''
+        self.visualization_options = ['Color', 'Size']
         self.subjects = []
         self.groups = []
         self.setupUi(self)
@@ -33,6 +34,12 @@ class BrainViewOptionsWidget(Base, Form):
         self.settingsWidget.init(brain_widget)
 
     def init_combo_boxes(self):
+        for option in self.visualization_options:
+            self.comboBoxAverageGroup.addItem(option)
+            self.comboBoxStdGroup.addItem(option)
+        self.comboBoxAverageGroup.setCurrentIndex(-1)
+        self.comboBoxStdGroup.setCurrentIndex(-1)
+
         self.comboBoxAverageGroup.currentIndexChanged.connect(self.set_average_visualization_group)
         self.comboBoxStdGroup.currentIndexChanged.connect(self.set_std_visualization_group)
         self.comboBoxColorGroup.currentIndexChanged.connect(self.set_group_color)
@@ -40,6 +47,11 @@ class BrainViewOptionsWidget(Base, Form):
         self.comboBoxAverageSubject.currentIndexChanged.connect(self.set_average_visualization_subject)
         self.comboBoxStdSubject.currentIndexChanged.connect(self.set_std_visualization_subject)
         self.comboBoxColorSubject.currentIndexChanged.connect(self.set_subject_color)
+
+        self.comboBoxAverageGroup.setEnabled(False)
+        self.comboBoxStdGroup.setEnabled(False)
+        self.comboBoxAverageSubject.setEnabled(False)
+        self.comboBoxStdSubject.setEnabled(False)
 
     def init_check_boxes(self):
         self.checkBoxAverageGroup.stateChanged.connect(self.visualize_average_group)
@@ -83,11 +95,17 @@ class BrainViewOptionsWidget(Base, Form):
         self.subjects = subjects
         self.init_subject_list()
 
-    def set_average_visualization_group(self):
-        pass
+    def set_average_visualization_group(self, index): # combo box
+        if self.comboBoxStdGroup.currentIndex() == index:
+            self.comboBoxStdGroup.blockSignals(True)
+            self.comboBoxStdGroup.setCurrentIndex(-1)
+            self.comboBoxStdGroup.blockSignals(False)
 
-    def set_std_visualization_group(self):
-        pass
+    def set_std_visualization_group(self, index): # combo box
+        if self.comboBoxAverageGroup.currentIndex() == index:
+            self.comboBoxAverageGroup.blockSignals(True)
+            self.comboBoxAverageGroup.setCurrentIndex(-1)
+            self.comboBoxAverageGroup.blockSignals(False)
 
     def set_group_color(self):
         pass
@@ -101,11 +119,11 @@ class BrainViewOptionsWidget(Base, Form):
     def set_subject_color(self):
         pass
 
-    def visualize_average_group(self):
-        pass
+    def visualize_average_group(self, state): # check box
+        self.comboBoxAverageGroup.setEnabled(state)
 
-    def visualize_std_group(self):
-        pass
+    def visualize_std_group(self, state): # check box
+        self.comboBoxStdGroup.setEnabled(state)
 
     def set_group_size(self):
         pass
