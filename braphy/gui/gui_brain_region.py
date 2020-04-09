@@ -62,3 +62,7 @@ class GUIBrainRegion(gl.GLMeshItem):
         self.size = size
         meshdata = gl.MeshData.sphere(16, 16, radius=size)
         self.setMeshData(meshdata=meshdata)
+
+    def set_color(self, color):
+        self.color = color
+        self.setColor(color)
