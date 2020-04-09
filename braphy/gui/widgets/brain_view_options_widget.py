@@ -15,6 +15,8 @@ class BrainViewOptionsWidget(Base, Form):
                             QGroupBox::indicator:checked {image: url({icon_location_up});} \
                             QGroupBox::indicator:Unchecked {image: url({icon_location_down});}")
         '''
+        self.subjects = []
+        self.groups = []
         self.setupUi(self)
         self.setAutoFillBackground(True)
         self.tabWidget.hide()
@@ -54,7 +56,32 @@ class BrainViewOptionsWidget(Base, Form):
         self.horizontalSliderSizeSubject.valueChanged.connect(self.set_subject_size)
 
     def init_lists(self):
-        pass
+        self.init_subject_list()
+        self.init_group_list()
+
+    def init_subject_list(self):
+        self.listWidgetSubject.blockSignals(True)
+        self.listWidgetSubject.clear()
+        for subject in self.subjects:
+            item = QListWidgetItem(subject.id)
+            self.listWidgetSubject.addItem(item)
+        self.listWidgetSubject.blockSignals(False)
+
+    def init_group_list(self):
+        self.listWidgetGroup.blockSignals(True)
+        self.listWidgetGroup.clear()
+        for group in self.groups:
+            item = QListWidgetItem(group.name)
+            self.listWidgetGroup.addItem(item)
+        self.listWidgetGroup.blockSignals(False)
+
+    def set_groups(self, groups):
+        self.groups = groups
+        self.init_group_list()
+
+    def set_subjects(self, subjects):
+        self.subjects = subjects
+        self.init_subject_list()
 
     def set_average_visualization_group(self):
         pass

@@ -30,7 +30,7 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.init_buttons()
         self.init_actions()
         self.init_combo_boxes()
-        
+
         self.tableWidget.cellChanged.connect(self.change_cell)
         self.tableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.tableWidget.itemSelectionChanged.connect(self.region_selection_changed)

@@ -48,6 +48,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
             self.tabWidget.tabBar().setStyleSheet("QTabBar::tab::disabled {width: 0; height: 0; \
                                                    margin: 0; padding: 0; border: none;} ")
 
+        self.brain_view_options_widget = BrainViewOptionsWidget(parent=self.tabBrain)
         self.init_brain_widget()
 
         self.init_buttons()
@@ -61,6 +62,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.groupTableWidget.set_callback(self.group_table_widget_updated)
         self.groupsAndDemographicsWidget.set_callback(self.groups_and_demographics_table_updated)
         self.subjectDataWidget.set_callback(self.subject_data_table_updated)
+
 
     def to_dict(self):
         d = self.cohort.to_dict()
@@ -84,7 +86,11 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
             self.brain_mesh_data = brain_mesh_data
             self.init_brain_widget()
         self.labelRegionNumber.setText("Brain region number = {}".format(self.brain_region_number()))
-        self.brainWidget.init_brain_regions(self.cohort.atlas.brain_regions, 4, [], False, False)
+        show_only_selected = self.brain_view_options_widget.settingsWidget.checkBoxShowOnlySelected.isChecked()
+        show_brain_regions = self.brain_view_options_widget.settingsWidget.actionShow_brain_regions.isChecked()
+        self.brainWidget.init_brain_regions(self.cohort.atlas.brain_regions, 4, [], show_brain_regions, show_only_selected)
+        self.brain_view_options_widget.set_groups(self.cohort.groups)
+        self.brain_view_options_widget.set_subjects(self.cohort.subjects)
 
     def to_file(self, file_name):
         self.file_name = file_name
@@ -100,8 +106,6 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
     def init_brain_widget(self):
         self.brain_mesh_data = load_nv(brain_mesh_file_default)
         self.brainWidget.set_brain_mesh(self.brain_mesh_data)
-
-        self.brain_view_options_widget = BrainViewOptionsWidget(parent=self.tabBrain)
 
         self.brain_view_options_widget.init(self.brainWidget)
         self.brain_view_options_widget.settingsWidget.change_transparency()
@@ -188,12 +192,14 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.groupAveragesWidget.update_tables()
 
         self.btnSelectAtlas.setEnabled(len(self.cohort.groups) == 0 and len(self.cohort.subjects) == 0)
+        self.brain_view_options_widget.set_groups(self.cohort.groups)
 
     def groups_and_demographics_table_updated(self):
         self.groupTableWidget.update_table()
         self.subjectDataWidget.update_table()
         self.groupAveragesWidget.update_tables()
         self.btnSelectAtlas.setEnabled(len(self.cohort.groups) == 0 and len(self.cohort.subjects) == 0)
+        self.brain_view_options_widget.set_subjects(self.cohort.subjects)
 
     def subject_data_table_updated(self):
         self.groupAveragesWidget.update_tables()
