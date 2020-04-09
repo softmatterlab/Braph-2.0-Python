@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
+import numpy as np
 from braphy.utility.helper_functions import abs_path_from_relative
 
 ui_file = abs_path_from_relative(__file__, "../ui_files/brain_view_options_widget.ui")
@@ -39,6 +40,8 @@ class BrainViewOptionsWidget(Base, Form):
             self.comboBoxStdGroup.addItem(option)
         self.comboBoxAverageGroup.setCurrentIndex(-1)
         self.comboBoxStdGroup.setCurrentIndex(-1)
+
+        self.comboBoxColorGroup.addItem('colormap hsv')
 
         self.comboBoxAverageGroup.currentIndexChanged.connect(self.set_average_visualization_group)
         self.comboBoxStdGroup.currentIndexChanged.connect(self.set_std_visualization_group)
@@ -101,6 +104,8 @@ class BrainViewOptionsWidget(Base, Form):
             self.comboBoxStdGroup.setCurrentIndex(-1)
             self.comboBoxStdGroup.blockSignals(False)
 
+        self.set_visualization()
+
     def set_std_visualization_group(self, index): # combo box
         if self.comboBoxAverageGroup.currentIndex() == index:
             self.comboBoxAverageGroup.blockSignals(True)
@@ -154,3 +159,20 @@ class BrainViewOptionsWidget(Base, Form):
         painter = QtGui.QPainter(self)
         painter.drawRoundedRect(0, 0, self.width()-1, self.height()-1, 3, 3)
         QWidget.paintEvent(self, e)
+
+    def set_visualization(self):
+        if self.checkBoxAverageGroup.isChecked():
+            current_group = self.groups[self.listWidgetGroup.currentRow()]
+            averages = current_group.averages()
+            average_min = np.min(averages)
+            average_max = np.max(averages)
+            averages = (averages-average_min)/(average_max - average_min)
+            visualization_type = self.comboBoxAverageGroup.currentText()
+            if visualization_type == 'Color':
+                for i, region in enumerate(self.brain_widget.gui_brain_regions):
+                    region.setColor([averages[i], averages[i], averages[i], 1.0])
+
+        if self.checkBoxstdGroup.isChecked():
+            pass
+
+
