@@ -174,9 +174,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def set_locked(self, locked):
         self.locked = locked
-        lock_items = [self.btnViewAtlas, self.groupTableWidget, self.groupsAndDemographicsWidget,
-                      self.subjectDataWidget, self.groupAveragesWidget]
-
+        lock_items = [self.btnViewAtlas, self.groupTableWidget, self.tabWidget]
         for item in lock_items:
             item.setEnabled(not self.locked)
         self.disable_menu_bar(locked)
