@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>824</width>
+    <width>858</width>
     <height>147</height>
    </rect>
   </property>
@@ -25,38 +25,10 @@
      <property name="rightMargin">
       <number>0</number>
      </property>
-     <item row="1" column="1">
-      <widget class="QPushButton" name="btnSagittalRight">
-       <property name="text">
-        <string>Sagittal right</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QPushButton" name="btnSagittalLeft">
-       <property name="text">
-        <string>Sagittal left</string>
-       </property>
-      </widget>
-     </item>
      <item row="2" column="1">
       <widget class="QPushButton" name="btnAxialVentral">
        <property name="text">
         <string>Axial ventral</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QPushButton" name="btnAxialDorsal">
-       <property name="text">
-        <string>Axial dorsal</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QPushButton" name="btn3D">
-       <property name="text">
-        <string>3D</string>
        </property>
       </widget>
      </item>
@@ -67,10 +39,38 @@
        </property>
       </widget>
      </item>
+     <item row="1" column="1">
+      <widget class="QPushButton" name="btnSagittalRight">
+       <property name="text">
+        <string>Sagittal right</string>
+       </property>
+      </widget>
+     </item>
      <item row="3" column="1">
       <widget class="QPushButton" name="btnCoronalPosterior">
        <property name="text">
         <string>Coronal posterior</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QPushButton" name="btn3D">
+       <property name="text">
+        <string>3D</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QPushButton" name="btnAxialDorsal">
+       <property name="text">
+        <string>Axial dorsal</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QPushButton" name="btnSagittalLeft">
+       <property name="text">
+        <string>Sagittal left</string>
        </property>
       </widget>
      </item>
@@ -134,10 +134,18 @@
           <number>0</number>
          </property>
          <item row="0" column="0">
-          <widget class="QComboBox" name="comboBoxRegions"/>
+          <widget class="QPushButton" name="btnRegions">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
          </item>
          <item row="0" column="1">
-          <widget class="QComboBox" name="comboBoxRegionsSelected"/>
+          <widget class="QPushButton" name="btnRegionsSelected">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>

@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 import numpy as np
-from braphy.utility.helper_functions import abs_path_from_relative
+from braphy.utility.helper_functions import abs_path_from_relative, QColor_to_list, QColor_from_list
 
 ui_file = abs_path_from_relative(__file__, "../ui_files/brain_atlas_settings_widget.ui")
 Form, Base = uic.loadUiType(ui_file)
@@ -20,34 +20,11 @@ class BrainAtlasSettingsWidget(Base, Form):
         self.init_actions()
 
     def init_combo_boxes(self):
-        colors = self.get_brain_region_colors()
-        for color in colors.keys():
-            self.comboBoxRegions.addItem(color)
-            self.comboBoxRegionsSelected.addItem(color)
-        self.comboBoxRegions.currentIndexChanged.connect(self.set_brain_region_color)
-        self.comboBoxRegionsSelected.currentIndexChanged.connect(self.set_selected_brain_region_color)
-        self.comboBoxRegions.setCurrentText('blue')
-        self.comboBoxRegionsSelected.setCurrentText('pink')
-
         shaders = ['shaded', 'normalColor', 'balloon', 'viewNormalColor', 'edgeHilight', 'pointSprite']
         for shader in shaders:
             self.comboBoxMesh.addItem(shader)
         self.comboBoxMesh.currentIndexChanged.connect(self.set_brain_mesh_shader)
         self.comboBoxMesh.setCurrentText('normalColor')
-
-    def get_brain_region_colors(self):
-        colors = {}
-        colors['black'] = [0.0, 0.0, 0.0, 1.0]
-        colors['white'] = [1.0, 1.0, 1.0, 1.0]
-        colors['yellow'] = [1.0, 1.0, 0.2, 1.0]
-        colors['turquoise'] = [0.0, 0.6, 0.6, 1.0]
-        colors['red'] = [1.0, 0.2, 0.2, 1.0]
-        colors['green'] = [0.1, 0.4, 0.15, 1.0]
-        colors['blue'] = [0.3, 0.3, 1.0, 1.0]
-        colors['pink'] = [1.0, 0.0, 0.67, 1.0]
-        colors['purple'] = [0.5, 0.05, 0.67, 1.0]
-        colors['orange'] = [1.0, 0.5, 0.0, 1.0]
-        return colors
 
     def init_sliders(self):
         self.sliderBrain.valueChanged.connect(self.change_transparency)
@@ -55,6 +32,13 @@ class BrainAtlasSettingsWidget(Base, Form):
         self.sliderRegions.valueChanged.connect(self.change_brain_region_size)
 
     def init_buttons(self):
+        self.btnRegions.clicked.connect(self.pick_brain_region_color)
+        self.btnRegionsSelected.clicked.connect(self.pick_selected_brain_region_color)
+        style_sheet = 'background-color: {};'.format(QColor_from_list(self.brain_widget.region_color).name())
+        self.btnRegions.setStyleSheet(style_sheet)
+        style_sheet = 'background-color: {};'.format(QColor_from_list(self.brain_widget.selected_region_color).name())
+        self.btnRegionsSelected.setStyleSheet(style_sheet)
+
         self.btn3D.clicked.connect(self.brain_widget.show_3D)
         self.btnSagittalLeft.clicked.connect(self.brain_widget.sagittal_left)
         self.btnSagittalRight.clicked.connect(self.brain_widget.sagittal_right)
@@ -145,13 +129,30 @@ class BrainAtlasSettingsWidget(Base, Form):
         self.brain_widget.show_only_selected = (state != 0)
         self.brain_widget.update_brain_regions_plot()
 
-    def set_brain_region_color(self):
-        colors = self.get_brain_region_colors()
-        self.brain_widget.set_brain_region_color(colors[self.comboBoxRegions.currentText()])
+    def pick_color(self):
+        options = QtWidgets.QColorDialog.ColorDialogOptions()
+        options |= QtWidgets.QColorDialog.DontUseNativeDialog
+        return QtWidgets.QColorDialog.getColor(options = options)
 
-    def set_selected_brain_region_color(self):
-        colors = self.get_brain_region_colors()
-        self.brain_widget.set_selected_brain_region_color(colors[self.comboBoxRegionsSelected.currentText()])
+    def pick_brain_region_color(self):
+        color = self.pick_color()
+        if color.isValid():
+            self.set_brain_region_color(color)
+
+    def set_brain_region_color(self, color):
+        style_sheet = 'background-color: {};'.format(color.name())
+        self.btnRegions.setStyleSheet(style_sheet)
+        self.brain_widget.set_brain_region_color(QColor_to_list(color))
+
+    def pick_selected_brain_region_color(self):
+        color = self.pick_color()
+        if color.isValid():
+            self.set_selected_brain_region_color(color)
+
+    def set_selected_brain_region_color(self, color):
+        style_sheet = 'background-color: {};'.format(color.name())
+        self.btnRegionsSelected.setStyleSheet(style_sheet)
+        self.brain_widget.set_selected_brain_region_color(QColor_to_list(color))
 
     def change_transparency(self):
         alpha = self.sliderBrain.value()/100.0

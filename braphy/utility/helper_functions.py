@@ -1,6 +1,7 @@
 import numpy as np
 import os
 import subprocess
+from PyQt5.QtGui import QColor
 
 def divide_without_warning(a, b):
     b = np.array(b) # in case b is a scalar
@@ -77,6 +78,13 @@ def equal_around(a, b, decimals = 3):
         return round_a == round_b
     else:
         return np.array_equal(round_a, round_b)
+
+def QColor_to_list(color):
+    return [color.red()/255, color.green()/255, color.blue()/255, color.alpha()/255]
+
+def QColor_from_list(color):
+    color = [int(round(v*255)) for v in color]
+    return QColor(color[0], color[1], color[2], color[3])
 
 class ListManager:
 
