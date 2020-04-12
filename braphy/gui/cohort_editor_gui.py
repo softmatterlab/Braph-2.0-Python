@@ -49,7 +49,6 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
                                                    margin: 0; padding: 0; border: none;} ")
 
         self.brain_view_options_widget = BrainViewOptionsWidget(parent=self.tabBrain)
-        self.init_brain_widget()
 
         self.init_buttons()
         self.init_actions()
@@ -104,7 +103,6 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
             json.dump(d, f, sort_keys=True, indent=4)
 
     def init_brain_widget(self):
-        self.brain_mesh_data = load_nv(brain_mesh_file_default)
         self.brainWidget.set_brain_mesh(self.brain_mesh_data)
 
         self.brain_view_options_widget.init(self.brainWidget)

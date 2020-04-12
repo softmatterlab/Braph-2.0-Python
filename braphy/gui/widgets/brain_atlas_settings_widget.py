@@ -34,10 +34,7 @@ class BrainAtlasSettingsWidget(Base, Form):
     def init_buttons(self):
         self.btnRegions.clicked.connect(self.pick_brain_region_color)
         self.btnRegionsSelected.clicked.connect(self.pick_selected_brain_region_color)
-        style_sheet = 'background-color: {};'.format(QColor_from_list(self.brain_widget.region_color).name())
-        self.btnRegions.setStyleSheet(style_sheet)
-        style_sheet = 'background-color: {};'.format(QColor_from_list(self.brain_widget.selected_region_color).name())
-        self.btnRegionsSelected.setStyleSheet(style_sheet)
+        self.init_brain_region_color()
 
         self.btn3D.clicked.connect(self.brain_widget.show_3D)
         self.btnSagittalLeft.clicked.connect(self.brain_widget.sagittal_left)
@@ -46,6 +43,12 @@ class BrainAtlasSettingsWidget(Base, Form):
         self.btnAxialVentral.clicked.connect(self.brain_widget.axial_ventral)
         self.btnCoronalAnterior.clicked.connect(self.brain_widget.coronal_anterior)
         self.btnCoronalPosterior.clicked.connect(self.brain_widget.coronal_posterior)
+
+    def init_brain_region_color(self):
+        style_sheet = 'background-color: {};'.format(QColor_from_list(self.brain_widget.region_color).name())
+        self.btnRegions.setStyleSheet(style_sheet)
+        style_sheet = 'background-color: {};'.format(QColor_from_list(self.brain_widget.selected_region_color).name())
+        self.btnRegionsSelected.setStyleSheet(style_sheet)
 
     def init_check_boxes(self):
         self.checkBoxShowBrainRegions.stateChanged.connect(self.show_brain_regions)

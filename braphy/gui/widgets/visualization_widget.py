@@ -3,6 +3,7 @@ from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from pyqtgraph import ColorMap as cm
 import numpy as np
 from braphy.utility.helper_functions import abs_path_from_relative
+from braphy.gui.color_bar_combo_box import ColorBar
 
 ui_file = abs_path_from_relative(__file__, "../ui_files/visualization_widget.ui")
 Form, Base = uic.loadUiType(ui_file)
@@ -40,8 +41,8 @@ class VisualizationWidget(Base, Form):
             self.comboBoxAverage.hide()
             self.comboBoxStd.hide()
 
-        for colormap in self.colormaps.keys():
-            self.comboBoxColormap.addItem(colormap)
+        for colormap in self.colormaps.values():
+            self.comboBoxColormap.add_colormap(colormap)
 
         self.comboBoxAverage.currentIndexChanged.connect(self.set_average_visualization)
         self.comboBoxStd.currentIndexChanged.connect(self.set_std_visualization)
@@ -50,21 +51,31 @@ class VisualizationWidget(Base, Form):
 
         self.comboBoxAverage.setEnabled(False)
         self.comboBoxStd.setEnabled(False)
+        self.comboBoxSubject.setEnabled(False)
 
     def init_check_boxes(self):
         self.checkBoxAverage.stateChanged.connect(self.visualize_average)
         self.checkBoxStd.stateChanged.connect(self.visualize_std)
+        self.checkBoxAverage.setEnabled(False)
+        self.checkBoxStd.setEnabled(False)
 
     def init_list(self, item_list):
         self.item_list = item_list
         self.listWidget.blockSignals(True)
         self.listWidget.clear()
+        self.listWidget.currentRowChanged.connect(self.list_item_changed)
         for item in item_list:
             if self.visualize_groups:
                 self.listWidget.addItem(item.name)
             else:
                 self.listWidget.addItem(item.id)
         self.listWidget.blockSignals(False)
+
+    def list_item_changed(self, index):
+        items = [self.checkBoxAverage, self.checkBoxStd, self.comboBoxSubject]
+        enabled = True if index > -1 else False
+        for item in items:
+            item.setEnabled(enabled)
 
     def set_average_visualization(self, index): # combo box
         if self.comboBoxStd.currentIndex() == index:
@@ -89,8 +100,7 @@ class VisualizationWidget(Base, Form):
         self.update_visualization()
 
     def update_visualization(self):
-        self.settings_widget.set_brain_region_color()
-        self.settings_widget.set_selected_brain_region_color()
+        self.settings_widget.init_brain_region_color()
         self.settings_widget.change_brain_region_size()
 
         current_list_item = self.item_list[self.listWidget.currentRow()]
@@ -119,13 +129,13 @@ class VisualizationWidget(Base, Form):
     def get_colormaps(self):
         colormaps = {}
         colormaps['spring'] = cm([0.0, 1.0], [[1.0, 0.28, 0.85, 1.0], [1.0, 0.94, 0.28, 1.0]])
-        colormaps['cool'] = cm([0.0, 0.1], [[0.298, 0.964, 0.956, 1.0], [1.0, 0.28, 0.85, 1.0]])
+        colormaps['cool'] = cm([0.0, 1.0], [[0.298, 0.964, 0.956, 1.0], [1.0, 0.28, 0.85, 1.0]])
         colormaps['hot'] = cm([0.0, 0.33, 0.67, 1.0], [[0.0, 0.0, 0.0, 1.0], [1.0, 0.0, 0.0, 1.0], [1.0, 1.0, 0.0, 1.0], [1.0, 1.0, 1.0, 1.0]])
         colormaps['parula'] = cm([0.0, 0.5, 1.0], [[0.317, 0.223, 0.937, 1.0], [0.333, 0.666, 0.5, 1.0], [1.0, 0.94, 0.28, 1.0]])
         return colormaps
 
     def get_color(self, value):
-        colormap = self.colormaps[self.comboBoxColormap.currentText()]
+        colormap = self.comboBoxColormap.colormap()
         color = colormap.map(value, mode='float')
         return color
 
