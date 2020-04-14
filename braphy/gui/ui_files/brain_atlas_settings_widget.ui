@@ -381,6 +381,10 @@
    <property name="checkable">
     <bool>true</bool>
    </property>
+   <property name="icon">
+    <iconset resource="../icons/icons.qrc">
+     <normaloff>:/buttons/icon_br_selected.png</normaloff>:/buttons/icon_br_selected.png</iconset>
+   </property>
    <property name="text">
     <string>Show only selected</string>
    </property>
