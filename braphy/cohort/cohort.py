@@ -12,8 +12,8 @@ class Cohort:
         self.atlas = atlas
         self.subjects = subjects if subjects else []
         self.groups = groups if groups else []
-        self.new_groups_added = len(self.subjects)
-        self.new_subjects_added = len(self.groups)
+        self.new_groups_added = len(self.groups)
+        self.new_subjects_added = len(self.subjects)
 
     def to_file(self):
         d = {}
