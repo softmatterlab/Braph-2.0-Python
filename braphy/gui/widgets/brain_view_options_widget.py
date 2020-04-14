@@ -26,8 +26,8 @@ class BrainViewOptionsWidget(Base, Form):
 
     def init(self, brain_widget):
         self.settingsWidget.init(brain_widget)
-        self.groupVisualizationWidget.init(True, brain_widget, self.settingsWidget)
-        self.subjectVisualizationWidget.init(False, brain_widget, self.settingsWidget)
+        self.groupVisualizationWidget.init(True, self.settingsWidget)
+        self.subjectVisualizationWidget.init(False, self.settingsWidget)
 
     def set_groups(self, groups):
         self.groupVisualizationWidget.init_list(groups)

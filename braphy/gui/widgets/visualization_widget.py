@@ -15,12 +15,12 @@ class VisualizationWidget(Base, Form):
         self.visualization_options = ['Color', 'Size']
         self.colormaps = self.get_colormaps()
 
-    def init(self, visualize_groups, brain_widget, settings_widget):
+    def init(self, visualize_groups, settings_widget):
         self.visualize_groups = visualize_groups
         self.init_combo_boxes()
         self.init_check_boxes()
         self.init_list([])
-        self.brain_widget = brain_widget
+        self.brain_widget = settings_widget.brain_widget
         self.settings_widget = settings_widget
 
     def init_combo_boxes(self):
@@ -76,6 +76,7 @@ class VisualizationWidget(Base, Form):
         enabled = True if index > -1 else False
         for item in items:
             item.setEnabled(enabled)
+        self.update_visualization()
 
     def set_average_visualization(self, index): # combo box
         if self.comboBoxStd.currentIndex() == index:
@@ -100,7 +101,7 @@ class VisualizationWidget(Base, Form):
         self.update_visualization()
 
     def update_visualization(self):
-        self.settings_widget.init_brain_region_color()
+        self.brain_widget.reset_brain_region_colors()
         self.settings_widget.change_brain_region_size()
 
         current_list_item = self.item_list[self.listWidget.currentRow()]

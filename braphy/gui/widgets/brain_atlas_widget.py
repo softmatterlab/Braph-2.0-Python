@@ -142,6 +142,10 @@ class BrainAtlasWidget(GLViewWidget):
         for gui_brain_region in self.gui_brain_regions:
             gui_brain_region.set_size(size)
 
+    def reset_brain_region_colors(self):
+        self.set_brain_region_color(self.region_color)
+        self.set_selected_brain_region_color(self.selected_region_color)
+
     def set_brain_region_color(self, color):
         self.region_color = color
         for gui_brain_region in self.gui_brain_regions:
