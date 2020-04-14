@@ -43,6 +43,7 @@ class VisualizationWidget(Base, Form):
 
         for colormap in self.colormaps.values():
             self.comboBoxColormap.add_colormap(colormap)
+        self.comboBoxColormap.setCurrentIndex(0)
 
         self.comboBoxAverage.currentIndexChanged.connect(self.set_average_visualization)
         self.comboBoxStd.currentIndexChanged.connect(self.set_std_visualization)
