@@ -20,6 +20,7 @@ class VisualizationWidget(Base, Form):
         self.init_combo_boxes()
         self.init_check_boxes()
         self.init_list()
+        self.init_spin_boxes()
         self.brain_widget = settings_widget.brain_widget
         self.settings_widget = settings_widget
 
@@ -83,6 +84,28 @@ class VisualizationWidget(Base, Form):
             widget_item.setEnabled(enabled)
         self.update_visualization()
 
+    def init_spin_boxes(self):
+        self.spinBoxMin.setValue(1)
+        self.spinBoxMax.setValue(10)
+        self.spinBoxMin.valueChanged.connect(self.spin_box_min_changed)
+        self.spinBoxMax.valueChanged.connect(self.spin_box_max_changed)
+
+    def spin_box_min_changed(self, value):
+        self.spinBoxMax.setMinimum(value)
+        if self.spinBoxMax.value() < value:
+            self.spinBoxMax.blockSignals(True)
+            self.spinBoxMax.setValue(value)
+            self.spinBoxMax.blockSignals(False)
+        self.update_visualization()
+
+    def spin_box_max_changed(self, value):
+        self.spinBoxMin.setMaximum(value)
+        if self.spinBoxMin.value() > value:
+            self.spinBoxMin.blockSignals(True)
+            self.spinBoxMin.setValue(value)
+            self.spinBoxMin.blockSignals(False)
+        self.update_visualization()
+
     def set_average_visualization(self, index): # combo box
         if self.comboBoxStd.currentIndex() == index:
             self.comboBoxStd.blockSignals(True)
@@ -132,7 +155,7 @@ class VisualizationWidget(Base, Form):
             if visualization_type == 'Color':
                 region.set_color(self.get_color(values[i]))
             if visualization_type == 'Size':
-                region.set_size(values[i] * 7 + 1)
+                region.set_size(values[i] * self.spinBoxMax.value() + self.spinBoxMin.value())
 
     def get_colormaps(self):
         colormaps = {}
