@@ -10,21 +10,16 @@ Form, Base = uic.loadUiType(ui_file)
 class BrainViewOptionsWidget(Base, Form):
     def __init__(self, parent = None):
         super(BrainViewOptionsWidget, self).__init__(parent)
-        '''
-        icon_location_up = abs_path_from_relative(__file__, "../icons/zoom_in.png")
-        icon_location_down = abs_path_from_relative(__file__, "../icons/zoom_out.png")
-        self.setStyleSheet("QGroupBox::indicator {width: 14px; height: 14px;} \
-                            QGroupBox::indicator:checked {image: url({icon_location_up});} \
-                            QGroupBox::indicator:Unchecked {image: url({icon_location_down});}")
-        '''
         self.setupUi(self)
         self.setAutoFillBackground(True)
         self.tabWidget.hide()
         self.resize(self.sizeHint())
         self.groupBox.clicked.connect(self.update_visible)
         self.update_visible(False)
+        self.tabWidget.currentChanged.connect(self.tab_changed)
 
     def init(self, brain_widget):
+        self.brain_widget = brain_widget
         self.settingsWidget.init(brain_widget)
         self.groupVisualizationWidget.init(True, self.settingsWidget)
         self.subjectVisualizationWidget.init(False, self.settingsWidget)
@@ -34,6 +29,20 @@ class BrainViewOptionsWidget(Base, Form):
 
     def set_subjects(self, subjects):
         self.subjectVisualizationWidget.init_list(subjects)
+
+    def tab_changed(self, index):
+        if index == 0:
+            self.brain_widget.reset_brain_region_colors()
+            self.settingsWidget.change_brain_region_size()
+            self.brain_widget.enable_brain_region_selection(True)
+        elif index == 1:
+            self.groupVisualizationWidget.update_visualization()
+            self.brain_widget.enable_brain_region_selection(False)
+        elif index == 2:
+            self.subjectVisualizationWidget.update_visualization()
+            self.brain_widget.enable_brain_region_selection(False)
+        else:
+            pass
 
     def update_move(self):
         self.move(9, self.parent().height()-self.height() - 9)

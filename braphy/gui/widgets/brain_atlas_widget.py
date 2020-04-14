@@ -32,6 +32,7 @@ class BrainAtlasWidget(GLViewWidget):
         self.init_axis()
         self.init_grid()
         self.interaction_enabled = True
+        self.selection_enabled = True
         self.timer = None
         self.brain_mesh = None
         self.brainBackgroundColor = (200, 200, 200, 255)
@@ -336,6 +337,10 @@ class BrainAtlasWidget(GLViewWidget):
                     closest_region = gui_brain_region
         return closest_region
 
+    def enable_brain_region_selection(self, enable):
+        self.selection_enabled = enable
+        self.tool_bar.actionFind.setEnabled(enable)
+
     def mouseReleaseEvent(self, ev):
         if not self.interaction_enabled:
             return
@@ -375,6 +380,8 @@ class BrainAtlasWidget(GLViewWidget):
         self.mouseReleaseEventZoom(ev, -500)
 
     def mouseReleaseEventFind(self, ev):
+        if not self.selection_enabled:
+            return
         mouse_travel_distance = (ev.pos() - self.mousePos).manhattanLength()
         if mouse_travel_distance > 15:
             return
