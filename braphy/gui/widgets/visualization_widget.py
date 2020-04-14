@@ -110,7 +110,7 @@ class VisualizationWidget(Base, Form):
                 values = current_list_item.averages()
                 self.set_visualization(self.comboBoxAverage, values)
             if self.checkBoxStd.isChecked():
-                values = current_group.standard_deviations()
+                values = current_list_item.standard_deviations()
                 self.set_visualization(self.comboBoxStd, values)
         else:
             values = current_list_item.data_dict['data'].value
