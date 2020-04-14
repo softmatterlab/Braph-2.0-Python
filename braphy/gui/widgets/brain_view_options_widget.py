@@ -25,10 +25,10 @@ class BrainViewOptionsWidget(Base, Form):
         self.subjectVisualizationWidget.init(False, self.settingsWidget)
 
     def set_groups(self, groups):
-        self.groupVisualizationWidget.init_list(groups)
+        self.groupVisualizationWidget.set_list(groups)
 
     def set_subjects(self, subjects):
-        self.subjectVisualizationWidget.init_list(subjects)
+        self.subjectVisualizationWidget.set_list(subjects)
 
     def tab_changed(self, index):
         if index == 0:

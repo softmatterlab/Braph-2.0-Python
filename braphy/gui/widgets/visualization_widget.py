@@ -19,7 +19,7 @@ class VisualizationWidget(Base, Form):
         self.visualize_groups = visualize_groups
         self.init_combo_boxes()
         self.init_check_boxes()
-        self.init_list([])
+        self.init_list()
         self.brain_widget = settings_widget.brain_widget
         self.settings_widget = settings_widget
 
@@ -60,23 +60,27 @@ class VisualizationWidget(Base, Form):
         self.checkBoxAverage.setEnabled(False)
         self.checkBoxStd.setEnabled(False)
 
-    def init_list(self, item_list):
+    def init_list(self):
+        self.item_list = []
+        self.listWidget.currentRowChanged.connect(self.list_item_changed)
+
+    def set_list(self, item_list):
         self.item_list = item_list
         self.listWidget.blockSignals(True)
         self.listWidget.clear()
-        self.listWidget.currentRowChanged.connect(self.list_item_changed)
         for item in item_list:
             if self.visualize_groups:
                 self.listWidget.addItem(item.name)
             else:
                 self.listWidget.addItem(item.id)
         self.listWidget.blockSignals(False)
+        self.list_item_changed(-1)
 
     def list_item_changed(self, index):
         items = [self.checkBoxAverage, self.checkBoxStd, self.comboBoxSubject]
         enabled = True if index > -1 else False
-        for item in items:
-            item.setEnabled(enabled)
+        for widget_item in items:
+            widget_item.setEnabled(enabled)
         self.update_visualization()
 
     def set_average_visualization(self, index): # combo box
@@ -104,6 +108,8 @@ class VisualizationWidget(Base, Form):
     def update_visualization(self):
         self.brain_widget.reset_brain_region_colors()
         self.settings_widget.change_brain_region_size()
+        if self.listWidget.currentRow() == -1:
+            return
 
         current_list_item = self.item_list[self.listWidget.currentRow()]
         if self.visualize_groups:
