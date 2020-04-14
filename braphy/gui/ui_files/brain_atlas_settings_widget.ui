@@ -377,6 +377,17 @@
     <string>Show labels</string>
    </property>
   </action>
+  <action name="actionShow_only_selected">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Show only selected</string>
+   </property>
+   <property name="toolTip">
+    <string>Show only selected</string>
+   </property>
+  </action>
  </widget>
  <resources>
   <include location="../icons/icons.qrc"/>

@@ -62,6 +62,7 @@ class BrainAtlasSettingsWidget(Base, Form):
         self.checkBoxShowLabels.stateChanged.connect(self.show_labels)
         self.checkBoxShowLabels.setChecked(True)
         self.checkBoxShowOnlySelected.stateChanged.connect(self.show_only_selected)
+        self.checkBoxShowOnlySelected.setChecked(False)
 
     def init_actions(self):
         self.action3D.triggered.connect(self.brain_widget.show_3D)
@@ -82,12 +83,15 @@ class BrainAtlasSettingsWidget(Base, Form):
         self.actionShow_brain_regions.setChecked(True)
         self.actionShow_labels.triggered.connect(self.show_labels)
         self.actionShow_labels.setChecked(True)
+        self.actionShow_only_selected.triggered.connect(self.show_only_selected)
+        self.actionShow_only_selected.setChecked(False)
 
     def get_actions(self):
         actions = [self.action3D, self.actionSagittal_left, self.actionSagittal_right,
                    self.actionAxial_dorsal, self.actionAxial_ventral, self.actionCoronal_anterior,
                    self.actionCoronal_posterior, self.actionShow_brain, self.actionShow_axis,
-                   self.actionShow_grid, self.actionShow_brain_regions, self.actionShow_labels]
+                   self.actionShow_grid, self.actionShow_brain_regions, self.actionShow_labels,
+                   self.actionShow_only_selected]
         return actions
 
     def show_brain(self, state):
@@ -129,8 +133,11 @@ class BrainAtlasSettingsWidget(Base, Form):
             self.checkBoxShowLabels.setChecked(state != 0)
 
     def show_only_selected(self, state):
-        self.brain_widget.show_only_selected = (state != 0)
-        self.brain_widget.update_brain_regions_plot()
+        if (self.actionShow_only_selected.isChecked() != self.checkBoxShowOnlySelected.isChecked()):
+            self.actionShow_only_selected.setChecked(state != 0)
+            self.checkBoxShowOnlySelected.setChecked(state != 0)
+            self.brain_widget.show_only_selected = (state != 0)
+            self.brain_widget.update_brain_regions_plot()
 
     def pick_color(self):
         options = QtWidgets.QColorDialog.ColorDialogOptions()
