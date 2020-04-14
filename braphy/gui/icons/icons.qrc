@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="buttons">
+    <file>arrow_up.png</file>
     <file>icon_br_selected.png</file>
     <file>hand_xy.png</file>
     <file>hand_xz.png</file>

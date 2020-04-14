@@ -11,11 +11,21 @@ class BrainViewOptionsWidget(Base, Form):
     def __init__(self, parent = None):
         super(BrainViewOptionsWidget, self).__init__(parent)
         self.setupUi(self)
+
+        self.icon_up = QtGui.QIcon()
+        icon_location_up = abs_path_from_relative(__file__, "../icons/arrow_up.png")
+        self.icon_up.addPixmap(QtGui.QPixmap(icon_location_up), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.icon_down = QtGui.QIcon()
+        icon_location_down = abs_path_from_relative(__file__, "../icons/arrow_down.png")
+        self.icon_down.addPixmap(QtGui.QPixmap(icon_location_down), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.btnShow.setIcon(self.icon_up)
+
         self.setAutoFillBackground(True)
         self.tabWidget.hide()
         self.resize(self.sizeHint())
-        self.groupBox.clicked.connect(self.update_visible)
-        self.update_visible(False)
+        self.btnShow.clicked.connect(self.update_visible)
+        self.visible = False
+        self.update_visible()
         self.tabWidget.currentChanged.connect(self.tab_changed)
 
     def init(self, brain_widget):
@@ -47,19 +57,17 @@ class BrainViewOptionsWidget(Base, Form):
     def update_move(self):
         self.move(9, self.parent().height()-self.height() - 9)
 
-    def update_visible(self, visible):
-        if visible:
+    def update_visible(self):
+        if self.visible:
             self.tabWidget.show()
-            self.groupBox.resize(self.groupBox.sizeHint())
+            self.btnShow.setIcon(self.icon_down)
             self.resize(self.sizeHint())
+            self.visible = False
         else:
             self.tabWidget.hide()
-            self.resize(80, 20)
+            self.btnShow.setIcon(self.icon_up)
+            self.resize(100, 20)
+            self.visible = True
         self.update_move()
-
-    def paintEvent(self, e):
-        painter = QtGui.QPainter(self)
-        painter.drawRoundedRect(0, 0, self.width()-1, self.height()-1, 3, 3)
-        QWidget.paintEvent(self, e)
 
 
