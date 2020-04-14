@@ -95,16 +95,6 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tabGroups">
-      <attribute name="title">
-       <string> Visualize groups</string>
-      </attribute>
-      <layout class="QHBoxLayout" name="horizontalLayout_4">
-       <item>
-        <widget class="VisualizationWidget" name="groupVisualizationWidget" native="true"/>
-       </item>
-      </layout>
-     </widget>
      <widget class="QWidget" name="tabSubjects">
       <attribute name="title">
        <string>Visualize subjects</string>
@@ -112,6 +102,16 @@
       <layout class="QHBoxLayout" name="horizontalLayout_7">
        <item>
         <widget class="VisualizationWidget" name="subjectVisualizationWidget" native="true"/>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabGroups">
+      <attribute name="title">
+       <string> Visualize groups</string>
+      </attribute>
+      <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <item>
+        <widget class="VisualizationWidget" name="groupVisualizationWidget" native="true"/>
        </item>
       </layout>
      </widget>

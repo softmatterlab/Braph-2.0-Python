@@ -46,10 +46,10 @@ class BrainViewOptionsWidget(Base, Form):
             self.settingsWidget.change_brain_region_size()
             self.brain_widget.enable_brain_region_selection(True)
         elif index == 1:
-            self.groupVisualizationWidget.update_visualization()
+            self.subjectVisualizationWidget.update_visualization()
             self.brain_widget.enable_brain_region_selection(False)
         elif index == 2:
-            self.subjectVisualizationWidget.update_visualization()
+            self.groupVisualizationWidget.update_visualization()
             self.brain_widget.enable_brain_region_selection(False)
         else:
             pass
