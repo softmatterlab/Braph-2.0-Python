@@ -31,11 +31,13 @@ class BrainViewOptionsWidget(Base, Form):
     def init(self, brain_widget):
         self.brain_widget = brain_widget
         self.settingsWidget.init(brain_widget)
-        self.groupVisualizationWidget.init(True, self.settingsWidget)
-        self.subjectVisualizationWidget.init(False, self.settingsWidget)
+        self.groupVisualizationWidget.init(self.settingsWidget)
+        self.subjectVisualizationWidget.init(self.settingsWidget)
+        self.comparisonVisualizationWidget.init(self.settingsWidget)
 
     def set_groups(self, groups):
         self.groupVisualizationWidget.set_list(groups)
+        self.comparisonVisualizationWidget.set_list(groups)
 
     def set_subjects(self, subjects):
         self.subjectVisualizationWidget.set_list(subjects)
@@ -52,7 +54,8 @@ class BrainViewOptionsWidget(Base, Form):
             self.groupVisualizationWidget.update_visualization()
             self.brain_widget.enable_brain_region_selection(False)
         else:
-            pass
+            self.comparisonVisualizationWidget.update_visualization()
+            self.brain_widget.enable_brain_region_selection(False)
 
     def update_move(self):
         self.move(9, self.parent().height()-self.height() - 9)

@@ -14,9 +14,10 @@ class VisualizationWidget(Base, Form):
         self.setupUi(self)
         self.visualization_options = ['Color', 'Size']
         self.colormaps = self.get_colormaps()
+        self.combo_boxes = [self.comboBoxAverage, self.comboBoxStd, self.comboBoxPvalueSingle,
+                            self.comboBoxPvalueDouble]
 
-    def init(self, visualize_groups, settings_widget):
-        self.visualize_groups = visualize_groups
+    def init(self, settings_widget):
         self.init_combo_boxes()
         self.init_check_boxes()
         self.init_list()
@@ -29,18 +30,13 @@ class VisualizationWidget(Base, Form):
             self.comboBoxAverage.addItem(option)
             self.comboBoxStd.addItem(option)
             self.comboBoxSubject.addItem(option)
+            self.comboBoxPvalueSingle.addItem(option)
+            self.comboBoxPvalueDouble.addItem(option)
         self.comboBoxAverage.setCurrentIndex(-1)
         self.comboBoxStd.setCurrentIndex(-1)
         self.comboBoxSubject.setCurrentIndex(-1)
-
-        if self.visualize_groups:
-            self.labelSubject.hide()
-            self.comboBoxSubject.hide()
-        else:
-            self.checkBoxAverage.hide()
-            self.checkBoxStd.hide()
-            self.comboBoxAverage.hide()
-            self.comboBoxStd.hide()
+        self.comboBoxPvalueSingle.setCurrentIndex(-1)
+        self.comboBoxPvalueDouble.setCurrentIndex(-1)
 
         for colormap in self.colormaps.values():
             self.comboBoxColormap.add_colormap(colormap)
@@ -49,40 +45,53 @@ class VisualizationWidget(Base, Form):
         self.comboBoxAverage.currentIndexChanged.connect(self.set_average_visualization)
         self.comboBoxStd.currentIndexChanged.connect(self.set_std_visualization)
         self.comboBoxSubject.currentIndexChanged.connect(self.update_visualization)
+        self.comboBoxPvalueSingle.currentIndexChanged.connect(self.set_p_value_single_visualization)
+        self.comboBoxPvalueDouble.currentIndexChanged.connect(self.set_p_value_double_visualization)
         self.comboBoxColormap.currentIndexChanged.connect(self.update_visualization)
 
         self.comboBoxAverage.setEnabled(False)
         self.comboBoxStd.setEnabled(False)
         self.comboBoxSubject.setEnabled(False)
+        self.comboBoxPvalueSingle.setEnabled(False)
+        self.comboBoxPvalueDouble.setEnabled(False)
 
     def init_check_boxes(self):
         self.checkBoxAverage.stateChanged.connect(self.visualize_average)
         self.checkBoxStd.stateChanged.connect(self.visualize_std)
+        self.checkBoxPvalueSingle.stateChanged.connect(self.visualize_p_value_single)
+        self.checkBoxPvalueDouble.stateChanged.connect(self.visualize_p_value_double)
         self.checkBoxAverage.setEnabled(False)
         self.checkBoxStd.setEnabled(False)
+        self.checkBoxPvalueSingle.setEnabled(False)
+        self.checkBoxPvalueDouble.setEnabled(False)
 
     def init_list(self):
         self.item_list = []
         self.listWidget.currentRowChanged.connect(self.list_item_changed)
+        self.listWidget_2.currentRowChanged.connect(self.list_2_item_changed)
 
     def set_list(self, item_list):
         self.item_list = item_list
         self.listWidget.blockSignals(True)
+        self.listWidget_2.blockSignals(True)
         self.listWidget.clear()
+        self.listWidget_2.clear()
         for item in item_list:
-            if self.visualize_groups:
-                self.listWidget.addItem(item.name)
-            else:
-                self.listWidget.addItem(item.id)
+            self.listWidget.addItem(self.get_item_string(item))
+            self.listWidget_2.addItem(self.get_item_string(item))
         self.listWidget.blockSignals(False)
+        self.listWidget_2.blockSignals(False)
         self.list_item_changed(-1)
+        self.list_2_item_changed(-1)
+
+    def get_item_string(self, item):
+        pass
 
     def list_item_changed(self, index):
-        items = [self.checkBoxAverage, self.checkBoxStd, self.comboBoxSubject]
-        enabled = True if index > -1 else False
-        for widget_item in items:
-            widget_item.setEnabled(enabled)
-        self.update_visualization()
+        pass
+
+    def list_2_item_changed(self, index):
+        pass
 
     def init_spin_boxes(self):
         self.spinBoxMin.setValue(1)
@@ -107,44 +116,59 @@ class VisualizationWidget(Base, Form):
         self.update_visualization()
 
     def set_average_visualization(self, index): # combo box
-        if self.comboBoxStd.currentIndex() == index:
-            self.comboBoxStd.blockSignals(True)
-            self.comboBoxStd.setCurrentIndex(-1)
-            self.comboBoxStd.blockSignals(False)
-        self.update_visualization()
+        self.set_combo_box_visualization(index, self.comboBoxAverage)
 
     def set_std_visualization(self, index): # combo box
-        if self.comboBoxAverage.currentIndex() == index:
-            self.comboBoxAverage.blockSignals(True)
-            self.comboBoxAverage.setCurrentIndex(-1)
-            self.comboBoxAverage.blockSignals(False)
+        self.set_combo_box_visualization(index, self.comboBoxStd)
+
+    def set_p_value_single_visualization(self, index): #combo box
+        self.set_combo_box_visualization(index, self.comboBoxPvalueSingle)
+
+    def set_p_value_double_visualization(self, index): #combo box
+        self.set_combo_box_visualization(index, self.comboBoxPvalueDouble)
+
+    def set_combo_box_visualization(self, index, combo_box):
+        for box in self.combo_boxes:
+            if box == combo_box:
+                continue
+            if box.currentIndex() == index:
+                box.blockSignals(True)
+                box.setCurrentIndex(-1)
+                box.blockSignals(False)
         self.update_visualization()
 
     def visualize_average(self, state): # check box
         self.comboBoxAverage.setEnabled(state)
+        self.disable_check_boxes()
         self.update_visualization()
 
     def visualize_std(self, state): # check box
         self.comboBoxStd.setEnabled(state)
+        self.disable_check_boxes()
         self.update_visualization()
+
+    def visualize_p_value_single(self, state): # check box
+        self.comboBoxPvalueSingle.setEnabled(state)
+        self.disable_check_boxes()
+        self.update_visualization()
+
+    def visualize_p_value_double(self, state): # check box
+        self.comboBoxPvalueDouble.setEnabled(state)
+        self.disable_check_boxes()
+        self.update_visualization()
+
+    def disable_check_boxes(self):
+        check_boxes = [self.checkBoxAverage, self.checkBoxStd, self.checkBoxPvalueSingle, self.checkBoxPvalueDouble]
+        number_of_checked_boxes = sum([box.isChecked() for box in check_boxes])
+        for box in check_boxes:
+            box.setEnabled(True)
+            if number_of_checked_boxes >= 2:
+                if not box.isChecked():
+                    box.setEnabled(False)
 
     def update_visualization(self):
         self.brain_widget.reset_brain_region_colors()
         self.settings_widget.change_brain_region_size()
-        if self.listWidget.currentRow() == -1:
-            return
-
-        current_list_item = self.item_list[self.listWidget.currentRow()]
-        if self.visualize_groups:
-            if self.checkBoxAverage.isChecked():
-                values = current_list_item.averages()
-                self.set_visualization(self.comboBoxAverage, values)
-            if self.checkBoxStd.isChecked():
-                values = current_list_item.standard_deviations()
-                self.set_visualization(self.comboBoxStd, values)
-        else:
-            values = current_list_item.data_dict['data'].value
-            self.set_visualization(self.comboBoxSubject, values)
 
     def set_visualization(self, combo_box, values):
         values_min = np.min(values)
@@ -169,4 +193,136 @@ class VisualizationWidget(Base, Form):
         colormap = self.comboBoxColormap.colormap()
         color = colormap.map(value, mode='float')
         return color
+
+class SubjectVisualizationWidget(VisualizationWidget):
+    def __init_():
+        super(VisualizationWidget, self).__init__(parent)
+
+    def init_combo_boxes(self):
+        super().init_combo_boxes()
+        self.comboBoxAverage.hide()
+        self.comboBoxStd.hide()
+        self.comboBoxPvalueSingle.hide()
+        self.comboBoxPvalueDouble.hide()
+
+    def init_check_boxes(self):
+        super().init_check_boxes()
+        self.checkBoxAverage.hide()
+        self.checkBoxStd.hide()
+        self.checkBoxPvalueSingle.hide()
+        self.checkBoxPvalueDouble.hide()
+
+    def init_list(self):
+        super().init_list()
+        self.listWidget_2.hide()
+
+    def get_item_string(self, item):
+        return item.id
+
+    def list_item_changed(self, index):
+        enabled = True if index > -1 else False
+        self.comboBoxSubject.setEnabled(enabled)
+        self.update_visualization()
+
+    def update_visualization(self):
+        super().update_visualization()
+        if self.listWidget.currentRow() == -1:
+            return
+        current_list_item = self.item_list[self.listWidget.currentRow()]
+        values = current_list_item.data_dict['data'].value
+        self.set_visualization(self.comboBoxSubject, values)
+
+class GroupVisualizationWidget(VisualizationWidget):
+    def __init_():
+        super(VisualizationWidget, self).__init__(parent)
+
+    def init_combo_boxes(self):
+        super().init_combo_boxes()
+        self.labelSubject.hide()
+        self.comboBoxSubject.hide()
+        self.comboBoxPvalueSingle.hide()
+        self.comboBoxPvalueDouble.hide()
+
+    def init_check_boxes(self):
+        super().init_check_boxes()
+        self.checkBoxPvalueSingle.hide()
+        self.checkBoxPvalueDouble.hide()
+
+    def init_list(self):
+        super().init_list()
+        self.listWidget_2.hide()
+
+    def get_item_string(self, item):
+        return item.name
+
+    def list_item_changed(self, index):
+        enabled = True if index > -1 else False
+        self.checkBoxAverage.setEnabled(enabled)
+        self.checkBoxStd.setEnabled(enabled)
+        self.update_visualization()
+
+    def update_visualization(self):
+        super().update_visualization()
+        if self.listWidget.currentRow() == -1:
+            return
+        current_list_item = self.item_list[self.listWidget.currentRow()]
+        if self.checkBoxAverage.isChecked():
+            values = current_list_item.averages()
+            self.set_visualization(self.comboBoxAverage, values)
+        if self.checkBoxStd.isChecked():
+            values = current_list_item.standard_deviations()
+            self.set_visualization(self.comboBoxStd, values)
+
+class ComparisonVisualizationWidget(VisualizationWidget):
+    def __init_():
+        super(VisualizationWidget, self).__init__(parent)
+
+    def init_combo_boxes(self):
+        super().init_combo_boxes()
+        self.labelSubject.hide()
+        self.comboBoxSubject.hide()
+
+    def get_item_string(self, item):
+        return item.name
+
+    def list_item_changed(self, index):
+        enabled = True if index > -1 else False
+        self.listWidget_2.setEnabled(enabled)
+        self.update_visualization()
+
+    def list_2_item_changed(self, index):
+        enabled = True if index > -1 else False
+        if enabled == False:
+            self.checkBoxAverage.setEnabled(enabled)
+            self.checkBoxStd.setEnabled(enabled)
+            self.checkBoxPvalueSingle.setEnabled(enabled)
+            self.checkBoxPvalueDouble.setEnabled(enabled)
+        else:
+            self.disable_check_boxes()
+        self.update_visualization()
+
+    def update_visualization(self):
+        super().update_visualization()
+        if self.listWidget.currentRow() == -1:
+            return
+        if self.listWidget_2.currentRow() == -1:
+            return
+        if self.listWidget.currentRow() == self.listWidget_2.currentRow():
+            return
+        current_list_item_1 = self.item_list[self.listWidget.currentRow()]
+        current_list_item_2 = self.item_list[self.listWidget_2.currentRow()]
+        averages, stds, p_values = current_list_item_1.comparison(current_list_item_2)
+        if self.checkBoxAverage.isChecked():
+            values = averages[0] - averages[1]
+            self.set_visualization(self.comboBoxAverage, values)
+        if self.checkBoxStd.isChecked():
+            values = stds[0] - stds[1]
+            self.set_visualization(self.comboBoxStd, values)
+        if self.checkBoxPvalueSingle.isChecked():
+            values = p_values[0]
+            self.set_visualization(self.comboBoxPvalueSingle, values)
+        if self.checkBoxPvalueDouble.isChecked():
+            values = p_values[1]
+            self.set_visualization(self.comboBoxPvalueDouble, values)
+
 

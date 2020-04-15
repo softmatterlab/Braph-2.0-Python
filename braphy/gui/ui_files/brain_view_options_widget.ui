@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>842</width>
-    <height>274</height>
+    <height>275</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -101,7 +101,7 @@
       </attribute>
       <layout class="QHBoxLayout" name="horizontalLayout_7">
        <item>
-        <widget class="VisualizationWidget" name="subjectVisualizationWidget" native="true"/>
+        <widget class="SubjectVisualizationWidget" name="subjectVisualizationWidget" native="true"/>
        </item>
       </layout>
      </widget>
@@ -111,7 +111,7 @@
       </attribute>
       <layout class="QHBoxLayout" name="horizontalLayout_4">
        <item>
-        <widget class="VisualizationWidget" name="groupVisualizationWidget" native="true"/>
+        <widget class="GroupVisualizationWidget" name="groupVisualizationWidget" native="true"/>
        </item>
       </layout>
      </widget>
@@ -119,6 +119,11 @@
       <attribute name="title">
        <string>Visualize comparison</string>
       </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="ComparisonVisualizationWidget" name="comparisonVisualizationWidget" native="true"/>
+       </item>
+      </layout>
      </widget>
     </widget>
    </item>
@@ -132,7 +137,19 @@
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>VisualizationWidget</class>
+   <class>ComparisonVisualizationWidget</class>
+   <extends>QWidget</extends>
+   <header>braphy.gui.widgets.visualization_widget</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>GroupVisualizationWidget</class>
+   <extends>QWidget</extends>
+   <header>braphy.gui.widgets.visualization_widget</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>SubjectVisualizationWidget</class>
    <extends>QWidget</extends>
    <header>braphy.gui.widgets.visualization_widget</header>
    <container>1</container>
