@@ -89,9 +89,9 @@ class BrainAtlasSettingsWidget(Base, Form):
     def get_actions(self):
         actions = [self.action3D, self.actionSagittal_left, self.actionSagittal_right,
                    self.actionAxial_dorsal, self.actionAxial_ventral, self.actionCoronal_anterior,
-                   self.actionCoronal_posterior, self.actionShow_brain, self.actionShow_axis,
-                   self.actionShow_grid, self.actionShow_brain_regions, self.actionShow_labels,
-                   self.actionShow_only_selected]
+                   self.actionCoronal_posterior, self.actionShow_brain,
+                   self.actionShow_brain_regions, self.actionShow_axis, self.actionShow_grid,
+                   self.actionShow_labels, self.actionShow_only_selected]
         return actions
 
     def show_brain(self, state):

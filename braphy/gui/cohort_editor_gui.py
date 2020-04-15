@@ -119,13 +119,13 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionSave_as.triggered.connect(self.save_as)
         self.actionClose.triggered.connect(self.close)
 
+        self.toolBar.addSeparator()
         for action in self.brainWidget.get_actions():
             self.toolBar.addAction(action)
         self.toolBar.addSeparator()
 
         for action in self.brain_view_options_widget.settingsWidget.get_actions():
             self.toolBar.addAction(action)
-        self.toolBar.addSeparator()
 
         self.actionLoad_subject_group_from_file.triggered.connect(self.groupTableWidget.load_subject_group)
         self.actionAdd_group.triggered.connect(self.groupTableWidget.add_group)
