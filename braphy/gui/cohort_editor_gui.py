@@ -189,6 +189,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.btnSelectAtlas.setEnabled(len(self.cohort.groups) == 0 and len(self.cohort.subjects) == 0)
         self.brain_view_options_widget.set_groups(self.cohort.groups)
+        self.brain_view_options_widget.set_subjects(self.cohort.subjects)
 
     def groups_and_demographics_table_updated(self):
         self.groupTableWidget.update_table()
@@ -303,15 +304,6 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.menuView.setDisabled(b)
         self.menuBrain_View.setDisabled(b)
         self.menuGraph_Analysis.setDisabled(b)
-
-    def view_subjects(self):
-        pass
-
-    def view_group(self):
-        pass
-
-    def view_comparison(self):
-        pass
 
     def resizeEvent(self, event):
         self.brain_view_options_widget.update_move()
