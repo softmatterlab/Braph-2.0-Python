@@ -367,12 +367,15 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         if file_name:
             extension = file_name.split(".")[-1]
             if extension == "txt":
-                self.atlas.load_from_txt(file_name)
+                exception = self.atlas.load_from_txt(file_name)
             elif extension == "xml":
-                self.atlas.load_from_xml(file_name)
+                exception = self.atlas.load_from_xml(file_name)
             elif extension == "xlsx":
-                self.atlas.load_from_xlsx(file_name)
-            self.update_table()
+                exception = self.atlas.load_from_xlsx(file_name)
+            if exception:
+                self.load_file_error(exception)
+            else:
+                self.update_table()
 
     def export_xml(self):
         options = QFileDialog.Options()
@@ -408,6 +411,13 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def about(self):
         pass
+
+    def load_file_error(self, exception):
+        msg_box = QMessageBox()
+        msg_box.setIcon(QMessageBox.Critical)
+        msg_box.setText(str(exception))
+        msg_box.setWindowTitle("Import error")
+        msg_box.exec_()
 
 def run():
     app = QtWidgets.QApplication(sys.argv)
