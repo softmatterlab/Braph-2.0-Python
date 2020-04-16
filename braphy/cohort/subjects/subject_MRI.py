@@ -6,12 +6,12 @@ import pandas as pd
 import numpy as np
 
 class SubjectMRI(Subject):
-    def __init__(self, id = 'sub_id'):
-        super().__init__(id = id)
+    def __init__(self, id = 'sub_id', size = 0):
+        super().__init__(id = id, size = size)
 
-    def init_data_dict(self):
+    def init_data_dict(self, size):
         self.data_dict['age'] = DataScalar()
-        self.data_dict['data'] = DataStructural()
+        self.data_dict['data'] = DataStructural(size)
 
     def __str__(self):
         s = str(self.id)

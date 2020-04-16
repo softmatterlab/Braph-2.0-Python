@@ -5,12 +5,12 @@ import xml.etree.ElementTree as ET
 import numpy as np
 
 class SubjectfMRI(Subject):
-    def __init__(self, id = 'sub_id'):
-        super().__init__(id = id)
+    def __init__(self, id = 'sub_id', size = 0):
+        super().__init__(id = id, size = size)
 
-    def init_data_dict(self):
+    def init_data_dict(self, size):
         self.data_dict['age'] = DataScalar()
-        self.data_dict['data'] = DataFunctional()
+        self.data_dict['data'] = DataFunctional(size)
 
     def from_txt(file_txt):
         raise Exception("Not implemented")

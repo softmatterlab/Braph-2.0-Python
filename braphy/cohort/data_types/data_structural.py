@@ -2,9 +2,9 @@ from braphy.cohort.data_types.data import Data
 import numpy as np
 
 class DataStructural(Data):
-    def __init__(self):
+    def __init__(self, size = 0):
         super().__init__()
-        self.value = np.array([])
+        self.value = np.zeros(size)
 
     def to_dict(self):
         d = {}

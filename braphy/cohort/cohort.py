@@ -123,7 +123,7 @@ class Cohort:
         return 'sub_{}'.format(self.new_subjects_added)
 
     def new_subject(self):
-        return self.subject_class(id = self.new_subject_id())
+        return self.subject_class(id = self.new_subject_id(), size = self.atlas.brain_region_number())
 
     def add_subjects(self, subjects):
         added_subjects = []

@@ -2,10 +2,10 @@ from abc import ABC, abstractmethod
 from braphy.cohort.data_types.data import Data
 
 class Subject:
-    def __init__(self, id = 'sub_id'):
+    def __init__(self, id = 'sub_id', size = 0):
         self.id = id
         self.data_dict = {}
-        self.init_data_dict()
+        self.init_data_dict(size)
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
