@@ -35,6 +35,17 @@ class BrainViewOptionsWidget(Base, Form):
         self.subjectVisualizationWidget.init(self.settingsWidget)
         self.comparisonVisualizationWidget.init(self.settingsWidget)
 
+        self.add_custom_colormap_callbacks()
+
+    def add_custom_colormap_callbacks(self):
+        callback_subject = self.subjectVisualizationWidget.comboBoxColormap.add_colormap
+        callback_group = self.groupVisualizationWidget.comboBoxColormap.add_colormap
+        callback_comparison = self.comparisonVisualizationWidget.comboBoxColormap.add_colormap
+
+        self.subjectVisualizationWidget.comboBoxColormap.set_custom_color_map_callbacks([callback_group, callback_comparison])
+        self.groupVisualizationWidget.comboBoxColormap.set_custom_color_map_callbacks([callback_subject, callback_comparison])
+        self.comparisonVisualizationWidget.comboBoxColormap.set_custom_color_map_callbacks([callback_subject, callback_group])
+
     def set_groups(self, groups):
         self.groupVisualizationWidget.set_list(groups)
         self.comparisonVisualizationWidget.set_list(groups)
