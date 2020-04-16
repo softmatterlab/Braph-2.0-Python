@@ -8,6 +8,7 @@ from braphy.utility.helper_functions import abs_path_from_relative
 from braphy.gui.gui_brain_region import GUIBrainRegion
 import pyqtgraph.Vector
 import numpy as np
+from braphy.gui.color_bar_combo_box import IndexedColorBar
 
 ui_file = abs_path_from_relative(__file__, "../ui_files/brain_atlas_widget.ui")
 Form, Base = uic.loadUiType(ui_file)
@@ -40,6 +41,11 @@ class BrainAtlasWidget(GLViewWidget):
         self.region_color = [0.3, 0.3, 1.0, 1.0] # blue
         self.selected_region_color = [1.0, 0.0, 2.0/3, 1.0] # pink
         self.tool_bar = BrainAtlasWidgetToolBar(self)
+        self.color_bar = IndexedColorBar(parent = self)
+        self.color_bar.setAutoFillBackground(False)
+
+    def resizeEvent(self, event):
+        self.color_bar.move(self.width() - (self.color_bar.width() + 10), 10)
 
     def add_selected_observer(self, observer):
         self.selected_observers.append(observer)
@@ -120,6 +126,17 @@ class BrainAtlasWidget(GLViewWidget):
 
     def set_shader(self, shader):
         self.brain_mesh.setShader(shader)
+
+    '''
+    def paintEvent(self, event):
+        p = QtGui.QPainter()
+        p.begin(self)
+        color = QtGui.QColor(255, 0, 0, 255)
+        p.setPen(color)
+        p.drawLine(0, 0, 200, 200)
+        p.end()
+        super().paintEvent(event)
+    '''
 
     def paintGL(self, *args, **kwds):
         GLViewWidget.paintGL(self, *args, **kwds)
@@ -238,10 +255,17 @@ class BrainAtlasWidget(GLViewWidget):
         self.update_brain_regions_plot()
 
     def generate_figure(self):
+        screen = self.window().windowHandle().screen()
+        image = self.grabFrameBuffer()
+        image_color_bar = self.color_bar.grab()
+        p = QtGui.QPainter(image)
+        pos = self.color_bar.pos()
+        p.drawPixmap(pos.x(), pos.y(), image_color_bar)
+        p.end()
+
         file_name, name = QFileDialog.getSaveFileName(self, "QFileDialog.saveFileName()", "untitled.png", "Image (*.png)")
         if file_name:
-            fb = self.grabFrameBuffer()
-            fb.save(file_name)
+            image.save(file_name)
 
     def brain_region_visible(self, selected):
         if selected:

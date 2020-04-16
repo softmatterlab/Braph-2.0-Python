@@ -19,18 +19,46 @@ class ColorBar(QtWidgets.QLabel):
     def update_pixmap(self):
         m = QtGui.QPixmap(self.width(), self.height())
         p = QtGui.QPainter(m)
-        h = self.height()
         for i in range(self.width()):
             color = self.colormap.map(i/self.width(), mode='float')
             color = QColor_from_list(color)
             p.setPen(color)
-            p.drawLine(i, 0, i, h)
+            p.drawLine(i, 0, i, self.height())
         p.end()
         self.setPixmap(m)
 
     def get_QColor(self, value):
         color_list = self.colormap.map(value, mode='float')
         return QColor_from_list(color_list)
+
+class IndexedColorBar(ColorBar):
+    def __init__(self, parent = None, colormap = None):
+        super().__init__(parent)
+        self.min = 0
+        self.max = 1
+        self.setFixedSize(40, 220)
+        self.update_pixmap()
+
+    def set_ticks(self, min, max):
+        self.min = min
+        self.max = max
+        self.update_pixmap()
+
+    def update_pixmap(self):
+        m = QtGui.QPixmap(self.width(), self.height())
+        p = QtGui.QPainter(m)
+        p.fillRect(0, 0, self.width(), self.height(), QtGui.QColor(255, 255, 255, 255))
+        for i in range(200):
+            color = self.colormap.map(i/200, mode='float')
+            color = QColor_from_list(color)
+            p.setPen(color)
+            p.drawLine(15, 200 - i - 1 + 10, 35, 200 - i - 1 + 10)
+        p.setPen(QtGui.QColor(30, 30, 30, 230))
+        p.drawLine(5, 9, 15, 9)
+        p.drawLine(5, 109, 15, 109)
+        p.drawLine(5, 209, 15, 209)
+        p.end()
+        self.setPixmap(m)
 
 class ColorBarComboBox(QtWidgets.QComboBox):
     def __init__(self, parent = None):
