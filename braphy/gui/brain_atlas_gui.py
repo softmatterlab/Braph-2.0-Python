@@ -365,17 +365,17 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
                                                           xml files (*.xml);; \
                                                           xlsx files (*.xlsx", options=options)
         if file_name:
-            extension = file_name.split(".")[-1]
-            if extension == "txt":
-                exception = self.atlas.load_from_txt(file_name)
-            elif extension == "xml":
-                exception = self.atlas.load_from_xml(file_name)
-            elif extension == "xlsx":
-                exception = self.atlas.load_from_xlsx(file_name)
-            if exception:
-                self.load_file_error(exception)
-            else:
+            try:
+                extension = file_name.split(".")[-1]
+                if extension == "txt":
+                    self.atlas.load_from_txt(file_name)
+                elif extension == "xml":
+                    self.atlas.load_from_xml(file_name)
+                elif extension == "xlsx":
+                    self.atlas.load_from_xlsx(file_name)
                 self.update_table()
+            except Exception as e:
+                self.load_file_error(str(e))
 
     def export_xml(self):
         options = QFileDialog.Options()

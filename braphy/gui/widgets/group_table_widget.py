@@ -95,14 +95,17 @@ class GroupTableWidget(Base, Form):
                                                                                                Text files (*.txt);; \
                                                                                                XML files (*.xml);; \
                                                                                                XLSX files (*.xlsx)", options=options)
-        for file_name in file_names:
-            extension = file_name.split(".")[-1]
-            if extension == "txt":
-                self.cohort.load_from_txt(file_name)
-            elif extension == "xml":
-                self.cohort.load_from_xml(file_name)
-            elif extension == "xlsx":
-                self.cohort.load_from_xlsx(file_name)
+        try:
+            for file_name in file_names:
+                extension = file_name.split(".")[-1]
+                if extension == "txt":
+                    self.cohort.load_from_txt(file_name)
+                elif extension == "xml":
+                    self.cohort.load_from_xml(file_name)
+                elif extension == "xlsx":
+                    self.cohort.load_from_xlsx(file_name)
+        except Exception as e:
+            self.load_file_error(str(e))
         if len(file_names) > 0:
             self.update()
 
@@ -144,5 +147,13 @@ class GroupTableWidget(Base, Form):
     def intersect_groups(self):
         self.cohort.intersect_groups(self.get_selected())
         self.update(self.get_selected())
+
+    
+    def load_file_error(self, exception):
+        msg_box = QMessageBox()
+        msg_box.setIcon(QMessageBox.Critical)
+        msg_box.setText(str(exception))
+        msg_box.setWindowTitle("Import error")
+        msg_box.exec_()
 
 
