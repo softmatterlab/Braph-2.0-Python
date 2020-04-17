@@ -246,7 +246,7 @@ class Cohort:
     def load_from_file(self, file_name, subject_load_function):
         group_name = file_name.split('/')[-1]
         group = Group(self.subject_class, name = group_name)
-        subjects = subject_load_function(file_name)
+        subjects = subject_load_function(file_name, self.atlas.brain_region_number())
         subjects = self.add_subjects(subjects)
         group.add_subjects(subjects)
         self.add_group(group=group)

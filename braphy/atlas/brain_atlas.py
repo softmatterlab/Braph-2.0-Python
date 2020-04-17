@@ -111,51 +111,46 @@ class BrainAtlas():
         return lm.move_to_bottom(self.brain_regions, selected)
 
     def load_from_txt(self, file_path = '', file_name = ''):
-        try:
-            with open(file_path + file_name, 'r') as f:
-                for i, line in enumerate(f):
-                    line = line.split()
-                    if i == 0:
-                        continue
-                    self.brain_regions.append(BrainRegion(label = line[0],
-                                                        name = (' '.join(line[1:-5])).replace('  ', ' '),
-                                                        x = float(line[-5]),
-                                                        y = float(line[-4]),
-                                                        z = float(line[-3])
-                                                        ))
-        except:
-            print('Could not open file and add brain regions.')
+        with open(file_path + file_name, 'r') as f:
+            success = False
+            for i, line in enumerate(f):
+                line = line.split()
+                if i == 0:
+                    continue
+                success = True
+                assert len(line) >= 5, "Invalid text file"
+                label = line[0]
+                name = (' '.join(line[1:-5])).replace('  ', ' ')
+                x = float(line[-5])
+                y = float(line[-4])
+                z = float(line[-3])
+                self.brain_regions.append(BrainRegion(label, name, x, y, z))
+            assert success == True, "Could not find any brain regions in file"
 
     def load_from_xlsx(self, file_path = '', file_name = ''):
-
-        try:
-            data = pd.read_excel(file_path + file_name)
-
-            # Remove leading, trailing and double whitespaces
-            data.iloc[:,0] = data.iloc[:,0].str.strip().str.replace('  ', ' ')
-            data.iloc[:,1] = data.iloc[:,1].str.strip().str.replace('  ', ' ')
-
-            br = np.array( data.apply(lambda x: BrainRegion(x[0], x[1], x[2], x[3], x[4]),
-                                    axis = 1)).tolist()
-            self.brain_regions.extend(br)
-        except:
-            print('Could not open file and add brain regions.')
+        data = pd.read_excel(file_path + file_name)
+        # Remove leading, trailing and double whitespaces
+        data.iloc[:,0] = data.iloc[:,0].str.strip().str.replace('  ', ' ')
+        data.iloc[:,1] = data.iloc[:,1].str.strip().str.replace('  ', ' ')
+        br = np.array( data.apply(lambda x: BrainRegion(x[0], x[1], x[2], x[3], x[4]),
+                                axis = 1)).tolist()
+        self.brain_regions.extend(br)
 
     def load_from_xml(self, file_path = '', file_name = ''):
-        try:
-            with open(file_path + file_name, 'r') as f:
-                tree = ET.parse(f)
-                root = tree.getroot()
-                for brain_region in root.findall('BrainAtlas/BrainRegion'):
-                    br = brain_region.attrib
-                    self.brain_regions.append(BrainRegion(  label = br['label'].replace('  ', ' ').strip(),
-                                                            name = br['name'].replace('  ', ' ').strip(),
-                                                            x = float(br['x']),
-                                                            y = float(br['y']),
-                                                            z = float(br['z'])
-                                                            ))
-        except:
-            print('Could not open file and add brain regions.')
+        with open(file_path + file_name, 'r') as f:
+            tree = ET.parse(f)
+            root = tree.getroot()
+            assert root.find('BrainAtlas/BrainRegion') != None, "Could not find any brain regions in file"
+            for brain_region in root.findall('BrainAtlas/BrainRegion'):
+                br = brain_region.attrib
+                for key in ['label', 'name', 'x', 'y', 'z']:
+                    assert key in br.keys(), "{} missing from brain region".format(key)
+                label = br['label'].replace('  ', ' ').strip()
+                name = br['name'].replace('  ', ' ').strip()
+                x = float(br['x'])
+                y = float(br['y'])
+                z = float(br['z'])
+                self.brain_regions.append(BrainRegion(label = label, name = name, x = x, y = y, z = z))
 
     def __str__(self):
         s = "{}\t{}\n".format(self.name, self.mesh_file)
