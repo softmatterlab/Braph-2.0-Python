@@ -116,6 +116,7 @@ class BrainAtlas():
             for i, line in enumerate(f):
                 line = line.split()
                 if i == 0:
+                    self.name = line[0]
                     continue
                 success = True
                 assert len(line) >= 5, "Invalid text file"
@@ -129,9 +130,9 @@ class BrainAtlas():
 
     def load_from_xlsx(self, file_path = '', file_name = ''):
         data = pd.read_excel(file_path + file_name)
-        # Remove leading, trailing and double whitespaces
         data.iloc[:,0] = data.iloc[:,0].str.strip().str.replace('  ', ' ')
         data.iloc[:,1] = data.iloc[:,1].str.strip().str.replace('  ', ' ')
+        self.name = data.columns[0]
         br = np.array( data.apply(lambda x: BrainRegion(x[0], x[1], x[2], x[3], x[4]),
                                 axis = 1)).tolist()
         self.brain_regions.extend(br)
@@ -140,6 +141,9 @@ class BrainAtlas():
         with open(file_path + file_name, 'r') as f:
             tree = ET.parse(f)
             root = tree.getroot()
+            atlas = root.find('BrainAtlas')
+            assert atlas != None, "Could not find atlas in file"
+            self.name = atlas.attrib['name']
             assert root.find('BrainAtlas/BrainRegion') != None, "Could not find any brain regions in file"
             for brain_region in root.findall('BrainAtlas/BrainRegion'):
                 br = brain_region.attrib

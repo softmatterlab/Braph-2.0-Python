@@ -84,12 +84,14 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
             brain_mesh_data = {'vertices': vertices, 'faces': faces}
             self.brain_mesh_data = brain_mesh_data
             self.init_brain_widget()
+        self.labelAtlasName.setText(self.cohort.atlas.name)
         self.labelRegionNumber.setText("Brain region number = {}".format(self.brain_region_number()))
         show_only_selected = self.brain_view_options_widget.settingsWidget.checkBoxShowOnlySelected.isChecked()
         show_brain_regions = self.brain_view_options_widget.settingsWidget.actionShow_brain_regions.isChecked()
         self.brainWidget.init_brain_regions(self.cohort.atlas.brain_regions, 4, [], show_brain_regions, show_only_selected)
         self.brain_view_options_widget.set_groups(self.cohort.groups)
         self.brain_view_options_widget.set_subjects(self.cohort.subjects)
+        self.btnSelectAtlas.setEnabled(len(self.cohort.groups) == 0 and len(self.cohort.subjects) == 0)
 
     def to_file(self, file_name):
         self.file_name = file_name
@@ -275,7 +277,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
 
             self.update_tables()
             self.btnViewAtlas.setEnabled(True)
-            self.labelAtlasName.setText(file_name.split('/')[-1])
+            self.labelAtlasName.setText(atlas.name)
             self.labelRegionNumber.setText("Brain region number = {}".format(self.brain_region_number()))
             show_only_selected = self.brain_view_options_widget.settingsWidget.checkBoxShowOnlySelected.isChecked()
             show_brain_regions = self.brain_view_options_widget.settingsWidget.actionShow_brain_regions.isChecked()

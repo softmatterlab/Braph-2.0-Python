@@ -72,7 +72,6 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.brain_mesh_data = brain_mesh_data
         self.set_brain_mesh_data()
         self.set_brain_regions()
-        self.atlas_name_change()
         self.add_mesh_to_combobox(self.atlas.mesh_file)
         self.loaded_mesh_data = (self.atlas.mesh_file, brain_mesh_data)
         self.update_table()
@@ -313,6 +312,10 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.tableWidget.blockSignals(False)
         if self.locked:
             self.set_locked(True)
+
+        self.textAtlasName.blockSignals(True)
+        self.textAtlasName.setText(self.atlas.name)
+        self.textAtlasName.blockSignals(False)
 
     def region_selection_changed(self):
         selected = self.get_selected()
