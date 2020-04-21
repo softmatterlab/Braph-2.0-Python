@@ -21,14 +21,19 @@ class SubjectDataWidget(Base, Form):
         if self.cohort.subject_class == SubjectfMRI:
             self.listSubjects.currentRowChanged.connect(self.subject_list_row_changed)
             self.selected_subject = None
-        else:
+            self.btnSaveSubjects.hide()
+        else: #MRI
             self.listSubjects.hide()
             self.labelSubjects.hide()
+            self.btnAddRow.hide()
+            self.btnRemoveRow.hide()
 
         self.tableWidget.cellChanged.connect(self.cell_changed_in_table)
 
     def init_buttons(self):
         self.btnSaveSubjects.clicked.connect(self.save_subjects)
+        self.btnAddRow.clicked.connect(self.add_row)
+        self.btnRemoveRow.clicked.connect(self.remove_row)
 
     def save_subjects(self):
         options = QFileDialog.Options()
@@ -55,7 +60,7 @@ class SubjectDataWidget(Base, Form):
 
     def update_table(self):
         if self.cohort.subject_class == SubjectMRI:
-            self.update_subject_data_table_structural()
+            self.update_table_structural()
         else:
             self.update_subject_list()
 
@@ -79,7 +84,7 @@ class SubjectDataWidget(Base, Form):
 
         self.tableWidget.blockSignals(False)
 
-    def update_subject_data_table_structural(self):
+    def update_table_structural(self):
         self.tableWidget.blockSignals(True)
         self.tableWidget.clearContents()
         self.tableWidget.setRowCount(0)
@@ -117,4 +122,12 @@ class SubjectDataWidget(Base, Form):
 
     def subject_list_row_changed(self, row):
         self.selected_subject = self.cohort.subjects[row]
+        self.update_table_functional()
+
+    def add_row(self):
+        self.selected_subject.data_dict['data'].add_row()
+        self.update_table_functional()
+
+    def remove_row(self):
+        self.selected_subject.data_dict['data'].remove_row()
         self.update_table_functional()

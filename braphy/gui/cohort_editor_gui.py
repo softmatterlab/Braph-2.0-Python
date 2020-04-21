@@ -172,7 +172,6 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def set_locked(self, locked):
         self.locked = locked
-        if self.subject_class == SubjectfMRI:
         lock_items = [self.btnViewAtlas, self.groupTableWidget, self.tabWidget]
         for item in lock_items:
             item.setEnabled(not self.locked)

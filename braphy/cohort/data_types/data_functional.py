@@ -4,7 +4,7 @@ import numpy as np
 class DataFunctional(Data):
     def __init__(self, size = 0):
         super().__init__()
-        self.value = np.zeros([size, 0])
+        self.value = np.zeros([1, size])
 
     def to_dict(self):
         d = {}
@@ -13,3 +13,11 @@ class DataFunctional(Data):
 
     def from_dict(self, d):
         self.set_value(np.asarray(d['value']))
+
+    def add_row(self):
+        new_row = np.zeros(np.size(self.value, 1))
+        self.value = np.vstack([self.value, new_row])
+
+    def remove_row(self):
+        if np.size(self.value, 0) > 1:
+            self.value = self.value[:-1, :]
