@@ -96,6 +96,7 @@ class BrainAtlasSettingsWidget(Base, Form):
 
     def show_brain(self, state):
         if (self.actionShow_brain.isChecked() != self.checkBoxShowBrain.isChecked()):
+            self.sliderBrain.setEnabled(state)
             self.brain_widget.show_brain(state)
             self.actionShow_brain.setChecked(state != 0)
             self.checkBoxShowBrain.setChecked(state != 0)
@@ -114,6 +115,7 @@ class BrainAtlasSettingsWidget(Base, Form):
 
     def show_brain_regions(self, state):
         if (self.actionShow_brain_regions.isChecked() != self.checkBoxShowBrainRegions.isChecked()):
+            self.sliderRegions.setEnabled(state)
             self.brain_widget.set_brain_regions_visible(state != 0)
             self.actionShow_brain_regions.setChecked(state != 0)
             self.checkBoxShowBrainRegions.setChecked(state != 0)
