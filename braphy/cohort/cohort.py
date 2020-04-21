@@ -256,7 +256,9 @@ class Cohort:
         return duplicates
 
     def save_to_txt(self, file_name):
-        s = " "
+        s = ""
+        for label in self.atlas.get_brain_region_labels():
+            s += label + " "
         for subject in self.subjects:
             s += "\n{}".format(str(subject))
         with open(file_name, 'w') as f:
