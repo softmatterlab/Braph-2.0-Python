@@ -27,9 +27,9 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
             self.atlas = BrainAtlas(mesh_file = brain_mesh_file_name_default.split('/')[-1])
         self.init_brain_widget(brain_mesh_file_default)
         self.settingsWidget.init(self.brainWidget)
+        self.init_combo_boxes()
         self.init_buttons()
         self.init_actions()
-        self.init_combo_boxes()
 
         self.tableWidget.cellChanged.connect(self.change_cell)
         self.tableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
@@ -40,7 +40,6 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.textAtlasName.textChanged.connect(self.atlas_name_change)
         self.file_name = None
         self.loaded_mesh_data = None
-
         self.brainWidget.add_selected_observer(self.set_selected)
         self.update_table()
 
@@ -121,6 +120,8 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.comboBoxMeshFile.setCurrentIndex(idx)
         self.comboBoxMeshFile.currentIndexChanged.connect(self.select_brain_mesh)
         self.last_combobox_index = idx
+        #if self.atlas.mesh_file == '':
+        #    self.atlas.mesh_file = self.comboBoxMeshFile.currentText()
 
     def set_locked(self, locked):
         self.locked = locked
@@ -316,6 +317,12 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.textAtlasName.blockSignals(True)
         self.textAtlasName.setText(self.atlas.name)
         self.textAtlasName.blockSignals(False)
+        if self.comboBoxMeshFile.findText(self.atlas.mesh_file) != -1:
+            self.comboBoxMeshFile.setCurrentText(self.atlas.mesh_file)
+        else:
+            self.load_file_warning('The brain mesh file {} could not be found in the repository. ' \
+                                   'Try loading it from your computer and select \nit in the drop-' \
+                                   'down menu.'.format(self.atlas.mesh_file))
 
     def region_selection_changed(self):
         selected = self.get_selected()
@@ -420,6 +427,13 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         msg_box.setIcon(QMessageBox.Critical)
         msg_box.setText(str(exception))
         msg_box.setWindowTitle("Import error")
+        msg_box.exec_()
+
+    def load_file_warning(self, string):
+        msg_box = QMessageBox()
+        msg_box.setIcon(QMessageBox.Warning)
+        msg_box.setText(string)
+        msg_box.setWindowTitle("Import warning")
         msg_box.exec_()
 
 def run():
