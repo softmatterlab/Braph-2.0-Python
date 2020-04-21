@@ -127,9 +127,12 @@ class Cohort:
 
     def add_subjects(self, subjects):
         added_subjects = []
+        duplicates = False
         for subject in subjects:
-            added_subjects.append(self.add_subject(subject = subject))
-        return added_subjects
+            added_subject, duplicate = self.add_subject(subject = subject)
+            duplicates = duplicates or duplicate
+            added_subjects.append(added_subject)
+        return added_subjects, duplicates
 
     def add_subject(self, i = None, subject = None):
         if not i:
@@ -138,9 +141,9 @@ class Cohort:
             subject = self.new_subject()
         for existing_subject in self.subjects:
             if subject == existing_subject:
-                return existing_subject
+                return existing_subject, True
         self.subjects.insert(i, subject)
-        return subject
+        return subject, False
 
     def remove_subject(self, i):
         del self.subjects[i]
@@ -247,9 +250,10 @@ class Cohort:
         group_name = file_name.split('/')[-1]
         group = Group(self.subject_class, name = group_name)
         subjects = subject_load_function(file_name, self.atlas.brain_region_number())
-        subjects = self.add_subjects(subjects)
+        subjects, duplicates = self.add_subjects(subjects)
         group.add_subjects(subjects)
         self.add_group(group=group)
+        return duplicates
 
     def save_to_txt(self, file_name):
         s = " "
@@ -259,10 +263,10 @@ class Cohort:
             f.write(s)
 
     def load_from_txt(self, file_name):
-        self.load_from_file(file_name, self.subject_class.from_txt)
+        return self.load_from_file(file_name, self.subject_class.from_txt)
 
     def load_from_xml(self, file_name):
-        self.load_from_file(file_name, self.subject_class.from_xml)
+        return self.load_from_file(file_name, self.subject_class.from_xml)
 
     def load_from_xlsx(self, file_name):
-        self.load_from_file(file_name, self.subject_class.from_xlsx)
+        return self.load_from_file(file_name, self.subject_class.from_xlsx)
