@@ -15,6 +15,8 @@ class GroupAveragesWidget(Base, Form):
     def init(self, cohort):
         self.cohort = cohort
         self.spinBoxPermutations.valueChanged.connect(self.comparison)
+        self.btnExportTxt.clicked.connect(self.export_as_txt)
+        self.btnExportTxt.setEnabled(False)
 
     def set_callback(self, callback_function):
         self.update_callback_function = callback_function
@@ -84,19 +86,20 @@ class GroupAveragesWidget(Base, Form):
         self.button_group.buttonClicked.connect(self.comparison)
 
     def comparison(self):
+        self.btnExportTxt.setEnabled(True)
         group_button = self.button_group.checkedButton()
         if group_button:
             if len(self.cohort.atlas.brain_regions) == 0:
                 self.comparison_error("Atlas not loaded")
                 return
             permutations = self.spinBoxPermutations.value()
-            group1 = group_button.group1
-            group2 = group_button.group2
+            group_1 = group_button.group1
+            group_2 = group_button.group2
             labels = ["Difference", "p-value (single-tailed)", "p-value (double-tailed)"]
             self.tableWidget_comparison.setRowCount(3)
             self.tableWidget_comparison.setVerticalHeaderLabels(labels)
             try:
-                averages, stds, p_values = group1.comparison(group2, permutations=permutations)
+                averages, stds, p_values = group_1.comparison(group_2, permutations=permutations)
                 for i in range(len(averages[0])):
                     diff = averages[0][i] - averages[1][i]
                     item = QTableWidgetItem(str(diff))
@@ -111,9 +114,29 @@ class GroupAveragesWidget(Base, Form):
 
             except AssertionError as e:
                 self.comparison_error(str(e))
+        return group_1, group_2, averages, stds, p_values
 
     def clear_comparison_table(self):
         self.tableWidget_comparison.clearContents()
+
+    def export_as_txt(self):
+        group_1, group_2, averages, stds, p_values = self.comparison()
+        s = 'Comparison {} {}\n'.format(group_1.name, group_2.name)
+        s += 'Average {} {}\n'.format(group_1.name, ' '.join(str(average) for average in averages[0]))
+        s += 'Standard deviation {} {}\n'.format(group_1.name, ' '.join(str(std) for std in stds[0]))
+        s += 'Average {} {}\n'.format(group_2.name, ' '.join(str(average) for average in averages[1]))
+        s += 'Standard deviation {} {}\n'.format(group_2.name, ' '.join(str(std) for std in stds[1]))
+        diff = averages[0] - averages[1]
+        s += 'Difference {}\n'.format(' '.join(str(d) for d in diff))
+        s += 'P-values single-tailed {}\n'.format(' '.join(str(value) for value in p_values[0]))
+        s += 'P-values double-tailed {}\n'.format(' '.join(str(value) for value in p_values[1]))
+        s += 'Permutations {}'.format(self.spinBoxPermutations.value())
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        file_name, _ = QFileDialog.getSaveFileName(self, "QFileDialog.saveFileName()", "comparison.txt", "text files (*.txt)")
+        if file_name:
+            with open(file_name, 'w') as f:
+                f.write(s)
 
     def comparison_error(self, msg):
         msg_box = QMessageBox()
