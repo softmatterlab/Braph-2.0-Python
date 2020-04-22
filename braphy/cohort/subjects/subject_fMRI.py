@@ -2,6 +2,7 @@ from braphy.cohort.subjects.subject import Subject
 from braphy.cohort.data_types.data_scalar import DataScalar
 from braphy.cohort.data_types.data_functional import DataFunctional
 import xml.etree.ElementTree as ET
+import pandas as pd
 import numpy as np
 
 class SubjectfMRI(Subject):
@@ -38,4 +39,11 @@ class SubjectfMRI(Subject):
         return subjects
 
     def from_xlsx(file_xlsx, data_length):
-        raise Exception("Not implemented")
+        subject_id = file_xlsx.split('/')[-1].split('.')[0]
+        subject = SubjectfMRI(id = subject_id)
+        data = pd.read_excel(file_xlsx)
+        first_row = np.array(data.columns)
+        data = np.vstack([first_row, np.array(data)])
+        assert np.size(data, 1) == data_length
+        subject.data_dict['data'].set_value(data)
+        return [subject]
