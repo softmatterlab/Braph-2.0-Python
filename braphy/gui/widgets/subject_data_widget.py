@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 import numpy as np
-from braphy.utility.helper_functions import abs_path_from_relative, FloatDelegate
+from braphy.utility.helper_functions import abs_path_from_relative, FloatDelegate, float_to_string
 from braphy.cohort.subjects import *
 
 ui_file = abs_path_from_relative(__file__, "../ui_files/subject_data_widget.ui")
@@ -80,9 +80,8 @@ class SubjectDataWidget(Base, Form):
         data = self.selected_subject.data_dict['data'].value
         self.tableWidget.setRowCount(data.shape[0])
         for (i, j), value in np.ndenumerate(data):
-            item = QTableWidgetItem(str(value))
+            item = QTableWidgetItem(float_to_string(value))
             self.tableWidget.setItem(i, j, item)
-
         self.tableWidget.blockSignals(False)
 
     def update_table_structural(self):
@@ -101,9 +100,9 @@ class SubjectDataWidget(Base, Form):
         for i in range(len(self.cohort.subjects)):
             item = QTableWidgetItem(self.cohort.subjects[i].id)
             self.tableWidget.setVerticalHeaderItem(i, item)
-
             for j in range(len(self.cohort.subjects[i].data_dict['data'].value)):
-                item = QTableWidgetItem(str(self.cohort.subjects[i].data_dict['data'].value[j]))
+                value = float_to_string(self.cohort.subjects[i].data_dict['data'].value[j])
+                item = QTableWidgetItem(value)
                 self.tableWidget.setItem(i, j, item)
 
         self.tableWidget.blockSignals(False)

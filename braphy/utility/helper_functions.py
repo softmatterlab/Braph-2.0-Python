@@ -87,6 +87,12 @@ def QColor_from_list(color):
     color = [int(round(v*255)) for v in color]
     return QColor(color[0], color[1], color[2], color[3])
 
+def float_to_string(f):
+    s = format(f, '.6f').rstrip('0')
+    if s[-1] == '.':
+        s += '0'
+    return s
+
 class ListManager:
 
     def check_bounds(lst, i, j):
@@ -178,7 +184,7 @@ class ListManager:
 class FloatDelegate(QtWidgets.QStyledItemDelegate):
     def createEditor(self, parent, option, index):
         editor = super().createEditor(parent, option, index)
-        validator = QtGui.QRegExpValidator(QtCore.QRegExp(r'[-+]?[0-9]*[.]{,1}[0-9]*'), editor)
+        validator = QtGui.QRegExpValidator(QtCore.QRegExp(r'[-+]?[0-9]+[.]{,1}[0-9]*'), editor)
         editor.setValidator(validator)
         return editor
 

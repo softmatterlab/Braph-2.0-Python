@@ -4,7 +4,7 @@ import json
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from PyQt5.QtWidgets import *
 from braphy.atlas.brain_atlas import BrainAtlas
-from braphy.utility.helper_functions import abs_path_from_relative, load_nv, get_version_info, FloatDelegate
+from braphy.utility.helper_functions import abs_path_from_relative, load_nv, get_version_info, FloatDelegate, float_to_string
 import numpy as np
 from braphy.gui.widgets.brain_atlas_widget import BrainAtlasWidget
 
@@ -300,13 +300,13 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
             item = QTableWidgetItem(self.atlas.brain_regions[i].name)
             self.tableWidget.setItem(i, 1, item)
 
-            item = QTableWidgetItem(str(self.atlas.brain_regions[i].x))
+            item = QTableWidgetItem(float_to_string(self.atlas.brain_regions[i].x))
             self.tableWidget.setItem(i, 2, item)
 
-            item = QTableWidgetItem(str(self.atlas.brain_regions[i].y))
+            item = QTableWidgetItem(float_to_string(self.atlas.brain_regions[i].y))
             self.tableWidget.setItem(i, 3, item)
 
-            item = QTableWidgetItem(str(self.atlas.brain_regions[i].z))
+            item = QTableWidgetItem(float_to_string(self.atlas.brain_regions[i].z))
             self.tableWidget.setItem(i, 4, item)
 
         self.set_selected(selected)
