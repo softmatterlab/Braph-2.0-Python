@@ -61,10 +61,9 @@ class GroupTableWidget(Base, Form):
             selected_groups = self.get_selected()
         self.tableWidget_groups.blockSignals(True)
         self.tableWidget_groups.clearContents()
-        self.tableWidget_groups.setRowCount(0)
+        self.tableWidget_groups.setRowCount(len(self.cohort.groups))
 
         for i in range(len(self.cohort.groups)):
-            self.tableWidget_groups.setRowCount(i+1)
             widget = QWidget()
             layout = QHBoxLayout()
             layout.setAlignment(QtCore.Qt.AlignHCenter)
@@ -73,6 +72,7 @@ class GroupTableWidget(Base, Form):
             self.tableWidget_groups.setItem(i, 0, item)
 
             item = QTableWidgetItem(str(len(self.cohort.groups[i].subjects)))
+            item.setFlags(item.flags() ^ QtCore.Qt.ItemIsEditable)
             self.tableWidget_groups.setItem(i, 1, item)
 
             item = QTableWidgetItem(self.cohort.groups[i].description)
