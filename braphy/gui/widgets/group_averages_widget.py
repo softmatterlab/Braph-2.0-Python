@@ -11,18 +11,10 @@ class GroupAveragesWidget(Base, Form):
     def __init__(self, cohort, parent = None):
         super(GroupAveragesWidget, self).__init__(parent)
         self.setupUi(self)
-        self.selected_groups_radio_button = None
 
     def init(self, cohort):
         self.cohort = cohort
-        self.init_tables()
-        self.init_buttons()
-
-    def init_tables(self):
-        pass
-
-    def init_buttons(self):
-        self.btnComparison.clicked.connect(self.comparison)
+        self.spinBoxPermutations.valueChanged.connect(self.comparison)
 
     def set_callback(self, callback_function):
         self.update_callback_function = callback_function
@@ -70,8 +62,7 @@ class GroupAveragesWidget(Base, Form):
         self.tableWidget_selection.setVerticalHeaderLabels(group_names)
         self.tableWidget_selection.setHorizontalHeaderLabels(group_names)
 
-        self.selected_groups_radio_button = None
-
+        self.button_group = QtWidgets.QButtonGroup(self)
         for i, group1 in enumerate(self.cohort.groups):
             for j, group2 in enumerate(self.cohort.groups):
                 if i == j:
@@ -84,25 +75,16 @@ class GroupAveragesWidget(Base, Form):
                     layout = QHBoxLayout()
                     layout.setAlignment(QtCore.Qt.AlignHCenter)
                     radio_button = QRadioButton()
-                    radio_button.toggled.connect(self.group_average_select_toggled)
+                    self.button_group.addButton(radio_button)
                     radio_button.group1 = group1
                     radio_button.group2 = group2
                     layout.addWidget(radio_button)
                     widget.setLayout(layout)
                     self.tableWidget_selection.setCellWidget(i, j, widget)
-
-    def group_average_select_toggled(self, checked):
-        if not checked:
-            self.selected_groups_radio_button = None
-            self.btnComparison.setEnabled(False)
-        else:
-            if self.selected_groups_radio_button:
-                self.selected_groups_radio_button.setChecked(False)
-            self.selected_groups_radio_button = self.sender()
-            self.btnComparison.setEnabled(True)
+        self.button_group.buttonClicked.connect(self.comparison)
 
     def comparison(self):
-        group_button = self.selected_groups_radio_button
+        group_button = self.button_group.checkedButton()
         if group_button:
             if len(self.cohort.atlas.brain_regions) == 0:
                 self.comparison_error("Atlas not loaded")
@@ -129,6 +111,9 @@ class GroupAveragesWidget(Base, Form):
 
             except AssertionError as e:
                 self.comparison_error(str(e))
+
+    def clear_comparison_table(self):
+        self.tableWidget_comparison.clearContents()
 
     def comparison_error(self, msg):
         msg_box = QMessageBox()
