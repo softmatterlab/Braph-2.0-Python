@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 import numpy as np
-from braphy.utility.helper_functions import abs_path_from_relative
+from braphy.utility.helper_functions import abs_path_from_relative, FloatDelegate
 from braphy.cohort.subjects import *
 
 ui_file = abs_path_from_relative(__file__, "../ui_files/subject_data_widget.ui")
@@ -28,6 +28,7 @@ class SubjectDataWidget(Base, Form):
             self.btnAddRow.hide()
             self.btnRemoveRow.hide()
 
+        self.tableWidget.setItemDelegate(FloatDelegate(self.tableWidget))
         self.tableWidget.cellChanged.connect(self.cell_changed_in_table)
 
     def init_buttons(self):

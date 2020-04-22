@@ -4,7 +4,7 @@ import json
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from PyQt5.QtWidgets import *
 from braphy.atlas.brain_atlas import BrainAtlas
-from braphy.utility.helper_functions import abs_path_from_relative, load_nv, get_version_info
+from braphy.utility.helper_functions import abs_path_from_relative, load_nv, get_version_info, FloatDelegate
 import numpy as np
 from braphy.gui.widgets.brain_atlas_widget import BrainAtlasWidget
 
@@ -30,10 +30,7 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.init_combo_boxes()
         self.init_buttons()
         self.init_actions()
-
-        self.tableWidget.cellChanged.connect(self.change_cell)
-        self.tableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
-        self.tableWidget.itemSelectionChanged.connect(self.region_selection_changed)
+        self.init_table()
 
         self.textAtlasName.setText(self.atlas.name)
         self.meshName.setText('Brain View')
@@ -120,8 +117,6 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.comboBoxMeshFile.setCurrentIndex(idx)
         self.comboBoxMeshFile.currentIndexChanged.connect(self.select_brain_mesh)
         self.last_combobox_index = idx
-        #if self.atlas.mesh_file == '':
-        #    self.atlas.mesh_file = self.comboBoxMeshFile.currentText()
 
     def set_locked(self, locked):
         self.locked = locked
@@ -226,6 +221,13 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionNew_PET_Cohort.triggered.connect(self.new_pet_cohort)
 
         self.actionAbout.triggered.connect(self.about)
+
+    def init_table(self):
+        self.tableWidget.cellChanged.connect(self.change_cell)
+        self.tableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.tableWidget.itemSelectionChanged.connect(self.region_selection_changed)
+        for column in [2, 3, 4]:
+            self.tableWidget.setItemDelegateForColumn(column, FloatDelegate(self.tableWidget))
 
     def add(self):
         self.atlas.add_brain_region()
