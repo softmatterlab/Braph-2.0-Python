@@ -2,6 +2,7 @@ import numpy as np
 import os
 import subprocess
 from PyQt5.QtGui import QColor
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 def divide_without_warning(a, b):
     b = np.array(b) # in case b is a scalar
@@ -173,3 +174,17 @@ class ListManager:
                 ListManager.move_to(lst, indices[i], len(lst) - (len(indices) - i))
             indices = np.arange(len(lst) - len(indices), len(lst))
         return indices
+
+class FloatDelegate(QtWidgets.QStyledItemDelegate):
+    def createEditor(self, parent, option, index):
+        editor = super().createEditor(parent, option, index)
+        validator = QtGui.QRegExpValidator(QtCore.QRegExp(r'[-+]?[0-9]*[.]{,1}[0-9]*'), editor)
+        editor.setValidator(validator)
+        return editor
+
+class IntDelegate(QtWidgets.QStyledItemDelegate):
+    def createEditor(self, parent, option, index):
+        editor = super().createEditor(parent, option, index)
+        validator = QtGui.QRegExpValidator(QtCore.QRegExp(r'[-+]?[0-9]*'), editor)
+        editor.setValidator(validator)
+        return editor
