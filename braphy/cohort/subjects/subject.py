@@ -7,7 +7,7 @@ class Subject:
         self.data_dict = {}
         self.init_data_dict(size)
 
-    def __eq__(self, other):
+    def equals(self, other):
         if not isinstance(other, self.__class__):
             return False
         if self.id != other.id:

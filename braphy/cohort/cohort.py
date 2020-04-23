@@ -140,7 +140,7 @@ class Cohort:
         if not subject:
             subject = self.new_subject()
         for existing_subject in self.subjects:
-            if subject == existing_subject:
+            if subject.equals(existing_subject):
                 return existing_subject, True
         self.subjects.insert(i, subject)
         return subject, False
