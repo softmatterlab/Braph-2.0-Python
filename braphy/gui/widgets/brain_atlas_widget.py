@@ -81,7 +81,7 @@ class BrainAtlasWidget(GLViewWidget):
             self.setCameraPosition(distance = brain_distance_default)
 
     def set_brain_mesh(self, mesh_data):
-        if self.brain_mesh:
+        if self.brain_mesh in self.items:
             self.removeItem(self.brain_mesh)
         self.init_brain_mesh(mesh_data)
 

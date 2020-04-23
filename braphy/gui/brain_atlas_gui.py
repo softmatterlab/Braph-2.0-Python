@@ -89,6 +89,9 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.set_brain_mesh_data()
 
     def set_brain_mesh_data(self):
+        #self.settingsWidget.checkBoxShowBrain.blockSignals(True)
+        self.settingsWidget.checkBoxShowBrain.setChecked(True)
+        #self.settingsWidget.checkBoxShowBrain.blockSignals(False)
         self.brainWidget.set_brain_mesh(self.brain_mesh_data)
         self.settingsWidget.change_transparency()
 
