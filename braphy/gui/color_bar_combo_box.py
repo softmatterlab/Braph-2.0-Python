@@ -43,6 +43,13 @@ class ColorBarComboBox(QtWidgets.QComboBox):
         self.addItem("Custom...")
         self.currentIndexChanged.connect(self.check_create_custom_map)
 
+    def reset(self):
+        self.colormaps = []
+        self.blockSignals(True)
+        while self.count() > 2:
+            self.removeItem(0)
+        self.blockSignals(False)
+
     def set_custom_color_map_callbacks(self, callbacks):
         self.custom_color_map_callbacks = callbacks
 
@@ -69,6 +76,7 @@ class ColorBarComboBox(QtWidgets.QComboBox):
             self.create_custom_color_map()
         else:
             self.previous_index = index
+
     def create_custom_color_map(self):
         self.blockSignals(True)
         c = ColorMapCreator(parent = self)

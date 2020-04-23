@@ -14,7 +14,7 @@ class VisualizationWidget(Base, Form):
         self.setupUi(self)
         self.visualization_options = ['Color', 'Size']
         self.colormaps = self.get_colormaps()
-        self.combo_boxes = [self.comboBoxAverage, self.comboBoxStd, self.comboBoxPvalueSingle,
+        self.combo_boxes = [self.comboBoxAverage, self.comboBoxStd, self.comboBoxSubject, self.comboBoxPvalueSingle,
                             self.comboBoxPvalueDouble]
 
     def init(self, settings_widget):
@@ -26,18 +26,15 @@ class VisualizationWidget(Base, Form):
         self.settings_widget = settings_widget
 
     def init_combo_boxes(self):
-        for option in self.visualization_options:
-            self.comboBoxAverage.addItem(option)
-            self.comboBoxStd.addItem(option)
-            self.comboBoxSubject.addItem(option)
-            self.comboBoxPvalueSingle.addItem(option)
-            self.comboBoxPvalueDouble.addItem(option)
-        self.comboBoxAverage.setCurrentIndex(-1)
-        self.comboBoxStd.setCurrentIndex(-1)
-        self.comboBoxSubject.setCurrentIndex(-1)
-        self.comboBoxPvalueSingle.setCurrentIndex(-1)
-        self.comboBoxPvalueDouble.setCurrentIndex(-1)
 
+        for combo_box in self.combo_boxes:
+            combo_box.clear()
+            for option in self.visualization_options:
+                combo_box.addItem(option)
+            combo_box.setCurrentIndex(-1)
+            combo_box.setEnabled(False)
+
+        self.comboBoxColormap.reset()
         for colormap in self.colormaps.values():
             self.comboBoxColormap.add_colormap(colormap)
         self.comboBoxColormap.setCurrentIndex(0)
@@ -48,12 +45,6 @@ class VisualizationWidget(Base, Form):
         self.comboBoxPvalueSingle.currentIndexChanged.connect(self.set_p_value_single_visualization)
         self.comboBoxPvalueDouble.currentIndexChanged.connect(self.set_p_value_double_visualization)
         self.comboBoxColormap.currentIndexChanged.connect(self.update_visualization)
-
-        self.comboBoxAverage.setEnabled(False)
-        self.comboBoxStd.setEnabled(False)
-        self.comboBoxSubject.setEnabled(False)
-        self.comboBoxPvalueSingle.setEnabled(False)
-        self.comboBoxPvalueDouble.setEnabled(False)
 
     def init_check_boxes(self):
         self.checkBoxAverage.stateChanged.connect(self.visualize_average)
