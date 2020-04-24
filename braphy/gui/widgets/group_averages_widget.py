@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 import numpy as np
-from braphy.utility.helper_functions import abs_path_from_relative
+from braphy.utility.helper_functions import abs_path_from_relative, FloatDelegate, float_to_string
 from braphy.cohort.subjects import *
 
 ui_file = abs_path_from_relative(__file__, "../ui_files/group_averages_widget.ui")
@@ -18,6 +18,8 @@ class GroupAveragesWidget(Base, Form):
         self.btnExportTxt.clicked.connect(self.export_as_txt)
         self.btnExportTxt.setEnabled(False)
         self.button_group = QtWidgets.QButtonGroup(self)
+        self.tableWidget_averages.setItemDelegate(FloatDelegate(self.tableWidget_averages))
+        self.tableWidget_comparison.setItemDelegate(FloatDelegate(self.tableWidget_comparison))
 
     def set_callback(self, callback_function):
         self.update_callback_function = callback_function
@@ -40,7 +42,7 @@ class GroupAveragesWidget(Base, Form):
             self.tableWidget_averages.setVerticalHeaderItem((2*i), item)
             averages = group.averages()
             for j in range(len(averages)):
-                item = QTableWidgetItem(str(averages[j]))
+                item = QTableWidgetItem(float_to_string(averages[j]))
                 item.setFlags(QtCore.Qt.ItemIsEnabled)
                 self.tableWidget_averages.setItem(2*i, j, item)
 
@@ -113,13 +115,13 @@ class GroupAveragesWidget(Base, Form):
                 averages, stds, p_values = group_1.comparison(group_2, permutations=permutations)
                 for i in range(len(averages[0])):
                     diff = averages[0][i] - averages[1][i]
-                    item = QTableWidgetItem(str(diff))
+                    item = QTableWidgetItem(float_to_string(diff))
                     item.setFlags(QtCore.Qt.ItemIsEnabled)
                     self.tableWidget_comparison.setItem(0, i, item)
-                    item = QTableWidgetItem(str(p_values[0][i]))
+                    item = QTableWidgetItem(float_to_string(p_values[0][i]))
                     item.setFlags(QtCore.Qt.ItemIsEnabled)
                     self.tableWidget_comparison.setItem(1, i, item)
-                    item = QTableWidgetItem(str(p_values[1][i]))
+                    item = QTableWidgetItem(float_to_string(p_values[1][i]))
                     item.setFlags(QtCore.Qt.ItemIsEnabled)
                     self.tableWidget_comparison.setItem(2, i, item)
                 self.btnExportTxt.setEnabled(True)
@@ -135,14 +137,14 @@ class GroupAveragesWidget(Base, Form):
     def export_as_txt(self):
         group_1, group_2, averages, stds, p_values = self.comparison()
         s = 'Comparison {} {}\n'.format(group_1.name, group_2.name)
-        s += 'Average {} {}\n'.format(group_1.name, ' '.join(str(average) for average in averages[0]))
-        s += 'Standard deviation {} {}\n'.format(group_1.name, ' '.join(str(std) for std in stds[0]))
-        s += 'Average {} {}\n'.format(group_2.name, ' '.join(str(average) for average in averages[1]))
-        s += 'Standard deviation {} {}\n'.format(group_2.name, ' '.join(str(std) for std in stds[1]))
+        s += 'Average {} {}\n'.format(group_1.name, ' '.join(float_to_string(average) for average in averages[0]))
+        s += 'Standard deviation {} {}\n'.format(group_1.name, ' '.join(float_to_string(std) for std in stds[0]))
+        s += 'Average {} {}\n'.format(group_2.name, ' '.join(float_to_string(average) for average in averages[1]))
+        s += 'Standard deviation {} {}\n'.format(group_2.name, ' '.join(float_to_string(std) for std in stds[1]))
         diff = averages[0] - averages[1]
-        s += 'Difference {}\n'.format(' '.join(str(d) for d in diff))
-        s += 'P-values single-tailed {}\n'.format(' '.join(str(value) for value in p_values[0]))
-        s += 'P-values double-tailed {}\n'.format(' '.join(str(value) for value in p_values[1]))
+        s += 'Difference {}\n'.format(' '.join(float_to_string(d) for d in diff))
+        s += 'P-values single-tailed {}\n'.format(' '.join(float_to_string(value) for value in p_values[0]))
+        s += 'P-values double-tailed {}\n'.format(' '.join(float_to_string(value) for value in p_values[1]))
         s += 'Permutations {}'.format(self.spinBoxPermutations.value())
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
