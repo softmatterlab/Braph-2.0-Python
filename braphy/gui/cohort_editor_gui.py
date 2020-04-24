@@ -76,16 +76,8 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
     def from_dict(self, d):
         self.cohort = Cohort.from_dict(d['cohort'])
         if 'brain_mesh_data' in d.keys():
-            vertices = np.asarray(d['brain_mesh_data']['vertices'])
-            faces = np.asarray(d['brain_mesh_data']['faces'])
-            brain_mesh_data = {'vertices': vertices, 'faces': faces}
-            self.brain_mesh_data = brain_mesh_data
-            self.init_brain_widget()
-        self.labelAtlasName.setText(self.cohort.atlas.name)
-        self.labelRegionNumber.setText("Brain region number = {}".format(self.brain_region_number()))
-        show_only_selected = self.brain_view_options_widget.settingsWidget.checkBoxShowOnlySelected.isChecked()
-        show_brain_regions = self.brain_view_options_widget.settingsWidget.actionShow_brain_regions.isChecked()
-        self.brainWidget.init_brain_regions(self.cohort.atlas.brain_regions, 4, [], show_brain_regions, show_only_selected)
+            self.init_brain_mesh(d)
+        self.init_atlas_dependencies()
         self.brain_view_options_widget.set_groups(self.cohort.groups)
         self.brain_view_options_widget.set_subjects(self.cohort.subjects)
         self.btnSelectAtlas.setEnabled(len(self.cohort.groups) == 0 and len(self.cohort.subjects) == 0)
@@ -249,6 +241,20 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
             n = len(self.cohort.atlas.brain_regions)
         return n
 
+    def init_brain_mesh(self, d):
+        vertices = np.asarray(d['brain_mesh_data']['vertices'])
+        faces = np.asarray(d['brain_mesh_data']['faces'])
+        brain_mesh_data = {'vertices': vertices, 'faces': faces}
+        self.brain_mesh_data = brain_mesh_data
+        self.init_brain_widget()
+
+    def init_atlas_dependencies(self):
+        self.labelAtlasName.setText(self.cohort.atlas.name)
+        self.labelRegionNumber.setText("Brain region number = {}".format(self.brain_region_number()))
+        show_only_selected = self.brain_view_options_widget.settingsWidget.checkBoxShowOnlySelected.isChecked()
+        show_brain_regions = self.brain_view_options_widget.settingsWidget.actionShow_brain_regions.isChecked()
+        self.brainWidget.init_brain_regions(self.cohort.atlas.brain_regions, 4, [], show_brain_regions, show_only_selected)
+
     def load_atlas(self):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
@@ -258,25 +264,17 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
                 atlas_dict = json.load(f)
 
             if 'brain_mesh_data' in atlas_dict.keys():
-                vertices = np.asarray(atlas_dict['brain_mesh_data']['vertices'])
-                faces = np.asarray(atlas_dict['brain_mesh_data']['faces'])
-                brain_mesh_data = {'vertices': vertices, 'faces': faces}
-                self.brain_mesh_data = brain_mesh_data
-                self.init_brain_widget()
+                self.init_brain_mesh(atlas_dict)
 
             atlas = BrainAtlas.from_dict(atlas_dict['atlas'])
             self.cohort = Cohort('Cohort', self.subject_class, atlas)
+            self.init_atlas_dependencies()
             self.init_widgets()
             self.set_locked(False)
 
             self.update_tables()
             self.btnViewAtlas.setEnabled(True)
-            self.labelAtlasName.setText(atlas.name)
-            self.labelRegionNumber.setText("Brain region number = {}".format(self.brain_region_number()))
-            show_only_selected = self.brain_view_options_widget.settingsWidget.checkBoxShowOnlySelected.isChecked()
-            show_brain_regions = self.brain_view_options_widget.settingsWidget.actionShow_brain_regions.isChecked()
-            self.brainWidget.init_brain_regions(self.cohort.atlas.brain_regions, 4, [], show_brain_regions, show_only_selected)
-
+            
     def init_widgets(self):
         self.groupTableWidget.init(self.cohort)
         self.groupsAndDemographicsWidget.init(self.cohort)
