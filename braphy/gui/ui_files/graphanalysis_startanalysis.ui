@@ -519,7 +519,7 @@
     <addaction name="actionImport_xml"/>
     <addaction name="actionExport_xml"/>
     <addaction name="separator"/>
-    <addaction name="actionClose"/>
+    <addaction name="actionQuit"/>
     <addaction name="separator"/>
    </widget>
    <widget class="QMenu" name="menuView">
@@ -615,7 +615,7 @@
     <string>Export (xml) ...</string>
    </property>
   </action>
-  <action name="actionClose">
+  <action name="actionQuit">
    <property name="text">
     <string>Close</string>
    </property>

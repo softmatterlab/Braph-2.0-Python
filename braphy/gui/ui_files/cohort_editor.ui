@@ -255,7 +255,7 @@
     <addaction name="actionSave"/>
     <addaction name="actionSave_as"/>
     <addaction name="separator"/>
-    <addaction name="actionClose"/>
+    <addaction name="actionQuit"/>
    </widget>
    <widget class="QMenu" name="menuGroups">
     <property name="title">
@@ -370,12 +370,15 @@
     <string>Save as ...</string>
    </property>
   </action>
-  <action name="actionClose">
+  <action name="actionQuit">
    <property name="text">
-    <string>Close</string>
+    <string>Quit</string>
+   </property>
+   <property name="toolTip">
+    <string>Quit</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+C</string>
+    <string>Ctrl+Q</string>
    </property>
   </action>
   <action name="actionLoad_subject_group_from_file">

@@ -329,7 +329,7 @@ p, li { white-space: pre-wrap; }
     <addaction name="actionImport_xml"/>
     <addaction name="actionExport_xml"/>
     <addaction name="separator"/>
-    <addaction name="actionClose"/>
+    <addaction name="actionQuit"/>
    </widget>
    <widget class="QMenu" name="menuFigure">
     <property name="title">
@@ -410,12 +410,15 @@ p, li { white-space: pre-wrap; }
     <string>Export (xml)...</string>
    </property>
   </action>
-  <action name="actionClose">
+  <action name="actionQuit">
    <property name="text">
-    <string>Close</string>
+    <string>Quit</string>
+   </property>
+   <property name="toolTip">
+    <string>Quit</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+C</string>
+    <string>Ctrl+Q</string>
    </property>
   </action>
   <action name="actionZoom_in">
@@ -497,8 +500,4 @@ p, li { white-space: pre-wrap; }
   <include location="../icons/icons.qrc"/>
  </resources>
  <connections/>
- <buttongroups>
-  <buttongroup name="buttonGroup"/>
-  <buttongroup name="buttonGroup_2"/>
- </buttongroups>
 </ui>

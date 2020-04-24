@@ -41,7 +41,7 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionSave_as.triggered.connect(self.save_as)
         self.actionImport_xml.triggered.connect(self.import_xml)
         self.actionExport_xml.triggered.connect(self.export_xml)
-        self.actionClose.triggered.connect(self.close)
+        self.actionQuit.triggered.connect(self.close)
 
         self.actionGenerate_figure.triggered.connect(self.generate_figure)
 
@@ -91,9 +91,6 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         pass
 
     def export_xml(self):
-        pass
-
-    def close(self):
         pass
 
     def generate_figure(self):

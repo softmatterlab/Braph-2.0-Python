@@ -259,7 +259,7 @@ p, li { white-space: pre-wrap; }
     <addaction name="actionExport_txt"/>
     <addaction name="actionExport_xlsx"/>
     <addaction name="separator"/>
-    <addaction name="actionClose"/>
+    <addaction name="actionQuit"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
@@ -480,12 +480,15 @@ p, li { white-space: pre-wrap; }
     <string>Export (txt) ...</string>
    </property>
   </action>
-  <action name="actionClose">
+  <action name="actionQuit">
    <property name="text">
-    <string>Close</string>
+    <string>Quit</string>
+   </property>
+   <property name="toolTip">
+    <string>Quit</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+C</string>
+    <string>Ctrl+Q</string>
    </property>
   </action>
   <action name="actionOpen_2">

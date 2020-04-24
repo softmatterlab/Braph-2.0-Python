@@ -217,7 +217,7 @@ p, li { white-space: pre-wrap; }
    <addaction name="actionRegions"/>
    <addaction name="actionShow_labels"/>
   </widget>
-  <action name="actionClose">
+  <action name="actionQuit">
    <property name="text">
     <string>Close</string>
    </property>

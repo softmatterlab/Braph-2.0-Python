@@ -201,7 +201,7 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionExport_xml.triggered.connect(lambda state, file_type = 'xml', save_to_function = self.atlas.save_to_xml: self.export(file_type, save_to_function))
         self.actionExport_txt.triggered.connect(lambda state, file_type = 'txt', save_to_function = self.atlas.save_to_txt: self.export(file_type, save_to_function))
         self.actionExport_xlsx.triggered.connect(lambda state, file_type = 'xlsx', save_to_function = self.atlas.save_to_xlsx: self.export(file_type, save_to_function))
-        self.actionClose.triggered.connect(self.close)
+        self.actionQuit.triggered.connect(self.close)
 
         self.actionSelect_all.triggered.connect(self.tableWidget.selectAll)
         self.actionClear_selection.triggered.connect(self.tableWidget.clearSelection)
@@ -399,9 +399,6 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
                                                       "{} files (*.{})".format(file_type, file_type))
         if file_name:
             save_to_function(file_name)
-
-    def close(self):
-        pass
 
     def brain_view_open(self):
         self.comboBoxMeshFile.setCurrentText('Open...')

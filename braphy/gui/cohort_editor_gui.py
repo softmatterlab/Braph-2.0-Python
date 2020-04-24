@@ -60,7 +60,6 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.groupsAndDemographicsWidget.set_callback(self.groups_and_demographics_table_updated)
         self.subjectDataWidget.set_callback(self.subject_data_table_updated)
 
-
     def to_dict(self):
         d = self.cohort.to_dict()
         return d
@@ -117,7 +116,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionOpen.triggered.connect(self.open)
         self.actionSave.triggered.connect(self.save)
         self.actionSave_as.triggered.connect(self.save_as)
-        self.actionClose.triggered.connect(self.close)
+        self.actionQuit.triggered.connect(self.close)
 
         self.toolBar.addSeparator()
         for action in self.brainWidget.get_actions():
@@ -229,9 +228,6 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
             self.to_file(self.file_name)
         else:
             self.save_as()
-
-    def close(self):
-        pass
 
     def new_MRI_graph_analysis(self):
         pass
