@@ -17,6 +17,7 @@ class GroupAveragesWidget(Base, Form):
         self.spinBoxPermutations.valueChanged.connect(self.comparison)
         self.btnExportTxt.clicked.connect(self.export_as_txt)
         self.btnExportTxt.setEnabled(False)
+        self.button_group = QtWidgets.QButtonGroup(self)
 
     def set_callback(self, callback_function):
         self.update_callback_function = callback_function
@@ -56,6 +57,13 @@ class GroupAveragesWidget(Base, Form):
         self.tableWidget_comparison.setHorizontalHeaderLabels(self.cohort.atlas.get_brain_region_labels())
 
         self.tableWidget_selection.blockSignals(True)
+        group_button = self.button_group.checkedButton()
+        if group_button:
+            group_1 = group_button.group1
+            group_2 = group_button.group2
+            selected_groups = [group_1, group_2]
+        else:
+            selected_groups = [None, None]
         self.tableWidget_selection.clearContents()
 
         group_names = [group.name for group in self.cohort.groups]
@@ -83,10 +91,13 @@ class GroupAveragesWidget(Base, Form):
                     layout.addWidget(radio_button)
                     widget.setLayout(layout)
                     self.tableWidget_selection.setCellWidget(i, j, widget)
+                    if group1 == selected_groups[0] and group2 == selected_groups[1]:
+                        radio_button.setChecked(True)
+        if not self.button_group.checkedButton():
+            self.clear_comparison_table()
         self.button_group.buttonClicked.connect(self.comparison)
 
     def comparison(self):
-        self.btnExportTxt.setEnabled(True)
         group_button = self.button_group.checkedButton()
         if group_button:
             if len(self.cohort.atlas.brain_regions) == 0:
@@ -111,10 +122,12 @@ class GroupAveragesWidget(Base, Form):
                     item = QTableWidgetItem(str(p_values[1][i]))
                     item.setFlags(QtCore.Qt.ItemIsEnabled)
                     self.tableWidget_comparison.setItem(2, i, item)
-
+                self.btnExportTxt.setEnabled(True)
+                return group_1, group_2, averages, stds, p_values
             except AssertionError as e:
                 self.comparison_error(str(e))
-        return group_1, group_2, averages, stds, p_values
+                self.clear_comparison_table()
+                self.btnExportTxt.setEnabled(False)
 
     def clear_comparison_table(self):
         self.tableWidget_comparison.clearContents()
