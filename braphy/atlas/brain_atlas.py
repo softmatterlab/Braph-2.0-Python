@@ -3,6 +3,7 @@ from braphy.utility.helper_functions import ListManager as lm
 import numpy as np
 import pandas as pd
 import xml.etree.ElementTree as ET
+from io import StringIO
 
 class BrainAtlas():
     def __init__(self, mesh_file = '', name = 'Atlas', brain_regions = None):
@@ -173,18 +174,23 @@ class BrainAtlas():
         s = "<xml>\n  <BrainAtlas brainsurf=\"{}\" name=\"{}\">\n".format(self.mesh_file, self.name)
         for region in self.brain_regions:
             s = s + "    {}\n".format(region.str_xml())
-        s = s + "  <BrainAtlas>\n</xml>"
+        s = s + "  </BrainAtlas>\n</xml>"
         return s
 
     def save_to_xml(self, file_name):
-        root = ET.Element("xml")
-        atlas_xml = ET.SubElement(root, "BrainAtlas")
+        with open(file_name, 'w') as f:
+            f.write(self.str_xml())
 
-        for region in self.brain_regions:
-            region.set_xml(atlas_xml)
-
-        tree = ET.ElementTree(root)
-        tree.write(file_name, encoding="utf-8", xml_declaration=True)
+    def save_to_xlsx(self, file_name):
+        labels = self.get_brain_region_labels()
+        names = self.get_brain_region_names()
+        x = self.get_brain_region_xs()
+        y = self.get_brain_region_ys()
+        z = self.get_brain_region_zs()
+        data = {self.name: labels, self.mesh_file: names, ' ': x, '  ': y, '   ': z}
+        df = pd.DataFrame.from_dict(data)
+        with open(file_name, 'w') as f:
+            df.to_excel(file_name, index = None, columns = None)
 
     def to_file(self, atlas_file):
         d = {}

@@ -198,8 +198,9 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         # MENU BAR:
         self.actionSave_as.triggered.connect(self.save_as)
         self.actionImport_file.triggered.connect(self.import_file)
-        self.actionExport_xml.triggered.connect(self.export_xml)
-        self.actionExport_txt.triggered.connect(self.export_txt)
+        self.actionExport_xml.triggered.connect(lambda state, file_type = 'xml', save_to_function = self.atlas.save_to_xml: self.export(file_type, save_to_function))
+        self.actionExport_txt.triggered.connect(lambda state, file_type = 'txt', save_to_function = self.atlas.save_to_txt: self.export(file_type, save_to_function))
+        self.actionExport_xlsx.triggered.connect(lambda state, file_type = 'xlsx', save_to_function = self.atlas.save_to_xlsx: self.export(file_type, save_to_function))
         self.actionClose.triggered.connect(self.close)
 
         self.actionSelect_all.triggered.connect(self.tableWidget.selectAll)
@@ -390,19 +391,14 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
             except Exception as e:
                 self.load_file_error(str(e))
 
-    def export_xml(self):
+    def export(self, file_type, save_to_function):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
-        file_name, name = QFileDialog.getSaveFileName(self, "QFileDialog.saveFileName()", "untitled_atlas.xml", "xml files (*.xml)")
+        file_name, name = QFileDialog.getSaveFileName(self, "QFileDialog.saveFileName()",
+                                                      "untitled_atlas.{}".format(file_type),
+                                                      "{} files (*.{})".format(file_type, file_type))
         if file_name:
-            self.atlas.save_to_xml(file_name)
-
-    def export_txt(self):
-        options = QFileDialog.Options()
-        options |= QFileDialog.DontUseNativeDialog
-        file_name, name = QFileDialog.getSaveFileName(self, "QFileDialog.saveFileName()", "untitled_atlas.txt", "txt files (*.txt)")
-        if file_name:
-            self.atlas.save_to_txt(file_name)
+            save_to_function(file_name)
 
     def close(self):
         pass

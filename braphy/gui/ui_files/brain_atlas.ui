@@ -257,6 +257,7 @@ p, li { white-space: pre-wrap; }
     <addaction name="actionImport_file"/>
     <addaction name="actionExport_xml"/>
     <addaction name="actionExport_txt"/>
+    <addaction name="actionExport_xlsx"/>
     <addaction name="separator"/>
     <addaction name="actionClose"/>
    </widget>
@@ -495,6 +496,11 @@ p, li { white-space: pre-wrap; }
   <action name="actionBrainViewOpen">
    <property name="text">
     <string>Open...</string>
+   </property>
+  </action>
+  <action name="actionExport_xlsx">
+   <property name="text">
+    <string>Export (xlsx) ...</string>
    </property>
   </action>
  </widget>

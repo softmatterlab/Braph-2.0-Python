@@ -37,7 +37,7 @@ class BrainRegion():
         ET.SubElement(parent, self.str_xml())
 
     def str_xml(self):
-        s = 'BrainRegion hemisphere="{}" label="{}" name="{}" notes="{}" x="{}" y="{}" z="{}"'.format(
+        s = '<BrainRegion hemisphere="{}" label="{}" name="{}" notes="{}" x="{}" y="{}" z="{}"/>'.format(
              self.hemisphere,
              self.label,
              self.name,
