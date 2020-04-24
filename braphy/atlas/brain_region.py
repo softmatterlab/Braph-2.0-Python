@@ -2,15 +2,13 @@ import numpy as np
 import xml.etree.ElementTree as ET
 
 class BrainRegion():
-    def __init__(self, label = 'BR', name = 'br_name', x = 0, y = 0, z = 0, hemisphere = ".", notes = "."):
+    def __init__(self, label = 'BR', name = 'br_name', x = 0, y = 0, z = 0):
         self.observers = []
         self.label = label
         self.name = name
         self.x = x
         self.y = y
         self.z = z
-        self.hemisphere = hemisphere
-        self.notes = notes
 
     def set(self, **kwargs):
         self.__dict__.update(kwargs)
@@ -37,11 +35,9 @@ class BrainRegion():
         ET.SubElement(parent, self.str_xml())
 
     def str_xml(self):
-        s = '<BrainRegion hemisphere="{}" label="{}" name="{}" notes="{}" x="{}" y="{}" z="{}"/>'.format(
-             self.hemisphere,
+        s = '<BrainRegion label="{}" name="{}" x="{}" y="{}" z="{}"/>'.format(
              self.label,
              self.name,
-             self.notes,
              self.x,
              self.y,
              self.z)
@@ -52,9 +48,7 @@ class BrainRegion():
                                                   self.name,
                                                   self.x,
                                                   self.y,
-                                                  self.z,
-                                                  self.hemisphere,
-                                                  self.notes)
+                                                  self.z)
         return s
 
     def __eq__(self, other):
@@ -71,8 +65,6 @@ class BrainRegion():
         d['x'] = self.x
         d['y'] = self.y
         d['z'] = self.z
-        d['hemisphere'] = self.hemisphere
-        d['notes'] = self.notes
         return d
 
     def from_dict(d):
@@ -80,6 +72,4 @@ class BrainRegion():
                            name = d['name'],
                            x = d['x'],
                            y = d['y'],
-                           z = d['z'],
-                           hemisphere = d['hemisphere'],
-                           notes = d['notes'])
+                           z = d['z'])

@@ -88,16 +88,6 @@ p, li { white-space: pre-wrap; }
             <string>z</string>
            </property>
           </column>
-          <column>
-           <property name="text">
-            <string>left/right</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Notes</string>
-           </property>
-          </column>
          </widget>
         </item>
         <item>

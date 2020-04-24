@@ -277,10 +277,6 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
             self.atlas.brain_regions[row].set(y = float(self.tableWidget.item(row, column).text()))
         elif column == 4:
             self.atlas.brain_regions[row].set(z = float(self.tableWidget.item(row, column).text()))
-        elif column == 5:
-            pass #left/right
-        elif column == 6:
-            pass #Notes
 
     def update_table(self, selected = None):
         if np.any(selected == None):
@@ -288,10 +284,9 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.tableWidget.blockSignals(True)
         self.tableWidget.clearContents()
-        self.tableWidget.setRowCount(0)
+        self.tableWidget.setRowCount(self.atlas.brain_region_number())
 
         for i in range(self.atlas.brain_region_number()):
-            self.tableWidget.setRowCount(i+1)
             widget = QWidget()
             layout = QHBoxLayout()
             layout.setAlignment(QtCore.Qt.AlignHCenter)
