@@ -30,6 +30,11 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         QtWidgets.QMainWindow.__init__(self, parent = None)
         self.setupUi(self)
 
+        if subject_class == SubjectMRI:
+            self.setWindowTitle('MRI Cohort Editor')
+        elif subject_class == SubjectfMRI:
+            self.setWindowTitle('fMRI Cohort Editor')
+
         self.brain_view_options_widget = BrainViewOptionsWidget(parent=self.tabBrain)
         self.subject_class = subject_class
         if cohort:
