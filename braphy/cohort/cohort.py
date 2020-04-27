@@ -267,6 +267,21 @@ class Cohort:
         with open(file_name, 'w') as f:
             f.write(s)
 
+    def save_to_xlsx(self, file_name):
+        data = np.array([])
+        data = self.subjects[0].data_dict['data'].value
+        subject_ids = [self.subjects[0].id]
+        for index in range(len(self.subjects)-1):
+            data = np.vstack((data, self.subjects[index+1].data_dict['data'].value))
+            subject_ids.append(self.subjects[index+1].id)
+        d = {}
+        d['Label'] = subject_ids
+        for index, label in enumerate(self.atlas.get_brain_region_labels()):
+            d[label] = data[:,index]
+        df = pd.DataFrame.from_dict(d)
+        with open(file_name, 'w') as f:
+            df.to_excel(file_name, index = None, columns = None)
+
     def load_from_txt(self, file_name):
         return self.load_from_file(file_name, self.subject_class.from_txt)
 
