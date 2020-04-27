@@ -104,53 +104,57 @@ class GroupAveragesWidget(Base, Form):
     def comparison(self):
         group_button = self.button_group.checkedButton()
         if group_button:
-            if len(self.cohort.atlas.brain_regions) == 0:
-                self.comparison_error("Atlas not loaded")
-                return
             permutations = self.spinBoxPermutations.value()
             group_1 = group_button.group1
             group_2 = group_button.group2
-            labels = ["Difference", "p-value (single-tailed)", "p-value (double-tailed)"]
-            self.tableWidget_comparison.setRowCount(3)
-            self.tableWidget_comparison.setVerticalHeaderLabels(labels)
             try:
                 averages, stds, p_values = group_1.comparison(group_2, permutations=permutations)
-                for i in range(len(averages[0])):
-                    diff = averages[0][i] - averages[1][i]
-                    item = QTableWidgetItem(float_to_string(diff))
-                    item.setFlags(QtCore.Qt.ItemIsEnabled)
-                    self.tableWidget_comparison.setItem(0, i, item)
-                    item = QTableWidgetItem(float_to_string(p_values[0][i]))
-                    item.setFlags(QtCore.Qt.ItemIsEnabled)
-                    self.tableWidget_comparison.setItem(1, i, item)
-                    item = QTableWidgetItem(float_to_string(p_values[1][i]))
-                    item.setFlags(QtCore.Qt.ItemIsEnabled)
-                    self.tableWidget_comparison.setItem(2, i, item)
-                self.btnExportTxt.setEnabled(True)
-                self.btnExportXlsx.setEnabled(True)
-                return group_1, group_2, averages, stds, p_values
+                self.averages = averages
+                self.stds = stds
+                self.p_values = p_values
+                self.update_comparison_table()
             except AssertionError as e:
                 self.comparison_error(str(e))
                 self.clear_comparison_table()
                 self.btnExportTxt.setEnabled(False)
                 self.btnExportXlsx.setEnabled(False)
 
+    def update_comparison_table(self):
+        self.tableWidget_comparison.setRowCount(3)
+        labels = ["Difference", "p-value (single-tailed)", "p-value (double-tailed)"]
+        self.tableWidget_comparison.setVerticalHeaderLabels(labels)
+        for i in range(len(self.averages[0])):
+            diff = self.averages[0][i] - self.averages[1][i]
+            item = QTableWidgetItem(float_to_string(diff))
+            item.setFlags(QtCore.Qt.ItemIsEnabled)
+            self.tableWidget_comparison.setItem(0, i, item)
+            item = QTableWidgetItem(float_to_string(self.p_values[0][i]))
+            item.setFlags(QtCore.Qt.ItemIsEnabled)
+            self.tableWidget_comparison.setItem(1, i, item)
+            item = QTableWidgetItem(float_to_string(self.p_values[1][i]))
+            item.setFlags(QtCore.Qt.ItemIsEnabled)
+            self.tableWidget_comparison.setItem(2, i, item)
+            self.btnExportTxt.setEnabled(True)
+            self.btnExportXlsx.setEnabled(True)
+
     def clear_comparison_table(self):
         self.tableWidget_comparison.clearContents()
 
     def export_as_txt(self):
-        group_1, group_2, averages, stds, p_values = self.comparison()
+        group_button = self.button_group.checkedButton()
+        group_1 = group_button.group1
+        group_2 = group_button.group2
         s = ' '.join(self.cohort.atlas.get_brain_region_labels())
         s += '\nPermutations {}\n'.format(self.spinBoxPermutations.value())
         s += 'Comparison {} {}\n'.format(group_1.name, group_2.name)
-        s += 'Average {} {}\n'.format(group_1.name, ' '.join(float_to_string(average) for average in averages[0]))
-        s += 'Standard deviation {} {}\n'.format(group_1.name, ' '.join(float_to_string(std) for std in stds[0]))
-        s += 'Average {} {}\n'.format(group_2.name, ' '.join(float_to_string(average) for average in averages[1]))
-        s += 'Standard deviation {} {}\n'.format(group_2.name, ' '.join(float_to_string(std) for std in stds[1]))
-        diff = averages[0] - averages[1]
+        s += 'Average {} {}\n'.format(group_1.name, ' '.join(float_to_string(average) for average in self.averages[0]))
+        s += 'Standard deviation {} {}\n'.format(group_1.name, ' '.join(float_to_string(std) for std in self.stds[0]))
+        s += 'Average {} {}\n'.format(group_2.name, ' '.join(float_to_string(average) for average in self.averages[1]))
+        s += 'Standard deviation {} {}\n'.format(group_2.name, ' '.join(float_to_string(std) for std in self.stds[1]))
+        diff = self.averages[0] - self.averages[1]
         s += 'Difference {}\n'.format(' '.join(float_to_string(d) for d in diff))
-        s += 'P-value single-tailed {}\n'.format(' '.join(float_to_string(value) for value in p_values[0]))
-        s += 'P-value double-tailed {}\n'.format(' '.join(float_to_string(value) for value in p_values[1]))
+        s += 'P-value single-tailed {}\n'.format(' '.join(float_to_string(value) for value in self.p_values[0]))
+        s += 'P-value double-tailed {}\n'.format(' '.join(float_to_string(value) for value in self.p_values[1]))
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
         file_name, _ = QFileDialog.getSaveFileName(self, "QFileDialog.saveFileName()", "comparison.txt", "text files (*.txt)")
@@ -159,18 +163,19 @@ class GroupAveragesWidget(Base, Form):
                 f.write(s)
 
     def export_as_xlsx(self):
-        group_1, group_2, averages, stds, p_values = self.comparison()
-        data = np.array([averages[0], averages[1], stds[0], stds[1], averages[0] - averages[1], p_values[0], p_values[1]])
+        group_button = self.button_group.checkedButton()
+        group_1 = group_button.group1
+        group_2 = group_button.group2
+        data = np.array([self.averages[0], self.averages[1], self.stds[0], self.stds[1],
+                         self.averages[0] - self.averages[1], self.p_values[0], self.p_values[1]])
         d = {}
         d['Permutations: {}'.format(self.spinBoxPermutations.value() )] = \
                 ['Average {}'.format(group_1.name), 'Standard deviation {}'.format(group_1.name),
                  'Average {}'.format(group_2.name), 'Standard deviation {}'.format(group_2.name),
                  'Difference', 'P-value single-tailed', 'P-value double-tailed']
-        
         for index, label in enumerate(self.cohort.atlas.get_brain_region_labels()):
             d[label] = data[:,index]
         df = pd.DataFrame.from_dict(d)
-        
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
         file_name, _ = QFileDialog.getSaveFileName(self, "QFileDialog.saveFileName()", "comparison.xlsx", "xlsx files (*.xlsx)")
