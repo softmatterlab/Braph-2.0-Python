@@ -135,13 +135,14 @@ class GroupAveragesWidget(Base, Form):
                 self.btnExportTxt.setEnabled(False)
                 self.btnExportXlsx.setEnabled(False)
 
-
     def clear_comparison_table(self):
         self.tableWidget_comparison.clearContents()
 
     def export_as_txt(self):
         group_1, group_2, averages, stds, p_values = self.comparison()
-        s = 'Comparison {} {}\n'.format(group_1.name, group_2.name)
+        s = ' '.join(self.cohort.atlas.get_brain_region_labels())
+        s += '\nPermutations {}\n'.format(self.spinBoxPermutations.value())
+        s += 'Comparison {} {}\n'.format(group_1.name, group_2.name)
         s += 'Average {} {}\n'.format(group_1.name, ' '.join(float_to_string(average) for average in averages[0]))
         s += 'Standard deviation {} {}\n'.format(group_1.name, ' '.join(float_to_string(std) for std in stds[0]))
         s += 'Average {} {}\n'.format(group_2.name, ' '.join(float_to_string(average) for average in averages[1]))
@@ -150,7 +151,6 @@ class GroupAveragesWidget(Base, Form):
         s += 'Difference {}\n'.format(' '.join(float_to_string(d) for d in diff))
         s += 'P-value single-tailed {}\n'.format(' '.join(float_to_string(value) for value in p_values[0]))
         s += 'P-value double-tailed {}\n'.format(' '.join(float_to_string(value) for value in p_values[1]))
-        s += 'Permutations {}'.format(self.spinBoxPermutations.value())
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
         file_name, _ = QFileDialog.getSaveFileName(self, "QFileDialog.saveFileName()", "comparison.txt", "text files (*.txt)")
