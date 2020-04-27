@@ -15,6 +15,9 @@ class Cohort:
         self.new_groups_added = len(self.groups)
         self.new_subjects_added = len(self.subjects)
 
+    def set_name(self, name):
+        self.name = name
+
     def to_file(self):
         d = {}
         d['cohort'] = self.to_dict()

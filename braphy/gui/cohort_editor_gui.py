@@ -164,13 +164,12 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
     def set_brain_view_actions_visible(self, state):
         for action in self.brainWidget.get_actions():
             action.setVisible(state)
-
         for action in self.brain_view_options_widget.settingsWidget.get_actions():
             action.setVisible(state)
 
     def set_locked(self, locked):
         self.locked = locked
-        lock_items = [self.btnViewAtlas, self.groupTableWidget, self.tabWidget]
+        lock_items = [self.btnViewAtlas, self.groupTableWidget, self.tabWidget, self.textCohortName]
         for item in lock_items:
             item.setEnabled(not self.locked)
         self.disable_menu_bar(locked)
@@ -258,6 +257,8 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
     def init_atlas_dependencies(self):
         self.labelAtlasName.setText(self.cohort.atlas.name)
         self.labelRegionNumber.setText("Brain region number = {}".format(self.brain_region_number()))
+        self.textCohortName.setText(self.cohort.name)
+        self.textCohortName.textChanged.connect(self.cohort.set_name)
         show_only_selected = self.brain_view_options_widget.settingsWidget.checkBoxShowOnlySelected.isChecked()
         show_brain_regions = self.brain_view_options_widget.settingsWidget.actionShow_brain_regions.isChecked()
         self.brainWidget.init_brain_regions(self.cohort.atlas.brain_regions, 4, [], show_brain_regions, show_only_selected)
