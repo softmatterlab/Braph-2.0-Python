@@ -24,12 +24,13 @@ brain_mesh_file_default = abs_path_from_relative(__file__, brain_mesh_file_name_
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 
 class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
-    def __init__(self, AppWindow = None, subject_class = SubjectMRI, cohort = None, atlas = None):
+    def __init__(self, AppWindow = None, subject_class = SubjectMRI, cohort = None, atlas = None, brain_mesh_data = None):
         if AppWindow:
             self.AppWindow = AppWindow
         QtWidgets.QMainWindow.__init__(self, parent = None)
         self.setupUi(self)
 
+        self.brain_view_options_widget = BrainViewOptionsWidget(parent=self.tabBrain)
         self.subject_class = subject_class
         if cohort:
             self.cohort = cohort
@@ -37,7 +38,11 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
             self.set_locked(False)
         elif atlas:
             self.cohort = Cohort('Cohort', subject_class, atlas)
+            self.brain_mesh_data = brain_mesh_data
+            self.init_atlas_dependencies()
             self.init_widgets()
+            self.init_brain_widget()
+            self.update_tables()
             self.set_locked(False)
         else:
             self.set_locked(True)
@@ -45,8 +50,6 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         if subject_class == SubjectfMRI:
             self.tabWidget.removeTab(3)
             self.tabWidget.removeTab(2)
-
-        self.brain_view_options_widget = BrainViewOptionsWidget(parent=self.tabBrain)
 
         self.init_buttons()
         self.init_actions()
@@ -95,7 +98,6 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def init_brain_widget(self):
         self.brainWidget.set_brain_mesh(self.brain_mesh_data)
-
         self.brain_view_options_widget.init(self.brainWidget)
         self.brain_view_options_widget.settingsWidget.change_transparency()
         self.brain_view_options_widget.show()

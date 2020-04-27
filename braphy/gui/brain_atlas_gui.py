@@ -7,6 +7,7 @@ from braphy.atlas.brain_atlas import BrainAtlas
 from braphy.utility.helper_functions import abs_path_from_relative, load_nv, get_version_info, FloatDelegate, float_to_string
 import numpy as np
 from braphy.gui.widgets.brain_atlas_widget import BrainAtlasWidget
+from braphy.cohort.subjects import *
 
 qtCreatorFile = abs_path_from_relative(__file__, "ui_files/brain_atlas.ui")
 brain_mesh_file_name_default = "meshes/BrainMesh_ICBM152.nv"
@@ -39,6 +40,12 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.loaded_mesh_data = None
         self.brainWidget.add_selected_observer(self.set_selected)
         self.update_table()
+
+        if not AppWindow:
+            self.actionNew_MRI_Cohort.setEnabled(False)
+            self.actionNew_fMRI_Cohort.setEnabled(False)
+            self.actionNew_EEG_Cohort.setEnabled(False)
+            self.actionNew_PET_Cohort.setEnabled(False)
 
     def to_file(self, atlas_file):
         with open(atlas_file, 'w') as f:
@@ -399,7 +406,7 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.comboBoxMeshFile.setCurrentText('Open...')
 
     def new_mri_cohort(self):
-        pass
+        self.AppWindow.cohort(atlas = self.atlas, brain_mesh_data = self.brain_mesh_data, subject_class = SubjectMRI)
 
     def new_fmri_cohort(self):
         pass

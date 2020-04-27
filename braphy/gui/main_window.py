@@ -36,11 +36,11 @@ class MainWindow(ExitDialog, Ui_MainWindow):
         #self.brainWidget.animate(True)
         self.brainWidget.setBrainBackgroundColor(self.color)
         coords = [[22.6, -59.5, 48.1],
-                [-22.8, -60.9, 46.3],
-                [-25.8, -7.6, -31.6],
-                [26.2, -6.8, -31.9],
-                [-12.6, 22.9, 42.4],
-                [13.4, 24.7, 42.0]]
+                  [-22.8, -60.9, 46.3],
+                  [-25.8, -7.6, -31.6],
+                  [26.2, -6.8, -31.9],
+                  [-12.6, 22.9, 42.4],
+                  [13.4, 24.7, 42.0]]
         brain_regions = []
         for c in coords:
             brain_regions.append(BrainRegion(x=c[0], y=c[1], z=c[2]))
@@ -72,8 +72,14 @@ class MainWindow(ExitDialog, Ui_MainWindow):
         self.brain_atlas_gui = BrainAtlasGui(self)
         self.brain_atlas_gui.show()
 
-    def cohort(self):
-        self.cohort_editor_gui = CohortEditor(self, self.subject_class)
+    def cohort(self, subject_class = None, atlas = None, brain_mesh_data = None):
+        if not subject_class:
+            subject_class = self.subject_class
+        if atlas:
+            self.cohort_editor_gui = CohortEditor(self, subject_class = subject_class,
+                                                  atlas = atlas, brain_mesh_data = brain_mesh_data)
+        else:
+            self.cohort_editor_gui = CohortEditor(self, subject_class = subject_class)
         self.cohort_editor_gui.show()
 
     def graph_analysis(self):
