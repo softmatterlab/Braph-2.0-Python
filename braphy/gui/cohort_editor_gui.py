@@ -234,7 +234,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.AppWindow.graph_analysis(subject_class = self.cohort.subject_class)
 
     def about(self):
-        pass
+        QMessageBox.about(self, 'About', 'Cohort Editor')
 
     def view_atlas(self):
         if self.cohort:

@@ -97,7 +97,7 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         pass
 
     def about(self):
-        pass
+        QMessageBox.about(self, 'About', 'Graph analysis editor')
 
     def zoom_in(self):
         pass

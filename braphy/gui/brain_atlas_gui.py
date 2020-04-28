@@ -409,7 +409,7 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.AppWindow.cohort(atlas = self.atlas, brain_mesh_data = self.brain_mesh_data, subject_class = SubjectMRI)
 
     def new_fmri_cohort(self):
-        pass
+        self.AppWindow.cohort(atlas = self.atlas, brain_mesh_data = self.brain_mesh_data, subject_class = SubjectfMRI)
 
     def new_eeg_cohort(self):
         pass
@@ -418,7 +418,7 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         pass
 
     def about(self):
-        pass
+        QMessageBox.about(self, 'About', 'Brain Atlas Editor')
 
     def load_file_error(self, exception):
         msg_box = QMessageBox()
