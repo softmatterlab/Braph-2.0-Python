@@ -21,8 +21,6 @@ class SubjectDataWidget(Base, Form):
         if self.cohort.subject_class == SubjectfMRI:
             self.listSubjects.currentRowChanged.connect(self.subject_list_row_changed)
             self.selected_subject = None
-            self.btnSaveSubjectsTxt.hide()
-            self.btnSaveSubjectsXlsx.hide()
         else: #MRI
             self.listSubjects.hide()
             self.labelSubjects.hide()
@@ -41,9 +39,13 @@ class SubjectDataWidget(Base, Form):
     def save_subjects(self, file_type, save_to_function):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
-        file_name, name = QFileDialog.getSaveFileName(self, "QFileDialog.saveFileName()",
-                                                      "subjects.{}".format(file_type),
-                                                      "{} files (*.{})".format(file_type, file_type))
+        if self.cohort.subject_class == SubjectMRI:
+            file_name, name = QFileDialog.getSaveFileName(self, "QFileDialog.saveFileName()",
+                                                        "subjects.{}".format(file_type),
+                                                        "{} files (*.{})".format(file_type, file_type),
+                                                        options = options)
+        elif self.cohort.subject_class == SubjectfMRI:
+            file_name = QFileDialog.getExistingDirectory(self, "Open directory", " ", options = options)
         if file_name:
             save_to_function(file_name)
 

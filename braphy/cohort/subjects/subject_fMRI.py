@@ -1,6 +1,7 @@
 from braphy.cohort.subjects.subject import Subject
 from braphy.cohort.data_types.data_scalar import DataScalar
 from braphy.cohort.data_types.data_functional import DataFunctional
+from braphy.utility.helper_functions import float_to_string
 import xml.etree.ElementTree as ET
 import pandas as pd
 import numpy as np
@@ -12,6 +13,14 @@ class SubjectfMRI(Subject):
     def init_data_dict(self, size):
         self.data_dict['age'] = DataScalar()
         self.data_dict['data'] = DataFunctional(size)
+
+    def __str__(self):
+        s = ''
+        for row in range(self.data_dict['data'].value.shape[0]):
+            data_row = self.data_dict['data'].value[row, :]
+            data_row_string = [float_to_string(data) for data in data_row]
+            s += "{}\n".format(' '.join(data_row_string))
+        return s
 
     def from_txt(file_txt, data_length):
         raise Exception("Not implemented")
@@ -26,7 +35,6 @@ class SubjectfMRI(Subject):
                 item = item.attrib
                 subject_id = item['code']
                 subject = SubjectfMRI(id = subject_id)
-
                 fmri_data = []
                 data = item['data'].strip('[]')
                 for v in data.split(";"):
@@ -44,6 +52,6 @@ class SubjectfMRI(Subject):
         data = pd.read_excel(file_xlsx)
         first_row = np.array(data.columns)
         data = np.vstack([first_row, np.array(data)])
-        assert np.size(data, 1) == data_length
+        #assert np.size(data, 1) == data_length
         subject.data_dict['data'].set_value(data)
         return [subject]
