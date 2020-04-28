@@ -259,51 +259,10 @@ class Cohort:
         return duplicates
 
     def save_to_txt(self, file_name):
-        if self.subject_class == SubjectMRI:
-            s = ""
-            for label in self.atlas.get_brain_region_labels():
-                s += label + " "
-            for subject in self.subjects:
-                s += "\n{}".format(str(subject))
-            with open(file_name, 'w') as f:
-                f.write(s)
-        elif self.subject_class == SubjectfMRI:
-            labels = ''
-            for label in self.atlas.get_brain_region_labels():
-                labels += label + ' '
-            s = ''
-            for subject in self.subjects:
-                s += '{}\n{}\n{}'.format(subject.id, labels, str(subject))
-                subject_file_name = '{}/{}.txt'.format(file_name, subject.id)
-                with open(subject_file_name, 'w') as f:
-                    f.write(s)
-                s = ''
+        self.subject_class.to_txt(self.subjects, file_name, self.atlas.get_brain_region_labels())
 
     def save_to_xlsx(self, file_name):
-        if self.subject_class == SubjectMRI:
-            data = np.array([])
-            data = self.subjects[0].data_dict['data'].value
-            subject_ids = [self.subjects[0].id]
-            for index in range(len(self.subjects)-1):
-                data = np.vstack((data, self.subjects[index+1].data_dict['data'].value))
-                subject_ids.append(self.subjects[index+1].id)
-            d = {}
-            d['Label'] = subject_ids
-            for index, label in enumerate(self.atlas.get_brain_region_labels()):
-                d[label] = data[:,index]
-            df = pd.DataFrame.from_dict(d)
-            with open(file_name, 'w') as f:
-                df.to_excel(file_name, index = None, columns = None)
-        elif self.subject_class == SubjectfMRI:
-            for subject in self.subjects:
-                data = subject.data_dict['data'].value
-                d = {}
-                for index, label in enumerate(self.atlas.get_brain_region_labels()):
-                    d[label] = data[:,index]
-                df = pd.DataFrame.from_dict(d)
-                subject_file_name = '{}/{}.xlsx'.format(file_name, subject.id)
-                with open(subject_file_name, 'w') as f:
-                    df.to_excel(subject_file_name, index = None, columns = None)
+        self.subject_class.to_xlsx(self.subjects, file_name, self.atlas.get_brain_region_labels())
 
     def load_from_txt(self, file_name):
         return self.load_from_file(file_name, self.subject_class.from_txt)

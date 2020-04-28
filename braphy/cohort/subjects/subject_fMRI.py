@@ -55,3 +55,24 @@ class SubjectfMRI(Subject):
         #assert np.size(data, 1) == data_length
         subject.data_dict['data'].set_value(data)
         return [subject]
+
+    def to_txt(subjects, file_path, labels):
+        labels = ' '.join(labels)
+        s = ''
+        for subject in subjects:
+            s += '{}\n{}\n{}'.format(subject.id, labels, str(subject))
+            file_name = '{}/{}.txt'.format(file_path, subject.id)
+            with open(file_name, 'w') as f:
+                f.write(s)
+            s = ''
+
+    def to_xlsx(subjects, file_path, labels):
+        for subject in subjects:
+            data = subject.data_dict['data'].value
+            d = {}
+            for index, label in enumerate(labels):
+                d[label] = data[:,index]
+            df = pd.DataFrame.from_dict(d)
+            file_name = '{}/{}.xlsx'.format(file_path, subject.id)
+            with open(file_name, 'w') as f:
+                df.to_excel(file_name, index = None, columns = None, header = False)

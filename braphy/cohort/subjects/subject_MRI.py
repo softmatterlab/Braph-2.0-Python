@@ -64,3 +64,27 @@ class SubjectMRI(Subject):
             subject.data_dict['data'].set_value(mri_data)
             subjects.append(subject)
         return subjects
+
+    def to_txt(subjects, file_name, labels):
+        s = ""
+        for label in labels:
+            s += label + " "
+        for subject in subjects:
+            s += "\n{}".format(str(subject))
+        with open(file_name, 'w') as f:
+            f.write(s)
+
+    def to_xlsx(subjects, file_name, labels):
+        data = np.array([])
+        data = subjects[0].data_dict['data'].value
+        subject_ids = [subjects[0].id]
+        for index in range(len(subjects)-1):
+            data = np.vstack((data, subjects[index+1].data_dict['data'].value))
+            subject_ids.append(subjects[index+1].id)
+        d = {}
+        d['Label'] = subject_ids
+        for index, label in enumerate(labels):
+            d[label] = data[:,index]
+        df = pd.DataFrame.from_dict(d)
+        with open(file_name, 'w') as f:
+            df.to_excel(file_name, index = None, columns = None)
