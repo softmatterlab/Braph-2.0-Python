@@ -304,7 +304,7 @@
     <property name="title">
      <string>Graph Analysis</string>
     </property>
-    <addaction name="actionNew_MRI_graph_analysis"/>
+    <addaction name="actionNew_graph_analysis"/>
    </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="title">
@@ -484,9 +484,9 @@
     <string>Ctrl+F</string>
    </property>
   </action>
-  <action name="actionNew_MRI_graph_analysis">
+  <action name="actionNew_graph_analysis">
    <property name="text">
-    <string>New MRI graph analysis ...</string>
+    <string>New graph analysis ...</string>
    </property>
   </action>
   <action name="actionAbout">

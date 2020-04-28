@@ -68,6 +68,9 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.groupsAndDemographicsWidget.set_callback(self.groups_and_demographics_table_updated)
         self.subjectDataWidget.set_callback(self.subject_data_table_updated)
 
+        if not AppWindow:
+            self.actionNew_graph_analysis.setEnabled(False)
+
     def to_dict(self):
         d = self.cohort.to_dict()
         return d
@@ -157,7 +160,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.actionGenerate_figure.triggered.connect(self.brainWidget.generate_figure)
 
-        self.actionNew_MRI_graph_analysis.triggered.connect(self.new_MRI_graph_analysis)
+        self.actionNew_graph_analysis.triggered.connect(self.new_graph_analysis)
 
         self.actionAbout.triggered.connect(self.about)
 
@@ -227,8 +230,8 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         else:
             self.save_as()
 
-    def new_MRI_graph_analysis(self):
-        pass
+    def new_graph_analysis(self):
+        self.AppWindow.graph_analysis(subject_class = self.cohort.subject_class)
 
     def about(self):
         pass

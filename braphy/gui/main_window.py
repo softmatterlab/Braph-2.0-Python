@@ -82,8 +82,10 @@ class MainWindow(ExitDialog, Ui_MainWindow):
             self.cohort_editor_gui = CohortEditor(self, subject_class = subject_class)
         self.cohort_editor_gui.show()
 
-    def graph_analysis(self):
-        self.graph_analysis_gui = GraphAnalysis(self, self.subject_class)
+    def graph_analysis(self, subject_class = None):
+        if not subject_class:
+            subject_class = self.subject_class
+        self.graph_analysis_gui = GraphAnalysis(self, subject_class)
         self.graph_analysis_gui.show()
 
     def set_MRI_btn_options(self):
