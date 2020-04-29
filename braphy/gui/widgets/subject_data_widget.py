@@ -21,7 +21,6 @@ class SubjectDataWidget(Base, Form):
         if self.cohort.subject_class == SubjectfMRI:
             self.listSubjects.currentRowChanged.connect(self.subject_list_row_changed)
             self.selected_subject = None
-            self.btnSaveSubjects.hide()
         else: #MRI
             self.listSubjects.hide()
             self.labelSubjects.hide()
@@ -32,16 +31,23 @@ class SubjectDataWidget(Base, Form):
         self.tableWidget.cellChanged.connect(self.cell_changed_in_table)
 
     def init_buttons(self):
-        self.btnSaveSubjects.clicked.connect(self.save_subjects)
+        self.btnSaveSubjectsTxt.clicked.connect(lambda signal, file_type = 'txt', save_to_function = self.cohort.save_to_txt: self.save_subjects(file_type, save_to_function))
+        self.btnSaveSubjectsXlsx.clicked.connect(lambda signal, file_type = 'xlsx', save_to_function = self.cohort.save_to_xlsx: self.save_subjects(file_type, save_to_function))
         self.btnAddRow.clicked.connect(self.add_row)
         self.btnRemoveRow.clicked.connect(self.remove_row)
 
-    def save_subjects(self):
+    def save_subjects(self, file_type, save_to_function):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
-        file_name, name = QFileDialog.getSaveFileName(self, "QFileDialog.saveFileName()", "subjects.txt", "txt files (*.txt)")
+        if self.cohort.subject_class == SubjectMRI:
+            file_name, name = QFileDialog.getSaveFileName(self, "QFileDialog.saveFileName()",
+                                                        "subjects.{}".format(file_type),
+                                                        "{} files (*.{})".format(file_type, file_type),
+                                                        options = options)
+        elif self.cohort.subject_class == SubjectfMRI:
+            file_name = QFileDialog.getExistingDirectory(self, "Open directory", " ", options = options)
         if file_name:
-            self.cohort.save_to_txt(file_name)
+            save_to_function(file_name)
 
     def set_callback(self, callback_function):
         self.update_callback_function = callback_function

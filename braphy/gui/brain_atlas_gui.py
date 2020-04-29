@@ -7,6 +7,7 @@ from braphy.atlas.brain_atlas import BrainAtlas
 from braphy.utility.helper_functions import abs_path_from_relative, load_nv, get_version_info, FloatDelegate, float_to_string
 import numpy as np
 from braphy.gui.widgets.brain_atlas_widget import BrainAtlasWidget
+from braphy.cohort.subjects import *
 
 qtCreatorFile = abs_path_from_relative(__file__, "ui_files/brain_atlas.ui")
 brain_mesh_file_name_default = "meshes/BrainMesh_ICBM152.nv"
@@ -39,6 +40,12 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.loaded_mesh_data = None
         self.brainWidget.add_selected_observer(self.set_selected)
         self.update_table()
+
+        if not AppWindow:
+            self.actionNew_MRI_Cohort.setEnabled(False)
+            self.actionNew_fMRI_Cohort.setEnabled(False)
+            self.actionNew_EEG_Cohort.setEnabled(False)
+            self.actionNew_PET_Cohort.setEnabled(False)
 
     def to_file(self, atlas_file):
         with open(atlas_file, 'w') as f:
@@ -201,7 +208,7 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionExport_xml.triggered.connect(lambda state, file_type = 'xml', save_to_function = self.atlas.save_to_xml: self.export(file_type, save_to_function))
         self.actionExport_txt.triggered.connect(lambda state, file_type = 'txt', save_to_function = self.atlas.save_to_txt: self.export(file_type, save_to_function))
         self.actionExport_xlsx.triggered.connect(lambda state, file_type = 'xlsx', save_to_function = self.atlas.save_to_xlsx: self.export(file_type, save_to_function))
-        self.actionClose.triggered.connect(self.close)
+        self.actionQuit.triggered.connect(self.close)
 
         self.actionSelect_all.triggered.connect(self.tableWidget.selectAll)
         self.actionClear_selection.triggered.connect(self.tableWidget.clearSelection)
@@ -277,10 +284,6 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
             self.atlas.brain_regions[row].set(y = float(self.tableWidget.item(row, column).text()))
         elif column == 4:
             self.atlas.brain_regions[row].set(z = float(self.tableWidget.item(row, column).text()))
-        elif column == 5:
-            pass #left/right
-        elif column == 6:
-            pass #Notes
 
     def update_table(self, selected = None):
         if np.any(selected == None):
@@ -288,10 +291,9 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.tableWidget.blockSignals(True)
         self.tableWidget.clearContents()
-        self.tableWidget.setRowCount(0)
+        self.tableWidget.setRowCount(self.atlas.brain_region_number())
 
         for i in range(self.atlas.brain_region_number()):
-            self.tableWidget.setRowCount(i+1)
             widget = QWidget()
             layout = QHBoxLayout()
             layout.setAlignment(QtCore.Qt.AlignHCenter)
@@ -400,17 +402,14 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         if file_name:
             save_to_function(file_name)
 
-    def close(self):
-        pass
-
     def brain_view_open(self):
         self.comboBoxMeshFile.setCurrentText('Open...')
 
     def new_mri_cohort(self):
-        pass
+        self.AppWindow.cohort(atlas = self.atlas, brain_mesh_data = self.brain_mesh_data, subject_class = SubjectMRI)
 
     def new_fmri_cohort(self):
-        pass
+        self.AppWindow.cohort(atlas = self.atlas, brain_mesh_data = self.brain_mesh_data, subject_class = SubjectfMRI)
 
     def new_eeg_cohort(self):
         pass
@@ -419,7 +418,7 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         pass
 
     def about(self):
-        pass
+        QMessageBox.about(self, 'About', 'Brain Atlas Editor')
 
     def load_file_error(self, exception):
         msg_box = QMessageBox()

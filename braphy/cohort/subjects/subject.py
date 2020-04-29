@@ -33,6 +33,14 @@ class Subject:
         return subject
 
     @abstractmethod
+    def to_txt(subjects, file_name, labels):
+        pass
+
+    @abstractmethod
+    def to_xlsx(subjects, file_name, labels):
+        pass
+
+    @abstractmethod
     def init_data_dict(self):
         self.data_dict['data'] = Data()
 

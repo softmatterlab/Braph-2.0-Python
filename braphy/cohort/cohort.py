@@ -15,6 +15,9 @@ class Cohort:
         self.new_groups_added = len(self.groups)
         self.new_subjects_added = len(self.subjects)
 
+    def set_name(self, name):
+        self.name = name
+
     def to_file(self):
         d = {}
         d['cohort'] = self.to_dict()
@@ -256,13 +259,10 @@ class Cohort:
         return duplicates
 
     def save_to_txt(self, file_name):
-        s = ""
-        for label in self.atlas.get_brain_region_labels():
-            s += label + " "
-        for subject in self.subjects:
-            s += "\n{}".format(str(subject))
-        with open(file_name, 'w') as f:
-            f.write(s)
+        self.subject_class.to_txt(self.subjects, file_name, self.atlas.get_brain_region_labels())
+
+    def save_to_xlsx(self, file_name):
+        self.subject_class.to_xlsx(self.subjects, file_name, self.atlas.get_brain_region_labels())
 
     def load_from_txt(self, file_name):
         return self.load_from_file(file_name, self.subject_class.from_txt)

@@ -3,7 +3,6 @@ from braphy.utility.helper_functions import ListManager as lm
 import numpy as np
 import pandas as pd
 import xml.etree.ElementTree as ET
-from io import StringIO
 
 class BrainAtlas():
     def __init__(self, mesh_file = '', name = 'Atlas', brain_regions = None):
