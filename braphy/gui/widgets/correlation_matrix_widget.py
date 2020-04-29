@@ -16,6 +16,7 @@ class CorrelationMatrixWidget(Base, Form):
         self.radioButtonWeighted.setChecked(True)
         self.radioButtonGroup.setChecked(True)
         self.checkBoxDivide.setEnabled(False)
+        self.init_graphics_view()
 
     def set_structural_view(self):
         self.radioButtonGroup.hide()
@@ -33,6 +34,10 @@ class CorrelationMatrixWidget(Base, Form):
 
         self.checkBoxRearrange.stateChanged.connect(self.rearrange)
         self.checkBoxDivide.stateChanged.connect(self.divide)
+
+    def init_graphics_view(self):
+        pass
+        #self.correlationMatrix.init()
 
     def analyse_group(self):
         self.comboBoxSubject.setEnabled(False)
@@ -63,7 +68,6 @@ class CorrelationMatrixWidget(Base, Form):
         self.horizontalSliderThreshold.setEnabled(True)
         self.textEditDensity.setEnabled(False)
         self.horizontalSliderDensity.setEnabled(False)
-
 
     def rearrange(self):
         if self.checkBoxRearrange.isChecked():

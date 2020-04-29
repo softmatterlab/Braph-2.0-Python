@@ -33,28 +33,12 @@
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
-       <spacer name="horizontalSpacer_2">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Maximum</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
         <property name="rightMargin">
          <number>0</number>
         </property>
         <item>
-         <widget class="QGraphicsView" name="graphicsView">
+         <widget class="CorrelationMatrixVisualizer" name="correlationMatrix">
           <property name="sizePolicy">
            <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
             <horstretch>0</horstretch>
@@ -316,6 +300,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>CorrelationMatrixVisualizer</class>
+   <extends>QGraphicsView</extends>
+   <header>braphy.gui.widgets.correlation_matrix_visualizer</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
