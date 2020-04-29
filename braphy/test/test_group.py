@@ -24,8 +24,8 @@ class TestGroup(TestUtility):
     def test_comparison(self):
         f1 = abs_path_from_relative(__file__, '../cohort/gr1_MRI.txt')
         f2 = abs_path_from_relative(__file__, '../cohort/gr2_MRI.txt')
-        subjects1 = SubjectMRI.from_txt(f1)
-        subjects2 = SubjectMRI.from_txt(f2)
+        subjects1 = SubjectMRI.from_txt(f1, 68)
+        subjects2 = SubjectMRI.from_txt(f2, 68)
 
         Group1 = Group(SubjectMRI, subjects=subjects1)
         Group2 = Group(SubjectMRI, subjects=subjects2)

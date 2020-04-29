@@ -51,7 +51,7 @@ class Cohort:
             subjects.append(subject_class.from_dict(subject_dict))
         groups = []
         for group_dict in d['groups']:
-            groups.append(Group.from_dict(group_dict))
+            groups.append(Group.from_dict(group_dict, subjects))
         return Cohort(d['name'], subject_class, BrainAtlas.from_dict(d['atlas']), subjects = subjects, groups = groups)
 
     def group_averages(self):

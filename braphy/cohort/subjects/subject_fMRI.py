@@ -52,7 +52,7 @@ class SubjectfMRI(Subject):
         data = pd.read_excel(file_xlsx)
         first_row = np.array(data.columns)
         data = np.vstack([first_row, np.array(data)])
-        #assert np.size(data, 1) == data_length
+        assert np.size(data, 1) == data_length
         subject.data_dict['data'].set_value(data)
         return [subject]
 

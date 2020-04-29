@@ -177,6 +177,10 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
             item.setEnabled(not self.locked)
         self.disable_menu_bar(locked)
 
+    def update_group_averages_widget(self):
+        if self.cohort.subject_class == SubjectMRI:
+            self.groupAveragesWidget.update_tables()
+
     def group_table_widget_updated(self):
         checked_groups = len(self.groupTableWidget.get_selected())
         self.actionInvert.setEnabled(checked_groups > 0)
@@ -185,7 +189,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.groupsAndDemographicsWidget.update_table()
         self.subjectDataWidget.update_table()
-        self.groupAveragesWidget.update_tables()
+        self.update_group_averages_widget()
 
         self.btnSelectAtlas.setEnabled(len(self.cohort.groups) == 0 and len(self.cohort.subjects) == 0)
         self.brain_view_options_widget.set_groups(self.cohort.groups)
@@ -194,12 +198,12 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
     def groups_and_demographics_table_updated(self):
         self.groupTableWidget.update_table()
         self.subjectDataWidget.update_table()
-        self.groupAveragesWidget.update_tables()
+        self.update_group_averages_widget()
         self.btnSelectAtlas.setEnabled(len(self.cohort.groups) == 0 and len(self.cohort.subjects) == 0)
         self.brain_view_options_widget.set_subjects(self.cohort.subjects)
 
     def subject_data_table_updated(self):
-        self.groupAveragesWidget.update_tables()
+        self.update_group_averages_widget()
 
     def tab_changed(self):
         self.brain_view_options_widget.update_move()
@@ -301,7 +305,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.groupTableWidget.update_table(selected_groups)
         self.groupsAndDemographicsWidget.update_table(selected_subjects)
         self.subjectDataWidget.update_table()
-        self.groupAveragesWidget.update_tables()
+        self.update_group_averages_widget()
 
     def disable_menu_bar(self, b):
         self.menuGroups.setDisabled(b)
