@@ -22,12 +22,14 @@ class Group:
             d['subjects'].append(subject.to_dict())
         return d
 
-    def from_dict(d):
-        subjects = []
+    def from_dict(d, subjects):
         subject_class = eval(d['subject_class'])
-        for subject_dict in d['subjects']:
-            subjects.append(subject_class.from_dict(subject_dict))
-        return Group(subject_class, subjects=subjects, name=d['name'], description=d['description'])
+        subjects_in_group = []
+        for subject in subjects:
+            for group_subject in [subject_class.from_dict(sub) for sub in d['subjects']]:
+                if subject.equals(group_subject):
+                    subjects_in_group.append(subject)
+        return Group(subject_class, subjects=subjects_in_group, name=d['name'], description=d['description'])
 
     def add_subject(self, subject):
         self.subjects.append(subject)
