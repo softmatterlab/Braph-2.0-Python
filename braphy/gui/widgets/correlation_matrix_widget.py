@@ -116,7 +116,7 @@ class CorrelationMatrixWidget(Base, Form):
     def show_labels(self, state):
         self.correlationMatrix.show_labels(state)
 
-    def show_colorbar(self):
-        pass
+    def show_colorbar(self, state):
+        self.correlationMatrix.show_colorbar(state)
 
 

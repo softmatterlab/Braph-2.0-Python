@@ -23,8 +23,8 @@ class CorrelationMatrixVisualizer(FigureCanvas):
 
     def plot(self):
         self.ax = self.figure.add_subplot(111)
-        cax = self.ax.matshow(self.a)
-        self.figure.colorbar(cax)
+        self.cax = self.ax.matshow(self.a)
+        self.show_colorbar(True)
         self.show_labels(True)
         self.ax.tick_params(top=False, bottom=True,
                             labeltop=False, labelbottom=True)
@@ -33,6 +33,7 @@ class CorrelationMatrixVisualizer(FigureCanvas):
         self.figure.tight_layout()
         self.draw()
         self.show_labels(False)
+        self.show_colorbar(False)
 
     def show_labels(self, show):
         if show:
@@ -46,4 +47,12 @@ class CorrelationMatrixVisualizer(FigureCanvas):
             self.ax.set_xticklabels([])
             self.ax.set_yticklabels([])
         self.draw()
+
+    def show_colorbar(self, show):
+        if show:
+            self.colorbar = self.figure.colorbar(self.cax)
+        else:
+            self.colorbar.remove()
+        self.draw()
+
 
