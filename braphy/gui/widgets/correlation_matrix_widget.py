@@ -13,6 +13,7 @@ class CorrelationMatrixWidget(Base, Form):
 
     def init(self):
         self.init_buttons()
+        self.init_actions()
         self.radioButtonWeighted.setChecked(True)
         self.radioButtonGroup.setChecked(True)
         self.checkBoxDivide.setEnabled(False)
@@ -35,9 +36,28 @@ class CorrelationMatrixWidget(Base, Form):
         self.checkBoxRearrange.stateChanged.connect(self.rearrange)
         self.checkBoxDivide.stateChanged.connect(self.divide)
 
+    def init_actions(self):
+        self.actionZoom_in.triggered.connect(self.zoom_in)
+        self.actionZoom_out.triggered.connect(self.zoom_out)
+        self.actionPan_x_z.triggered.connect(self.pan_x_z)
+        self.actionPan_x_y.triggered.connect(self.pan_x_y)
+        self.actionInspect.triggered.connect(self.inspect)
+        self.actionShow_labels.triggered.connect(self.show_labels)
+        self.actionShow_colorbar.triggered.connect(self.show_colorbar)
+
+        group = QtWidgets.QActionGroup(self)
+        for action in (self.actionZoom_in, self.actionZoom_out, self.actionPan_x_z,
+                       self.actionPan_x_y, self.actionInspect):
+            group.addAction(action)
+
     def init_graphics_view(self):
         pass
         #self.correlationMatrix.init()
+
+    def get_actions(self):
+        actions = [self.actionZoom_in, self.actionZoom_out, self.actionPan_x_z, self.actionPan_x_y,
+                   self.actionInspect, self.actionShow_labels, self.actionShow_colorbar]
+        return actions
 
     def analyse_group(self):
         self.comboBoxSubject.setEnabled(False)
@@ -76,6 +96,27 @@ class CorrelationMatrixWidget(Base, Form):
             self.checkBoxDivide.setEnabled(False)
 
     def divide(self):
+        pass
+
+    def zoom_in(self):
+        pass
+
+    def zoom_out(self):
+        pass
+
+    def pan_x_z(self):
+        pass
+
+    def pan_x_y(self):
+        pass
+
+    def inspect(self):
+        pass
+
+    def show_labels(self):
+        pass
+
+    def show_colorbar(self):
         pass
 
 

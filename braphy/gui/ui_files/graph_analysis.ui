@@ -364,12 +364,6 @@ p, li { white-space: pre-wrap; }
    <addaction name="actionOpen"/>
    <addaction name="actionSave"/>
    <addaction name="separator"/>
-   <addaction name="actionZoom_in"/>
-   <addaction name="actionZoom_out"/>
-   <addaction name="actionPan"/>
-   <addaction name="actionPan_x_y"/>
-   <addaction name="separator"/>
-   <addaction name="actionInsert_colorbar"/>
   </widget>
   <action name="actionOpen">
    <property name="icon">
@@ -419,53 +413,6 @@ p, li { white-space: pre-wrap; }
    </property>
    <property name="shortcut">
     <string>Ctrl+Q</string>
-   </property>
-  </action>
-  <action name="actionZoom_in">
-   <property name="icon">
-    <iconset resource="../icons/icons.qrc">
-     <normaloff>:/buttons/zoom_in.png</normaloff>:/buttons/zoom_in.png</iconset>
-   </property>
-   <property name="text">
-    <string>Zoom in</string>
-   </property>
-  </action>
-  <action name="actionZoom_out">
-   <property name="icon">
-    <iconset resource="../icons/icons.qrc">
-     <normaloff>:/buttons/zoom_out.png</normaloff>:/buttons/zoom_out.png</iconset>
-   </property>
-   <property name="text">
-    <string>Zoom out</string>
-   </property>
-  </action>
-  <action name="actionPan">
-   <property name="icon">
-    <iconset resource="../icons/icons.qrc">
-     <normaloff>:/buttons/hand_xz.png</normaloff>:/buttons/hand_xz.png</iconset>
-   </property>
-   <property name="text">
-    <string>Pan (z/x)</string>
-   </property>
-   <property name="toolTip">
-    <string>Pan (z/x)</string>
-   </property>
-  </action>
-  <action name="actionInsert_colorbar">
-   <property name="text">
-    <string>Insert colorbar</string>
-   </property>
-  </action>
-  <action name="actionPan_x_y">
-   <property name="icon">
-    <iconset resource="../icons/icons.qrc">
-     <normaloff>:/buttons/hand_xy.png</normaloff>:/buttons/hand_xy.png</iconset>
-   </property>
-   <property name="text">
-    <string>Pan (x/y)</string>
-   </property>
-   <property name="toolTip">
-    <string>Pan (x/y)</string>
    </property>
   </action>
   <action name="actionGenerate_figure">

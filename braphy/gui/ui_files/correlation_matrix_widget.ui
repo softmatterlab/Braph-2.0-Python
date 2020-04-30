@@ -299,6 +299,103 @@
     </widget>
    </item>
   </layout>
+  <action name="actionZoom_in">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../icons/icons.qrc">
+     <normaloff>:/buttons/zoom_in.png</normaloff>:/buttons/zoom_in.png</iconset>
+   </property>
+   <property name="text">
+    <string>Zoom in</string>
+   </property>
+   <property name="toolTip">
+    <string>Zoom in</string>
+   </property>
+  </action>
+  <action name="actionZoom_out">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../icons/icons.qrc">
+     <normaloff>:/buttons/zoom_out.png</normaloff>:/buttons/zoom_out.png</iconset>
+   </property>
+   <property name="text">
+    <string>Zoom out</string>
+   </property>
+   <property name="toolTip">
+    <string>Zoom out</string>
+   </property>
+  </action>
+  <action name="actionPan_x_z">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../icons/icons.qrc">
+     <normaloff>:/buttons/hand_xz.png</normaloff>:/buttons/hand_xz.png</iconset>
+   </property>
+   <property name="text">
+    <string>Pan (x/z)</string>
+   </property>
+   <property name="toolTip">
+    <string>Pan (x/z)</string>
+   </property>
+  </action>
+  <action name="actionPan_x_y">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../icons/icons.qrc">
+     <normaloff>:/buttons/hand_xy.png</normaloff>:/buttons/hand_xy.png</iconset>
+   </property>
+   <property name="text">
+    <string>Pan (x/y)</string>
+   </property>
+   <property name="toolTip">
+    <string>Pan (x/y)</string>
+   </property>
+  </action>
+  <action name="actionShow_colorbar">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Show colorbar</string>
+   </property>
+   <property name="toolTip">
+    <string>Show colorbar</string>
+   </property>
+  </action>
+  <action name="actionShow_labels">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../icons/icons.qrc">
+     <normaloff>:/buttons/icon_label.png</normaloff>:/buttons/icon_label.png</iconset>
+   </property>
+   <property name="text">
+    <string>Show labels</string>
+   </property>
+   <property name="toolTip">
+    <string>Show labels</string>
+   </property>
+  </action>
+  <action name="actionInspect">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Inspect</string>
+   </property>
+   <property name="toolTip">
+    <string>Inspect</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -307,6 +404,8 @@
    <header>braphy.gui.widgets.correlation_matrix_visualizer</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../icons/icons.qrc"/>
+ </resources>
  <connections/>
 </ui>

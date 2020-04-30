@@ -36,6 +36,10 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         self.btnStartAnalysis.clicked.connect(self.start_analysis)
 
     def init_actions(self):
+        actions = self.correlationMatrixWidget.get_actions()
+        for action in actions:
+            self.toolBar.addAction(action)
+
         self.actionOpen.triggered.connect(self.open)
         self.actionSave.triggered.connect(self.save)
         self.actionSave_as.triggered.connect(self.save_as)
@@ -46,12 +50,6 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionGenerate_figure.triggered.connect(self.generate_figure)
 
         self.actionAbout.triggered.connect(self.about)
-
-        self.actionZoom_in.triggered.connect(self.zoom_in)
-        self.actionZoom_out.triggered.connect(self.zoom_out)
-        self.actionPan.triggered.connect(self.pan)
-        self.actionPan_x_y.triggered.connect(self.pan_x_y)
-        self.actionInsert_colorbar.triggered.connect(self.insert_colorbar)
 
     def select_cohort(self):
         options = QFileDialog.Options()
@@ -98,21 +96,6 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def about(self):
         QMessageBox.about(self, 'About', 'Graph analysis editor')
-
-    def zoom_in(self):
-        pass
-
-    def zoom_out(self):
-        pass
-
-    def pan(self):
-        pass
-
-    def pan_x_y(self):
-        pass
-
-    def insert_colorbar(self):
-        pass
 
 def run():
     app = QtWidgets.QApplication(sys.argv)
