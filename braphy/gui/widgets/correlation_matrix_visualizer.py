@@ -18,12 +18,14 @@ class CorrelationMatrixVisualizer(FigureCanvas):
                 QSizePolicy.Expanding,
                 QSizePolicy.Expanding)
         FigureCanvas.updateGeometry(self)
-        self.a = np.random.rand(68, 68)
+
+    def init(self, matrix):
+        self.matrix = matrix
         self.plot()
 
     def plot(self):
         self.ax = self.figure.add_subplot(111)
-        self.cax = self.ax.matshow(self.a)
+        self.cax = self.ax.matshow(self.matrix)
         self.show_colorbar(True)
         self.show_labels(True)
         self.ax.tick_params(top=False, bottom=True,
@@ -37,10 +39,10 @@ class CorrelationMatrixVisualizer(FigureCanvas):
 
     def show_labels(self, show):
         if show:
-            self.ax.set_xticks(np.arange(len(self.a)))
-            self.ax.set_yticks(np.arange(len(self.a)))
-            self.ax.set_xticklabels(['region']*len(self.a))
-            self.ax.set_yticklabels(['region']*len(self.a))
+            self.ax.set_xticks(np.arange(len(self.matrix)))
+            self.ax.set_yticks(np.arange(len(self.matrix)))
+            self.ax.set_xticklabels(['region']*len(self.matrix))
+            self.ax.set_yticklabels(['region']*len(self.matrix))
         else:
             self.ax.set_xticks(np.array([]))
             self.ax.set_yticks(np.array([]))

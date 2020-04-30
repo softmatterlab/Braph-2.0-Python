@@ -51,8 +51,7 @@ class CorrelationMatrixWidget(Base, Form):
             group.addAction(action)
 
     def init_graphics_view(self):
-        pass
-        #self.correlationMatrix.init()
+        self.correlationMatrix.init(np.random.rand(68, 68))
 
     def get_actions(self):
         actions = [self.actionZoom_in, self.actionZoom_out, self.actionPan_x_z, self.actionPan_x_y,
