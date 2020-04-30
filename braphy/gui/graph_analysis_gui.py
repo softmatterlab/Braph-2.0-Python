@@ -97,7 +97,9 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         pass
 
     def generate_figure(self):
-        pass
+        file_name, name = QFileDialog.getSaveFileName(self, "QFileDialog.saveFileName()", "untitled.png", "Image (*.png)")
+        if file_name:
+            self.correlationMatrixWidget.correlationMatrix.save_fig(file_name)
 
     def about(self):
         QMessageBox.about(self, 'About', 'Graph analysis editor')

@@ -57,4 +57,7 @@ class CorrelationMatrixVisualizer(FigureCanvas):
             self.colorbar.remove()
         self.draw()
 
+    def save_fig(self, file_name):
+        self.figure.savefig(file_name)
+
 
