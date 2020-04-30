@@ -20,6 +20,7 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.init_buttons()
         self.init_actions()
+        self.init_comboboxes()
         self.correlationMatrixWidget.init()
         self.graphMeasuresWidget.init()
 
@@ -55,6 +56,15 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionGenerate_figure.triggered.connect(self.generate_figure)
 
         self.actionAbout.triggered.connect(self.about)
+
+    def init_comboboxes(self):
+        self.comboBoxGraph.addItems(['weighted undirected', 'weighted directed', 'binary undirected', 'binary directed'])
+        self.comboBoxCorrelation.addItems(['pearson', 'spearman', 'kendall', 'partial pearson', 'partial spearman'])
+        self.comboBoxNegative.addItems(['zero', 'none', 'abs'])
+
+        self.comboBoxGraph.currentTextChanged.connect(self.set_graph_type)
+        self.comboBoxCorrelation.currentTextChanged.connect(self.set_correlation)
+        self.comboBoxNegative.currentTextChanged.connect(self.set_negative_rule)
 
     def select_cohort(self):
         options = QFileDialog.Options()
@@ -103,6 +113,15 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def about(self):
         QMessageBox.about(self, 'About', 'Graph analysis editor')
+
+    def set_graph_type(self, graph_type):
+        pass
+
+    def set_correlation(self, correlation_type):
+        pass
+
+    def set_negative_rule(self, negative_rule):
+        pass
 
 def run():
     app = QtWidgets.QApplication(sys.argv)

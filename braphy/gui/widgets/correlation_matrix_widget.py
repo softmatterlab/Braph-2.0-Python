@@ -14,6 +14,7 @@ class CorrelationMatrixWidget(Base, Form):
     def init(self):
         self.init_buttons()
         self.init_actions()
+        self.init_comboboxes()
         self.radioButtonWeighted.setChecked(True)
         self.radioButtonGroup.setChecked(True)
         self.checkBoxDivide.setEnabled(False)
@@ -49,6 +50,9 @@ class CorrelationMatrixWidget(Base, Form):
         for action in (self.actionZoom_in, self.actionZoom_out, self.actionPan_x_z,
                        self.actionPan_x_y, self.actionInspect):
             group.addAction(action)
+
+    def init_comboboxes(self):
+        pass
 
     def init_graphics_view(self):
         self.correlationMatrix.init(np.random.rand(68, 68))
