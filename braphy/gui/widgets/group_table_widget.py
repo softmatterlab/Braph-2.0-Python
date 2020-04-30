@@ -10,11 +10,11 @@ class GroupTableWidget(Base, Form):
     def __init__(self, parent = None):
         super(GroupTableWidget, self).__init__(parent)
         self.setupUi(self)
+        self.init_table()
+        self.init_buttons()
 
     def init(self, cohort):
         self.cohort = cohort
-        self.init_table()
-        self.init_buttons()
 
     def init_table(self):
         self.tableWidget_groups.setSelectionBehavior(QAbstractItemView.SelectRows)

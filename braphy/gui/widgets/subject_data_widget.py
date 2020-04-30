@@ -8,14 +8,17 @@ ui_file = abs_path_from_relative(__file__, "../ui_files/subject_data_widget.ui")
 Form, Base = uic.loadUiType(ui_file)
 
 class SubjectDataWidget(Base, Form):
-    def __init__(self, cohort, parent = None):
+    def __init__(self, parent = None):
         super(SubjectDataWidget, self).__init__(parent)
         self.setupUi(self)
+        self.initialized = False
 
     def init(self, cohort):
         self.cohort = cohort
-        self.init_table()
-        self.init_buttons()
+        if not self.initialized:
+            self.init_table()
+            self.init_buttons()
+            self.initialized = True
 
     def init_table(self):
         if self.cohort.subject_class == SubjectfMRI:

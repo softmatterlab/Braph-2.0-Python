@@ -289,7 +289,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
 
             self.update_tables()
             self.btnViewAtlas.setEnabled(True)
-            
+
     def init_widgets(self):
         self.groupTableWidget.init(self.cohort)
         self.groupsAndDemographicsWidget.init(self.cohort)
