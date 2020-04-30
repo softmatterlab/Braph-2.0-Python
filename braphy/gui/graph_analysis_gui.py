@@ -17,6 +17,7 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
             self.AppWindow = AppWindow
         QtWidgets.QMainWindow.__init__(self, parent = None)
         self.setupUi(self)
+
         self.init_buttons()
         self.init_actions()
         self.correlationMatrixWidget.init()
@@ -24,6 +25,9 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
 
         if subject_class == SubjectMRI:
             self.correlationMatrixWidget.set_structural_view()
+            self.setWindowTitle('MRI Cohort Editor')
+        elif subject_class == SubjectfMRI:
+            self.setWindowTitle('fMRI Cohort Editor')
 
         self.btnViewCohort.setEnabled(False)
 
