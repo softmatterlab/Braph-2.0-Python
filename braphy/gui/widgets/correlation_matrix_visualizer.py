@@ -18,20 +18,32 @@ class CorrelationMatrixVisualizer(FigureCanvas):
                 QSizePolicy.Expanding,
                 QSizePolicy.Expanding)
         FigureCanvas.updateGeometry(self)
+        self.a = np.random.rand(68, 68)
         self.plot()
 
     def plot(self):
-        a = np.random.rand(68, 68)
-        ax = self.figure.add_subplot(111)
-        cax = ax.matshow(a)
+        self.ax = self.figure.add_subplot(111)
+        cax = self.ax.matshow(self.a)
         self.figure.colorbar(cax)
-        ax.set_xticks(np.arange(len(a)))
-        ax.set_yticks(np.arange(len(a)))
-        ax.set_xticklabels(['region']*len(a))
-        ax.set_yticklabels(['region']*len(a))
-        ax.tick_params(top=False, bottom=True,
-                   labeltop=False, labelbottom=True)
-        plt.setp(ax.get_xticklabels(), rotation=90, ha="right", rotation_mode="anchor", fontsize = 7)
-        plt.setp(ax.get_yticklabels(), fontsize = 7)
+        self.show_labels(True)
+        self.ax.tick_params(top=False, bottom=True,
+                            labeltop=False, labelbottom=True)
+        plt.setp(self.ax.get_xticklabels(), rotation=90, ha="right", rotation_mode="anchor", fontsize = 7)
+        plt.setp(self.ax.get_yticklabels(), fontsize = 7)
         self.figure.tight_layout()
         self.draw()
+        self.show_labels(False)
+
+    def show_labels(self, show):
+        if show:
+            self.ax.set_xticks(np.arange(len(self.a)))
+            self.ax.set_yticks(np.arange(len(self.a)))
+            self.ax.set_xticklabels(['region']*len(self.a))
+            self.ax.set_yticklabels(['region']*len(self.a))
+        else:
+            self.ax.set_xticks(np.array([]))
+            self.ax.set_yticks(np.array([]))
+            self.ax.set_xticklabels([])
+            self.ax.set_yticklabels([])
+        self.draw()
+
