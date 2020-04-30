@@ -25,6 +25,7 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
 
         if subject_class == SubjectMRI:
             self.correlationMatrixWidget.set_structural_view()
+            self.repetitionLabel.hide()
             self.setWindowTitle('MRI Cohort Editor')
         elif subject_class == SubjectfMRI:
             self.setWindowTitle('fMRI Cohort Editor')
