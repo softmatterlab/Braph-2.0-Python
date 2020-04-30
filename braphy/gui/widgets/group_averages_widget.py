@@ -8,12 +8,9 @@ ui_file = abs_path_from_relative(__file__, "../ui_files/group_averages_widget.ui
 Form, Base = uic.loadUiType(ui_file)
 
 class GroupAveragesWidget(Base, Form):
-    def __init__(self, cohort, parent = None):
+    def __init__(self, parent = None):
         super(GroupAveragesWidget, self).__init__(parent)
         self.setupUi(self)
-
-    def init(self, cohort):
-        self.cohort = cohort
         self.spinBoxPermutations.valueChanged.connect(self.comparison)
         self.btnExportTxt.clicked.connect(self.export_as_txt)
         self.btnExportTxt.setEnabled(False)
@@ -22,6 +19,9 @@ class GroupAveragesWidget(Base, Form):
         self.button_group = QtWidgets.QButtonGroup(self)
         self.tableWidget_averages.setItemDelegate(FloatDelegate(self.tableWidget_averages))
         self.tableWidget_comparison.setItemDelegate(FloatDelegate(self.tableWidget_comparison))
+
+    def init(self, cohort):
+        self.cohort = cohort
 
     def set_callback(self, callback_function):
         self.update_callback_function = callback_function

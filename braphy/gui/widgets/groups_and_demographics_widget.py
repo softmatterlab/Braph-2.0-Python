@@ -10,14 +10,14 @@ class GroupsAndDemographicsWidget(Base, Form):
     def __init__(self, parent = None):
         super(GroupsAndDemographicsWidget, self).__init__(parent)
         self.setupUi(self)
+        self.init_table()
+        self.init_buttons()
 
         self.subject_check_boxes = []
         self.subject_in_group_check_boxes = {}
 
     def init(self, cohort):
         self.cohort = cohort
-        self.init_table()
-        self.init_buttons()
 
     def init_table(self):
         self.tableWidget.setItemDelegateForColumn(2, IntDelegate(self.tableWidget))

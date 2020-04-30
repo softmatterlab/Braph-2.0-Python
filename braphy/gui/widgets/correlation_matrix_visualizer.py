@@ -4,6 +4,7 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 import numpy as np
+import math
 import random
 
 class CorrelationMatrixVisualizer(FigureCanvas):
@@ -18,6 +19,8 @@ class CorrelationMatrixVisualizer(FigureCanvas):
                 QSizePolicy.Expanding,
                 QSizePolicy.Expanding)
         FigureCanvas.updateGeometry(self)
+        fig.canvas.mpl_connect("button_press_event", self.onclick)
+        self.text = None
 
     def init(self, matrix):
         self.matrix = matrix
@@ -60,4 +63,13 @@ class CorrelationMatrixVisualizer(FigureCanvas):
     def save_fig(self, file_name):
         self.figure.savefig(file_name)
 
-
+    def onclick(self, event):
+        if event.xdata and event.ydata:
+            if self.text:
+                self.text.remove()
+            x = int(round(event.xdata))
+            y = int(round(event.ydata))
+            tool_tip_label = "x: {}\ny: {}\nz: {}".format(x, y, self.matrix[x, y])
+            props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
+            self.text = self.ax.text((event.xdata+0.5)/len(self.matrix),1-(event.ydata+0.5)/len(self.matrix), tool_tip_label, transform=self.ax.transAxes, fontsize=14, verticalalignment='top', bbox=props)
+            self.draw()
