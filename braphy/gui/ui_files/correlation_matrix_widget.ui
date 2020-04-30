@@ -329,7 +329,7 @@
     <string>Zoom out</string>
    </property>
   </action>
-  <action name="actionPan_x_z">
+  <action name="actionPan">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -338,25 +338,10 @@
      <normaloff>:/buttons/hand_xz.png</normaloff>:/buttons/hand_xz.png</iconset>
    </property>
    <property name="text">
-    <string>Pan (x/z)</string>
+    <string>Pan</string>
    </property>
    <property name="toolTip">
-    <string>Pan (x/z)</string>
-   </property>
-  </action>
-  <action name="actionPan_x_y">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../icons/icons.qrc">
-     <normaloff>:/buttons/hand_xy.png</normaloff>:/buttons/hand_xy.png</iconset>
-   </property>
-   <property name="text">
-    <string>Pan (x/y)</string>
-   </property>
-   <property name="toolTip">
-    <string>Pan (x/y)</string>
+    <string>Pan</string>
    </property>
   </action>
   <action name="actionShow_colorbar">

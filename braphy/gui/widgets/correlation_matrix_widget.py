@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 import numpy as np
+from braphy.gui.widgets.correlation_matrix_visualizer import CorrelationMatrixVisualizer
 from braphy.utility.helper_functions import abs_path_from_relative
 
 ui_file = abs_path_from_relative(__file__, "../ui_files/correlation_matrix_widget.ui")
@@ -40,15 +41,13 @@ class CorrelationMatrixWidget(Base, Form):
     def init_actions(self):
         self.actionZoom_in.triggered.connect(self.zoom_in)
         self.actionZoom_out.triggered.connect(self.zoom_out)
-        self.actionPan_x_z.triggered.connect(self.pan_x_z)
-        self.actionPan_x_y.triggered.connect(self.pan_x_y)
+        self.actionPan.triggered.connect(self.pan)
         self.actionInspect.triggered.connect(self.inspect)
         self.actionShow_labels.triggered.connect(self.show_labels)
         self.actionShow_colorbar.triggered.connect(self.show_colorbar)
 
         group = QtWidgets.QActionGroup(self)
-        for action in (self.actionZoom_in, self.actionZoom_out, self.actionPan_x_z,
-                       self.actionPan_x_y, self.actionInspect):
+        for action in (self.actionZoom_in, self.actionZoom_out, self.actionPan, self.actionInspect):
             group.addAction(action)
 
     def init_comboboxes(self):
@@ -58,7 +57,7 @@ class CorrelationMatrixWidget(Base, Form):
         self.correlationMatrix.init(np.random.rand(68, 68))
 
     def get_actions(self):
-        actions = [self.actionZoom_in, self.actionZoom_out, self.actionPan_x_z, self.actionPan_x_y,
+        actions = [self.actionZoom_in, self.actionZoom_out, self.actionPan,
                    self.actionInspect, self.actionShow_labels, self.actionShow_colorbar]
         return actions
 
@@ -102,19 +101,16 @@ class CorrelationMatrixWidget(Base, Form):
         pass
 
     def zoom_in(self):
-        pass
+        self.correlationMatrix.mouse_mode = CorrelationMatrixVisualizer.MOUSE_MODE_ZOOM_IN
 
     def zoom_out(self):
-        pass
+        self.correlationMatrix.mouse_mode = CorrelationMatrixVisualizer.MOUSE_MODE_ZOOM_OUT
 
-    def pan_x_z(self):
-        pass
-
-    def pan_x_y(self):
-        pass
-
+    def pan(self):
+        self.correlationMatrix.mouse_mode = CorrelationMatrixVisualizer.MOUSE_MODE_PAN
+    
     def inspect(self):
-        pass
+        self.correlationMatrix.mouse_mode = CorrelationMatrixVisualizer.MOUSE_MODE_INSPECT
 
     def show_labels(self, state):
         self.correlationMatrix.show_labels(state)
