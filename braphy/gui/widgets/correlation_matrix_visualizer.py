@@ -79,7 +79,24 @@ class CorrelationMatrixVisualizer(FigureCanvas):
             self.inspect(event)
 
     def zoom_in(self, event):
-        pass
+        if event.xdata and event.ydata:
+            x = int(round(event.xdata))
+            y = int(round(event.ydata))
+            size = self.ax.get_xlim()[1] - self.ax.get_xlim()[0]
+            if size <= 3:
+                return
+            new_size = math.ceil(size/2)
+            x = min(x, size - int(new_size/2))
+            x = max(x, int(new_size/2))
+            y = min(y, size - int(new_size/2))
+            y = max(y, int(new_size/2))
+            x_min = x - int(new_size/2)
+            x_max = x + int(new_size/2)
+            y_min = y - int(new_size/2)
+            y_max = y + int(new_size/2)
+            self.ax.set_xlim([x_min-0.5, x_max+0.5])
+            self.ax.set_ylim([y_max+0.5, y_min-0.5])
+            self.draw()
 
     def zoom_out(self, event):
         pass

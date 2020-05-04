@@ -54,7 +54,8 @@ class CorrelationMatrixWidget(Base, Form):
         pass
 
     def init_graphics_view(self):
-        self.correlationMatrix.init(np.random.rand(68, 68))
+        matrix = np.random.rand(20, 20)
+        self.correlationMatrix.init(matrix)
 
     def get_actions(self):
         actions = [self.actionZoom_in, self.actionZoom_out, self.actionPan,
@@ -100,16 +101,26 @@ class CorrelationMatrixWidget(Base, Form):
     def divide(self):
         pass
 
+    def set_cursor(self, file_name):
+        cursor_file = abs_path_from_relative(__file__, file_name)
+        pm = QtGui.QPixmap(cursor_file)
+        cursor = QtGui.QCursor(pm)
+        self.setCursor(cursor)
+
     def zoom_in(self):
+        self.set_cursor('../icons/zoom_in.png')
         self.correlationMatrix.mouse_mode = CorrelationMatrixVisualizer.MOUSE_MODE_ZOOM_IN
 
     def zoom_out(self):
+        self.set_cursor('../icons/zoom_out.png')
         self.correlationMatrix.mouse_mode = CorrelationMatrixVisualizer.MOUSE_MODE_ZOOM_OUT
 
     def pan(self):
+        self.set_cursor('../icons/hand_xz.png')
         self.correlationMatrix.mouse_mode = CorrelationMatrixVisualizer.MOUSE_MODE_PAN
     
     def inspect(self):
+        self.set_cursor('../icons/cursor.png')
         self.correlationMatrix.mouse_mode = CorrelationMatrixVisualizer.MOUSE_MODE_INSPECT
 
     def show_labels(self, state):
