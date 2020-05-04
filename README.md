@@ -2,13 +2,32 @@
 
 ## Installation
 
+### Ubuntu
+
+Install Qt OpenGL for Python:
+
     sudo apt install python3-pyqt5.qtopengl
+
+Go to the top level folder of the project and install dependencies:
 
     pip3 install .
 
+### Windows
+
+Install Qt for python:
+
+    pip install pyqt5
+
+Go to the top level folder of the project and install dependencies:
+
+    pip install .
+
+### macOS
+
+
 ## Tests
 
-### Unit Tests
+### Unit Tests on Ubuntu
 
 To run all tests:
 
@@ -24,4 +43,3 @@ To debug a test in Visual Studio Code:
 1. Press F5
 1. Select Module
 1. Type for example braphy.test.test_distance
-
