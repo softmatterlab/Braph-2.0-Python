@@ -1,3 +1,1 @@
-include braphy/gui/ui_files/*.ui
-include braphy/gui/slide_show/*.png
-include braphy/gui/meshes/*.nv
+graft braphy

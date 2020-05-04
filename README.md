@@ -2,6 +2,8 @@
 
 ## Installation
 
+Make sure you have installed python 3.
+
 ### Ubuntu
 
 Install Qt OpenGL for Python:
@@ -16,14 +18,23 @@ Go to the top level folder of the project and install dependencies:
 
 Install Qt for python:
 
-    pip install pyqt5
+    pip3 install pyqt5
 
 Go to the top level folder of the project and install dependencies:
 
-    pip install .
+    pip3 install .
 
 ### macOS
 
+Go to the top level folder of the project and install dependencies:
+
+    pip3 install .
+
+## Run the program
+
+To run the program, run
+
+    python3 braphy/gui/main_window.py
 
 ## Tests
 
