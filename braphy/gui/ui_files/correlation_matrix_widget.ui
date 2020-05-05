@@ -299,51 +299,6 @@
     </widget>
    </item>
   </layout>
-  <action name="actionZoom_in">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../icons/icons.qrc">
-     <normaloff>:/buttons/zoom_in.png</normaloff>:/buttons/zoom_in.png</iconset>
-   </property>
-   <property name="text">
-    <string>Zoom in</string>
-   </property>
-   <property name="toolTip">
-    <string>Zoom in</string>
-   </property>
-  </action>
-  <action name="actionZoom_out">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../icons/icons.qrc">
-     <normaloff>:/buttons/zoom_out.png</normaloff>:/buttons/zoom_out.png</iconset>
-   </property>
-   <property name="text">
-    <string>Zoom out</string>
-   </property>
-   <property name="toolTip">
-    <string>Zoom out</string>
-   </property>
-  </action>
-  <action name="actionPan">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../icons/icons.qrc">
-     <normaloff>:/buttons/hand_xz.png</normaloff>:/buttons/hand_xz.png</iconset>
-   </property>
-   <property name="text">
-    <string>Pan</string>
-   </property>
-   <property name="toolTip">
-    <string>Pan</string>
-   </property>
-  </action>
   <action name="actionShow_colorbar">
    <property name="checkable">
     <bool>true</bool>

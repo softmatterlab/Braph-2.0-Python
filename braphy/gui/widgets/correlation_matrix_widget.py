@@ -41,16 +41,9 @@ class CorrelationMatrixWidget(Base, Form):
         self.checkBoxDivide.stateChanged.connect(self.divide)
 
     def init_actions(self):
-        self.actionZoom_in.triggered.connect(self.zoom_in)
-        self.actionZoom_out.triggered.connect(self.zoom_out)
-        self.actionPan.triggered.connect(self.pan)
         self.actionInspect.triggered.connect(self.inspect)
         self.actionShow_labels.triggered.connect(self.show_labels)
         self.actionShow_colorbar.triggered.connect(self.show_colorbar)
-
-        group = QtWidgets.QActionGroup(self)
-        for action in (self.actionZoom_in, self.actionZoom_out, self.actionPan, self.actionInspect):
-            group.addAction(action)
 
     def init_comboboxes(self):
         pass
@@ -61,8 +54,7 @@ class CorrelationMatrixWidget(Base, Form):
         self.parent().parent().addToolBar(NavigationToolbar(self.correlationMatrix, self))
 
     def get_actions(self):
-        actions = [self.actionZoom_in, self.actionZoom_out, self.actionPan,
-                   self.actionInspect, self.actionShow_labels, self.actionShow_colorbar]
+        actions = [self.actionShow_labels, self.actionShow_colorbar, self.actionInspect]
         return actions
 
     def analyse_group(self):
@@ -110,18 +102,6 @@ class CorrelationMatrixWidget(Base, Form):
         cursor = QtGui.QCursor(pm)
         self.setCursor(cursor)
 
-    def zoom_in(self):
-        self.set_cursor('../icons/zoom_in.png')
-        self.correlationMatrix.mouse_mode = CorrelationMatrixVisualizer.MOUSE_MODE_ZOOM_IN
-
-    def zoom_out(self):
-        self.set_cursor('../icons/zoom_out.png')
-        self.correlationMatrix.mouse_mode = CorrelationMatrixVisualizer.MOUSE_MODE_ZOOM_OUT
-
-    def pan(self):
-        self.set_cursor('../icons/hand_xz.png')
-        self.correlationMatrix.mouse_mode = CorrelationMatrixVisualizer.MOUSE_MODE_PAN
-    
     def inspect(self):
         self.set_cursor('../icons/cursor.png')
         self.correlationMatrix.mouse_mode = CorrelationMatrixVisualizer.MOUSE_MODE_INSPECT
