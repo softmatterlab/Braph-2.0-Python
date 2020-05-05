@@ -86,7 +86,10 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
             with open(file_name, 'r') as f:
                 cohort_dict = json.load(f)
                 cohort = Cohort.from_dict(cohort_dict['cohort'])
-                self.brain_mesh_data = cohort_dict['brain_mesh_data']
+                vertices = np.asarray(cohort_dict['brain_mesh_data']['vertices'])
+                faces = np.asarray(cohort_dict['brain_mesh_data']['faces'])
+                brain_mesh_data = {'vertices': vertices, 'faces': faces}
+                self.brain_mesh_data = brain_mesh_data
                 if cohort.subject_class != self.subject_class:
                     self.import_error('Wrong data type. Load a cohort with subjects of type {} instead.'.format(self.subject_class.__name__))
                     return
