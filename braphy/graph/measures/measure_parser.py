@@ -24,8 +24,5 @@ class MeasureParser():
         measures_dict = {}
         for measure_type in Measure.__subclasses__():
             measures = measure_type.get_description()
-            for measure in measures:
-                if measure not in measures_dict.keys():
-                    measures_dict[measure_type] = {}
-                measures_dict[measure_type][measure] = measures[measure]
+            measures_dict[measure_type] = measures
         return measures_dict

@@ -2,7 +2,7 @@ import sys
 import json
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from PyQt5.QtWidgets import *
-from braphy.graph import *
+from braphy.graph.graphs import *
 from braphy.cohort.subjects import *
 from braphy.gui.community_structure_gui import CommunityStructure
 from braphy.utility.helper_functions import abs_path_from_relative
@@ -115,13 +115,23 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         QMessageBox.about(self, 'About', 'Graph analysis editor')
 
     def set_graph_type(self, graph_type):
-        pass
+        
+        if graph_type == 'binary undirected':
+            self.graph_type = GraphBU
+        elif graph_type == 'binary directed':
+            self.graph_type = GraphBD
+        elif graph_type == 'weighted undirected':
+            self.graph_type = GraphWU
+        else:
+            self.graph_type = GraphWD
+        self.graphMeasuresWidget.update_measure_list(self.graph_type)
 
     def set_correlation(self, correlation_type):
         pass
 
     def set_negative_rule(self, negative_rule):
         pass
+
 
 def run():
     app = QtWidgets.QApplication(sys.argv)
