@@ -39,7 +39,11 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.subject_class = subject_class
         if cohort:
             self.cohort = cohort
+            self.brain_mesh_data = brain_mesh_data
+            self.init_atlas_dependencies()
             self.init_widgets()
+            self.init_brain_widget()
+            self.update_tables()
             self.set_locked(False)
         elif atlas:
             self.cohort = Cohort('Cohort', subject_class, atlas)
@@ -176,6 +180,15 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         for item in lock_items:
             item.setEnabled(not self.locked)
         self.disable_menu_bar(locked)
+
+    def set_read_only(self):
+        locked_items = [self.textCohortName, self.btnSelectAtlas, self.menuGroups, self.menuSubjects,
+                        self.actionOpen, self.menuGraph_Analysis]
+        for item in locked_items:
+            item.setEnabled(False)
+        self.groupTableWidget.set_read_only()
+        self.groupsAndDemographicsWidget.set_read_only()
+        self.subjectDataWidget.set_read_only()
 
     def update_group_averages_widget(self):
         if self.cohort.subject_class == SubjectMRI:

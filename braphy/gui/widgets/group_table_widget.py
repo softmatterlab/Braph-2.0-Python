@@ -12,6 +12,7 @@ class GroupTableWidget(Base, Form):
         self.setupUi(self)
         self.init_table()
         self.init_buttons()
+        self.read_only = False
 
     def init(self, cohort):
         self.cohort = cohort
@@ -50,11 +51,12 @@ class GroupTableWidget(Base, Form):
         self.update_table(selected)
 
     def update_group_operation_buttons(self):
-        checked_groups = len(self.get_selected())
-        self.btnInvert.setEnabled(checked_groups > 0)
-        self.btnMerge.setEnabled(checked_groups > 1)
-        self.btnIntersect.setEnabled(checked_groups > 1)
-        self.update()
+        if not self.read_only:
+            checked_groups = len(self.get_selected())
+            self.btnInvert.setEnabled(checked_groups > 0)
+            self.btnMerge.setEnabled(checked_groups > 1)
+            self.btnIntersect.setEnabled(checked_groups > 1)
+            self.update()
 
     def update_table(self, selected_groups = None):
         if np.any(selected_groups == None):
@@ -69,13 +71,19 @@ class GroupTableWidget(Base, Form):
             layout.setAlignment(QtCore.Qt.AlignHCenter)
 
             item = QTableWidgetItem(self.cohort.groups[i].name)
+            if self.read_only:
+                item.setFlags(QtCore.Qt.ItemIsSelectable)
             self.tableWidget_groups.setItem(i, 0, item)
 
             item = QTableWidgetItem(str(len(self.cohort.groups[i].subjects)))
             item.setFlags(item.flags() ^ QtCore.Qt.ItemIsEditable)
+            if self.read_only:
+                item.setFlags(QtCore.Qt.ItemIsSelectable)
             self.tableWidget_groups.setItem(i, 1, item)
 
             item = QTableWidgetItem(self.cohort.groups[i].description)
+            if self.read_only:
+                item.setFlags(QtCore.Qt.ItemIsSelectable)
             self.tableWidget_groups.setItem(i, 2, item)
 
         self.set_selected(selected_groups)
@@ -150,6 +158,14 @@ class GroupTableWidget(Base, Form):
     def intersect_groups(self):
         self.cohort.intersect_groups(self.get_selected())
         self.update(self.get_selected())
+
+    def set_read_only(self):
+        self.read_only = True
+        locked_items = [self.btnLoadSubject, self.btnAdd, self.btnRemove, self.btnMoveUp,
+                        self.btnMoveDown, self.btnInvert, self.btnMerge, self.btnIntersect]
+        for item in locked_items:
+            item.setEnabled(False)
+        self.update_table()
 
     def load_file_error(self, exception):
         msg_box = QMessageBox()

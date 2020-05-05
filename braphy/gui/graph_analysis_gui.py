@@ -5,6 +5,8 @@ from PyQt5.QtWidgets import *
 from braphy.graph.graphs import *
 from braphy.cohort.subjects import *
 from braphy.cohort.cohort import Cohort
+from braphy.gui.cohort_editor_gui import CohortEditor
+from braphy.analysis.analysis import Analysis
 from braphy.gui.community_structure_gui import CommunityStructure
 from braphy.utility.helper_functions import abs_path_from_relative
 
@@ -84,15 +86,18 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
             with open(file_name, 'r') as f:
                 cohort_dict = json.load(f)
                 cohort = Cohort.from_dict(cohort_dict['cohort'])
+                self.brain_mesh_data = cohort_dict['brain_mesh_data']
                 if cohort.subject_class != self.subject_class:
                     self.import_error('Wrong data type. Load a cohort with subjects of type {} instead.'.format(self.subject_class.__name__))
                     return
-            self.cohort = cohort
+            self.analysis = Analysis(cohort)
             self.btnViewCohort.setEnabled(True)
             self.set_locked(False)
 
     def view_cohort(self):
-        pass
+        self.cohort_editor_gui = CohortEditor(self, self.subject_class, self.analysis.cohort, brain_mesh_data = self.brain_mesh_data)
+        self.cohort_editor_gui.set_read_only()
+        self.cohort_editor_gui.show()
 
     def edit_community(self):
         self.community_structure_gui = CommunityStructure(self)

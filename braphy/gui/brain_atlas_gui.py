@@ -130,7 +130,8 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         self.locked = locked
         lock_items = [self.comboBoxMeshFile, self.textAtlasName, self.actionOpen, self.actionImport_file,
                       self.btnAdd, self.btnAddAbove, self.btnAddBelow, self.btnRemove,
-                      self.actionAdd, self.actionAdd_above, self.actionAdd_below, self.actionRemove]
+                      self.actionAdd, self.actionAdd_above, self.actionAdd_below, self.actionRemove,
+                      self.actionBrainViewOpen, self.menuSubject_Cohorts]
         for item in lock_items:
             item.setEnabled(not self.locked)
 

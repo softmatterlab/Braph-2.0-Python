@@ -15,6 +15,7 @@ class GroupsAndDemographicsWidget(Base, Form):
 
         self.subject_check_boxes = []
         self.subject_in_group_check_boxes = {}
+        self.read_only = False
 
     def init(self, cohort):
         self.cohort = cohort
@@ -102,12 +103,16 @@ class GroupsAndDemographicsWidget(Base, Form):
             self.tableWidget.setCellWidget(i, 0, widget)
 
             item = QTableWidgetItem(self.cohort.subjects[i].id)
+            if self.read_only:
+                item.setFlags(QtCore.Qt.ItemIsSelectable)
             self.tableWidget.setItem(i, 1, item)
 
             for j in range(len(keys)):
                 if keys[j] == 'data':
                     continue
                 item = QTableWidgetItem(str(self.cohort.subjects[i].data_dict[keys[j]].value))
+                if self.read_only:
+                    item.setFlags(QtCore.Qt.ItemIsSelectable)
                 self.tableWidget.setItem(i, j+2, item)
 
             for j in range(len(self.cohort.groups)):
@@ -117,6 +122,8 @@ class GroupsAndDemographicsWidget(Base, Form):
                 check_box = QCheckBox()
                 check_box.i = i
                 check_box.j = j
+                if self.read_only:
+                    check_box.setEnabled(False)
                 self.subject_in_group_check_boxes[self.cohort.groups[j]].append(check_box)
                 self.subject_in_group_check_boxes[self.cohort.groups[j]][i].stateChanged.connect(self.subject_in_group_check_box_changed)
                 if self.cohort.subjects[i] in self.cohort.groups[j].subjects:
@@ -203,4 +210,13 @@ class GroupsAndDemographicsWidget(Base, Form):
         selected_subjects = self.get_selected()
         self.cohort.new_group_from_selected(selected_subjects)
         self.update()
+
+    def set_read_only(self):
+        self.read_only = True
+        locked_items = [self.btnSelectAll, self.btnClearSelection, self.btnAddSubject,
+                        self.btnAddAbove, self.btnAddBelow, self.btnRemove2, self.btnMoveUp2,
+                        self.btnMoveDown2, self.btnMoveToTop, self.btnMoveToBottom, self.btnNewGroup]
+        for item in locked_items:
+            item.setEnabled(False)
+        self.update_table()
 

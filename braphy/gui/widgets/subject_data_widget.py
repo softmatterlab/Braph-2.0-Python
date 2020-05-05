@@ -12,6 +12,7 @@ class SubjectDataWidget(Base, Form):
         super(SubjectDataWidget, self).__init__(parent)
         self.setupUi(self)
         self.initialized = False
+        self.read_only = False
 
     def init(self, cohort):
         self.cohort = cohort
@@ -90,6 +91,8 @@ class SubjectDataWidget(Base, Form):
         self.tableWidget.setRowCount(data.shape[0])
         for (i, j), value in np.ndenumerate(data):
             item = QTableWidgetItem(float_to_string(value))
+            if self.read_only:
+                item.setFlags(QtCore.Qt.ItemIsSelectable)
             self.tableWidget.setItem(i, j, item)
         self.tableWidget.blockSignals(False)
 
@@ -112,6 +115,8 @@ class SubjectDataWidget(Base, Form):
             for j in range(len(self.cohort.subjects[i].data_dict['data'].value)):
                 value = float_to_string(self.cohort.subjects[i].data_dict['data'].value[j])
                 item = QTableWidgetItem(value)
+                if self.read_only:
+                    item.setFlags(QtCore.Qt.ItemIsSelectable)
                 self.tableWidget.setItem(i, j, item)
 
         self.tableWidget.blockSignals(False)
@@ -140,3 +145,7 @@ class SubjectDataWidget(Base, Form):
     def remove_row(self):
         self.selected_subject.data_dict['data'].remove_row()
         self.update_table_functional()
+
+    def set_read_only(self):
+        self.read_only = True
+        self.update_table()
