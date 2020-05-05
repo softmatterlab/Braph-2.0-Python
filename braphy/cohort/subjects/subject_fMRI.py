@@ -23,14 +23,14 @@ class SubjectfMRI(Subject):
         return s
 
     def from_txt(file_txt, data_length):
-        raise Exception("Not implemented")
+        raise Exception("Loading fMRI from txt not yet implemented")
 
     def from_xml(file_xml, data_length):
         subjects = []
         with open(file_xml, 'r') as f:
             tree = ET.parse(f)
             root = tree.getroot()
-            assert root.find('fMRICohort/fMRISubject') != None, "Could not find any subjects in file"
+            assert root.find('fMRICohort/fMRISubject') != None, "Invalid file"
             for item in root.findall('fMRICohort/fMRISubject'):
                 item = item.attrib
                 subject_id = item['code']
@@ -52,7 +52,7 @@ class SubjectfMRI(Subject):
         data = pd.read_excel(file_xlsx)
         first_row = np.array(data.columns)
         data = np.vstack([first_row, np.array(data)])
-        assert np.size(data, 1) == data_length
+        assert np.size(data, 1) == data_length, 'Data does not match the brain atlas'
         subject.data_dict['data'].set_value(data)
         return [subject]
 

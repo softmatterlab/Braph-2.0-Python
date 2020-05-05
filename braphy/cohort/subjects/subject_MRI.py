@@ -39,7 +39,7 @@ class SubjectMRI(Subject):
         with open(file_xml, 'r') as f:
             tree = ET.parse(f)
             root = tree.getroot()
-            assert root.find('MRICohort/MRISubject') != None, "Could not find any subjects in file"
+            assert root.find('MRICohort/MRISubject') != None, "Invalid file"
             for item in root.findall('MRICohort/MRISubject'):
                 item = item.attrib
                 for key in ['code', 'data', 'age']:
@@ -59,7 +59,10 @@ class SubjectMRI(Subject):
         for item in data:
             subject_id = item[0]
             subject = SubjectMRI(id = subject_id)
-            mri_data = item[1:].astype(float)
+            try:
+                mri_data = item[1:].astype(float)
+            except:
+                raise Exception("Invalid file")
             assert len(mri_data) == data_length, "Data does not match the brain atlas"
             subject.data_dict['data'].set_value(mri_data)
             subjects.append(subject)

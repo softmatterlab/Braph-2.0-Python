@@ -120,7 +120,7 @@ class BrainAtlas():
                     self.mesh_file = line[1]
                     continue
                 success = True
-                assert len(line) >= 5, "Invalid text file"
+                assert len(line) == 5, "Invalid text file"
                 label = line[0]
                 name = (' '.join(line[1:-5])).replace('  ', ' ')
                 x = float(line[-5])
@@ -130,14 +130,17 @@ class BrainAtlas():
             assert success == True, "Could not find any brain regions in file"
 
     def load_from_xlsx(self, file_path = '', file_name = ''):
-        data = pd.read_excel(file_path + file_name)
-        data.iloc[:,0] = data.iloc[:,0].str.strip().str.replace('  ', ' ')
-        data.iloc[:,1] = data.iloc[:,1].str.strip().str.replace('  ', ' ')
-        self.name = data.columns[0]
-        self.mesh_file = data.columns[1]
-        br = np.array( data.apply(lambda x: BrainRegion(x[0], x[1], x[2], x[3], x[4]),
-                                axis = 1)).tolist()
-        self.brain_regions.extend(br)
+        try:
+            data = pd.read_excel(file_path + file_name)
+            data.iloc[:,0] = data.iloc[:,0].str.strip().str.replace('  ', ' ')
+            data.iloc[:,1] = data.iloc[:,1].str.strip().str.replace('  ', ' ')
+            self.name = data.columns[0]
+            self.mesh_file = data.columns[1]
+            br = np.array( data.apply(lambda x: BrainRegion(x[0], x[1], x[2], x[3], x[4]),
+                                    axis = 1)).tolist()
+            self.brain_regions.extend(br)
+        except:
+            raise Exception("Invalid file")
 
     def load_from_xml(self, file_path = '', file_name = ''):
         with open(file_path + file_name, 'r') as f:
