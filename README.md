@@ -14,6 +14,13 @@ Go to the top level folder of the project and install dependencies:
 
     pip3 install .
 
+When developing the software, it is useful to add the line
+
+    export PYTHONPATH=~/git/Braph-2.0-Python:$PYTHONPATH
+
+at the bottom of your ~/.bashrc file. By doing so, you don't have to install the program after each
+change.
+
 ### Windows
 
 Install Qt for python:
