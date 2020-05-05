@@ -2,6 +2,8 @@ from PyQt5.QtWidgets import *
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 import numpy as np
 from braphy.gui.widgets.correlation_matrix_visualizer import CorrelationMatrixVisualizer
+from matplotlib.backends.backend_qt5agg import (
+            NavigationToolbar2QT as NavigationToolbar)
 from braphy.utility.helper_functions import abs_path_from_relative
 
 ui_file = abs_path_from_relative(__file__, "../ui_files/correlation_matrix_widget.ui")
@@ -56,6 +58,7 @@ class CorrelationMatrixWidget(Base, Form):
     def init_graphics_view(self):
         matrix = np.random.rand(33, 33)
         self.correlationMatrix.init(matrix)
+        self.parent().parent().addToolBar(NavigationToolbar(self.correlationMatrix, self))
 
     def get_actions(self):
         actions = [self.actionZoom_in, self.actionZoom_out, self.actionPan,
