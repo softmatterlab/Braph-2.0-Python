@@ -32,6 +32,7 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         elif subject_class == SubjectfMRI:
             self.setWindowTitle('fMRI Graph Analysis')
 
+        self.subject_class = subject_class
         self.btnViewCohort.setEnabled(False)
         self.set_locked(True)
 
@@ -83,6 +84,10 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
             with open(file_name, 'r') as f:
                 cohort_dict = json.load(f)
                 cohort = Cohort.from_dict(cohort_dict['cohort'])
+                if cohort.subject_class != self.subject_class:
+                    self.import_error('Wrong data type. Load a cohort with subjects of type {} instead.'.format(self.subject_class.__name__))
+                    return
+            self.cohort = cohort
             self.btnViewCohort.setEnabled(True)
             self.set_locked(False)
 
@@ -142,6 +147,12 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
     def set_negative_rule(self, negative_rule):
         pass
 
+    def import_error(self, msg):
+        msg_box = QMessageBox()
+        msg_box.setIcon(QMessageBox.Critical)
+        msg_box.setText(msg)
+        msg_box.setWindowTitle("Import error")
+        msg_box.exec_()
 
 def run():
     app = QtWidgets.QApplication(sys.argv)
