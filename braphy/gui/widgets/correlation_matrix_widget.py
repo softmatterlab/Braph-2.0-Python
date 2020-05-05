@@ -54,7 +54,7 @@ class CorrelationMatrixWidget(Base, Form):
         pass
 
     def init_graphics_view(self):
-        matrix = np.random.rand(20, 20)
+        matrix = np.random.rand(33, 33)
         self.correlationMatrix.init(matrix)
 
     def get_actions(self):

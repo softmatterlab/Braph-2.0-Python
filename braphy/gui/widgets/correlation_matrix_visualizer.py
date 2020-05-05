@@ -80,26 +80,35 @@ class CorrelationMatrixVisualizer(FigureCanvas):
 
     def zoom_in(self, event):
         if event.xdata and event.ydata:
-            x = int(round(event.xdata))
-            y = int(round(event.ydata))
-            size = self.ax.get_xlim()[1] - self.ax.get_xlim()[0]
-            if size <= 3:
+            current_size = self.ax.get_xlim()[1] - self.ax.get_xlim()[0]
+            if current_size <= 3:
                 return
-            new_size = math.ceil(size/2)
-            x = min(x, size - int(new_size/2))
-            x = max(x, int(new_size/2))
-            y = min(y, size - int(new_size/2))
-            y = max(y, int(new_size/2))
-            x_min = x - int(new_size/2)
-            x_max = x + int(new_size/2)
-            y_min = y - int(new_size/2)
-            y_max = y + int(new_size/2)
-            self.ax.set_xlim([x_min-0.5, x_max+0.5])
-            self.ax.set_ylim([y_max+0.5, y_min-0.5])
-            self.draw()
+            padding = int(current_size/4)
+            self.zoom(event, padding)
 
     def zoom_out(self, event):
-        pass
+        if event.xdata and event.ydata:
+            current_size = self.ax.get_xlim()[1] - self.ax.get_xlim()[0]
+            padding = int(current_size/2)*2
+            self.zoom(event, padding)
+
+    def zoom(self, event, padding):
+        x = int(round(event.xdata))
+        y = int(round(event.ydata))
+        size = len(self.matrix)
+        x = min(x, size - padding - 1)
+        x = max(x, padding)
+        y = min(y, size - padding - 1)
+        y = max(y, padding)
+        x_min = x - padding
+        x_max = x + padding
+        y_min = y - padding
+        y_max = y + padding
+        x_max = min(x_max, size - 1)
+        y_max = min(y_max, size - 1)
+        self.ax.set_xlim([x_min - 0.5, x_max + 0.5])
+        self.ax.set_ylim([y_max + 0.5, y_min - 0.5])
+        self.draw()
 
     def pan(self, event):
         pass
