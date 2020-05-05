@@ -4,6 +4,7 @@ from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from PyQt5.QtWidgets import *
 from braphy.graph.graphs import *
 from braphy.cohort.subjects import *
+from braphy.cohort.cohort import Cohort
 from braphy.gui.community_structure_gui import CommunityStructure
 from braphy.utility.helper_functions import abs_path_from_relative
 
@@ -32,6 +33,14 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
             self.setWindowTitle('fMRI Graph Analysis')
 
         self.btnViewCohort.setEnabled(False)
+        self.set_locked(True)
+
+    def set_locked(self, locked):
+        lock_items = [self.correlationMatrixWidget, self.graphMeasuresWidget, self.textEditName,
+                      self.comboBoxGraph, self.comboBoxCorrelation, self.comboBoxNegative,
+                      self.btnSubgraphAnalysis, self.btnStartAnalysis, self.groupBox]
+        for item in lock_items:
+            item.setEnabled(not locked)
 
     def init_buttons(self):
         self.btnSelectCohort.clicked.connect(self.select_cohort)
@@ -72,8 +81,10 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         file_name, _ = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()", "","cohort files (*.cohort)", options=options)
         if file_name:
             with open(file_name, 'r') as f:
-                self.cohort_dict = json.load(f)
+                cohort_dict = json.load(f)
+                cohort = Cohort.from_dict(cohort_dict['cohort'])
             self.btnViewCohort.setEnabled(True)
+            self.set_locked(False)
 
     def view_cohort(self):
         pass
@@ -115,7 +126,6 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         QMessageBox.about(self, 'About', 'Graph analysis editor')
 
     def set_graph_type(self, graph_type):
-        
         if graph_type == 'binary undirected':
             self.graph_type = GraphBU
         elif graph_type == 'binary directed':

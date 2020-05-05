@@ -14,7 +14,6 @@ class GraphMeasuresWidget(Base, Form):
 
         self.measures_dict = MeasureParser.list_measures()
         descriptions = MeasureParser.list_measures_descriptions()
-        print(descriptions)
         self.measure_descriptions = {}
         for sub_measures in descriptions.values():
             for sub_measure, description in sub_measures.items():
