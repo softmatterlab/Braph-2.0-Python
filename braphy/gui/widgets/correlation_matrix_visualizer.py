@@ -23,9 +23,13 @@ class CorrelationMatrixVisualizer(FigureCanvas):
                 QSizePolicy.Expanding,
                 QSizePolicy.Expanding)
         FigureCanvas.updateGeometry(self)
-        fig.canvas.mpl_connect("button_press_event", self.onclick)
+        fig.canvas.mpl_connect("button_press_event", self.on_click)
+        fig.canvas.mpl_connect("button_release_event", self.on_release)
+        fig.canvas.mpl_connect("motion_notify_event", self.on_motion)
+
         self.text = None
         self.mouse_mode = None
+        self.mouse_pressed = False
 
     def init(self, matrix):
         self.matrix = matrix
@@ -68,15 +72,33 @@ class CorrelationMatrixVisualizer(FigureCanvas):
     def save_fig(self, file_name):
         self.figure.savefig(file_name)
 
-    def onclick(self, event):
+    def on_click(self, event):
         if self.mouse_mode == CorrelationMatrixVisualizer.MOUSE_MODE_ZOOM_IN:
             self.zoom_in(event)
         elif self.mouse_mode == CorrelationMatrixVisualizer.MOUSE_MODE_ZOOM_OUT:
             self.zoom_out(event)
         elif self.mouse_mode == CorrelationMatrixVisualizer.MOUSE_MODE_PAN:
-            self.pan(event)
+            self.mouse_pressed = True
         elif self.mouse_mode == CorrelationMatrixVisualizer.MOUSE_MODE_INSPECT:
             self.inspect(event)
+
+    def on_release(self, event):
+        if self.mouse_mode == CorrelationMatrixVisualizer.MOUSE_MODE_PAN:
+            self.mouse_pressed = False
+
+    def on_motion(self, event):
+        if self.mouse_mode == CorrelationMatrixVisualizer.MOUSE_MODE_PAN:
+            print('pan1')
+            if not self.mouse_pressed:
+                return
+            print('pan2')
+            if event.xdata and event.ydata:
+                x = int(round(event.xdata))
+                y = int(round(event.ydata))
+                current_size = self.ax.get_xlim()[1] - self.ax.get_xlim()[0]
+                self.ax.set_xlim([x - current_size/2, x + current_size/2])
+                self.ax.set_ylim([y + current_size/2, y - current_size/2])
+                self.draw()
 
     def zoom_in(self, event):
         if event.xdata and event.ydata:
@@ -111,9 +133,6 @@ class CorrelationMatrixVisualizer(FigureCanvas):
         self.draw()
 
     def pan(self, event):
-        pass
-
-    def inspect(self, event):
         pass
 
     def inspect(self, event):
