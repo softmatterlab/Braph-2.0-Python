@@ -14,13 +14,6 @@ Go to the top level folder of the project and install dependencies:
 
     pip3 install .
 
-When developing the software, it is useful to add the line
-
-    export PYTHONPATH=~/git/Braph-2.0-Python:$PYTHONPATH
-
-at the bottom of your ~/.bashrc file. By doing so, you don't have to install the program after each
-change.
-
 ### Windows
 
 Install Qt for python:
@@ -61,3 +54,22 @@ To debug a test in Visual Studio Code:
 1. Press F5
 1. Select Module
 1. Type for example braphy.test.test_distance
+
+## Development
+
+When developing the software, it is useful to add the Braph directory to your pythonpath.
+On Ubuntu/macOS this is done by adding the following line
+
+    export PYTHONPATH=[your braph directory]:$PYTHONPATH
+
+e.g.
+
+    export PYTHONPATH=~/git/Braph-2.0-Python:$PYTHONPATH
+
+at the bottom of your ~/.bashrc file (Ubuntu) or ~/.bash_profile (macOS).
+
+On Windows this is done by adding the pythonpath to your environment variables list.
+
+By doing so, you don't have to install the program after each
+change.
+
