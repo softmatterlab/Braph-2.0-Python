@@ -66,7 +66,7 @@ e.g.
 
     export PYTHONPATH=~/git/Braph-2.0-Python:$PYTHONPATH
 
-at the bottom of your ~/.bashrc file.
+at the bottom of your ~/.bashrc file (Ubuntu) or ~/.bash_profile (macOS).
 
 On Windows this is done by adding the pythonpath to your environment variables list.
 
