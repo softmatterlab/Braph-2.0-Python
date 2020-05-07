@@ -41,6 +41,12 @@ class BrainAtlasWidget(GLViewWidget):
         self.selected_region_color = [1.0, 0.0, 2.0/3, 1.0] # pink
         self.tool_bar = BrainAtlasWidgetToolBar(self)
 
+    def width(self):
+        return super().width() * self.devicePixelRatio()
+
+    def height(self):
+        return super().height() * self.devicePixelRatio()
+
     def add_selected_observer(self, observer):
         self.selected_observers.append(observer)
 
@@ -478,5 +484,3 @@ class BrainAtlasWidgetToolBar(Base, Form):
         actions = [self.actionZoom_in, self.actionZoom_out, self.actionPan_x_y, self.actionPan_z,
                    self.actionRotate, self.actionFind]
         return actions
-
-
