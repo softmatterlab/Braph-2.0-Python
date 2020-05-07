@@ -391,8 +391,8 @@ class BrainAtlasWidget(GLViewWidget):
         mouse_travel_distance = (ev.pos() - self.mousePos).manhattanLength()
         if mouse_travel_distance > 15:
             return
-        x = (ev.pos().x()-self.width()/2)/(self.width()/2)
-        y = -(ev.pos().y()-self.height()/2)/(self.height()/2)
+        x = (ev.pos().x()-super().width()/2)/(super().width()/2)
+        y = -(ev.pos().y()-super().height()/2)/(super().height()/2)
         m = self.projectionMatrix() * self.viewMatrix()
         camera_pos = m.inverted()[0].map(QtGui.QVector3D(0,0,0))
         closest_region = self.gui_brain_region_at([x,y], camera_pos)
