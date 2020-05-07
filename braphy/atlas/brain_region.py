@@ -44,11 +44,7 @@ class BrainRegion():
         return s
 
     def __str__(self):
-        s = "{}\t{}\t{}\t{}\t{}\t{}\t{}\n".format(self.label,
-                                                  self.name,
-                                                  self.x,
-                                                  self.y,
-                                                  self.z)
+        s = "{}\t{}\t{}\t{}\t{}\t{}\t{}\n".format(self.label, self.name, self.x, self.y, self.z)
         return s
 
     def __eq__(self, other):

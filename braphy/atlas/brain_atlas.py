@@ -114,18 +114,18 @@ class BrainAtlas():
         with open(file_path + file_name, 'r') as f:
             success = False
             for i, line in enumerate(f):
-                line = line.split()
+                line = line.split('\t')
                 if i == 0:
                     self.name = line[0]
                     self.mesh_file = line[1]
                     continue
                 success = True
-                assert len(line) == 5, "Invalid text file"
+                assert len(line) >= 5 and len(line) <= 7, "Invalid text file"
                 label = line[0]
-                name = (' '.join(line[1:-5])).replace('  ', ' ')
-                x = float(line[-5])
-                y = float(line[-4])
-                z = float(line[-3])
+                name = line[1]#(' '.join(line[1:-5])).replace('  ', ' ')
+                x = float(line[2])
+                y = float(line[3])
+                z = float(line[4])
                 self.brain_regions.append(BrainRegion(label, name, x, y, z))
             assert success == True, "Could not find any brain regions in file"
 
@@ -219,4 +219,3 @@ class BrainAtlas():
         for brain_region in d['brain_regions']:
             brain_regions.append(BrainRegion.from_dict(brain_region))
         return BrainAtlas(mesh_file = d['mesh_file'], name = d['name'], brain_regions = brain_regions)
-
