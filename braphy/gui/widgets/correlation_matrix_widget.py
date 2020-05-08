@@ -106,9 +106,14 @@ class CorrelationMatrixWidget(Base, Form):
         cursor = QtGui.QCursor(pm)
         self.setCursor(cursor)
 
-    def inspect(self):
-        self.set_cursor('../icons/cursor.png')
-        self.correlationMatrix.mouse_mode = CorrelationMatrixVisualizer.MOUSE_MODE_INSPECT
+    def inspect(self, checked):
+        if checked:
+            self.set_cursor('../icons/cursor.png')
+        else:
+            self.unsetCursor()
+            self.correlationMatrix.clear_text()
+            self.correlationMatrix.draw()
+        self.correlationMatrix.mouse_mode_inspect = checked
 
     def show_labels(self, state):
         self.correlationMatrix.show_labels(state)

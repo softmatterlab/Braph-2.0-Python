@@ -8,10 +8,6 @@ import math
 import random
 
 class CorrelationMatrixVisualizer(FigureCanvas):
-    MOUSE_MODE_ZOOM_IN = 1
-    MOUSE_MODE_ZOOM_OUT = 2
-    MOUSE_MODE_PAN = 3
-    MOUSE_MODE_INSPECT = 4
     def __init__(self, parent=None, width=8, height=6, dpi=100):
         fig = Figure(figsize=(width, height), dpi=dpi)
         self.axes = fig.add_subplot(111)
@@ -23,9 +19,9 @@ class CorrelationMatrixVisualizer(FigureCanvas):
                 QSizePolicy.Expanding,
                 QSizePolicy.Expanding)
         FigureCanvas.updateGeometry(self)
-        fig.canvas.mpl_connect("button_press_event", self.onclick)
+        fig.canvas.mpl_connect("button_press_event", self.inspect)
         self.text = None
-        self.mouse_mode = None
+        self.mouse_mode_inspect = False
 
     def init(self, matrix):
         self.matrix = matrix
@@ -68,17 +64,18 @@ class CorrelationMatrixVisualizer(FigureCanvas):
     def save_fig(self, file_name):
         self.figure.savefig(file_name)
 
-    def onclick(self, event):
-        if self.mouse_mode == CorrelationMatrixVisualizer.MOUSE_MODE_INSPECT:
-            self.inspect(event)
-
     def inspect(self, event):
-        if event.xdata and event.ydata:
-            if self.text:
-                self.text.remove()
-            x = int(round(event.xdata))
-            y = int(round(event.ydata))
-            tool_tip_label = "x: {}\ny: {}\nz: {}".format(x, y, self.matrix[y, x])
-            props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
-            self.text = self.ax.text((event.xdata+0.5)/len(self.matrix),1-(event.ydata+0.5)/len(self.matrix), tool_tip_label, transform=self.ax.transAxes, fontsize=14, verticalalignment='top', bbox=props)
-            self.draw()
+        if self.mouse_mode_inspect:
+            if event.xdata and event.ydata:
+                self.clear_text()
+                x = int(round(event.xdata))
+                y = int(round(event.ydata))
+                tool_tip_label = "x: {}\ny: {}\nz: {}".format(x, y, self.matrix[y, x])
+                props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
+                self.text = self.ax.text((event.xdata+0.5)/len(self.matrix),1-(event.ydata+0.5)/len(self.matrix), tool_tip_label, transform=self.ax.transAxes, fontsize=14, verticalalignment='top', bbox=props)
+                self.draw()
+
+    def clear_text(self):
+        if self.text:
+            self.text.remove()
+            self.text = None
