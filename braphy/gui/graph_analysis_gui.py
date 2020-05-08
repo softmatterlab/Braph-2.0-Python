@@ -67,8 +67,6 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionExport_xml.triggered.connect(self.export_xml)
         self.actionQuit.triggered.connect(self.close)
 
-        self.actionGenerate_figure.triggered.connect(self.generate_figure)
-
         self.actionAbout.triggered.connect(self.about)
 
     def init_comboboxes(self):
@@ -137,11 +135,6 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def export_xml(self):
         pass
-
-    def generate_figure(self):
-        file_name, name = QFileDialog.getSaveFileName(self, "QFileDialog.saveFileName()", "untitled.png", "Image (*.png)")
-        if file_name:
-            self.correlationMatrixWidget.correlationMatrix.save_fig(file_name)
 
     def about(self):
         QMessageBox.about(self, 'About', 'Graph analysis editor')
