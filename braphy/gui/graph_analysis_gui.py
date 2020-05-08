@@ -23,8 +23,6 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.init_buttons()
         self.init_actions()
-        self.init_comboboxes()
-        self.correlationMatrixWidget.init()
         self.graphMeasuresWidget.init()
 
         if subject_class == SubjectMRI:
@@ -100,6 +98,7 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
             analysis = Analysis(cohort)
             self.textAnalysisName.setText(analysis.name)
             self.analysis = analysis
+            self.correlationMatrixWidget.init(analysis)
             self.btnViewCohort.setEnabled(True)
             self.set_locked(False)
 

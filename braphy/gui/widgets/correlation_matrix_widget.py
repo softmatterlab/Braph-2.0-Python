@@ -13,14 +13,15 @@ class CorrelationMatrixWidget(Base, Form):
     def __init__(self, parent = None):
         super(CorrelationMatrixWidget, self).__init__(parent)
         self.setupUi(self)
-
-    def init(self):
         self.init_buttons()
         self.init_actions()
-        self.init_comboboxes()
         self.radioButtonWeighted.setChecked(True)
         self.radioButtonGroup.setChecked(True)
         self.checkBoxDivide.setEnabled(False)
+
+    def init(self, analysis):
+        self.analysis = analysis
+        self.init_comboboxes()
         self.init_graphics_view()
 
     def set_structural_view(self):
@@ -46,7 +47,10 @@ class CorrelationMatrixWidget(Base, Form):
         self.actionShow_colorbar.triggered.connect(self.show_colorbar)
 
     def init_comboboxes(self):
-        pass
+        for group in self.analysis.cohort.groups:
+            self.comboBoxGroup.addItem(group.name)
+        for subject in self.analysis.cohort.subjects:
+            self.comboBoxSubject.addItem(subject.id)
 
     def init_graphics_view(self):
         matrix = np.random.rand(33, 33)
