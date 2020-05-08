@@ -36,10 +36,12 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.subject_class = subject_class
         self.btnViewCohort.setEnabled(False)
+        self.analysis = None
+        self.textAnalysisName.textChanged.connect(self.set_analysis_name)
         self.set_locked(True)
 
     def set_locked(self, locked):
-        lock_items = [self.correlationMatrixWidget, self.graphMeasuresWidget, self.textEditName,
+        lock_items = [self.correlationMatrixWidget, self.graphMeasuresWidget, self.textAnalysisName,
                       self.comboBoxGraph, self.comboBoxCorrelation, self.comboBoxNegative,
                       self.btnSubgraphAnalysis, self.btnStartAnalysis, self.groupBox]
         for item in lock_items:
@@ -78,6 +80,10 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         self.comboBoxCorrelation.currentTextChanged.connect(self.set_correlation)
         self.comboBoxNegative.currentTextChanged.connect(self.set_negative_rule)
 
+    def set_analysis_name(self, name):
+        if self.analysis:
+            self.analysis.set_name(name)
+
     def select_cohort(self):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
@@ -93,7 +99,9 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
                 if cohort.subject_class != self.subject_class:
                     self.import_error('Wrong data type. Load a cohort with subjects of type {} instead.'.format(self.subject_class.__name__))
                     return
-            self.analysis = Analysis(cohort)
+            analysis = Analysis(cohort)
+            self.textAnalysisName.setText(analysis.name)
+            self.analysis = analysis
             self.btnViewCohort.setEnabled(True)
             self.set_locked(False)
 
