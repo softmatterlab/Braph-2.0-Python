@@ -148,8 +148,8 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
         if self.comboBoxMeshFile.currentText() == 'Open...':
             options = QFileDialog.Options()
             options |= QFileDialog.DontUseNativeDialog
-            file_path, name = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()",
-                                                      "","nv files (*.nv)", options=options)
+            file_path, name = QFileDialog.getOpenFileName(self, "Select brain mesh",
+                                                      "","nv files (*.nv)", options = options)
             if file_path:
                 file_name = file_path.split('/')[-1]
                 self.comboBoxMeshFile.blockSignals(True)
@@ -354,7 +354,8 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
     def save_as(self):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
-        file_name, name = QFileDialog.getSaveFileName(self, "QFileDialog.saveFileName()", "untitled.atlas", "atlas files (*.atlas)")
+        file_name, name = QFileDialog.getSaveFileName(self, "Save brain atlas", "untitled.atlas",
+                                                      "atlas files (*.atlas)", options = options)
         if file_name:
             self.file_name = file_name
             self.to_file(file_name)
@@ -368,19 +369,19 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
     def open(self):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
-        file_name, name = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()",
-                                                      "","atlas files (*.atlas)", options=options)
+        file_name, name = QFileDialog.getOpenFileName(self,"Open brain atlas",
+                                                      "","atlas files (*.atlas)", options = options)
         if file_name:
             self.from_file(file_name)
 
     def import_file(self):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
-        file_name, name = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()",
+        file_name, name = QFileDialog.getOpenFileName(self,"Import brain atlas",
                                                       "","Atlas files (*.txt *.xml *.xlsx) ;; \
                                                           Text files (*.txt,);; \
                                                           xml files (*.xml);; \
-                                                          xlsx files (*.xlsx", options=options)
+                                                          xlsx files (*.xlsx", options = options)
         if file_name:
             try:
                 extension = file_name.split(".")[-1]
@@ -397,9 +398,10 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
     def export(self, file_type, save_to_function):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
-        file_name, name = QFileDialog.getSaveFileName(self, "QFileDialog.saveFileName()",
+        file_name, name = QFileDialog.getSaveFileName(self, "Export brain atlas",
                                                       "untitled_atlas.{}".format(file_type),
-                                                      "{} files (*.{})".format(file_type, file_type))
+                                                      "{} files (*.{})".format(file_type, file_type),
+                                                      options = options)
         if file_name:
             save_to_function(file_name)
 

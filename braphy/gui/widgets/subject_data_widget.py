@@ -44,10 +44,10 @@ class SubjectDataWidget(Base, Form):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
         if self.cohort.subject_class == SubjectMRI:
-            file_name, name = QFileDialog.getSaveFileName(self, "QFileDialog.saveFileName()",
-                                                        "subjects.{}".format(file_type),
-                                                        "{} files (*.{})".format(file_type, file_type),
-                                                        options = options)
+            file_name, name = QFileDialog.getSaveFileName(self, "Save subjects",
+                                                          "subjects.{}".format(file_type),
+                                                          "{} files (*.{})".format(file_type, file_type),
+                                                          options = options)
         elif self.cohort.subject_class == SubjectfMRI:
             file_name = QFileDialog.getExistingDirectory(self, "Open directory", " ", options = options)
         if file_name:

@@ -157,7 +157,8 @@ class GroupAveragesWidget(Base, Form):
         s += 'P-value double-tailed {}\n'.format(' '.join(float_to_string(value) for value in self.p_values[1]))
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
-        file_name, _ = QFileDialog.getSaveFileName(self, "QFileDialog.saveFileName()", "comparison.txt", "text files (*.txt)")
+        file_name, _ = QFileDialog.getSaveFileName(self, "Export comparison", "comparison.txt",
+                                                   "text files (*.txt)", options = options)
         if file_name:
             with open(file_name, 'w') as f:
                 f.write(s)
@@ -178,7 +179,8 @@ class GroupAveragesWidget(Base, Form):
         df = pd.DataFrame.from_dict(d)
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
-        file_name, _ = QFileDialog.getSaveFileName(self, "QFileDialog.saveFileName()", "comparison.xlsx", "xlsx files (*.xlsx)")
+        file_name, _ = QFileDialog.getSaveFileName(self, "Export comparison", "comparison.xlsx",
+                                                   "xlsx files (*.xlsx)", options = options)
         if file_name:
             with open(file_name, 'w') as f:
                 df.to_excel(file_name, index = None, columns = None)

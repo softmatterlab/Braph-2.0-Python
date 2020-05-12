@@ -84,7 +84,8 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
     def select_cohort(self):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
-        file_name, _ = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()", "","cohort files (*.cohort)", options=options)
+        file_name, _ = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()", "",
+                                                   "cohort files (*.cohort)", options = options)
         if file_name:
             with open(file_name, 'r') as f:
                 cohort_dict = json.load(f)
