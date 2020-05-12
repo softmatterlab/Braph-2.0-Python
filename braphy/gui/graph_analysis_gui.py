@@ -23,6 +23,7 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.init_buttons()
         self.init_actions()
+        self.init_comboboxes()
         self.graphMeasuresWidget.init()
 
         if subject_class == SubjectMRI:
