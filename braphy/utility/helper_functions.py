@@ -56,13 +56,6 @@ def abs_path_from_relative(script_file, file_relative = None):
         file_absolute = os.path.join(script_dir, file_relative)
     return file_absolute
 
-def get_version_info():
-    try:
-        v = subprocess.check_output(["git", "log", "-1", "--date=short", "--pretty=format:'%ad.%h'"]).decode('ascii').replace("'","")
-    except:
-        v = "UNKNOWN"
-    return v
-
 def load_nv(filename):
     number_of_vertices = np.loadtxt(filename, max_rows = 1).astype(int).item()
     vertices = np.loadtxt(filename, skiprows = 1, max_rows = number_of_vertices)

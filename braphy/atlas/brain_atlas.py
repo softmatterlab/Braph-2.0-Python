@@ -1,5 +1,6 @@
 from braphy.atlas.brain_region import BrainRegion
 from braphy.utility.helper_functions import ListManager as lm
+from braphy.utility.get_version import get_version
 import numpy as np
 import pandas as pd
 import xml.etree.ElementTree as ET
@@ -202,11 +203,12 @@ class BrainAtlas():
 
     def to_dict(self):
         d = {}
-        d['mesh_file'] = self.mesh_file
+        d['version'] = get_version()
         d['name'] = self.name
         d['brain_regions'] = []
         for brain_region in self.brain_regions:
             d['brain_regions'].append(brain_region.to_dict())
+        d['mesh_file'] = self.mesh_file
         return d
 
     def from_file(self, atlas_file):

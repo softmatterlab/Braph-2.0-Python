@@ -4,7 +4,7 @@ import json
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from PyQt5.QtWidgets import *
 from braphy.atlas.brain_atlas import BrainAtlas
-from braphy.utility.helper_functions import abs_path_from_relative, load_nv, get_version_info, FloatDelegate, float_to_string
+from braphy.utility.helper_functions import abs_path_from_relative, load_nv, FloatDelegate, float_to_string
 import numpy as np
 from braphy.gui.widgets.brain_atlas_widget import BrainAtlasWidget
 from braphy.cohort.subjects import *
@@ -53,12 +53,11 @@ class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def to_dict(self):
         d = {}
+        d['atlas'] = self.atlas.to_dict()
         brain_mesh_data = {}
         brain_mesh_data['vertices'] = self.brain_mesh_data['vertices'].tolist()
         brain_mesh_data['faces'] = self.brain_mesh_data['faces'].tolist()
         d['brain_mesh_data'] = brain_mesh_data
-        d['version'] = get_version_info()
-        d['atlas'] = self.atlas.to_dict()
         return d
 
     def from_file(self, atlas_file):

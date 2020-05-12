@@ -3,6 +3,7 @@ from braphy.cohort.subjects import *
 from braphy.cohort.group import Group
 from braphy.atlas.brain_atlas import BrainAtlas
 from braphy.utility.helper_functions import ListManager as lm
+from braphy.utility.get_version import get_version
 import numpy as np
 
 class Cohort:
@@ -26,6 +27,7 @@ class Cohort:
 
     def to_dict(self):
         d = {}
+        d['version'] = get_version()
         d['name'] = self.name
         d['subject_class'] = self.subject_class.__name__
         subjects = []
