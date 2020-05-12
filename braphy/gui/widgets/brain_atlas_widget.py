@@ -244,7 +244,10 @@ class BrainAtlasWidget(GLViewWidget):
         self.update_brain_regions_plot()
 
     def generate_figure(self):
-        file_name, name = QFileDialog.getSaveFileName(self, "QFileDialog.saveFileName()", "untitled.png", "Image (*.png)")
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        file_name, name = QFileDialog.getSaveFileName(self, "Save figure", "untitled.png",
+                                                      "Image (*.png)", options = options)
         if file_name:
             fb = self.grabFrameBuffer()
             fb.save(file_name)

@@ -99,10 +99,11 @@ class GroupTableWidget(Base, Form):
     def load_subject_group(self):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
-        file_names, _ = QFileDialog.getOpenFileNames(self,"QFileDialog.getOpenFileName()", "","Subject files (*.txt *.xml *.xlsx);; \
-                                                                                               Text files (*.txt);; \
-                                                                                               XML files (*.xml);; \
-                                                                                               XLSX files (*.xlsx)", options=options)
+        file_names, _ = QFileDialog.getOpenFileNames(self,"Load subject group", "",
+                                                     "Subject files (*.txt *.xml *.xlsx);; \
+                                                     Text files (*.txt);; \
+                                                     XML files (*.xml);; \
+                                                     XLSX files (*.xlsx)", options = options)
         duplicates = False
         try:
             for file_name in file_names:

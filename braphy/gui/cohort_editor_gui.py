@@ -36,6 +36,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
             self.setWindowTitle('fMRI Cohort Editor')
 
         self.brain_view_options_widget = BrainViewOptionsWidget(parent=self.tabBrain)
+        self.brain_view_options_widget.raise_()
         self.subject_class = subject_class
         if cohort:
             self.cohort = cohort
@@ -228,15 +229,16 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
     def open(self):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
-        file_name, name = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()",
-                                                      "","cohort files (*.cohort)", options=options)
+        file_name, name = QFileDialog.getOpenFileName(self,"Open cohort", "",
+                                                      "cohort files (*.cohort)", options = options)
         if file_name:
             self.from_file(file_name)
 
     def save_as(self):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
-        file_name, name = QFileDialog.getSaveFileName(self, "QFileDialog.saveFileName()", "untitled.cohort", "cohort files (*.cohort)")
+        file_name, name = QFileDialog.getSaveFileName(self, "Save cohort", "untitled.cohort",
+                                                      "cohort files (*.cohort)", options = options)
         if file_name:
             self.file_name = file_name
             self.to_file(file_name)
@@ -286,7 +288,8 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
     def load_atlas(self):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
-        file_name, _ = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()", "","atlas files (*.atlas)", options=options)
+        file_name, _ = QFileDialog.getOpenFileName(self,"Select atlas", "","atlas files (*.atlas)",
+                                                   options=options)
         if file_name:
             with open(file_name, 'r') as f:
                 atlas_dict = json.load(f)
