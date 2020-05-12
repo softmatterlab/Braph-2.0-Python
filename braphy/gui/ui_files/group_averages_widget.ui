@@ -15,194 +15,197 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QTableWidget" name="tableWidget_averages">
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-      </font>
+    <widget class="QSplitter" name="splitter">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
      </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QGroupBox" name="groupBox_2">
-     <property name="title">
-      <string>Comparison</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_10">
-      <item>
-       <widget class="QTableWidget" name="tableWidget_selection">
-        <property name="editTriggers">
-         <set>QAbstractItemView::NoEditTriggers</set>
-        </property>
-        <property name="selectionMode">
-         <enum>QAbstractItemView::NoSelection</enum>
-        </property>
-        <attribute name="verticalHeaderDefaultSectionSize">
-         <number>35</number>
-        </attribute>
-        <attribute name="verticalHeaderMinimumSectionSize">
-         <number>21</number>
-        </attribute>
-       </widget>
-      </item>
-      <item>
-       <widget class="QTableWidget" name="tableWidget_comparison">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>113</height>
-         </size>
-        </property>
-        <row>
-         <property name="text">
-          <string>Difference</string>
+     <widget class="QTableWidget" name="tableWidget_averages">
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+     </widget>
+     <widget class="QGroupBox" name="groupBox_2">
+      <property name="title">
+       <string>Comparison</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_10">
+       <item>
+        <widget class="QTableWidget" name="tableWidget_selection">
+         <property name="editTriggers">
+          <set>QAbstractItemView::NoEditTriggers</set>
          </property>
-        </row>
-        <row>
-         <property name="text">
-          <string>P-value (single-tailed)</string>
+         <property name="selectionMode">
+          <enum>QAbstractItemView::NoSelection</enum>
          </property>
-        </row>
-        <row>
-         <property name="text">
-          <string>P-value (double-tailed)</string>
+         <attribute name="verticalHeaderDefaultSectionSize">
+          <number>35</number>
+         </attribute>
+         <attribute name="verticalHeaderMinimumSectionSize">
+          <number>21</number>
+         </attribute>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTableWidget" name="tableWidget_comparison">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
-        </row>
-        <column>
-         <property name="text">
-          <string/>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>113</height>
+          </size>
          </property>
-        </column>
-        <column>
-         <property name="text">
-          <string/>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string/>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string/>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string/>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string/>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string/>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string/>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string/>
-         </property>
-        </column>
-       </widget>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_12">
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <item>
-         <widget class="QLabel" name="label_3">
+         <row>
           <property name="text">
-           <string>M = </string>
+           <string>Difference</string>
           </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QSpinBox" name="spinBoxPermutations">
-          <property name="maximum">
-           <number>10000</number>
-          </property>
-          <property name="value">
-           <number>1000</number>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer_10">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>15</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="QPushButton" name="btnExportTxt">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>150</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>150</width>
-            <height>16777215</height>
-           </size>
-          </property>
+         </row>
+         <row>
           <property name="text">
-           <string>Export  as txt ...</string>
+           <string>P-value (single-tailed)</string>
           </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="btnExportXlsx">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>150</width>
-            <height>0</height>
-           </size>
-          </property>
+         </row>
+         <row>
           <property name="text">
-           <string>Export as xlsx ...</string>
+           <string>P-value (double-tailed)</string>
           </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-     </layout>
+         </row>
+         <column>
+          <property name="text">
+           <string/>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string/>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string/>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string/>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string/>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string/>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string/>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string/>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string/>
+          </property>
+         </column>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_12">
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="label_3">
+           <property name="text">
+            <string>M = </string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="spinBoxPermutations">
+           <property name="maximum">
+            <number>10000</number>
+           </property>
+           <property name="value">
+            <number>1000</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_10">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>15</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnExportTxt">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>150</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>150</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Export  as txt ...</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnExportXlsx">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>150</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Export as xlsx ...</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
   </layout>

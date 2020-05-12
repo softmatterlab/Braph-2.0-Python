@@ -19,37 +19,22 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_6">
-      <property name="leftMargin">
-       <number>0</number>
+     <widget class="QSplitter" name="splitter">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
       </property>
-      <property name="rightMargin">
-       <number>0</number>
-      </property>
-      <property name="bottomMargin">
-       <number>0</number>
-      </property>
-      <item>
-       <layout class="QVBoxLayout" name="verticalLayout_2">
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
+      <widget class="QGroupBox" name="groupBox">
+       <property name="title">
+        <string/>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout">
         <item>
          <widget class="QGroupBox" name="groupBoxAtlas">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>500</width>
-            <height>16777215</height>
-           </size>
           </property>
           <property name="title">
            <string>Brain Atlas</string>
@@ -125,109 +110,88 @@
          </widget>
         </item>
         <item>
-         <layout class="QVBoxLayout" name="verticalLayout_3">
-          <property name="bottomMargin">
-           <number>0</number>
+         <widget class="QLineEdit" name="textCohortName">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
           </property>
-          <item>
-           <widget class="QLineEdit" name="textCohortName">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>500</width>
-              <height>16777215</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>Name</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="GroupTableWidget" name="groupTableWidget" native="true">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>500</width>
-              <height>16777215</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-         </layout>
+          <property name="text">
+           <string>Name</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="GroupTableWidget" name="groupTableWidget" native="true">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+         </widget>
         </item>
        </layout>
-      </item>
-      <item>
-       <widget class="QTabWidget" name="tabWidget">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>850</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="currentIndex">
-         <number>3</number>
-        </property>
-        <widget class="QWidget" name="tabGroup">
-         <attribute name="title">
-          <string>Groups and Demographics</string>
-         </attribute>
-         <layout class="QVBoxLayout" name="verticalLayout_8">
-          <item>
-           <widget class="GroupsAndDemographicsWidget" name="groupsAndDemographicsWidget" native="true"/>
-          </item>
-         </layout>
-        </widget>
-        <widget class="QWidget" name="tabSubject">
-         <attribute name="title">
-          <string>Subject Data</string>
-         </attribute>
-         <layout class="QVBoxLayout" name="verticalLayout_9">
-          <item>
-           <widget class="SubjectDataWidget" name="subjectDataWidget" native="true"/>
-          </item>
-         </layout>
-        </widget>
-        <widget class="QWidget" name="tabAverages">
-         <attribute name="title">
-          <string>Group Averages</string>
-         </attribute>
-         <layout class="QVBoxLayout" name="verticalLayout_13">
-          <item>
-           <widget class="GroupAveragesWidget" name="groupAveragesWidget" native="true"/>
-          </item>
-         </layout>
-        </widget>
-        <widget class="QWidget" name="tabBrain">
-         <attribute name="title">
-          <string>Brain View</string>
-         </attribute>
-         <layout class="QVBoxLayout" name="verticalLayout_14">
-          <item>
-           <widget class="BrainAtlasWidget" name="brainWidget"/>
-          </item>
-         </layout>
-        </widget>
+      </widget>
+      <widget class="QTabWidget" name="tabWidget">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>850</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="currentIndex">
+        <number>3</number>
+       </property>
+       <widget class="QWidget" name="tabGroup">
+        <attribute name="title">
+         <string>Groups and Demographics</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_8">
+         <item>
+          <widget class="GroupsAndDemographicsWidget" name="groupsAndDemographicsWidget" native="true"/>
+         </item>
+        </layout>
        </widget>
-      </item>
-     </layout>
+       <widget class="QWidget" name="tabSubject">
+        <attribute name="title">
+         <string>Subject Data</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_9">
+         <item>
+          <widget class="SubjectDataWidget" name="subjectDataWidget" native="true"/>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="tabAverages">
+        <attribute name="title">
+         <string>Group Averages</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_13">
+         <item>
+          <widget class="GroupAveragesWidget" name="groupAveragesWidget" native="true"/>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="tabBrain">
+        <attribute name="title">
+         <string>Brain View</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_14">
+         <item>
+          <widget class="BrainAtlasWidget" name="brainWidget"/>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+     </widget>
     </item>
    </layout>
   </widget>
