@@ -7,7 +7,7 @@ from pyqtgraph import ColorMap
 class ColorBar(QtWidgets.QLabel):
     def __init__(self, parent = None, colormap = None):
         super().__init__(parent)
-        self.setFixedSize(200, 20)
+        self.setFixedSize(200, 15)
         if not colormap:
             colormap = ColorMap([0., 1.], [[0., 0., 0., 1.], [1., 1., 1., 1.]])
         self.set_colormap(colormap)
