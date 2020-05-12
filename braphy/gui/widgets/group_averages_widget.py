@@ -19,12 +19,22 @@ class GroupAveragesWidget(Base, Form):
         self.button_group = QtWidgets.QButtonGroup(self)
         self.tableWidget_averages.setItemDelegate(FloatDelegate(self.tableWidget_averages))
         self.tableWidget_comparison.setItemDelegate(FloatDelegate(self.tableWidget_comparison))
+        self.set_tableWidget_comparison_height()
 
     def init(self, cohort):
         self.cohort = cohort
 
     def set_callback(self, callback_function):
         self.update_callback_function = callback_function
+
+    def set_tableWidget_comparison_height(self):
+        height = 0
+        table = self.tableWidget_comparison
+        height += table.horizontalHeader().height()
+        height += table.horizontalScrollBar().height()
+        item_heights = [table.rowHeight(i) for i in range(table.rowCount())]
+        height += sum(item_heights)
+        self.tableWidget_comparison.setFixedHeight(height)
 
     def update(self, selected = None):
         if self.update_callback_function:
