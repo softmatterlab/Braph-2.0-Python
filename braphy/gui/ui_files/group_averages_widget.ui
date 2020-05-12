@@ -50,7 +50,7 @@
         <property name="maximumSize">
          <size>
           <width>16777215</width>
-          <height>127</height>
+          <height>113</height>
          </size>
         </property>
         <row>
@@ -68,6 +68,46 @@
           <string>P-value (double-tailed)</string>
          </property>
         </row>
+        <column>
+         <property name="text">
+          <string/>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string/>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string/>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string/>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string/>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string/>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string/>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string/>
+         </property>
+        </column>
         <column>
          <property name="text">
           <string/>
