@@ -91,3 +91,14 @@ To debug a test in Visual Studio Code:
 1. Select Module
 1. Type for example braphy.test.test_distance
 
+## Controlling the brain view
+
+This section provides a guide for controlling the brain view. You can either change the point of
+view by using the buttons in the toolbar, or you can use different shortcuts.
+
+* Zoom in/out: use the scroll function
+* Pan in x/y-plane: press and drag the scroll wheel
+* Pan in x/z-plane: press and drag ctrl + the scroll wheel
+* Rotate: press and drag left mouse click (Note that this is not available when a button in the toolbar is checked.)
+* Select brain region: right click on brain region
+
