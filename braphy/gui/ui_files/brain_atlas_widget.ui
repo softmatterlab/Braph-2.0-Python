@@ -86,6 +86,9 @@
    </property>
   </action>
   <action name="actionFind">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="../icons/icons.qrc">
      <normaloff>:/buttons/cursor.png</normaloff>:/buttons/cursor.png</iconset>
