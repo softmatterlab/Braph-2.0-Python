@@ -441,28 +441,31 @@ class BrainAtlasWidget(GLViewWidget):
         self.setCursor(cursor)
 
     def zoom_in(self):
-        self.set_cursor('../icons/zoom_in.png')
-        self.mouse_mode = BrainAtlasWidget.MOUSE_MODE_ZOOM_IN
+        self.check_cursor(BrainAtlasWidget.MOUSE_MODE_ZOOM_IN, '../icons/zoom_in.png')
 
     def zoom_out(self):
-        self.set_cursor('../icons/zoom_out.png')
-        self.mouse_mode = BrainAtlasWidget.MOUSE_MODE_ZOOM_OUT
+        self.check_cursor(BrainAtlasWidget.MOUSE_MODE_ZOOM_OUT, '../icons/zoom_out.png')
 
     def pan_y(self):
-        self.set_cursor('../icons/hand_xy.png')
-        self.mouse_mode = BrainAtlasWidget.MOUSE_MODE_PAN_Y
+        self.check_cursor(BrainAtlasWidget.MOUSE_MODE_PAN_Y, '../icons/hand_xy.png')
 
     def pan_z(self):
-        self.set_cursor('../icons/hand_xz.png')
-        self.mouse_mode = BrainAtlasWidget.MOUSE_MODE_PAN_Z
+        self.check_cursor(BrainAtlasWidget.MOUSE_MODE_PAN_Z, '../icons/hand_xz.png')
 
     def rotate(self):
-        self.set_cursor('../icons/rotate.png')
-        self.mouse_mode = BrainAtlasWidget.MOUSE_MODE_ROTATE
+        self.check_cursor(BrainAtlasWidget.MOUSE_MODE_ROTATE, '../icons/rotate.png')
 
     def find(self):
-        self.set_cursor('../icons/cursor.png')
-        self.mouse_mode = BrainAtlasWidget.MOUSE_MODE_FIND
+        self.check_cursor(BrainAtlasWidget.MOUSE_MODE_FIND, '../icons/cursor.png')
+
+    def check_cursor(self, mode, icon):
+        if self.mouse_mode == mode:
+            self.mouse_mode = BrainAtlasWidget.MOUSE_MODE_DEFAULT
+            self.unsetCursor()
+            self.tool_bar.actionDefault.trigger()
+        else:
+            self.mouse_mode = mode
+            self.set_cursor(icon)
 
 class BrainAtlasWidgetToolBar(Base, Form):
     def __init__(self, brain_atlas_widget, parent = None):
@@ -473,9 +476,11 @@ class BrainAtlasWidgetToolBar(Base, Form):
 
     def init_actions(self):
         group = QtWidgets.QActionGroup(self)
-        for action in (self.actionZoom_in, self.actionZoom_out, self.actionPan_x_y,
-                       self.actionPan_z, self.actionRotate, self.actionFind):
+        for action in self.get_actions():
             group.addAction(action)
+        self.actionDefault = QtWidgets.QAction()
+        self.actionDefault.setCheckable(True)
+        group.addAction(self.actionDefault)
         self.actionZoom_in.triggered.connect(self.brain_atlas_widget.zoom_in)
         self.actionZoom_out.triggered.connect(self.brain_atlas_widget.zoom_out)
         self.actionPan_x_y.triggered.connect(self.brain_atlas_widget.pan_y)
