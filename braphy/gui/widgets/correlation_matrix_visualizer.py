@@ -22,6 +22,8 @@ class CorrelationMatrixVisualizer(FigureCanvas):
         fig.canvas.mpl_connect("button_press_event", self.inspect)
         self.text = None
         self.mouse_mode_inspect = False
+        background_color = self.parent().palette().color(QtGui.QPalette.Window).name()
+        fig.patch.set_facecolor(background_color)
 
     def init(self, matrix):
         self.matrix = matrix
