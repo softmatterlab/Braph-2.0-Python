@@ -3,6 +3,7 @@
 ## Installation
 
 Download or clone the repository from github.com. Make sure you have installed python 3.
+Python version >=3.8 not yet supported.
 
 ### Ubuntu
 
