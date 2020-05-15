@@ -55,18 +55,18 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         self.btnStartAnalysis.clicked.connect(self.start_analysis)
 
     def init_actions(self):
-        actions = self.correlationMatrixWidget.get_actions()
-        for action in actions:
-            self.toolBar.addAction(action)
-
         self.actionOpen.triggered.connect(self.open)
         self.actionSave.triggered.connect(self.save)
         self.actionSave_as.triggered.connect(self.save_as)
         self.actionImport_xml.triggered.connect(self.import_xml)
         self.actionExport_xml.triggered.connect(self.export_xml)
         self.actionQuit.triggered.connect(self.close)
-
         self.actionAbout.triggered.connect(self.about)
+
+    def init_correlation_matrix_actions(self):
+        actions = self.correlationMatrixWidget.get_actions()
+        for action in actions:
+            self.toolBar.addAction(action)
 
     def init_comboboxes(self):
         graphs = ['weighted undirected', 'weighted directed', 'binary undirected', 'binary directed']
@@ -110,6 +110,7 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
             self.analysis.set_graph_type(GraphAnalysis.graph_cls_from_str(self.comboBoxGraph.currentText()))
             self.correlationMatrixWidget.init(analysis)
             self.set_cohort_labels()
+            self.init_correlation_matrix_actions()
 
     def set_cohort_labels(self):
         self.subjectLabel.setText('Number of subjects = {}'.format(len(self.analysis.cohort.subjects)))
