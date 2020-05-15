@@ -109,6 +109,11 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
             self.analysis.set_negative_rule(self.comboBoxNegative.currentText())
             self.analysis.set_graph_type(GraphAnalysis.graph_cls_from_str(self.comboBoxGraph.currentText()))
             self.correlationMatrixWidget.init(analysis)
+            self.set_cohort_labels()
+
+    def set_cohort_labels(self):
+        self.subjectLabel.setText('Number of subjects = {}'.format(len(self.analysis.cohort.subjects)))
+        self.groupLabel.setText('Number of groups = {}'.format(len(self.analysis.cohort.groups)))
 
     def view_cohort(self):
         self.cohort_editor_gui = CohortEditor(self, self.subject_class, self.analysis.cohort, brain_mesh_data = self.brain_mesh_data)

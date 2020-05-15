@@ -71,21 +71,21 @@
                  <item>
                   <widget class="QLabel" name="repetitionLabel">
                    <property name="text">
-                    <string>repetition time = 1</string>
+                    <string>Repetition time = 1</string>
                    </property>
                   </widget>
                  </item>
                  <item>
                   <widget class="QLabel" name="subjectLabel">
                    <property name="text">
-                    <string>subject number = 0</string>
+                    <string>Number of subjects = 0</string>
                    </property>
                   </widget>
                  </item>
                  <item>
                   <widget class="QLabel" name="groupLabel">
                    <property name="text">
-                    <string>group number = 0</string>
+                    <string>Number og groups = 0</string>
                    </property>
                   </widget>
                  </item>
@@ -106,7 +106,7 @@
                    </property>
                    <property name="minimumSize">
                     <size>
-                     <width>0</width>
+                     <width>150</width>
                      <height>30</height>
                     </size>
                    </property>
@@ -117,6 +117,18 @@
                  </item>
                  <item>
                   <widget class="QPushButton" name="btnViewCohort">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>150</width>
+                     <height>30</height>
+                    </size>
+                   </property>
                    <property name="text">
                     <string>View Cohort</string>
                    </property>
