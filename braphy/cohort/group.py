@@ -99,3 +99,6 @@ class Group:
         p_values = [p_value_single, p_value_double]
 
         return averages, stds, p_values
+
+    def correlation(self):
+        return self.subject_class.correlation(self.subjects)

@@ -47,3 +47,7 @@ class Subject:
     @abstractmethod
     def from_txt(file_txt):
         pass
+
+    @abstractmethod
+    def correlation(subjects):
+        pass

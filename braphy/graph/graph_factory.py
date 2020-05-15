@@ -85,6 +85,17 @@ class GraphSettings():
         return cls
 
 class GraphFactory:
-
     def get_graph(A, settings):
         return settings.graph_class()(A, settings)
+
+    def graph_cls_from_str(s):
+        graph_type = None
+        if s == 'binary undirected':
+            graph_type = GraphBU
+        elif s == 'binary directed':
+            graph_type = GraphBD
+        elif s == 'weighted undirected':
+            graph_type = GraphWU
+        elif s == 'weighted directed':
+            graph_type = GraphWD
+        return graph_type

@@ -30,7 +30,5 @@ class GraphMeasuresWidget(Base, Form):
         self.listWidgetMeasures.setCurrentRow(0)
 
     def update_description_text(self, text):
-        self.textBrowser.setText(self.measure_descriptions[text])
-
-
-
+        if len(text) > 0:
+            self.textBrowser.setText(self.measure_descriptions[text])

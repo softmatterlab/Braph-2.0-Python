@@ -69,9 +69,12 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionAbout.triggered.connect(self.about)
 
     def init_comboboxes(self):
-        self.comboBoxGraph.addItems(['weighted undirected', 'weighted directed', 'binary undirected', 'binary directed'])
-        self.comboBoxCorrelation.addItems(['pearson', 'spearman', 'kendall', 'partial pearson', 'partial spearman'])
-        self.comboBoxNegative.addItems(['zero', 'none', 'abs'])
+        graphs = ['weighted undirected', 'weighted directed', 'binary undirected', 'binary directed']
+        correlations = ['pearson', 'spearman', 'kendall', 'partial pearson', 'partial spearman']
+        rules = ['zero', 'none', 'abs']
+        self.comboBoxGraph.addItems(graphs)
+        self.comboBoxCorrelation.addItems(correlations)
+        self.comboBoxNegative.addItems(rules)
 
         self.comboBoxGraph.currentTextChanged.connect(self.set_graph_type)
         self.comboBoxCorrelation.currentTextChanged.connect(self.set_correlation)
@@ -99,10 +102,13 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
                     return
             analysis = Analysis(cohort)
             self.textAnalysisName.setText(analysis.name)
-            self.analysis = analysis
-            self.correlationMatrixWidget.init(analysis)
             self.btnViewCohort.setEnabled(True)
             self.set_locked(False)
+            self.analysis = analysis
+            self.analysis.set_correlation(self.comboBoxCorrelation.currentText())
+            self.analysis.set_negative_rule(self.comboBoxNegative.currentText())
+            self.analysis.set_graph_type(GraphAnalysis.graph_cls_from_str(self.comboBoxGraph.currentText()))
+            self.correlationMatrixWidget.init(analysis)
 
     def view_cohort(self):
         self.cohort_editor_gui = CohortEditor(self, self.subject_class, self.analysis.cohort, brain_mesh_data = self.brain_mesh_data)
@@ -141,21 +147,18 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         QMessageBox.about(self, 'About', 'Graph analysis editor')
 
     def set_graph_type(self, graph_type):
-        if graph_type == 'binary undirected':
-            self.graph_type = GraphBU
-        elif graph_type == 'binary directed':
-            self.graph_type = GraphBD
-        elif graph_type == 'weighted undirected':
-            self.graph_type = GraphWU
-        else:
-            self.graph_type = GraphWD
+        self.graph_type = GraphAnalysis.graph_cls_from_str(graph_type)
         self.graphMeasuresWidget.update_measure_list(self.graph_type)
+        self.analysis.set_graph_type(self.graph_type)
+        self.correlationMatrixWidget.update_graphics_view()
 
     def set_correlation(self, correlation_type):
-        pass
+        self.analysis.set_correlation(correlation_type)
+        self.correlationMatrixWidget.update_graphics_view()
 
     def set_negative_rule(self, negative_rule):
-        pass
+        self.analysis.set_negative_rule(negative_rule)
+        self.correlationMatrixWidget.update_graphics_view()
 
     def import_error(self, msg):
         msg_box = QMessageBox()
@@ -163,6 +166,18 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         msg_box.setText(msg)
         msg_box.setWindowTitle("Import error")
         msg_box.exec_()
+
+    def graph_cls_from_str(s):
+        graph_type = None
+        if s == 'binary undirected':
+            graph_type = GraphBU
+        elif s == 'binary directed':
+            graph_type = GraphBD
+        elif s == 'weighted undirected':
+            graph_type = GraphWU
+        elif s == 'weighted directed':
+            graph_type = GraphWD
+        return graph_type
 
 def run():
     app = QtWidgets.QApplication(sys.argv)

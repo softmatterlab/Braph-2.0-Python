@@ -51,11 +51,15 @@ class CorrelationMatrixWidget(Base, Form):
             self.comboBoxGroup.addItem(group.name)
         for subject in self.analysis.cohort.subjects:
             self.comboBoxSubject.addItem(subject.id)
+        self.comboBoxGroup.currentIndexChanged.connect(self.update_graphics_view)
 
     def init_graphics_view(self):
-        matrix = np.random.rand(33, 33)
-        self.correlationMatrix.init(matrix)
         self.parent().parent().addToolBar(NavigationToolbar(self.correlationMatrix, self))
+        self.update_graphics_view()
+
+    def update_graphics_view(self):
+        graph = self.analysis.get_graph(self.comboBoxGroup.currentIndex())
+        self.correlationMatrix.init(graph.A)
 
     def get_actions(self):
         actions = [self.actionShow_labels, self.actionShow_colorbar, self.actionInspect]

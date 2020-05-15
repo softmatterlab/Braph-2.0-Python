@@ -91,3 +91,7 @@ class SubjectMRI(Subject):
         df = pd.DataFrame.from_dict(d)
         with open(file_name, 'w') as f:
             df.to_excel(file_name, index = None, columns = None)
+
+    def correlation(subjects):
+        data = np.array([subject.data_dict['data'].value for subject in subjects])
+        return np.corrcoef(data)
