@@ -431,8 +431,19 @@ class BrainAtlasWidget(GLViewWidget):
                 gui_brain_region_items.append(item)
         return gui_brain_region_items
 
+    def get_gui_brain_edge_items(self):
+        gui_brain_edge_items = []
+        for item in self.items:
+            if isinstance(item, GUIBrainEdge):
+                gui_brain_edge_items.append(item)
+        return gui_brain_edge_items
+
     def clear_gui_brain_regions(self):
         for item in self.get_gui_brain_region_items():
+            self.removeItem(item)
+
+    def clear_gui_brain_edges(self):
+        for item in self.get_gui_brain_edge_items():
             self.removeItem(item)
 
     def set_cursor(self, file_name):
@@ -468,25 +479,17 @@ class BrainAtlasWidget(GLViewWidget):
             self.mouse_mode = mode
             self.set_cursor(icon)
 
-    def add_edges(self, coords):
+    def add_edge(self, coords, color):
         brain_removed = False
         try:
             self.removeItem(self.brain_mesh)
             brain_removed = True
         except:
             pass
-        self.clear_gui_brain_regions()
-        for gui_brain_region in self.gui_brain_regions:
-            b = gui_brain_region.pos
-            if self.brain_region_visible(gui_brain_region.selected):
-                self.addItem(gui_brain_region)
-        for i in range(len(coords)):
-            for j in range(i+1, len(coords)):
-                brain_edge = GUIBrainEdge(self.region_color, coords[i], coords[j])
-                self.addItem(brain_edge)
+        brain_edge = GUIBrainEdge(color, coords[0], coords[1])
+        self.addItem(brain_edge)
         if brain_removed:
             self.addItem(self.brain_mesh)
-
 
 class BrainAtlasWidgetToolBar(Base, Form):
     def __init__(self, brain_atlas_widget, parent = None):
