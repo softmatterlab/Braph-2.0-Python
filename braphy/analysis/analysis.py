@@ -1,11 +1,16 @@
 from braphy.graph.graph_factory import GraphFactory, GraphSettings
 import numpy as np
+from abc import ABC, abstractmethod
 
 class Analysis():
-    def __init__(self, cohort, name = 'analysis'):
+    def __init__(self, cohort, name = 'analysis', measurements = None, random_comparisons = None, comparisons = None):
         self.cohort = cohort
         self.name = name
         self.graph_settings = GraphSettings.get_bd()
+
+        self.measurements = measurements if measurements else []
+        self.random_comparisons = random_comparisons if random_comparisons else []
+        self.comparisons = comparisons if comparisons else []
 
     def set_name(self, name):
         self.name = name
@@ -13,6 +18,18 @@ class Analysis():
     def set_graph_type(self, graph_type):
         self.graph_settings.weighted = graph_type.weighted
         self.graph_settings.directed = graph_type.directed
+
+    @abstractmethod
+    def calculate_measurement(self, measure_code, group_index):
+        pass
+
+    @abstractmethod
+    def calculate_random_comparison(self, measure_code, group_index):
+        pass
+
+    @abstractmethod
+    def calculate_comparison(self, measure_code, group_index):
+        pass
 
     def set_correlation(self, correlation_type):
         pass
@@ -31,7 +48,7 @@ class Analysis():
         threshold = np.sort(A.flatten())[int(density*(np.size(A)-1))]
         return self.correlation_threshold(A, threshold)
 
+    @abstractmethod
     def get_graph(self, group_index):
-        A = self.get_correlation(group_index)
-        return GraphFactory.get_graph(A, self.graph_settings)
+        pass
 
