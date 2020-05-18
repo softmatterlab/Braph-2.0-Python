@@ -63,6 +63,13 @@
           </item>
          </layout>
         </widget>
+        <widget class="QWidget" name="slideShow3D">
+         <layout class="QGridLayout" name="gridLayout_3">
+          <item row="0" column="0">
+           <widget class="SlideShow3DWidget" name="slideShow3DWidget"/>
+          </item>
+         </layout>
+        </widget>
         <widget class="SlideShowWidget" name="slideShowWidget">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -92,12 +99,29 @@
          </spacer>
         </item>
         <item>
+         <widget class="QPushButton" name="btnPause">
+          <property name="text">
+           <string>Pause</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QRadioButton" name="btnAnimation">
           <property name="text">
            <string>Animation</string>
           </property>
           <attribute name="buttonGroup">
-           <string notr="true">buttonGroup</string>
+           <string notr="true">buttonGroup_2</string>
+          </attribute>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="btn3D">
+          <property name="text">
+           <string>3D slide show</string>
+          </property>
+          <attribute name="buttonGroup">
+           <string notr="true">buttonGroup_2</string>
           </attribute>
          </widget>
         </item>
@@ -107,7 +131,7 @@
            <string>Slide show</string>
           </property>
           <attribute name="buttonGroup">
-           <string notr="true">buttonGroup</string>
+           <string notr="true">buttonGroup_2</string>
           </attribute>
          </widget>
         </item>
@@ -488,11 +512,15 @@
    <header>braphy.gui.widgets.slide_show_widget</header>
    <container>1</container>
   </customwidget>
+  <customwidget>
+   <class>SlideShow3DWidget</class>
+   <extends>QGraphicsView</extends>
+   <header>braphy.gui.widgets.slide_show_3D_widget</header>
+  </customwidget>
  </customwidgets>
  <resources/>
  <connections/>
  <buttongroups>
   <buttongroup name="buttonGroup_2"/>
-  <buttongroup name="buttonGroup"/>
  </buttongroups>
 </ui>

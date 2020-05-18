@@ -27,7 +27,9 @@ class MainWindow(ExitDialog, Ui_MainWindow):
         self.init_buttons()
         self.init_animation()
         self.init_slide_show(self.palette().color(QtGui.QPalette.Window))
+        self.init_slide_show_3D()
         self.stackedWidget.setCurrentIndex(0)
+        self.animate = True
 
     def init_animation(self):
         mesh_data = load_nv(brain_mesh_file)
@@ -45,12 +47,14 @@ class MainWindow(ExitDialog, Ui_MainWindow):
         for c in coords:
             brain_regions.append(BrainRegion(x=c[0], y=c[1], z=c[2]))
         self.brainWidget.init_brain_regions(brain_regions, 4, [], True, False)
-        self.brainWidget.add_edges(coords)
         self.brainWidget.change_transparency(0.6)
         self.brainWidget.setCameraPosition(distance = 275)
 
     def init_slide_show(self, color):
         self.slideShowWidget.set_background_color(color)
+
+    def init_slide_show_3D(self):
+        self.slideShow3DWidget.init(brain_mesh_file, self.color)
 
     def init_buttons(self):
         self.btnBrainAtlas.clicked.connect(self.brain_atlas)
@@ -64,10 +68,18 @@ class MainWindow(ExitDialog, Ui_MainWindow):
 
         self.btnAnimation.clicked.connect(self.show_animation)
         self.btnSlideShow.clicked.connect(self.show_slide_show)
+        self.btn3D.clicked.connect(self.show_slide_show_3D)
 
         self.btnMRI.setChecked(True)
         self.btnAnimation.setChecked(True)
         self.set_MRI_btn_options()
+
+        self.btnPause.clicked.connect(self.pause_animation)
+
+    def pause_animation(self):
+        self.slideShow3DWidget.animate(not self.animate)
+        self.animate = not self.animate
+
 
     def brain_atlas(self):
         self.brain_atlas_gui = BrainAtlasGui(self)
@@ -121,6 +133,9 @@ class MainWindow(ExitDialog, Ui_MainWindow):
         self.stackedWidget.setCurrentIndex(0)
 
     def show_slide_show(self):
+        self.stackedWidget.setCurrentIndex(2)
+
+    def show_slide_show_3D(self):
         self.stackedWidget.setCurrentIndex(1)
 
 def braphy_run_gui():
