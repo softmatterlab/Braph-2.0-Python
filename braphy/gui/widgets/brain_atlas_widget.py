@@ -6,6 +6,7 @@ from PyQt5.QtGui import QColor
 from PyQt5.QtWidgets import QFileDialog
 from braphy.utility.helper_functions import abs_path_from_relative
 from braphy.gui.gui_brain_region import GUIBrainRegion
+from braphy.gui.gui_brain_edge import GUIBrainEdge
 import pyqtgraph.Vector
 import numpy as np
 
@@ -172,10 +173,10 @@ class BrainAtlasWidget(GLViewWidget):
         self.opts['center'] = pyqtgraph.Vector(0, 0, 0)
         self.setCameraPosition(distance = brain_distance_default, elevation = 30, azimuth = 45)
 
-    def fixed_view(self, elevation, azimuth):
+    def fixed_view(self, elevation, a):
         self.set_orthographic(True)
         self.opts['center'] = pyqtgraph.Vector(0, 0, 0)
-        self.setCameraPosition(elevation=elevation, azimuth=azimuth)
+        self.setCameraPosition(elevation=elevation, a=azimuth)
 
     def sagittal_right(self):
         self.fixed_view(0, 0)
@@ -466,6 +467,26 @@ class BrainAtlasWidget(GLViewWidget):
         else:
             self.mouse_mode = mode
             self.set_cursor(icon)
+
+    def add_edges(self, coords):
+        brain_removed = False
+        try:
+            self.removeItem(self.brain_mesh)
+            brain_removed = True
+        except:
+            pass
+        self.clear_gui_brain_regions()
+        for gui_brain_region in self.gui_brain_regions:
+            b = gui_brain_region.pos
+            if self.brain_region_visible(gui_brain_region.selected):
+                self.addItem(gui_brain_region)
+        for i in range(len(coords)):
+            for j in range(i+1, len(coords)):
+                brain_edge = GUIBrainEdge(self.region_color, coords[i], coords[j])
+                self.addItem(brain_edge)
+        if brain_removed:
+            self.addItem(self.brain_mesh)
+
 
 class BrainAtlasWidgetToolBar(Base, Form):
     def __init__(self, brain_atlas_widget, parent = None):
