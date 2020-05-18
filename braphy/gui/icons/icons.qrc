@@ -25,5 +25,7 @@
     <file>icon_brain.png</file>
     <file>icon_br.png</file>
     <file>icon_axis.png</file>
+    <file>icon_inspect.png</file>
+    <file>icon_colorbar.png</file>
   </qresource>
 </RCC>

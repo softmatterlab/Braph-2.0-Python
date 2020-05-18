@@ -303,6 +303,10 @@
    <property name="checkable">
     <bool>true</bool>
    </property>
+   <property name="icon">
+    <iconset resource="../icons/icons.qrc">
+     <normaloff>:/buttons/icon_colorbar.png</normaloff>:/buttons/icon_colorbar.png</iconset>
+   </property>
    <property name="text">
     <string>Show colorbar</string>
    </property>
@@ -328,6 +332,10 @@
   <action name="actionInspect">
    <property name="checkable">
     <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../icons/icons.qrc">
+     <normaloff>:/buttons/icon_inspect.png</normaloff>:/buttons/icon_inspect.png</iconset>
    </property>
    <property name="text">
     <string>Inspect</string>
