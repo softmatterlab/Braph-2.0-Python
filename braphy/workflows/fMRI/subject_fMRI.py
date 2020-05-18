@@ -1,4 +1,4 @@
-from braphy.cohort.subjects.subject import Subject
+from braphy.cohort.subject import Subject
 from braphy.cohort.data_types.data_scalar import DataScalar
 from braphy.cohort.data_types.data_functional import DataFunctional
 from braphy.utility.helper_functions import float_to_string

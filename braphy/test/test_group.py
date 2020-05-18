@@ -1,7 +1,6 @@
 import unittest
 from braphy.cohort.group import Group
-from braphy.cohort.subjects.subject_MRI import SubjectMRI
-from braphy.cohort.subjects.subject_fMRI import SubjectfMRI
+from braphy.workflows import *
 from braphy.utility.helper_functions import abs_path_from_relative
 from braphy.test.test_utility import TestUtility
 

@@ -2,8 +2,7 @@ import unittest
 import numpy as np
 from braphy.cohort.cohort import Cohort
 from braphy.atlas.brain_atlas import BrainAtlas
-from braphy.cohort.subjects.subject_MRI import SubjectMRI
-from braphy.cohort.subjects.subject_fMRI import SubjectfMRI
+from braphy.workflows import *
 from braphy.utility.helper_functions import abs_path_from_relative
 from braphy.test.test_utility import TestUtility
 

@@ -3,7 +3,7 @@ import json
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from PyQt5.QtWidgets import *
 from braphy.graph.graphs import *
-from braphy.cohort.subjects import *
+from braphy.workflows import *
 from braphy.cohort.cohort import Cohort
 from braphy.gui.cohort_editor_gui import CohortEditor
 from braphy.analysis.analysis import Analysis

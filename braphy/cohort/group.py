@@ -1,7 +1,7 @@
 import numpy as np
-from braphy.cohort.subjects import *
 from braphy.utility.stat_functions import StatFunctions as stat
 import statistics
+from braphy.workflows import *
 
 class Group:
     def __init__(self, subject_class, subjects = None, name = 'Group', description = '-'):

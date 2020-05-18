@@ -13,7 +13,7 @@ import xml.etree.ElementTree as ET
 import numpy as np
 
 from braphy.cohort.cohort import Cohort
-from braphy.cohort.subjects import *
+from braphy.workflows import *
 
 from braphy.gui.widgets.brain_view_options_widget import BrainViewOptionsWidget
 
