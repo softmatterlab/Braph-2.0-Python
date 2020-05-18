@@ -13,8 +13,10 @@ class CorrelationMatrixWidget(Base, Form):
     def __init__(self, parent = None):
         super(CorrelationMatrixWidget, self).__init__(parent)
         self.setupUi(self)
+        self.correlation = None
         self.init_buttons()
         self.init_actions()
+        self.init_sliders()
         self.radioButtonWeighted.setChecked(True)
         self.radioButtonGroup.setChecked(True)
         self.checkBoxDivide.setEnabled(False)
@@ -51,19 +53,49 @@ class CorrelationMatrixWidget(Base, Form):
             self.comboBoxGroup.addItem(group.name)
         for subject in self.analysis.cohort.subjects:
             self.comboBoxSubject.addItem(subject.id)
-        self.comboBoxGroup.currentIndexChanged.connect(self.update_graphics_view)
+        self.comboBoxGroup.currentIndexChanged.connect(self.group_change)
+
+    def init_sliders(self):
+        self.spinboxThreshold.valueChanged.connect(self.set_threshold)
+        self.horizontalSliderThreshold.valueChanged.connect(self.set_threshold)
+        self.spinboxDensity.valueChanged.connect(self.set_density)
+        self.horizontalSliderDensity.valueChanged.connect(self.set_density)
 
     def init_graphics_view(self):
         self.parent().parent().addToolBar(NavigationToolbar(self.correlationMatrix, self))
-        self.update_graphics_view()
+        self.group_change(0)
 
     def update_graphics_view(self):
-        graph = self.analysis.get_graph(self.comboBoxGroup.currentIndex())
-        self.correlationMatrix.init(graph.A)
+        if self.correlation is None:
+            return
+        A = self.correlation
+        if self.radioButtonDensity.isChecked():
+            A = self.analysis.correlation_density(A, self.spinboxDensity.value())
+        elif self.radioButtonThreshold.isChecked():
+            A = self.analysis.correlation_threshold(A, self.spinboxThreshold.value())
+        self.correlationMatrix.update_matrix(A)
+
+    def group_change(self, idx):
+        self.correlation = self.analysis.get_correlation(idx)
+        self.update_graphics_view()
 
     def get_actions(self):
         actions = [self.actionShow_labels, self.actionShow_colorbar, self.actionInspect]
         return actions
+
+    def set_threshold(self, value):
+        if not isinstance(value, float):
+            value = value/100.0
+        self.spinboxThreshold.setValue(value)
+        self.horizontalSliderThreshold.setValue(int(value*100))
+        self.update_graphics_view()
+
+    def set_density(self, value):
+        if not isinstance(value, float):
+            value = value/100.0
+        self.spinboxDensity.setValue(value)
+        self.horizontalSliderDensity.setValue(int(value*100))
+        self.update_graphics_view()
 
     def analyse_group(self):
         self.comboBoxSubject.setEnabled(False)
@@ -72,28 +104,31 @@ class CorrelationMatrixWidget(Base, Form):
         self.comboBoxSubject.setEnabled(True)
 
     def weighted_correlation(self):
-        self.textEditThreshold.setEnabled(False)
+        self.spinboxThreshold.setEnabled(False)
         self.horizontalSliderThreshold.setEnabled(False)
-        self.textEditDensity.setEnabled(False)
+        self.spinboxDensity.setEnabled(False)
         self.horizontalSliderDensity.setEnabled(False)
+        self.update_graphics_view()
 
     def histogram(self):
-        self.textEditThreshold.setEnabled(False)
+        self.spinboxThreshold.setEnabled(False)
         self.horizontalSliderThreshold.setEnabled(False)
-        self.textEditDensity.setEnabled(False)
+        self.spinboxDensity.setEnabled(False)
         self.horizontalSliderDensity.setEnabled(False)
 
     def binary_correlation_density(self):
-        self.textEditDensity.setEnabled(True)
+        self.spinboxDensity.setEnabled(True)
         self.horizontalSliderDensity.setEnabled(True)
-        self.textEditThreshold.setEnabled(False)
+        self.spinboxThreshold.setEnabled(False)
         self.horizontalSliderThreshold.setEnabled(False)
+        self.update_graphics_view()
 
     def binary_correlation_threshold(self):
-        self.textEditThreshold.setEnabled(True)
+        self.spinboxThreshold.setEnabled(True)
         self.horizontalSliderThreshold.setEnabled(True)
-        self.textEditDensity.setEnabled(False)
+        self.spinboxDensity.setEnabled(False)
         self.horizontalSliderDensity.setEnabled(False)
+        self.update_graphics_view()
 
     def rearrange(self):
         if self.checkBoxRearrange.isChecked():

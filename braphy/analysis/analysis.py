@@ -20,6 +20,18 @@ class Analysis():
     def set_negative_rule(self, negative_rule):
         self.graph_settings.rule_semipositivize = negative_rule
 
+    def get_correlation(self, group_index):
+        return self.cohort.groups[group_index].correlation()
+
+    def correlation_threshold(self, A, threshold):
+        return np.where(A > threshold, 1, 0)
+
+    def correlation_density(self, A, density):
+        assert density >=0 and density <= 1
+        threshold = np.sort(A.flatten())[int(density*(np.size(A)-1))]
+        return self.correlation_threshold(A, threshold)
+
     def get_graph(self, group_index):
-        A = self.cohort.groups[group_index].correlation()
+        A = self.get_correlation(group_index)
         return GraphFactory.get_graph(A, self.graph_settings)
+
