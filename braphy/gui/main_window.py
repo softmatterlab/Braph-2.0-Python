@@ -33,7 +33,7 @@ class MainWindow(ExitDialog, Ui_MainWindow):
         mesh_data = load_nv(brain_mesh_file)
         self.brainWidget.set_brain_mesh(mesh_data)
         self.brainWidget.set_locked(True)
-        #self.brainWidget.animate(True)
+        self.brainWidget.animate(True)
         self.brainWidget.setBrainBackgroundColor(self.color)
         coords = [[22.6, -59.5, 48.1],
                   [-22.8, -60.9, 46.3],
@@ -44,7 +44,8 @@ class MainWindow(ExitDialog, Ui_MainWindow):
         brain_regions = []
         for c in coords:
             brain_regions.append(BrainRegion(x=c[0], y=c[1], z=c[2]))
-        self.brainWidget.init_brain_regions(brain_regions, 8, [], True, False)
+        self.brainWidget.init_brain_regions(brain_regions, 4, [], True, False)
+        self.brainWidget.add_edges(coords)
         self.brainWidget.change_transparency(0.6)
         self.brainWidget.setCameraPosition(distance = 275)
 
