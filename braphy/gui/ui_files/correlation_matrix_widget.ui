@@ -164,21 +164,12 @@
              <number>0</number>
             </property>
             <item>
-             <widget class="QTextEdit" name="textEditDensity">
-              <property name="enabled">
-               <bool>true</bool>
+             <widget class="QDoubleSpinBox" name="spinboxDensity">
+              <property name="maximum">
+               <double>1.000000000000000</double>
               </property>
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>80</width>
-                <height>20</height>
-               </size>
+              <property name="singleStep">
+               <double>0.050000000000000</double>
               </property>
              </widget>
             </item>
@@ -186,6 +177,12 @@
              <widget class="QSlider" name="horizontalSliderDensity">
               <property name="enabled">
                <bool>true</bool>
+              </property>
+              <property name="maximum">
+               <number>100</number>
+              </property>
+              <property name="singleStep">
+               <number>5</number>
               </property>
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
@@ -210,17 +207,23 @@
              <number>0</number>
             </property>
             <item>
-             <widget class="QTextEdit" name="textEditThreshold">
-              <property name="maximumSize">
-               <size>
-                <width>80</width>
-                <height>20</height>
-               </size>
+             <widget class="QDoubleSpinBox" name="spinboxThreshold">
+              <property name="maximum">
+               <double>1.000000000000000</double>
+              </property>
+              <property name="singleStep">
+               <double>0.050000000000000</double>
               </property>
              </widget>
             </item>
             <item>
              <widget class="QSlider" name="horizontalSliderThreshold">
+              <property name="maximum">
+               <number>100</number>
+              </property>
+              <property name="singleStep">
+               <number>5</number>
+              </property>
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
               </property>

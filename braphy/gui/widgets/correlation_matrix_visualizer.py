@@ -21,6 +21,7 @@ class CorrelationMatrixVisualizer(FigureCanvas):
         FigureCanvas.updateGeometry(self)
         fig.canvas.mpl_connect("button_press_event", self.inspect)
         self.text = None
+        self.matrix = None
         self.mouse_mode_inspect = False
         background_color = self.parent().palette().color(QtGui.QPalette.Window).name()
         fig.patch.set_facecolor(background_color)
@@ -29,9 +30,17 @@ class CorrelationMatrixVisualizer(FigureCanvas):
         self.matrix = matrix
         self.plot()
 
+    def update_matrix(self, matrix):
+        if self.matrix is None:
+            self.init(matrix)
+        else:
+            self.matrix = matrix
+            self.cax.set_data(self.matrix)
+            self.draw()
+
     def plot(self):
         self.ax = self.figure.add_subplot(111)
-        self.cax = self.ax.matshow(self.matrix)
+        self.cax = self.ax.imshow(self.matrix)
         self.show_colorbar(True)
         self.show_labels(True)
         self.ax.tick_params(top=False, bottom=True,
