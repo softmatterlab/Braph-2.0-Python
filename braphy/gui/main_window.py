@@ -29,6 +29,7 @@ class MainWindow(ExitDialog, Ui_MainWindow):
         self.init_slide_show(self.palette().color(QtGui.QPalette.Window))
         self.init_slide_show_3D()
         self.stackedWidget.setCurrentIndex(0)
+        self.animate = True
 
     def init_animation(self):
         mesh_data = load_nv(brain_mesh_file)
@@ -72,6 +73,13 @@ class MainWindow(ExitDialog, Ui_MainWindow):
         self.btnMRI.setChecked(True)
         self.btnAnimation.setChecked(True)
         self.set_MRI_btn_options()
+
+        self.btnPause.clicked.connect(self.pause_animation)
+
+    def pause_animation(self):
+        self.slideShow3DWidget.animate(not self.animate)
+        self.animate = not self.animate
+
 
     def brain_atlas(self):
         self.brain_atlas_gui = BrainAtlasGui(self)

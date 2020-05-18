@@ -99,6 +99,13 @@
          </spacer>
         </item>
         <item>
+         <widget class="QPushButton" name="btnPause">
+          <property name="text">
+           <string>Pause</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QRadioButton" name="btnAnimation">
           <property name="text">
            <string>Animation</string>
