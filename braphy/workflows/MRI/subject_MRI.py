@@ -1,4 +1,4 @@
-from braphy.cohort.subjects.subject import Subject
+from braphy.cohort.subject import Subject
 from braphy.cohort.data_types.data_scalar import DataScalar
 from braphy.cohort.data_types.data_structural import DataStructural
 import xml.etree.ElementTree as ET
