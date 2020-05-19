@@ -1,7 +1,7 @@
 import pyqtgraph.opengl as gl
 
 class GUIBrainRegion(gl.GLMeshItem):
-    def __init__(self, brain_region, size, selected, color, selected_color, ):
+    def __init__(self, brain_region, size, selected, color, selected_color):
         self.brain_region = brain_region
         self.label = self.brain_region.label
         self.x = self.brain_region.x
