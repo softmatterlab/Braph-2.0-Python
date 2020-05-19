@@ -6,7 +6,6 @@ from PyQt5.QtGui import QColor
 from PyQt5.QtWidgets import QFileDialog
 from braphy.utility.helper_functions import abs_path_from_relative
 from braphy.gui.gui_brain_region import GUIBrainRegion
-from braphy.gui.gui_brain_edge import GUIBrainEdge
 import pyqtgraph.Vector
 import numpy as np
 
@@ -173,10 +172,10 @@ class BrainAtlasWidget(GLViewWidget):
         self.opts['center'] = pyqtgraph.Vector(0, 0, 0)
         self.setCameraPosition(distance = brain_distance_default, elevation = 30, azimuth = 45)
 
-    def fixed_view(self, elevation, a):
+    def fixed_view(self, elevation, azimuth):
         self.set_orthographic(True)
         self.opts['center'] = pyqtgraph.Vector(0, 0, 0)
-        self.setCameraPosition(elevation=elevation, a=azimuth)
+        self.setCameraPosition(elevation = elevation, azimuth = azimuth)
 
     def sagittal_right(self):
         self.fixed_view(0, 0)
@@ -431,19 +430,8 @@ class BrainAtlasWidget(GLViewWidget):
                 gui_brain_region_items.append(item)
         return gui_brain_region_items
 
-    def get_gui_brain_edge_items(self):
-        gui_brain_edge_items = []
-        for item in self.items:
-            if isinstance(item, GUIBrainEdge):
-                gui_brain_edge_items.append(item)
-        return gui_brain_edge_items
-
     def clear_gui_brain_regions(self):
         for item in self.get_gui_brain_region_items():
-            self.removeItem(item)
-
-    def clear_gui_brain_edges(self):
-        for item in self.get_gui_brain_edge_items():
             self.removeItem(item)
 
     def set_cursor(self, file_name):
@@ -478,18 +466,6 @@ class BrainAtlasWidget(GLViewWidget):
         else:
             self.mouse_mode = mode
             self.set_cursor(icon)
-
-    def add_edge(self, coords, color, radius = 1.0):
-        brain_removed = False
-        try:
-            self.removeItem(self.brain_mesh)
-            brain_removed = True
-        except:
-            pass
-        brain_edge = GUIBrainEdge(coords[0], coords[1], color, radius)
-        self.addItem(brain_edge)
-        if brain_removed:
-            self.addItem(self.brain_mesh)
 
 class BrainAtlasWidgetToolBar(Base, Form):
     def __init__(self, brain_atlas_widget, parent = None):
