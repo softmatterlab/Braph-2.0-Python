@@ -1,5 +1,7 @@
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
+from pyqtgraph.opengl import GLViewWidget
+from PyQt5.QtGui import QColor
 from braphy.gui.widgets.brain_atlas_widget import BrainAtlasWidget
 from braphy.atlas.brain_region import BrainRegion
 from braphy.gui.gui_brain_edge import GUIBrainEdge
@@ -23,7 +25,7 @@ class SlideShow3DWidget(BrainAtlasWidget):
     def __init__(self, parent = None):
         super(SlideShow3DWidget, self).__init__(parent)
         self.color = [1.0, 0.0, 2.0/3, 1.0] # pink
-        self.slides = [self.set_degree, self.set_eccentricity, self.set_triangles] # add measure-functions here
+        self.slides = [self.set_degree, self.set_eccentricity, self.set_triangles, self.set_test] # add measure-functions here
 
     def init(self, color):
         mesh_data = load_nv(brain_mesh_file)
@@ -34,19 +36,29 @@ class SlideShow3DWidget(BrainAtlasWidget):
         self.change_transparency(0.3)
         self.setCameraPosition(distance = 275)
         self.set_degree()
+        self.labels = {}
 
     def clear_animation(self):
         self.clear_gui_brain_edges()
         self.clear_gui_brain_regions()
+        self.labels = {}
 
-    def add_edge(self, coords, color, radius = 1.0):
+    def paintGL(self, *args, **kwds):
+        GLViewWidget.paintGL(self, *args, **kwds)
+        self.qglColor(QColor("k"))
+        for edge in self.get_gui_brain_edge_items():
+            if edge.label:
+                pos = edge.get_center_pos()
+                self.renderText(pos[0], pos[1], pos[2], edge.label)
+
+    def add_edge(self, coords, color, radius = 1.0, label = None):
         brain_removed = False
         try:
             self.removeItem(self.brain_mesh)
             brain_removed = True
         except:
             pass
-        brain_edge = GUIBrainEdge(coords[0], coords[1], color, radius)
+        brain_edge = GUIBrainEdge(coords[0], coords[1], color, radius, label)
         self.addItem(brain_edge)
         if brain_removed:
             self.addItem(self.brain_mesh)
@@ -238,8 +250,7 @@ class SlideShow3DWidget(BrainAtlasWidget):
         for edge in edges:
             self.add_edge([coords[edge[0]], coords[edge[1]]], [1.0, 1.0, 1.0, 1.0], 0.2) 
             #specify any rgb color, last digit should be 1
-        edges = [(8,12), (4,8), (0,4), 
-        (24, 28), (20, 24), (16,20)]
+        edges = [(8,12), (4,8), (0,4), (24, 28), (20, 24), (16,20)]
         for edge in edges:
             self.add_edge([coords[edge[0]], coords[edge[1]]], self.color)
         return description
@@ -252,5 +263,5 @@ class SlideShow3DWidget(BrainAtlasWidget):
         brain_regions = []
         for c in coords:
             self.add_region(c, self.color, 4)
-        self.add_edge(coords, self.color, 3.0)
+        self.add_edge(coords, self.color, 3.0, label = 'HEJ')
         return description

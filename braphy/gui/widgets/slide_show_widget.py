@@ -9,11 +9,12 @@ class SlideShowWidget(Base, Form):
     def __init__(self, parent = None):
         super(SlideShowWidget, self).__init__(parent)
         self.setupUi(self)
-        self.label.setText('HEJ')
+        self.label.setText(' ')
+        self.label.setWordWrap(True)
         self.animate = True
         self.slide_show_timer = QtCore.QBasicTimer()
         self.step = 0
-        self.delay = 5000 # milliseconds
+        self.delay = 10000 # milliseconds
         self.timerEvent()
 
     def init(self, color):

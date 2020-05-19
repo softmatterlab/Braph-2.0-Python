@@ -58,7 +58,7 @@ class BrainAtlasWidget(GLViewWidget):
         return self.tool_bar.get_actions()
 
     def update_orbit(self):
-        self.orbit(0.5, 0)
+        self.orbit(0.3, 0)
 
     def set_locked(self, locked):
         if locked:
@@ -72,7 +72,7 @@ class BrainAtlasWidget(GLViewWidget):
             self.timer.timeout.connect(self.update_orbit)
         self.set_locked(on)
         if on:
-            self.timer.start(10)
+            self.timer.start(50)
         else:
             self.timer.stop()
 
