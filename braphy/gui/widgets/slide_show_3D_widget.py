@@ -83,7 +83,7 @@ class SlideShow3DWidget(BrainAtlasWidget):
         for c in coords:
             brain_regions.append(BrainRegion(x=c[0], y=c[1], z=c[2]))
         self.init_brain_regions(brain_regions, 4, [], True, False)
-        self.add_edge(coords, self.color)
+        self.add_edge(coords, self.color, 3.0)
 
     def timerEvent(self, e = None):
         if self.step >= len(self.slides):

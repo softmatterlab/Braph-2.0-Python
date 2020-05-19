@@ -479,14 +479,14 @@ class BrainAtlasWidget(GLViewWidget):
             self.mouse_mode = mode
             self.set_cursor(icon)
 
-    def add_edge(self, coords, color):
+    def add_edge(self, coords, color, radius = 1.0):
         brain_removed = False
         try:
             self.removeItem(self.brain_mesh)
             brain_removed = True
         except:
             pass
-        brain_edge = GUIBrainEdge(color, coords[0], coords[1])
+        brain_edge = GUIBrainEdge(coords[0], coords[1], color, radius)
         self.addItem(brain_edge)
         if brain_removed:
             self.addItem(self.brain_mesh)
