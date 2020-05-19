@@ -26,6 +26,10 @@ class SlideShow3DWidget(BrainAtlasWidget):
         self.setCameraPosition(distance = 275)
         self.set_triangles()
 
+    def clear_animation(self):
+        self.clear_gui_brain_edges()
+        self.clear_gui_brain_regions()
+
     def add_edge(self, coords, color, radius = 1.0):
         brain_removed = False
         try:
@@ -63,8 +67,7 @@ class SlideShow3DWidget(BrainAtlasWidget):
             self.addItem(self.brain_mesh)
 
     def set_triangles(self): # copy this function and alter coords and edges
-        self.clear_gui_brain_edges()
-        self.clear_gui_brain_regions()
+        self.clear_animation()
         coords = [[40, 45, 25],
                   [25, 35, 23],
                   [40, 35, 5],
@@ -114,8 +117,7 @@ class SlideShow3DWidget(BrainAtlasWidget):
             self.add_edge([coords[edge[0]], coords[edge[1]]], self.color)
 
     def set_test(self):
-        self.clear_gui_brain_edges()
-        self.clear_gui_brain_regions()
+        self.clear_animation()
         coords = [[-20, -50, 0],
                   [40, 50, 20]]
         brain_regions = []

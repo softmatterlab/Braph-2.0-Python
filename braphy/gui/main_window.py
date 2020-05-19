@@ -25,33 +25,8 @@ class MainWindow(ExitDialog, Ui_MainWindow):
         self.color = self.palette().color(QtGui.QPalette.Window).getRgb()
 
         self.init_buttons()
-        self.init_animation()
-        self.init_slide_show(self.palette().color(QtGui.QPalette.Window))
         self.init_slide_show_3D()
-        self.stackedWidget.setCurrentIndex(0)
         self.animate = True
-
-    def init_animation(self):
-        mesh_data = load_nv(brain_mesh_file)
-        self.brainWidget.set_brain_mesh(mesh_data)
-        self.brainWidget.set_locked(True)
-        self.brainWidget.animate(True)
-        self.brainWidget.setBrainBackgroundColor(self.color)
-        coords = [[22.6, -59.5, 48.1],
-                  [-22.8, -60.9, 46.3],
-                  [-25.8, -7.6, -31.6],
-                  [26.2, -6.8, -31.9],
-                  [-12.6, 22.9, 42.4],
-                  [13.4, 24.7, 42.0]]
-        brain_regions = []
-        for c in coords:
-            brain_regions.append(BrainRegion(x=c[0], y=c[1], z=c[2]))
-        self.brainWidget.init_brain_regions(brain_regions, 4, [], True, False)
-        self.brainWidget.change_transparency(0.6)
-        self.brainWidget.setCameraPosition(distance = 275)
-
-    def init_slide_show(self, color):
-        self.slideShowWidget.set_background_color(color)
 
     def init_slide_show_3D(self):
         self.slideShow3DWidget.init(brain_mesh_file, self.color)
@@ -66,12 +41,7 @@ class MainWindow(ExitDialog, Ui_MainWindow):
         self.btnPET.clicked.connect(self.set_PET_btn_options)
         self.btnEEG.clicked.connect(self.set_EEG_btn_options)
 
-        self.btnAnimation.clicked.connect(self.show_animation)
-        self.btnSlideShow.clicked.connect(self.show_slide_show)
-        self.btn3D.clicked.connect(self.show_slide_show_3D)
-
         self.btnMRI.setChecked(True)
-        self.btnAnimation.setChecked(True)
         self.set_MRI_btn_options()
 
         self.btnPause.clicked.connect(self.pause_animation)
@@ -79,7 +49,6 @@ class MainWindow(ExitDialog, Ui_MainWindow):
     def pause_animation(self):
         self.slideShow3DWidget.animate(not self.animate)
         self.animate = not self.animate
-
 
     def brain_atlas(self):
         self.brain_atlas_gui = BrainAtlasGui(self)
@@ -128,15 +97,6 @@ class MainWindow(ExitDialog, Ui_MainWindow):
         else:
             self.subject_class = SubjectEEG
             self.subtitle.setText("EEG Analysis Workflow")
-
-    def show_animation(self):
-        self.stackedWidget.setCurrentIndex(0)
-
-    def show_slide_show(self):
-        self.stackedWidget.setCurrentIndex(2)
-
-    def show_slide_show_3D(self):
-        self.stackedWidget.setCurrentIndex(1)
 
 def braphy_run_gui():
     app = QtWidgets.QApplication(sys.argv)
