@@ -20,11 +20,22 @@ class SlideShowWidget(Base, Form):
     def init(self, color):
         self.animate = True
         self.slideShow3DWidget.init(color)
-        self.btnPause.clicked.connect(self.pause_animation)
+        self.btnPause.clicked.connect(self.set_animation)
+
+    def set_animation(self, checked):
+        if checked:
+            self.pause_animation()
+        else:
+            self.start_animation()
 
     def pause_animation(self):
-        self.slideShow3DWidget.animate(not self.animate)
-        self.animate = not self.animate
+        self.slideShow3DWidget.animate(False)
+        self.animate = False
+
+    def start_animation(self):
+        if not self.btnPause.isChecked():
+            self.slideShow3DWidget.animate(True)
+            self.animate = True
 
     def timerEvent(self, e = None):
         if not self.animate:

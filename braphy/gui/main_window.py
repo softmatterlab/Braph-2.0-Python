@@ -21,6 +21,13 @@ class MainWindow(ExitDialog, Ui_MainWindow):
         self.color = self.palette().color(QtGui.QPalette.Window).getRgb()
         self.init_buttons()
         self.slideShowWidget.init(self.color)
+        QtWidgets.qApp.focusChanged.connect(self.in_focus)
+
+    def in_focus(self):
+        if self.isActiveWindow():
+            self.slideShowWidget.start_animation()
+        else:
+            self.slideShowWidget.pause_animation()
 
     def init_buttons(self):
         self.btnBrainAtlas.clicked.connect(self.brain_atlas)
