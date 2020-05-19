@@ -9,11 +9,7 @@ from braphy.gui.exit_dialog import ExitDialog
 from braphy.workflows import *
 from PyQt5.QtCore import Qt
 
-brain_mesh_file_name = "meshes/BrainMesh_ICBM152.nv"
-brain_mesh_file = abs_path_from_relative(__file__, brain_mesh_file_name)
-
 qtCreatorFile = abs_path_from_relative(__file__, "ui_files/braph.ui")
-
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 
 class MainWindow(ExitDialog, Ui_MainWindow):
@@ -23,13 +19,8 @@ class MainWindow(ExitDialog, Ui_MainWindow):
         self.setupUi(self)
 
         self.color = self.palette().color(QtGui.QPalette.Window).getRgb()
-
         self.init_buttons()
-        self.init_slide_show_3D()
-        self.animate = True
-
-    def init_slide_show_3D(self):
-        self.slideShow3DWidget.init(brain_mesh_file, self.color)
+        self.slideShowWidget.init(self.color)
 
     def init_buttons(self):
         self.btnBrainAtlas.clicked.connect(self.brain_atlas)
@@ -43,12 +34,6 @@ class MainWindow(ExitDialog, Ui_MainWindow):
 
         self.btnMRI.setChecked(True)
         self.set_MRI_btn_options()
-
-        self.btnPause.clicked.connect(self.pause_animation)
-
-    def pause_animation(self):
-        self.slideShow3DWidget.animate(not self.animate)
-        self.animate = not self.animate
 
     def brain_atlas(self):
         self.brain_atlas_gui = BrainAtlasGui(self)

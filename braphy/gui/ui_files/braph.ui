@@ -27,9 +27,9 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="SlideShow3DWidget" name="slideShow3DWidget">
+       <widget class="SlideShowWidget" name="slideShowWidget" native="true">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
+         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
@@ -39,25 +39,6 @@
           <width>700</width>
           <height>0</height>
          </size>
-        </property>
-       </widget>
-      </item>
-      <item alignment="Qt::AlignHCenter">
-       <widget class="QPushButton" name="btnPause">
-        <property name="minimumSize">
-         <size>
-          <width>70</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>70</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>Pause</string>
         </property>
        </widget>
       </item>
@@ -413,9 +394,10 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>SlideShow3DWidget</class>
-   <extends>QGraphicsView</extends>
-   <header>braphy.gui.widgets.slide_show_3D_widget</header>
+   <class>SlideShowWidget</class>
+   <extends>QWidget</extends>
+   <header>braphy.gui.widgets.slide_show_widget</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

@@ -6,17 +6,26 @@ from braphy.gui.gui_brain_edge import GUIBrainEdge
 from braphy.gui.gui_brain_region import GUIBrainRegion
 from braphy.utility.helper_functions import abs_path_from_relative, load_nv
 
+brain_mesh_file_name = "../meshes/BrainMesh_ICBM152.nv"
+brain_mesh_file = abs_path_from_relative(__file__, brain_mesh_file_name)
+
+string_2 = 'STRENGTH of a node is the sum of the weights of the edges connected to the node. Number of connections are ignored in calculations.'
+string_4 = '?'
+string_6 = 'CLUSTERING coefficient is the fraction of triangles around a node. It is equivalent to the fraction of the neighbors of the node that are neighbors of each other.'
+string_7 = 'PARTICIPATION coefficient compares the number of links of a node has with nodes of other cluster to the number of links within its cluster. Nodes with a high participation coefficient (known as connector hubs) are connected to many clusters and are likely to facilitate global intermodular integration.'
+string_8 = 'BETWEENNESS CENTRALITY of a node is the fraction of all shortest paths in the graph that contain a given node. Nodes with high values of betweenness centrality participate in a large number of shortest paths.'
+string_9 = 'MODULARITY is a statistic that quantifies the degree to which the graph may be subdivided into clearly delineated groups.'
+string_10 = 'Within-module degree Z-SCORE of a node shows how well connected a node is in a given cluster by comparing the degree of the node in that cluster to the average degree of all nodes in the same cluster. This measure requires a previously determined community structure.'
+string_11 = 'GLOBAL EFFICIENCY is the average inverse shortest path length in the graph. It is inversely related to the characteristic path length. If more than one path exist between a node and other node, the shortest path is chosen (red path in the figure).'
+string_12 = 'PATH LENGTH of a node is the average path length from that note to all other nodes. If more than one path exist between a node and other node, the shortest path is chosen (red path in the figure).'
+
 class SlideShow3DWidget(BrainAtlasWidget):
     def __init__(self, parent = None):
         super(SlideShow3DWidget, self).__init__(parent)
         self.color = [1.0, 0.0, 2.0/3, 1.0] # pink
         self.slides = [self.set_degree, self.set_eccentricity, self.set_triangles] # add measure-functions here
-        self.slide_show_timer = QtCore.QBasicTimer()
-        self.step = 0
-        self.delay = 5000 # milliseconds
-        self.timerEvent()
 
-    def init(self, brain_mesh_file, color):
+    def init(self, color):
         mesh_data = load_nv(brain_mesh_file)
         self.set_brain_mesh(mesh_data)
         self.set_locked(True)
@@ -67,6 +76,7 @@ class SlideShow3DWidget(BrainAtlasWidget):
             self.addItem(self.brain_mesh)
 
     def set_triangles(self): # copy this function and alter coords and edges
+        description = 'Number of TRIANGLES around a node is the number of neighbors of that node that are neightbors to each other.'
         self.clear_animation()
         coords = [[40, 45, 25],
                   [25, 35, 23],
@@ -115,10 +125,10 @@ class SlideShow3DWidget(BrainAtlasWidget):
         edges = [(0,1), (0,2), (1,2), (16,17), (16,18), (17,18)]
         for edge in edges:
             self.add_edge([coords[edge[0]], coords[edge[1]]], self.color)
+        return description
 
-
-    
     def set_degree(self): # copy this function and alter coords and edges
+        description = 'DEGREE of a node is the number of edges connected to the node. Connection weights are ignored in calculations.'
         self.clear_gui_brain_edges()
         coords = [[40, 45, 25],
                   [25, 35, 23],
@@ -174,9 +184,10 @@ class SlideShow3DWidget(BrainAtlasWidget):
         (18,24), (24,26), (24,27), (24,30), (21,24), (17,24), (19, 24)]
         for edge in edges:
             self.add_edge([coords[edge[0]], coords[edge[1]]], self.color)
-
+        return description
 
     def set_eccentricity(self): # copy this function and alter coords and edges
+        description = 'ECCENTRICITY of a node is the maximal shortest path length between that node and any other node. If more than one path exist between a node and other node, the shortest path is chosen (red path in the figure).'
         self.clear_gui_brain_edges()
         coords = [[40, 45, 25],
                   [25, 35, 23],
@@ -231,8 +242,10 @@ class SlideShow3DWidget(BrainAtlasWidget):
         (24, 28), (20, 24), (16,20)]
         for edge in edges:
             self.add_edge([coords[edge[0]], coords[edge[1]]], self.color)
+        return description
 
     def set_test(self):
+        description = 'test'
         self.clear_animation()
         coords = [[-20, -50, 0],
                   [40, 50, 20]]
@@ -240,14 +253,4 @@ class SlideShow3DWidget(BrainAtlasWidget):
         for c in coords:
             self.add_region(c, self.color, 4)
         self.add_edge(coords, self.color, 3.0)
-
-    def timerEvent(self, e = None):
-        if self.step >= len(self.slides):
-            self.slide_show_timer.stop()
-            return
-        self.slide_show_timer.start(self.delay, self)
-        slide = self.slides[self.step]
-        slide()
-        self.step += 1
-        if self.step >= len(self.slides):
-            self.step = 0
+        return description
