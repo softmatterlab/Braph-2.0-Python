@@ -8,8 +8,14 @@ class AnalysisMRI(Analysis):
         graph = self.get_graph(group_index)
         measure = graph.get_measure(measure_class, measure, save = False)
 
-        measurement = Measurement('id', 'atlas', group_index, measure)
+        measurement = MeasurementMRI('id', 'atlas', group_index, measure)
         return measurement
+
+    def calculate_random_comparison(self, measure_class, measure, group):
+        pass
+
+    def calculate_comparison(self, measure_class, measure, groups):
+        pass
 
     def get_graph(self, group_index):
         A = self.get_correlation(group_index)
