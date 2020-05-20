@@ -39,6 +39,7 @@ class BrainAtlasWidget(GLViewWidget):
         self.selected_observers = []
         self.region_color = [0.3, 0.3, 1.0, 1.0] # blue
         self.selected_region_color = [1.0, 0.0, 2.0/3, 1.0] # pink
+        self.opts['distance'] = brain_distance_default
         self.tool_bar = BrainAtlasWidgetToolBar(self)
 
     def width(self):
@@ -117,7 +118,6 @@ class BrainAtlasWidget(GLViewWidget):
         self.grid['z'].translate(0, 0, -size/4)
 
     def init_brain_mesh(self, mesh_data):
-        self.opts['distance'] = brain_distance_default
         self.setBackgroundColor(self.brainBackgroundColor)
 
         self.brain_mesh = gl.GLMeshItem(vertexes=mesh_data['vertices'], faces=mesh_data['faces'], shader = 'normalColor')
