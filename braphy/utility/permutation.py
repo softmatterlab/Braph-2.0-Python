@@ -2,7 +2,7 @@ import numpy as np
 
 class Permutation():
     def permute(values_1, values_2, is_longitudinal):
-        if is_longitudianal: # values are vectors
+        if is_longitudinal: # values are vectors
             values_1 = np.array(values_1)
             values_2 = np.array(values_2)
             n_subjects_1 = values_1.shape[0]
@@ -15,5 +15,5 @@ class Permutation():
             values = np.vstack((values_1, values_2))
             np.random.shuffle(values)
             permutation_1 = values[:n_subjects_1, :]
-            permutation_2 = values[:n_subjects_1:, :]
+            permutation_2 = values[n_subjects_1:, :]
         return permutation_1, permutation_2

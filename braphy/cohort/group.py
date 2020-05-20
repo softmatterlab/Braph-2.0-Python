@@ -1,5 +1,6 @@
 import numpy as np
 from braphy.utility.stat_functions import StatFunctions as stat
+from braphy.utility.permutation import Permutation
 import statistics
 from braphy.workflows import *
 
@@ -85,11 +86,8 @@ class Group:
 
         diffs = []
         for _ in range(permutations):
-            np.random.shuffle(values_all)
-            all_self = values_all[:subject_length_self,:]
-            all_other = values_all[subject_length_self:,:]
-            all_diff = all_self.mean(0) - all_other.mean(0)
-            diffs.append(all_diff)
+            p1, p2 = Permutation.permute(values_self, values_other, False)
+            diffs.append(p1.mean(0) - p2.mean(0))
         diffs = np.array(diffs)
         p_value_single = stat.p_value_one_tail(mean_self, diffs)
         p_value_double = stat.p_value_two_tail(mean_self, diffs)
