@@ -28,7 +28,7 @@ class TestGroup(TestUtility):
 
         Group1 = Group(SubjectMRI, subjects=subjects1)
         Group2 = Group(SubjectMRI, subjects=subjects2)
-        Group1.comparison(Group2, permutations = 100)
+        Group1.data_comparison(Group2, permutations = 100)
 
 if __name__ == '__main__':
     unittest.main()

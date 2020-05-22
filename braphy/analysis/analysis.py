@@ -19,6 +19,46 @@ class Analysis():
         self.graph_settings.weighted = graph_type.weighted
         self.graph_settings.directed = graph_type.directed
 
+    def get_measurement(self, measure_class, sub_measure, group):
+        measurement = None
+        for m in self.measurements:
+            if (m.measure_class == measure_class and
+                m.sub_measure == sub_measure and
+                m.group == group):
+                measurement = m
+                break
+        if not measurement:
+            measurement = self.calculate_measurement(measure_class, sub_measure, group)
+            self.measurements.append(measurement)
+        return measurement
+
+    def get_random_comparison(self, measure_class, sub_measure, group):
+        measurement = None
+        for m in self.measurements:
+            if (m.measure_class == measure_class and
+                m.sub_measure == sub_measure and
+                m.group == group):
+                measurement = m
+                break
+        if not measurement:
+            measurement = self.calculate_measurement(measure_class, sub_measure, group)
+            self.measurements.append(measurement)
+        return measurement
+
+    def get_comparison(self, measure_class, sub_measure, groups):
+        comparison = None
+        for c in self.comparisons:
+            if (c.measure_class == measure_class and
+                c.sub_measure == sub_measure and
+                c.groups[0] == groups[0] and
+                c.groups[1] == groups[1]):
+                comparison = c
+                break
+        if not comparison:
+            comparison = self.calculate_comparison(measure_class, sub_measure, groups)
+            self.comparisons.append(comparison)
+        return comparison
+
     @abstractmethod
     def calculate_measurement(self, measure_code, group_index):
         pass

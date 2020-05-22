@@ -93,5 +93,8 @@ class SubjectMRI(Subject):
             df.to_excel(file_name, index = None, columns = None)
 
     def correlation(subjects):
+        if isinstance(subjects, np.ndarray):
+            subjects = subjects.tolist()
+        #print(subjects)
         data = np.array([subject.data_dict['data'].value for subject in subjects])
         return np.corrcoef(data)

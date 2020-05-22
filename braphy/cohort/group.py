@@ -63,7 +63,7 @@ class Group:
             return []
         return values.std(0)
 
-    def comparison(self, other, permutations = 1000):
+    def data_comparison(self, other, permutations = 1000):
         assert isinstance(other, Group), "{} is not a group".format(other.__class__.__name__)
         assert self.subject_class == other.subject_class, "{} and {} are different subject classes".format(self.subject_class.__name__, other.subject_class.__name__)
         assert len(self.subjects) > 0, "{} has no subjects".format(self.name)

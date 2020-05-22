@@ -302,7 +302,7 @@ class ComparisonVisualizationWidget(VisualizationWidget):
             return
         current_list_item_1 = self.item_list[self.listWidget.currentRow()]
         current_list_item_2 = self.item_list[self.listWidget_2.currentRow()]
-        averages, stds, p_values = current_list_item_1.comparison(current_list_item_2)
+        averages, stds, p_values = current_list_item_1.data_comparison(current_list_item_2)
         if self.checkBoxAverage.isChecked():
             values = averages[0] - averages[1]
             self.set_visualization(self.comboBoxAverage, values)

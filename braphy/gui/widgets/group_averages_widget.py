@@ -118,7 +118,7 @@ class GroupAveragesWidget(Base, Form):
             group_1 = group_button.group1
             group_2 = group_button.group2
             try:
-                averages, stds, p_values = group_1.comparison(group_2, permutations=permutations)
+                averages, stds, p_values = group_1.data_comparison(group_2, permutations=permutations)
                 self.averages = averages
                 self.stds = stds
                 self.p_values = p_values
