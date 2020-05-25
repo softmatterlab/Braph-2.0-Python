@@ -60,5 +60,11 @@ class TestStatFunctions(TestUtility):
         self.assertSequenceEqual(StatFunctions.p_value_two_tail(res, values).tolist(),
                                  [0.4, 0.5, 0.3])
 
+    def test_bonferroni(self):
+        p_values = np.random.randn(100)
+        p = 0.05
+        r = StatFunctions.bonferroni(p_values, p)
+        self.assertEqual(r, 0.0005)
+
 if __name__ == '__main__':
     unittest.main()

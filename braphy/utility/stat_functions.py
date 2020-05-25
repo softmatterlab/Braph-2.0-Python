@@ -82,3 +82,8 @@ class StatFunctions():
         p_double[p_double == 0] = 1/M
         p_double[np.isnan(res)] = np.nan
         return p_double
+
+    def bonferroni(p_values, p):
+        # calculates the Bonferroni correction for p-values. p is the starting p-value.
+        r = p / len(p_values)
+        return r
