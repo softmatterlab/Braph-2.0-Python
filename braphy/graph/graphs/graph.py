@@ -102,7 +102,6 @@ class Graph(ABC):
             new_A[new_A > 1] = 1
         return new_A
 
-    def get_random_graph(self):
-        random_A, correlation = RandomGraph.random_graph(self) # TypeError: cannot unpack non-iterable NoneType object
-        random_graph = self.__class__(random_A, self.settings)
-        return random_graph
+    @abstractmethod
+    def get_random_graph(self, attempts_per_edge):
+        pass
