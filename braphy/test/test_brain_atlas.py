@@ -125,13 +125,13 @@ class TestBrainAtlas(TestUtility):
         self.assertSequenceEqual(atlas.get_brain_region_labels().tolist(), ['BR1', 'BR2', 'BR3'])
 
     def test_read_brain_atlas(self):
-        brain_xml = BrainAtlas(name='hey', brain_regions=[])
+        brain_xml = BrainAtlas(name='xml', brain_regions=[])
         brain_xml.load_from_xml(file_path = 'braphy/atlas/',file_name='aal90_atlas.xml')
 
-        brain_xls = BrainAtlas(name='bye', brain_regions=[])
-        brain_xls.load_from_txt(file_path = 'braphy/atlas/',file_name='aal90_atlas.txt')
+        brain_txt = BrainAtlas(name='txt', brain_regions=[])
+        brain_txt.load_from_txt(file_path = 'braphy/atlas/',file_name='aal90_atlas.txt')
 
-        self.assertEqual(brain_xls.brain_regions, brain_xml.brain_regions)
+        self.assertEqual(brain_txt.brain_regions, brain_xml.brain_regions)
 
 if __name__ == '__main__':
     unittest.main()

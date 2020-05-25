@@ -21,12 +21,6 @@ class BrainRegion():
         for observer in self.observers:
             observer()
 
-    def to_string(self):
-        pass
-
-    def disp(self):
-        pass
-
     def get_position(self):
         position = np.array([self.x, self.y, self.z])
         return position

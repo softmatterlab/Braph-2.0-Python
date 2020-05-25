@@ -122,8 +122,8 @@ class BrainAtlas():
                     continue
                 success = True
                 assert len(line) >= 5 and len(line) <= 7, "Invalid text file"
-                label = line[0]
-                name = line[1]
+                label = line[0].strip()
+                name = line[1].strip()
                 x = float(line[2])
                 y = float(line[3])
                 z = float(line[4])
@@ -156,8 +156,8 @@ class BrainAtlas():
                 br = brain_region.attrib
                 for key in ['label', 'name', 'x', 'y', 'z']:
                     assert key in br.keys(), "{} missing from brain region".format(key)
-                label = br['label'].replace('  ', ' ').strip()
-                name = br['name'].replace('  ', ' ').strip()
+                label = br['label'].strip()#.replace('  ', ' ').strip()
+                name = br['name'].strip()#.replace('  ', ' ').strip()
                 x = float(br['x'])
                 y = float(br['y'])
                 z = float(br['z'])
