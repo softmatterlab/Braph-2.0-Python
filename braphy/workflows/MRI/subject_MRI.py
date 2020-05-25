@@ -95,6 +95,6 @@ class SubjectMRI(Subject):
     def correlation(subjects):
         if isinstance(subjects, np.ndarray):
             subjects = subjects.tolist()
-        #print(subjects)
         data = np.array([subject.data_dict['data'].value for subject in subjects])
+        data = data.T
         return np.corrcoef(data)

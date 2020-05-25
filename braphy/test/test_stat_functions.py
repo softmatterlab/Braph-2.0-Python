@@ -30,7 +30,7 @@ class TestStatFunctions(TestUtility):
         q = StatFunctions.quantiles(values, P)
         self.assertMatrixAlmostEqual(q, answer, 4)
 
-    def test_p_value_one_tail(self):
+    def test_p_value_single(self):
         res = np.array([-0.8844, -0.0515, 1.4034])
         values = np.array([[2.1740, 0.5551, 0.4214],
                            [0.4005, -0.1353, 0.7243],
@@ -42,10 +42,10 @@ class TestStatFunctions(TestUtility):
                            [0.2990, 0.7428, -1.6284],
                            [-0.4872, 2.4419, -0.4194],
                            [0.4031, 1.7427, 0.8831]])
-        self.assertSequenceEqual(StatFunctions.p_value_one_tail(res, values).tolist(),
-                                 [0.2, 0.3, 0.1])
+        self.assertSequenceAlmostEqual(StatFunctions.p_value(res, values, True).tolist(),
+                                 [0.2727, 0.3636, 0.1818], 4)
 
-    def test_p_value_two_tail(self):
+    def test_p_value_double(self):
         res = np.array([-0.8844, -0.0515, 1.4034])
         values = np.array([[2.1740, 0.5551, 0.4214],
                            [0.4005, -0.1353, 0.7243],
@@ -57,8 +57,8 @@ class TestStatFunctions(TestUtility):
                            [0.2990, 0.7428, -1.6284],
                            [-0.4872, 2.4419, -0.4194],
                            [0.4031, 1.7427, 0.8831]])
-        self.assertSequenceEqual(StatFunctions.p_value_two_tail(res, values).tolist(),
-                                 [0.4, 0.5, 0.3])
+        self.assertSequenceAlmostEqual(StatFunctions.p_value(res, values, False).tolist(),
+                                 [0.4545, 0.5454, 0.3636], 3)
 
     def test_bonferroni(self):
         p_values = np.random.randn(100)

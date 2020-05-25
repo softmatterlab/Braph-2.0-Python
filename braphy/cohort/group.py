@@ -89,8 +89,8 @@ class Group:
             p1, p2 = Permutation.permute(values_self, values_other, False)
             diffs.append(p1.mean(0) - p2.mean(0))
         diffs = np.array(diffs)
-        p_value_single = stat.p_value_one_tail(mean_self, diffs)
-        p_value_double = stat.p_value_two_tail(mean_self, diffs)
+        p_value_single = stat.p_value(mean_self, diffs, True)
+        p_value_double = stat.p_value(mean_self, diffs, False)
 
         averages = [mean_self, mean_other]
         stds = [std_self, std_other]

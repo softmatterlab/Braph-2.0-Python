@@ -22,7 +22,9 @@ class TestAnalysisMRI(unittest.TestCase):
         file = abs_path_from_relative(__file__, '../cohort/desikan_mri.cohort')
         cohort = Cohort.from_file(file)
         analysis = AnalysisMRI(cohort)
-        comparison = analysis.get_comparison(MeasureDegree, 'degree', [0, 0])
+        comparison = analysis.get_comparison(MeasureDegree, 'avg_degree', [0, 1])
+        comparison = analysis.get_comparison(MeasureDegree, 'degree', [0, 1])
+        comparison = analysis.get_comparison(MeasureDistance, 'distance', [0, 1])
 
 if __name__ == '__main__':
     unittest.main()

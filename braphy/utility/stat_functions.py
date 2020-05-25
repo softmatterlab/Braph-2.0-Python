@@ -46,42 +46,42 @@ class StatFunctions():
                     q[i, n] = np.nan
         return q
 
-    def p_value_one_tail(res, values):
-        N = np.shape(values)[1]
-        M = np.shape(values)[0]
+    def p_value(observed_difference, random_differences, single = True):
+        assert len(np.shape(observed_difference)) == len(np.shape(random_differences)) - 1
+        M = random_differences.size
+        if len(np.shape(observed_difference)) == 0:
+            return StatFunctions.p_value_scalar(observed_difference, random_differences, single)
+        elif len(np.shape(observed_difference)) == 1:
+            return StatFunctions.p_value_vector(observed_difference, random_differences, single)
+        elif len(np.shape(observed_difference)) == 2:
+            return StatFunctions.p_value_matrix(observed_difference, random_differences, single)
 
-        p_single = np.ones(N)
-        for n in range(N):
-            res_tmp = res[n]
-            values_tmp = values[:,n]
-
-            res_tmp = res_tmp - np.mean(values_tmp)
-            values_tmp = values_tmp - np.mean(values_tmp)
-
-            if res_tmp > 0:
-                p_single[n] = np.sum(values_tmp > res_tmp) / len(values_tmp)
+    def p_value_scalar(observed_difference, random_differences, single):
+        M = len(random_differences) + 1
+        normalized_observed_difference = observed_difference - np.mean(random_differences)
+        normalized_random_differences = random_differences - np.mean(random_differences)
+        if single:
+            if normalized_observed_difference > 0:
+                p_value = (np.sum(normalized_random_differences > normalized_observed_difference) + 1) / M
             else:
-                p_single[n] = np.sum(values_tmp < res_tmp) / len(values_tmp)
-        p_single[p_single == 0] = 1/M
-        p_single[np.isnan(res)] = np.nan
-        return p_single
+                p_value = (np.sum(normalized_random_differences < normalized_observed_difference) + 1) / M
+        else:
+            p_value = (np.sum(np.abs(normalized_random_differences) > np.abs(normalized_observed_difference)) + 1) / M
+        return p_value
 
-    def p_value_two_tail(res, values):
-        N = np.shape(values)[1]
-        M = np.shape(values)[0]
-
-        p_double = np.ones(N)
+    def p_value_vector(observed_difference, random_differences, single):
+        N = np.shape(random_differences)[-1]
+        p_value = np.ones(N)
         for n in range(N):
-            res_tmp = res[n]
-            values_tmp = values[:,n]
+            p_value[n] = StatFunctions.p_value_scalar(observed_difference[n], random_differences[:,n], single)
+        return p_value
 
-            res_tmp = res_tmp - np.mean(values_tmp)
-            values_tmp = values_tmp - np.mean(values_tmp)
-
-            p_double[n] = np.sum(np.abs(values_tmp) > np.abs(res_tmp)) / len(values_tmp)
-        p_double[p_double == 0] = 1/M
-        p_double[np.isnan(res)] = np.nan
-        return p_double
+    def p_value_matrix(observed_difference, random_differences, single):
+        N = np.shape(random_differences)[-1]
+        p_value = np.ones([N, N])
+        for n in range(N):
+            p_value[n,:] = StatFunctions.p_value_vector(observed_difference[:,n], random_differences[:,:,n], single)
+        return p_value
 
     def bonferroni(p_values, p):
         # calculates the Bonferroni correction for p-values. p is the starting p-value.
