@@ -5,6 +5,7 @@ from braphy.utility.helper_functions import abs_path_from_relative, FloatDelegat
 from braphy.workflows import *
 from braphy.graph.measures.measure_parser import MeasureParser
 from braphy.graph.measures.measure import Measure
+from braphy.gui.community_structure_gui import CommunityStructure
 
 ui_file = abs_path_from_relative(__file__, "../ui_files/start_analysis_widget.ui")
 Form, Base = uic.loadUiType(ui_file)
@@ -47,6 +48,7 @@ class StartAnalysisWidget(Base, Form):
         self.btnSelectNodal.clicked.connect(lambda signal, dimension=Measure.NODAL: self.select_dimension(dimension))
         self.btnSelectBinodal.clicked.connect(lambda signal, dimension=Measure.BINODAL: self.select_dimension(dimension))
 
+        self.btnViewCommunity.clicked.connect(self.view_community)
         self.btnNewAnalysis.clicked.connect(lambda signal, cls=graph_analysis_gui_class: self.new_analysis(cls))
 
     def select_dimension(self, dimension):
@@ -58,6 +60,10 @@ class StartAnalysisWidget(Base, Form):
             if self.measures_dimensions[sub_measure] == dimension:
                 self.tableWidget.selectRow(row)
         self.tableWidget.setSelectionMode(mode)
+
+    def view_community(self):
+        self.community_structure = CommunityStructure()
+        self.community_structure.show()
 
     def new_analysis(self, cls):
         self.graph_analysis_gui = cls()
