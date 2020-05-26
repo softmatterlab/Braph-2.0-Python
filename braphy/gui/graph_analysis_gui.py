@@ -113,6 +113,8 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
             self.correlationMatrixWidget.init(analysis, self)
             self.set_cohort_labels()
             self.init_correlation_matrix_actions()
+            self.update_gamma()
+            self.update_community_number()
 
     def set_cohort_labels(self):
         self.subjectLabel.setText('Number of subjects = {}'.format(len(self.analysis.cohort.subjects)))
@@ -124,7 +126,8 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         self.cohort_editor_gui.show()
 
     def edit_community(self):
-        self.community_structure_gui = CommunityStructure(self)
+        self.community_structure_gui = CommunityStructure(self.analysis, AppWindow = self)
+        self.community_structure_gui.spinBoxGamma.valueChanged.connect(self.update_gamma)
         self.community_structure_gui.show()
 
     def default(self):
@@ -181,6 +184,12 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
     def set_negative_rule(self, negative_rule):
         self.analysis.set_negative_rule(negative_rule)
         self.correlationMatrixWidget.update_graphics_view()
+
+    def update_gamma(self):
+        self.labelGamma.setText('gamma = {}'.format(self.analysis.get_gamma()))
+
+    def update_community_number(self):
+        self.labelCommunity.setText('community number = {}'.format(self.analysis.number_of_communities()))
 
     def import_error(self, msg):
         msg_box = QMessageBox()

@@ -8,10 +8,14 @@ class Analysis():
         self.cohort = cohort
         self.name = name
         self.graph_settings = GraphSettings.get_bd()
+        self.community_structure = [0]*len(self.cohort.atlas.brain_regions)
 
         self.measurements = measurements if measurements else []
         self.random_comparisons = random_comparisons if random_comparisons else []
         self.comparisons = comparisons if comparisons else []
+
+    def number_of_communities(self):
+        return max(self.community_structure) + 1
 
     def set_name(self, name):
         self.name = name
