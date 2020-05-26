@@ -361,16 +361,31 @@
            <attribute name="title">
             <string>Global Measures</string>
            </attribute>
+           <layout class="QVBoxLayout" name="verticalLayout">
+            <item>
+             <widget class="MeasuresWidget" name="globalMeasuresWidget" native="true"/>
+            </item>
+           </layout>
           </widget>
           <widget class="QWidget" name="tabNodalMeasures">
            <attribute name="title">
             <string>Nodal Measures</string>
            </attribute>
+           <layout class="QVBoxLayout" name="verticalLayout_3">
+            <item>
+             <widget class="MeasuresWidget" name="nodalMeasuresWidget" native="true"/>
+            </item>
+           </layout>
           </widget>
           <widget class="QWidget" name="tabBinodalMeasures">
            <attribute name="title">
             <string>Binodal Measures</string>
            </attribute>
+           <layout class="QVBoxLayout" name="verticalLayout_4">
+            <item>
+             <widget class="MeasuresWidget" name="binodalMeasuresWidget" native="true"/>
+            </item>
+           </layout>
           </widget>
           <widget class="QWidget" name="tabBrainView">
            <attribute name="title">
@@ -519,6 +534,12 @@
    <class>StartAnalysisWidget</class>
    <extends>QWidget</extends>
    <header>braphy.gui.widgets.start_analysis_widget</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>MeasuresWidget</class>
+   <extends>QWidget</extends>
+   <header>braphy.gui.widgets.measures_widget</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

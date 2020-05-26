@@ -146,6 +146,9 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.tabWidget.tabBar().show()
         self.startAnalysisWidget.init(self.graph_type, self)
+        self.globalMeasuresWidget.init('global', self.analysis)
+        self.nodalMeasuresWidget.init('nodal', self.analysis)
+        self.binodalMeasuresWidget.init('binodal', self.analysis)
 
     def open(self):
         pass
