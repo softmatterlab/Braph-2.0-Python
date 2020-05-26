@@ -5,6 +5,11 @@ import copy
 
 class MeasureBetweenness(Measure):
 
+    def dimensions():
+        d = {}
+        d['betweenness'] = Measure.NODAL
+        return d
+
     def get_description():
 
         description = {}

@@ -7,6 +7,11 @@ import copy
 
 class MeasureTransitivity(Measure):
 
+    def dimensions():
+        d = {}
+        d['transitivity'] = Measure.NODAL
+        return d
+
     def get_description():
         description = {}
         description['transitivity'] = 'The transitivity is the ratio of triangles to triplets in the graph. ' +\

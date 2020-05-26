@@ -6,6 +6,11 @@ import numpy as np
 import copy
 
 class MeasureLocalEfficiency(Measure):
+    def dimensions():
+        d = {}
+        d['local_efficiency'] = Measure.NODAL
+        d['avg_local_efficiency'] = Measure.GLOBAL
+        return d
 
     def get_description():
         description = {}

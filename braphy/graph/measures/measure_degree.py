@@ -4,6 +4,15 @@ import numpy as np
 import copy
 
 class MeasureDegree(Measure):
+    def dimensions():
+        d = {}
+        d['degree'] = Measure.NODAL
+        d['avg_degree'] = Measure.GLOBAL
+        d['in_degree'] = Measure.NODAL
+        d['avg_in_degree'] = Measure.GLOBAL
+        d['out_degree'] = Measure.NODAL
+        d['avg_out_degree'] = Measure.GLOBAL
+        return d
 
     def get_description():
 

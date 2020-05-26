@@ -26,3 +26,16 @@ class MeasureParser():
             measures = measure_type.get_description()
             measures_dict[measure_type] = measures
         return measures_dict
+
+    def list_measures_dimensions():
+        measures_dict = {}
+        for measure_type in Measure.__subclasses__():
+            for sub_measure, dimension in measure_type.dimensions().items():
+                measures_dict[sub_measure] = dimension
+        return measures_dict
+
+    def list_measures_dimensions_str():
+        measures_dict = {}
+        for sub_measure, dimension in MeasureParser.list_measures_dimensions().items():
+            measures_dict[sub_measure] = Measure.dimensions_str(dimension)
+        return measures_dict

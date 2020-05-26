@@ -5,6 +5,16 @@ import numpy as np
 import copy
 
 class MeasurePathLength(Measure):
+    def dimensions():
+        d = {}
+        d['path_length'] = Measure.NODAL
+        d['char_path_length'] = Measure.GLOBAL
+        d['in_path_length'] = Measure.GLOBAL
+        d['char_in_path_length'] = Measure.GLOBAL
+        d['out_path_length'] = Measure.GLOBAL
+        d['char_out_path_length'] = Measure.GLOBAL
+        d['char_path_wsg'] = Measure.GLOBAL
+        return d
 
     def get_description():
         description = {}
@@ -25,7 +35,7 @@ class MeasurePathLength(Measure):
 
         description['char_out_path_length'] = 'The characteristic out-path length of a graph is the average of ' +\
                                               'the out-path length of all nodes in the graph.'
-        
+
         description['char_path_length_wsg'] = 'The characteristic path length of a graph is the average shortest ' +\
                                               'path length in the graph. It is the average of the path length of ' +\
                                               'all nodes in the graph. This measure is calculated within subgraphs.'

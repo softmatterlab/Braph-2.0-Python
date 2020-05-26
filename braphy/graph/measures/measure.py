@@ -3,10 +3,27 @@ import re
 
 class Measure(ABC):
 
+    GLOBAL = 0
+    NODAL = 1
+    BINODAL = 2
+
+    def dimensions_str(dimension):
+        s = 'Invalid dimension'
+        if dimension == Measure.GLOBAL:
+            s = 'Global'
+        elif dimension == Measure.NODAL:
+            s = 'Nodal'
+        elif dimension == Measure.BINODAL:
+            s = 'Binodal'
+        return s
+
+    @abstractmethod
+    def dimensions():
+        pass
+
     @abstractmethod
     def compute_measure():
         pass
-
 
     @abstractmethod
     def get_valid_graph_types():
@@ -21,7 +38,7 @@ class Measure(ABC):
     @abstractmethod
     def get_name():
         pass
-    
+
     def community_dependent():
         return False
 

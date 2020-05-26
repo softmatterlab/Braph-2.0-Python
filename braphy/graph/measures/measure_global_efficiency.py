@@ -6,6 +6,15 @@ import numpy as np
 import copy
 
 class MeasureGlobalEfficiency(Measure):
+    def dimensions():
+        d = {}
+        d['global_efficiency'] = Measure.NODAL
+        d['avg_global_efficiency'] = Measure.GLOBAL
+        d['in_global_efficiency'] = Measure.NODAL
+        d['avg_in_global_efficiency'] = Measure.GLOBAL
+        d['out_global_efficiency'] = Measure.NODAL
+        d['avg_out_global_efficiency'] = Measure.GLOBAL
+        return d
 
     def get_description():
 

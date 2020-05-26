@@ -5,6 +5,12 @@ import copy
 
 class MeasureCommunityStructure(Measure):
 
+    def dimensions():
+        d = {}
+        d['community_structure'] = Measure.NODAL
+        d['modularity'] = Measure.NODAL
+        return d
+
     def get_description():
         description = {}
         description['community_structure'] = 'cs'

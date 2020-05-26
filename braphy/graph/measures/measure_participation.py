@@ -7,6 +7,10 @@ from braphy.graph.graphs import *
 import copy
 
 class MeasureParticipation(Measure):
+    def dimensions():
+        d = {}
+        d['participation'] = Measure.NODAL
+        return d
 
     def get_description():
         description = {}
