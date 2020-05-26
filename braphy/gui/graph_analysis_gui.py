@@ -109,7 +109,7 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
             self.analysis = analysis
             self.analysis.set_correlation(self.comboBoxCorrelation.currentText())
             self.analysis.set_negative_rule(self.comboBoxNegative.currentText())
-            self.analysis.set_graph_type(GraphAnalysis.graph_cls_from_str(self.comboBoxGraph.currentText()))
+            self.set_graph_type(self.comboBoxGraph.currentText())
             self.correlationMatrixWidget.init(analysis, self)
             self.set_cohort_labels()
             self.init_correlation_matrix_actions()
