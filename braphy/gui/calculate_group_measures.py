@@ -8,19 +8,23 @@ qtCreatorFile = abs_path_from_relative(__file__, "ui_files/calculation_window.ui
 
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 
-class CalculationWindow(QtWidgets.QMainWindow, Ui_MainWindow):
-    def __init__(self, AppWindow, type):
+class CalculateGroupMeasures(QtWidgets.QMainWindow, Ui_MainWindow):
+    def __init__(self, AppWindow):
         self.AppWindow = AppWindow
         QtWidgets.QMainWindow.__init__(self, parent = None)
         self.setupUi(self)
-        if type == 'calculate':
-            self.comboBoxGroup2.hide()
-            self.labelPermutation.hide()
-
+        self.comboBoxGroup2.hide()
+        self.labelPermutation.hide()
+        self.labelMatrix.hide()
+        self.labelSwaps.hide()
+        self.lineEditPermutation.hide()
+        self.lineEditMatrix.hide()
+        self.lineEditSwaps.hide()
+        self.checkBox.hide()
 
 def run():
     app = QtWidgets.QApplication(sys.argv)
-    window = CalculationWindow()
+    window = CalculateGroupMeasures()
     window.show()
     sys.exit(app.exec_())
 

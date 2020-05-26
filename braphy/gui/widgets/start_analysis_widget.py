@@ -6,7 +6,9 @@ from braphy.workflows import *
 from braphy.graph.measures.measure_parser import MeasureParser
 from braphy.graph.measures.measure import Measure
 from braphy.gui.community_structure_gui import CommunityStructure
-from braphy.gui.calculation_window import CalculationWindow
+from braphy.gui.calculate_group_measures import CalculateGroupMeasures
+from braphy.gui.compare_group_measures import CompareGroupMeasures
+from braphy.gui.compare_with_random_graph import CompareWithRandomGraph
 
 ui_file = abs_path_from_relative(__file__, "../ui_files/start_analysis_widget.ui")
 Form, Base = uic.loadUiType(ui_file)
@@ -75,11 +77,13 @@ class StartAnalysisWidget(Base, Form):
         self.graph_analysis_gui.show()
 
     def calculate_group_measures(self):
-        self.calculate_group_measures_gui = CalculationWindow(self)
+        self.calculate_group_measures_gui = CalculateGroupMeasures(self)
         self.calculate_group_measures_gui.show()
 
     def compare_group_measures(self):
-        pass
+        self.compare_group_measures_gui = CompareGroupMeasures(self)
+        self.compare_group_measures_gui.show()
 
     def compare_with_random_graph(self):
-        pass
+        self.compare_with_random_graph_gui = CompareWithRandomGraph(self)
+        self.compare_with_random_graph_gui.show()
