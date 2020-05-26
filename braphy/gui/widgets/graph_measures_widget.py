@@ -14,6 +14,7 @@ class GraphMeasuresWidget(Base, Form):
 
         self.measures_dict = MeasureParser.list_measures()
         descriptions = MeasureParser.list_measures_descriptions()
+        self.measures_dimensions = MeasureParser.list_measures_dimensions_str()
         self.measure_descriptions = {}
         for sub_measures in descriptions.values():
             for sub_measure, description in sub_measures.items():
@@ -32,3 +33,4 @@ class GraphMeasuresWidget(Base, Form):
     def update_description_text(self, text):
         if len(text) > 0:
             self.textBrowser.setText(self.measure_descriptions[text])
+            self.textBrowserDimension.setText(self.measures_dimensions[text])
