@@ -39,7 +39,6 @@ class CorrelationMatrixVisualizer(FigureCanvas):
             self.draw()
 
     def plot(self):
-        print("corrmat plot")
         self.ax = self.figure.add_subplot(111)
         self.cax = self.ax.imshow(self.matrix)
         self.show_colorbar(True)

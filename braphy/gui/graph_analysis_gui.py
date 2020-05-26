@@ -102,7 +102,7 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
                 if cohort.subject_class != self.subject_class:
                     self.import_error('Wrong data type. Load a cohort with subjects of type {} instead.'.format(self.subject_class.__name__))
                     return
-            analysis = Analysis(cohort)
+            analysis = AnalysisMRI(cohort)
             self.textAnalysisName.setText(analysis.name)
             self.btnViewCohort.setEnabled(True)
             self.set_locked(False)
@@ -145,7 +145,7 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         self.comboBoxNegative.setEnabled(False)
 
         self.tabWidget.tabBar().show()
-        self.startAnalysisWidget.init(self.graph_type, self.__class__)
+        self.startAnalysisWidget.init(self.graph_type, self)
         self.globalMeasuresWidget.init('global', self.analysis)
         self.nodalMeasuresWidget.init('nodal', self.analysis)
         self.binodalMeasuresWidget.init('binodal', self.analysis)

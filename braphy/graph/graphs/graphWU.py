@@ -30,3 +30,5 @@ class GraphWU(Graph):
 
         return description
 
+    def get_random_graph(self, attempts_per_edge = 5):
+        return None
