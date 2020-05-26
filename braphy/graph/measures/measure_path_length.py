@@ -13,7 +13,7 @@ class MeasurePathLength(Measure):
         d['char_in_path_length'] = Measure.GLOBAL
         d['out_path_length'] = Measure.GLOBAL
         d['char_out_path_length'] = Measure.GLOBAL
-        d['char_path_wsg'] = Measure.GLOBAL
+        d['char_path_length_wsg'] = Measure.GLOBAL
         return d
 
     def get_description():
