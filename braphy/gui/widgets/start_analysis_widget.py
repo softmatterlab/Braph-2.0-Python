@@ -40,7 +40,7 @@ class StartAnalysisWidget(Base, Form):
                 self.tableWidget.setItem(row, 1, item)
                 row += 1
 
-    def init_buttons(self, graph_analysis_gui_class):
+    def init_buttons(self, graph_analysis_gui):
         self.btnSelectAll.clicked.connect(self.tableWidget.selectAll)
         self.btnClearSelection.clicked.connect(self.tableWidget.clearSelection)
 
@@ -48,8 +48,8 @@ class StartAnalysisWidget(Base, Form):
         self.btnSelectNodal.clicked.connect(lambda signal, dimension=Measure.NODAL: self.select_dimension(dimension))
         self.btnSelectBinodal.clicked.connect(lambda signal, dimension=Measure.BINODAL: self.select_dimension(dimension))
 
-        self.btnViewCommunity.clicked.connect(self.view_community)
-        self.btnNewAnalysis.clicked.connect(lambda signal, cls=graph_analysis_gui_class: self.new_analysis(cls))
+        self.btnViewCommunity.clicked.connect(lambda signal, analysis=graph_analysis_gui.analysis: self.view_community(analysis))
+        self.btnNewAnalysis.clicked.connect(lambda signal, cls=graph_analysis_gui.__class__: self.new_analysis(cls))
 
     def select_dimension(self, dimension):
         self.tableWidget.clearSelection()
@@ -61,8 +61,8 @@ class StartAnalysisWidget(Base, Form):
                 self.tableWidget.selectRow(row)
         self.tableWidget.setSelectionMode(mode)
 
-    def view_community(self):
-        self.community_structure = CommunityStructure()
+    def view_community(self, analysis):
+        self.community_structure = CommunityStructure(analysis)
         self.community_structure.show()
 
     def new_analysis(self, cls):

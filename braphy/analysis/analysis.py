@@ -1,4 +1,5 @@
 from braphy.graph.graph_factory import GraphFactory, GraphSettings
+from braphy.graph.measures.measure_community_structure import MeasureCommunityStructure
 import numpy as np
 from abc import ABC, abstractmethod
 
@@ -14,6 +15,13 @@ class Analysis():
 
     def set_name(self, name):
         self.name = name
+
+    def get_gamma(self):
+        return self.graph_settings.gamma
+
+    def set_gamma(self, gamma):
+        assert gamma >= 0 and gamma <= 1
+        self.graph_settings.gamma = gamma
 
     def set_graph_type(self, graph_type):
         self.graph_settings.weighted = graph_type.weighted
@@ -76,6 +84,9 @@ class Analysis():
 
     def set_negative_rule(self, negative_rule):
         self.graph_settings.rule_semipositivize = negative_rule
+
+    def get_community_structure(self, group_index):
+        return self.get_graph(group_index).get_measure(MeasureCommunityStructure, 'community_structure')
 
     def get_correlation(self, group_index):
         return self.cohort.groups[group_index].correlation()
