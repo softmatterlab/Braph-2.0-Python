@@ -29,23 +29,7 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="1">
-      <widget class="QListWidget" name="listWidgetGlobal">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Maximum" vsizetype="Expanding">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>100</width>
-         <height>16777215</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="2">
+     <item row="2" column="3">
       <widget class="QTextBrowser" name="textBrowser"/>
      </item>
      <item row="2" column="0">
@@ -64,24 +48,40 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="1">
-      <widget class="QLabel" name="label_9">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_7">
        <property name="text">
-        <string>Global/nodal</string>
+        <string>Available graph measures:</string>
        </property>
       </widget>
      </item>
      <item row="1" column="2">
+      <widget class="QLabel" name="label_9">
+       <property name="text">
+        <string>Dimension</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="3">
       <widget class="QLabel" name="label_10">
        <property name="text">
         <string>Description</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_7">
-       <property name="text">
-        <string>Available graph measures:</string>
+     <item row="2" column="2">
+      <widget class="QTextBrowser" name="textBrowserDimension">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Maximum" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>100</width>
+         <height>16777215</height>
+        </size>
        </property>
       </widget>
      </item>

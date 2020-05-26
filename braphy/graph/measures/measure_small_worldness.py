@@ -6,13 +6,17 @@ import numpy as np
 import copy
 
 class MeasureSmallWorldness(Measure):
+    def dimensions():
+        d = {}
+        d['small_worldness'] = Measure.NODAL
+        return d
 
     def get_description():
         # Exists one more measure
         description = {}
 
         description['small_worldness'] = 'Network small-worldness.'
-        
+
         return description
 
     def compute_measure(graph):

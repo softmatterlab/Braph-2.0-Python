@@ -8,6 +8,12 @@ from numpy.linalg import matrix_power, multi_dot
 
 class MeasureCluster(Measure):
 
+    def dimensions():
+        d = {}
+        d['cluster'] = Measure.NODAL
+        d['avg_cluster'] = Measure.GLOBAL
+        return d
+
     def get_description():
 
         description = {}

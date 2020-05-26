@@ -5,6 +5,17 @@ import numpy as np
 import copy
 
 class MeasureEccentricity(Measure):
+    def dimensions():
+        d = {}
+        d['eccentricity'] = Measure.NODAL
+        d['avg_eccentricity'] = Measure.GLOBAL
+        d['radius'] = Measure.GLOBAL
+        d['diameter'] = Measure.GLOBAL
+        d['in_eccentricity'] = Measure.NODAL
+        d['avg_in_eccentricity'] = Measure.GLOBAL
+        d['out_eccentricity'] = Measure.NODAL
+        d['avg_out_eccentricity'] = Measure.GLOBAL
+        return d
 
     def get_description():
         description = {}

@@ -5,6 +5,10 @@ import copy
 from numpy.linalg import matrix_power, multi_dot
 
 class MeasureTriangles(Measure):
+    def dimensions():
+        d = {}
+        d['triangles'] = Measure.NODAL
+        return d
 
     def get_description():
         description = {}

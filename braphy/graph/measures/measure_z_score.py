@@ -6,6 +6,12 @@ from braphy.utility.helper_functions import divide_without_warning
 import copy
 
 class MeasureZScore(Measure):
+    def dimensions():
+        d = {}
+        d['z_score'] = Measure.NODAL
+        d['in_z_score'] = Measure.NODAL
+        d['out_z_score'] = Measure.NODAL
+        return d
 
     def get_description():
         description = {}

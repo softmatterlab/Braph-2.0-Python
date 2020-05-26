@@ -7,8 +7,9 @@ qtCreatorFile = abs_path_from_relative(__file__, "ui_files/community_structure.u
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 
 class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
-    def __init__(self, AppWindow):
-        self.AppWindow = AppWindow
+    def __init__(self, AppWindow = None):
+        if AppWindow:
+            self.AppWindow = AppWindow
         QtWidgets.QMainWindow.__init__(self, parent = None)
         self.setupUi(self)
         self.init_buttons()
@@ -49,10 +50,6 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def btn_calculate(self):
         print("calculate")
-
-
-
-
 
 def run():
     app = QtWidgets.QApplication(sys.argv)

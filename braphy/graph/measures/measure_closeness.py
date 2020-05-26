@@ -6,6 +6,13 @@ from braphy.graph.measures.measure_path_length import MeasurePathLength
 
 class MeasureCloseness(Measure):
 
+    def dimensions():
+        d = {}
+        d['closeness'] = Measure.NODAL
+        d['closeness_in'] = Measure.NODAL
+        d['closeness_out'] = Measure.NODAL
+        return d
+
     def get_description():
 
         description = {}

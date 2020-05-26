@@ -9,6 +9,16 @@ class MeasureAssortativity(Measure):
 
     def get_name():
         pass
+
+    def dimensions():
+        d = {}
+        d['assortativity_in_in'] = Measure.NODAL
+        d['assortativity_in_out'] = Measure.NODAL
+        d['assortativity_out_in'] = Measure.NODAL
+        d['assortativity_out_out'] = Measure.NODAL
+        d['assortativity'] = Measure.NODAL
+        return d
+
     def get_description():
 
         description = {}
