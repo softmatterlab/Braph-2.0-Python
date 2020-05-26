@@ -21,10 +21,10 @@ class CorrelationMatrixWidget(Base, Form):
         self.radioButtonGroup.setChecked(True)
         self.checkBoxDivide.setEnabled(False)
 
-    def init(self, analysis):
+    def init(self, analysis, window):
         self.analysis = analysis
         self.init_comboboxes()
-        self.init_graphics_view()
+        self.init_graphics_view(window)
 
     def set_structural_view(self):
         self.radioButtonGroup.hide()
@@ -61,8 +61,8 @@ class CorrelationMatrixWidget(Base, Form):
         self.spinboxDensity.valueChanged.connect(self.set_density)
         self.horizontalSliderDensity.valueChanged.connect(self.set_density)
 
-    def init_graphics_view(self):
-        self.parent().parent().addToolBar(NavigationToolbar(self.correlationMatrix, self))
+    def init_graphics_view(self, window):
+        window.addToolBar(NavigationToolbar(self.correlationMatrix, self))
         self.group_change(0)
 
     def update_graphics_view(self):

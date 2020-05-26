@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1397</width>
-    <height>971</height>
+    <height>983</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -85,7 +85,7 @@
                  <item>
                   <widget class="QLabel" name="groupLabel">
                    <property name="text">
-                    <string>Number og groups = 0</string>
+                    <string>Number of groups = 0</string>
                    </property>
                   </widget>
                  </item>
@@ -211,7 +211,7 @@
            </spacer>
           </item>
           <item>
-           <widget class="QGroupBox" name="groupBox">
+           <widget class="QGroupBox" name="groupBoxCommunityStructure">
             <property name="title">
              <string>Community structure</string>
             </property>
@@ -317,10 +317,67 @@
             </property>
            </widget>
           </item>
+          <item>
+           <widget class="StartAnalysisWidget" name="startAnalysisWidget" native="true">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>200</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QGridLayout" name="gridLayout_4">
+            <property name="topMargin">
+             <number>20</number>
+            </property>
+           </layout>
+          </item>
          </layout>
         </item>
         <item>
-         <widget class="CorrelationMatrixWidget" name="correlationMatrixWidget" native="true"/>
+         <widget class="QTabWidget" name="tabWidget">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <widget class="QWidget" name="tabCorrelationMatrix">
+           <attribute name="title">
+            <string>Correlation Matrix</string>
+           </attribute>
+           <layout class="QGridLayout" name="gridLayout_3">
+            <item row="0" column="0">
+             <widget class="CorrelationMatrixWidget" name="correlationMatrixWidget" native="true"/>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="tabGlobalMeasures">
+           <attribute name="title">
+            <string>Global Measures</string>
+           </attribute>
+          </widget>
+          <widget class="QWidget" name="tabNodalMeasures">
+           <attribute name="title">
+            <string>Nodal Measures</string>
+           </attribute>
+          </widget>
+          <widget class="QWidget" name="tabBinodalMeasures">
+           <attribute name="title">
+            <string>Binodal Measures</string>
+           </attribute>
+          </widget>
+          <widget class="QWidget" name="tabBrainView">
+           <attribute name="title">
+            <string>Brain View</string>
+           </attribute>
+          </widget>
+         </widget>
         </item>
        </layout>
       </item>
@@ -456,6 +513,12 @@
    <class>GraphMeasuresWidget</class>
    <extends>QWidget</extends>
    <header>braphy.gui.widgets.graph_measures_widget</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>StartAnalysisWidget</class>
+   <extends>QWidget</extends>
+   <header>braphy.gui.widgets.start_analysis_widget</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

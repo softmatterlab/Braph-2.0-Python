@@ -25,6 +25,8 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         self.init_actions()
         self.init_comboboxes()
         self.graphMeasuresWidget.init()
+        self.startAnalysisWidget.hide()
+        self.tabWidget.tabBar().hide()
 
         if subject_class == SubjectMRI:
             self.correlationMatrixWidget.set_structural_view()
@@ -42,7 +44,7 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
     def set_locked(self, locked):
         lock_items = [self.correlationMatrixWidget, self.graphMeasuresWidget, self.textAnalysisName,
                       self.comboBoxGraph, self.comboBoxCorrelation, self.comboBoxNegative,
-                      self.btnSubgraphAnalysis, self.btnStartAnalysis, self.groupBox]
+                      self.btnSubgraphAnalysis, self.btnStartAnalysis, self.groupBoxCommunityStructure]
         for item in lock_items:
             item.setEnabled(not locked)
 
@@ -87,7 +89,7 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
     def select_cohort(self):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
-        file_name, _ = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()", "",
+        file_name, _ = QFileDialog.getOpenFileName(self,"Load cohort", "",
                                                    "cohort files (*.cohort)", options = options)
         if file_name:
             with open(file_name, 'r') as f:
@@ -108,7 +110,7 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
             self.analysis.set_correlation(self.comboBoxCorrelation.currentText())
             self.analysis.set_negative_rule(self.comboBoxNegative.currentText())
             self.analysis.set_graph_type(GraphAnalysis.graph_cls_from_str(self.comboBoxGraph.currentText()))
-            self.correlationMatrixWidget.init(analysis)
+            self.correlationMatrixWidget.init(analysis, self)
             self.set_cohort_labels()
             self.init_correlation_matrix_actions()
 
@@ -132,7 +134,18 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         pass
 
     def start_analysis(self):
-        pass
+        self.groupBoxCommunityStructure.hide()
+        self.startAnalysisWidget.show()
+        self.btnStartAnalysis.hide()
+        self.btnSubgraphAnalysis.hide()
+        self.graphMeasuresWidget.hide()
+
+        self.comboBoxCorrelation.setEnabled(False)
+        self.comboBoxGraph.setEnabled(False)
+        self.comboBoxNegative.setEnabled(False)
+
+        self.tabWidget.tabBar().show()
+        self.startAnalysisWidget.init(self.graph_type)
 
     def open(self):
         pass
