@@ -5,6 +5,11 @@ import numpy as np
 import copy
 
 class MeasureDistance(Measure):
+    def dimensions():
+        d = {}
+        d['distance'] = Measure.BINODAL
+        d['edge_number_distance'] = Measure.BINODAL
+        return d
 
     def get_description():
         description = {}

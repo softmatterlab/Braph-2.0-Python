@@ -4,6 +4,15 @@ import numpy as np
 import copy
 
 class MeasureStrength(Measure):
+    def dimensions():
+        d = {}
+        d['strength'] = Measure.NODAL
+        d['avg_strength'] = Measure.GLOBAL
+        d['in_strength'] = Measure.NODAL
+        d['avg_in_strength'] = Measure.GLOBAL
+        d['out_strength'] = Measure.NODAL
+        d['avg_out_strength'] = Measure.GLOBAL
+        return d
 
     def get_description():
 

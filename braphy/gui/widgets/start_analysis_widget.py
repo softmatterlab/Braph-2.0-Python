@@ -4,6 +4,7 @@ import numpy as np
 from braphy.utility.helper_functions import abs_path_from_relative, FloatDelegate, float_to_string
 from braphy.workflows import *
 from braphy.graph.measures.measure_parser import MeasureParser
+from braphy.graph.measures.measure import Measure
 
 ui_file = abs_path_from_relative(__file__, "../ui_files/start_analysis_widget.ui")
 Form, Base = uic.loadUiType(ui_file)
@@ -15,10 +16,12 @@ class StartAnalysisWidget(Base, Form):
 
     def init(self, graph_type):
         self.init_table(graph_type)
+        self.init_buttons()
 
     def init_table(self, graph_type):
         descriptions = MeasureParser.list_measures_descriptions()
         measures_dict = MeasureParser.list_measures()
+        self.measures_dimensions = MeasureParser.list_measures_dimensions()
 
         measure_descriptions = {}
         for sub_measures in descriptions.values():
@@ -32,5 +35,24 @@ class StartAnalysisWidget(Base, Form):
                 item = QTableWidgetItem(sub_measure)
                 item.setToolTip(measure_descriptions[sub_measure])
                 self.tableWidget.setItem(row, 0, item)
+                item = QTableWidgetItem(Measure.dimensions_str(self.measures_dimensions[sub_measure]))
+                self.tableWidget.setItem(row, 1, item)
                 row += 1
 
+    def init_buttons(self):
+        self.btnSelectAll.clicked.connect(self.tableWidget.selectAll)
+        self.btnClearSelection.clicked.connect(self.tableWidget.clearSelection)
+
+        self.btnSelectGlobal.clicked.connect(lambda signal, dimension=Measure.GLOBAL: self.select_dimension(dimension))
+        self.btnSelectNodal.clicked.connect(lambda signal, dimension=Measure.NODAL: self.select_dimension(dimension))
+        self.btnSelectBinodal.clicked.connect(lambda signal, dimension=Measure.BINODAL: self.select_dimension(dimension))
+
+    def select_dimension(self, dimension):
+        self.tableWidget.clearSelection()
+        mode = self.tableWidget.selectionMode()
+        self.tableWidget.setSelectionMode(QtGui.QAbstractItemView.MultiSelection)
+        for row in range(self.tableWidget.rowCount()):
+            sub_measure = self.tableWidget.item(row, 0).text()
+            if self.measures_dimensions[sub_measure] == dimension:
+                self.tableWidget.selectRow(row)
+        self.tableWidget.setSelectionMode(mode)

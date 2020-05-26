@@ -3,6 +3,10 @@ from braphy.graph.graphs import *
 import numpy as np
 
 class MeasureEdgeBetweennessCentrality(Measure):
+    def dimensions():
+        d = {}
+        d['edge_betweenness_centrality'] = Measure.NODAL
+        return d
 
     def get_description():
         description = {}
