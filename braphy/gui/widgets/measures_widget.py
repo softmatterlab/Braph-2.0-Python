@@ -52,7 +52,6 @@ class MeasuresWidget(Base, Form):
         pass
 
     def measure(self):
-        print('measure')
         self.comboBoxGroup2.setEnabled(False)
         self.update_table()
 
