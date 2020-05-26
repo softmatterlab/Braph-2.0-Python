@@ -145,7 +145,7 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         self.comboBoxNegative.setEnabled(False)
 
         self.tabWidget.tabBar().show()
-        self.startAnalysisWidget.init(self.graph_type)
+        self.startAnalysisWidget.init(self.graph_type, self.__class__)
 
     def open(self):
         pass

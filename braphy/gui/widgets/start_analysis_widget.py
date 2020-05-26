@@ -14,9 +14,9 @@ class StartAnalysisWidget(Base, Form):
         super(StartAnalysisWidget, self).__init__(parent)
         self.setupUi(self)
 
-    def init(self, graph_type):
+    def init(self, graph_type, graph_analysis_gui_class):
         self.init_table(graph_type)
-        self.init_buttons()
+        self.init_buttons(graph_analysis_gui_class)
 
     def init_table(self, graph_type):
         descriptions = MeasureParser.list_measures_descriptions()
@@ -39,13 +39,15 @@ class StartAnalysisWidget(Base, Form):
                 self.tableWidget.setItem(row, 1, item)
                 row += 1
 
-    def init_buttons(self):
+    def init_buttons(self, graph_analysis_gui_class):
         self.btnSelectAll.clicked.connect(self.tableWidget.selectAll)
         self.btnClearSelection.clicked.connect(self.tableWidget.clearSelection)
 
         self.btnSelectGlobal.clicked.connect(lambda signal, dimension=Measure.GLOBAL: self.select_dimension(dimension))
         self.btnSelectNodal.clicked.connect(lambda signal, dimension=Measure.NODAL: self.select_dimension(dimension))
         self.btnSelectBinodal.clicked.connect(lambda signal, dimension=Measure.BINODAL: self.select_dimension(dimension))
+
+        self.btnNewAnalysis.clicked.connect(lambda signal, cls=graph_analysis_gui_class: self.new_analysis(cls))
 
     def select_dimension(self, dimension):
         self.tableWidget.clearSelection()
@@ -56,3 +58,7 @@ class StartAnalysisWidget(Base, Form):
             if self.measures_dimensions[sub_measure] == dimension:
                 self.tableWidget.selectRow(row)
         self.tableWidget.setSelectionMode(mode)
+
+    def new_analysis(self, cls):
+        self.graph_analysis_gui = cls()
+        self.graph_analysis_gui.show()
