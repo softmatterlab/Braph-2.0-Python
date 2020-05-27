@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>474</width>
-    <height>300</height>
+    <height>317</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -34,67 +34,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QTableWidget" name="tableWidget">
-       <attribute name="horizontalHeaderCascadingSectionResizes">
-        <bool>false</bool>
-       </attribute>
-       <attribute name="horizontalHeaderDefaultSectionSize">
-        <number>150</number>
-       </attribute>
-       <column>
-        <property name="text">
-         <string>Measure</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Global/Nodal/Binodal</string>
-        </property>
-       </column>
-      </widget>
-     </item>
-     <item>
-      <layout class="QGridLayout" name="gridLayout">
-       <item row="0" column="1">
-        <widget class="QPushButton" name="btnClearSelection">
-         <property name="text">
-          <string>Clear selection</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QPushButton" name="btnSelectAll">
-         <property name="text">
-          <string>Select all</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <layout class="QGridLayout" name="gridLayout_3">
-       <item row="0" column="0">
-        <widget class="QPushButton" name="btnSelectGlobal">
-         <property name="text">
-          <string>Select global</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QPushButton" name="btnSelectNodal">
-         <property name="text">
-          <string>Select nodal</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="2">
-        <widget class="QPushButton" name="btnSelectBinodal">
-         <property name="text">
-          <string>Select binodal</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
+      <widget class="GraphMeasuresVerticalWidget" name="graphMeasuresWidget" native="true"/>
      </item>
      <item>
       <spacer name="verticalSpacer">
@@ -137,6 +77,14 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>GraphMeasuresVerticalWidget</class>
+   <extends>QWidget</extends>
+   <header>braphy.gui.widgets.graph_measures_vertical_widget</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
