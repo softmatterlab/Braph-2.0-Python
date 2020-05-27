@@ -23,6 +23,32 @@ class CompareGroupMeasures(QtWidgets.QMainWindow, Ui_MainWindow):
         self.analysis = analysis
         self.graphMeasuresWidget.init(graph_type)
 
+        self.init_buttons()
+        self.init_combo_box()
+
+    def init_buttons(self):
+        self.btnCalculate.clicked.connect(self.compare)
+        self.btnResume.clicked.connect(self.resume)
+
+    def init_combo_box(self):
+        for group in self.analysis.cohort.groups:
+            self.comboBoxGroup1.addItem(group.name)
+            self.comboBoxGroup2.addItem(group.name)
+
+    def compare(self):
+        permutations = int(self.lineEditPermutation.text())
+        sub_measures = self.graphMeasuresWidget.get_selected_measures()
+        group_index_1 = self.comboBoxGroup1.currentIndex()
+        group_index_2 = self.comboBoxGroup2.currentIndex()
+        groups = (group_index_1, group_index_2)
+        for sub_measure in sub_measures:
+            measure_class = self.graphMeasuresWidget.inverted_measures_dict[sub_measure]
+            self.analysis.calculate_comparison(measure_class, sub_measure, groups, permutations)
+        self.textBrowser.setPlainText('DONE')
+
+    def resume(self):
+        pass
+
 def run():
     app = QtWidgets.QApplication(sys.argv)
     window = CompareGroupMeasures()

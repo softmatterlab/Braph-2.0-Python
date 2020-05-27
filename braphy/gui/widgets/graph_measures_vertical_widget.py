@@ -22,6 +22,8 @@ class GraphMeasuresVerticalWidget(Base, Form):
         descriptions = MeasureParser.list_measures_descriptions()
         measures_dict = MeasureParser.list_measures()
         self.measures_dimensions = MeasureParser.list_measures_dimensions()
+        self.inverted_measures_dict = {}
+        self.tableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
 
         measure_descriptions = {}
         for sub_measures in descriptions.values():
@@ -31,6 +33,7 @@ class GraphMeasuresVerticalWidget(Base, Form):
         row = 0
         for measure_class, sub_measures in measures_dict[graph_type].items():
             for sub_measure in sub_measures:
+                self.inverted_measures_dict[sub_measure] = measure_class
                 self.tableWidget.setRowCount(row + 1)
                 item = QTableWidgetItem(sub_measure)
                 item.setToolTip(measure_descriptions[sub_measure])
@@ -56,3 +59,14 @@ class GraphMeasuresVerticalWidget(Base, Form):
             if self.measures_dimensions[sub_measure] == dimension:
                 self.tableWidget.selectRow(row)
         self.tableWidget.setSelectionMode(mode)
+        self.get_selected()
+
+    def get_selected(self):
+        selected = [item.row() for item in self.tableWidget.selectionModel().selectedRows()]
+        return selected
+
+    def get_selected_measures(self):
+        selected = self.get_selected()
+        selected_measures = [self.tableWidget.item(s, 0).text() for s in selected]
+        return selected_measures
+
