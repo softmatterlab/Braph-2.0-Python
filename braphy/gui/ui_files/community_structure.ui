@@ -42,42 +42,10 @@
              <property name="topMargin">
               <number>20</number>
              </property>
-             <item row="1" column="2">
-              <widget class="QRadioButton" name="btnNewman">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
-               <property name="text">
-                <string>Newman algorithm</string>
-               </property>
-               <property name="checkable">
-                <bool>true</bool>
-               </property>
-               <attribute name="buttonGroup">
-                <string notr="true">buttonGroup_2</string>
-               </attribute>
-              </widget>
-             </item>
-             <item row="0" column="3">
-              <widget class="QComboBox" name="comboBox"/>
-             </item>
-             <item row="0" column="0">
-              <widget class="QRadioButton" name="btnFixed">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
-               <property name="text">
-                <string>Fixed structure</string>
-               </property>
-               <attribute name="buttonGroup">
-                <string notr="true">buttonGroup</string>
-               </attribute>
-              </widget>
-             </item>
              <item row="0" column="1">
               <widget class="QRadioButton" name="btnDynamic">
                <property name="enabled">
-                <bool>false</bool>
+                <bool>true</bool>
                </property>
                <property name="text">
                 <string>Dynamic structure</string>
@@ -87,20 +55,85 @@
                </attribute>
               </widget>
              </item>
-             <item row="0" column="2">
-              <widget class="QRadioButton" name="btnLouvain">
+             <item row="0" column="0">
+              <widget class="QRadioButton" name="btnFixed">
+               <property name="enabled">
+                <bool>true</bool>
+               </property>
                <property name="text">
-                <string>Louvain algorithm</string>
+                <string>Fixed structure</string>
                </property>
                <property name="checked">
                 <bool>true</bool>
                </property>
                <attribute name="buttonGroup">
-                <string notr="true">buttonGroup_2</string>
+                <string notr="true">buttonGroup</string>
                </attribute>
               </widget>
              </item>
-             <item row="2" column="2">
+             <item row="0" column="3">
+              <widget class="QComboBox" name="comboBox"/>
+             </item>
+             <item row="1" column="1">
+              <layout class="QHBoxLayout" name="horizontalLayout_4">
+               <property name="rightMargin">
+                <number>10</number>
+               </property>
+               <item>
+                <spacer name="horizontalSpacer">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeType">
+                  <enum>QSizePolicy::Maximum</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>10</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <layout class="QVBoxLayout" name="verticalLayout_3">
+                 <property name="leftMargin">
+                  <number>20</number>
+                 </property>
+                 <item>
+                  <widget class="QRadioButton" name="btnLouvain">
+                   <property name="enabled">
+                    <bool>false</bool>
+                   </property>
+                   <property name="text">
+                    <string>Louvain algorithm</string>
+                   </property>
+                   <attribute name="buttonGroup">
+                    <string notr="true">buttonGroup_2</string>
+                   </attribute>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QRadioButton" name="btnNewman">
+                   <property name="enabled">
+                    <bool>false</bool>
+                   </property>
+                   <property name="text">
+                    <string>Newman algorithm</string>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                   <attribute name="buttonGroup">
+                    <string notr="true">buttonGroup_2</string>
+                   </attribute>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </item>
+             <item row="2" column="1">
               <layout class="QGridLayout" name="gridLayout_2">
                <property name="topMargin">
                 <number>0</number>
@@ -144,13 +177,6 @@
             <widget class="QPushButton" name="btnReset">
              <property name="text">
               <string>Reset</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="btnCalculate">
-             <property name="text">
-              <string>Calculate</string>
              </property>
             </widget>
            </item>

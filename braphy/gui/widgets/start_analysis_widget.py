@@ -51,7 +51,7 @@ class StartAnalysisWidget(Base, Form):
         self.btnSelectNodal.clicked.connect(lambda signal, dimension=Measure.NODAL: self.select_dimension(dimension))
         self.btnSelectBinodal.clicked.connect(lambda signal, dimension=Measure.BINODAL: self.select_dimension(dimension))
 
-        self.btnViewCommunity.clicked.connect(lambda signal, analysis=graph_analysis_gui.analysis: self.view_community(analysis))
+        self.btnViewCommunity.clicked.connect(lambda signal, analysis_gui=graph_analysis_gui: self.view_community(analysis_gui))
         self.btnNewAnalysis.clicked.connect(lambda signal, cls=graph_analysis_gui.__class__: self.new_analysis(cls))
 
         self.btnCalculate.clicked.connect(self.calculate_group_measures)
@@ -68,8 +68,9 @@ class StartAnalysisWidget(Base, Form):
                 self.tableWidget.selectRow(row)
         self.tableWidget.setSelectionMode(mode)
 
-    def view_community(self, analysis):
-        self.community_structure = CommunityStructure(analysis)
+    def view_community(self, analysis_gui):
+        self.community_structure = CommunityStructure(analysis_gui.analysis)
+        self.community_structure.spinBoxGamma.valueChanged.connect(analysis_gui.update_gamma)
         self.community_structure.show()
 
     def new_analysis(self, cls):
