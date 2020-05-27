@@ -9,7 +9,7 @@ qtCreatorFile = abs_path_from_relative(__file__, "ui_files/calculation_window.ui
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 
 class CalculateGroupMeasures(QtWidgets.QMainWindow, Ui_MainWindow):
-    def __init__(self, AppWindow, analysis):
+    def __init__(self, AppWindow, analysis, graph_type):
         self.AppWindow = AppWindow
         QtWidgets.QMainWindow.__init__(self, parent = None)
         self.setupUi(self)
@@ -21,7 +21,9 @@ class CalculateGroupMeasures(QtWidgets.QMainWindow, Ui_MainWindow):
         self.lineEditMatrix.hide()
         self.lineEditSwaps.hide()
         self.checkBox.hide()
+        
         self.analysis = analysis
+        self.graphMeasuresWidget.init(graph_type)
 
 def run():
     app = QtWidgets.QApplication(sys.argv)

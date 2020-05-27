@@ -20,6 +20,7 @@ class StartAnalysisWidget(Base, Form):
 
     def init(self, graph_type, graph_analysis_gui_class, analysis):
         self.analysis = analysis
+        self.graph_type = graph_type
         self.init_buttons(graph_analysis_gui_class)
         self.graphMeasuresWidget.init(graph_type)
 
@@ -41,13 +42,13 @@ class StartAnalysisWidget(Base, Form):
         self.graph_analysis_gui.show()
 
     def calculate_group_measures(self):
-        self.calculate_group_measures_gui = CalculateGroupMeasures(self, self.analysis)
+        self.calculate_group_measures_gui = CalculateGroupMeasures(self, self.analysis, self.graph_type)
         self.calculate_group_measures_gui.show()
 
     def compare_group_measures(self):
-        self.compare_group_measures_gui = CompareGroupMeasures(self)
+        self.compare_group_measures_gui = CompareGroupMeasures(self, self.analysis, self.graph_type)
         self.compare_group_measures_gui.show()
 
     def compare_with_random_graph(self):
-        self.compare_with_random_graph_gui = CompareWithRandomGraph(self)
+        self.compare_with_random_graph_gui = CompareWithRandomGraph(self, self.analysis, self.graph_type)
         self.compare_with_random_graph_gui.show()
