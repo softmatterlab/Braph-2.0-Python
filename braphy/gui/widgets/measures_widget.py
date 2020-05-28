@@ -34,9 +34,9 @@ class MeasuresWidget(Base, Form):
         self.btnRandomComparison.clicked.connect(self.random_comparison)
 
     def init_combo_boxes(self):
-        self.comboBoxRegion.currentIndexChanged.connect(self.region_changed)
-        self.comboBoxGroup1.currentIndexChanged.connect(self.group_changed)
-        self.comboBoxGroup2.currentIndexChanged.connect(self.group_changed)
+        self.comboBoxRegion.currentIndexChanged.connect(self.update_table)
+        self.comboBoxGroup1.currentIndexChanged.connect(self.update_table)
+        self.comboBoxGroup2.currentIndexChanged.connect(self.update_table)
         self.comboBoxRegion.currentIndexChanged.connect(self.update_table)
 
         for group in self.analysis.cohort.groups:
@@ -70,12 +70,6 @@ class MeasuresWidget(Base, Form):
 
     def random_comparison(self):
         self.comboBoxGroup2.setEnabled(False)
-        self.update_table()
-
-    def region_changed(self):
-        self.update_table()
-
-    def group_changed(self):
         self.update_table()
 
     def update_table(self):
