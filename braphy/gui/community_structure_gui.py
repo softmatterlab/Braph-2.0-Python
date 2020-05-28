@@ -22,7 +22,7 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
     def init_combo_box(self):
         for group in self.analysis.cohort.groups:
             self.comboBox.addItem(group.name)
-        self.comboBox.currentTextChanged.connect(self.update_table)
+        self.comboBox.currentTextChanged.connect(lambda signal: self.update_table)
 
     def init_buttons(self):
         self.btnFixed.toggled.connect(self.fixed_structure)
@@ -55,25 +55,33 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
     def update_table(self, community_structure = None):
         if community_structure is None:
             community_structure = self.analysis.get_community_structure(self.comboBox.currentIndex())
-        self.community_structure = community_structure
-        number_of_communities = max(community_structure) + 1
+        self.community_structure = community_structure.copy()
+        number_of_communities = max(self.community_structure) + 1
         brain_regions = self.analysis.cohort.atlas.brain_regions
         self.tableWidget.setRowCount(len(brain_regions))
-        self.tableWidget.setColumnCount(1 + number_of_communities)
+        self.tableWidget.setColumnCount(2 + number_of_communities)
+        headers = ['Brain region']
+        headers = headers + [str(community_number) for community_number in range(number_of_communities+1)]
+        self.tableWidget.setHorizontalHeaderLabels(headers)
 
         for i in range(len(brain_regions)):
             region = brain_regions[i]
             item = QTableWidgetItem(region.label)
             if self.read_only:
                 item.setFlags(QtCore.Qt.ItemIsSelectable)
+            else:
+                item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
             self.tableWidget.setItem(i, 0, item)
             button_group = QButtonGroup(self)
-            for j in range(number_of_communities):
+            for j in range(number_of_communities + 1):
                 radio_button = self.get_radio_button_widget()
                 if community_structure[i] == j:
                     radio_button.button.setChecked(True)
                 if self.read_only:
                     radio_button.setDisabled(True)
+                radio_button.button.region = i
+                radio_button.button.community = j
+                radio_button.button.clicked.connect(self.community_changed)
                 button_group.addButton(radio_button.button)
 
                 self.tableWidget.setCellWidget(i, 1 + j, radio_button)
@@ -87,6 +95,21 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
         widget.setLayout(layout)
         widget.button = radio_button
         return widget
+
+    def community_changed(self, checked):
+        if not checked:
+            return
+        radio_button = self.sender()
+        self.community_structure[radio_button.region] = radio_button.community
+        self.minimize_community_indices()
+        self.update_table(self.community_structure)
+
+    def minimize_community_indices(self):
+        for community in range(max(self.community_structure)):
+            if community not in self.community_structure:
+                for i in range(len(self.community_structure)):
+                    if self.community_structure[i] > community:
+                        self.community_structure[i] -= 1
 
     def fixed_structure(self):
         self.btnHidden.setChecked(True)
@@ -113,7 +136,7 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
         pass
 
     def set_community_structure(self):
-        self.analysis.community_structure = self.community_structure
+        self.analysis.community_structure = self.community_structure.copy()
 
     def reset_community_structure(self):
         self.update_table(self.analysis.community_structure)

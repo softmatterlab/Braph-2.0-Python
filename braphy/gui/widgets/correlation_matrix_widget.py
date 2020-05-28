@@ -73,6 +73,8 @@ class CorrelationMatrixWidget(Base, Form):
             A = self.analysis.correlation_density(A, self.spinboxDensity.value())
         elif self.radioButtonThreshold.isChecked():
             A = self.analysis.correlation_threshold(A, self.spinboxThreshold.value())
+        if self.checkBoxRearrange.isChecked():
+            A = self.rearrange_regions(A)
         self.correlationMatrix.update_matrix(A)
 
     def group_change(self, idx):
@@ -96,6 +98,13 @@ class CorrelationMatrixWidget(Base, Form):
         self.spinboxDensity.setValue(value)
         self.horizontalSliderDensity.setValue(int(value*100))
         self.update_graphics_view()
+
+    def rearrange_regions(self, A):
+        sorted_regions = np.argsort(self.analysis.community_structure)
+        new_A = A.copy()
+        for (i, j), _ in np.ndenumerate(new_A):
+            new_A[i, j] = A[sorted_regions[i], sorted_regions[j]]
+        return new_A
 
     def analyse_group(self):
         self.comboBoxSubject.setEnabled(False)
@@ -130,11 +139,9 @@ class CorrelationMatrixWidget(Base, Form):
         self.horizontalSliderDensity.setEnabled(False)
         self.update_graphics_view()
 
-    def rearrange(self):
-        if self.checkBoxRearrange.isChecked():
-            self.checkBoxDivide.setEnabled(True)
-        else:
-            self.checkBoxDivide.setEnabled(False)
+    def rearrange(self, state):
+        self.checkBoxDivide.setEnabled(state)
+        self.update_graphics_view()
 
     def divide(self):
         pass
