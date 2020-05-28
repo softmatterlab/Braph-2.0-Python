@@ -17,6 +17,26 @@ class Measure(ABC):
             s = 'Binodal'
         return s
 
+    @classmethod
+    def dimension(cls, sub_measure):
+        dimensions = cls.dimensions()
+        return dimensions[sub_measure]
+
+    @classmethod
+    def is_global(cls, sub_measure):
+        dimensions = cls.dimensions()
+        return dimensions[sub_measure] == Measure.GLOBAL
+
+    @classmethod
+    def is_nodal(cls, sub_measure):
+        dimensions = cls.dimensions()
+        return dimensions[sub_measure] == Measure.NODAL
+
+    @classmethod
+    def is_binodal(cls, sub_measure):
+        dimensions = cls.dimensions()
+        return dimensions[sub_measure] == Measure.BINODAL
+
     @abstractmethod
     def dimensions():
         pass

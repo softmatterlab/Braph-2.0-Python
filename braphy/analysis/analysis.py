@@ -7,7 +7,7 @@ class Analysis():
     def __init__(self, cohort, name = 'analysis', measurements = None, random_comparisons = None, comparisons = None):
         self.cohort = cohort
         self.name = name
-        self.graph_settings = GraphSettings.get_bd()
+        self.graph_settings = GraphSettings.get_wd()
         self.community_structure = [0]*len(self.cohort.atlas.brain_regions)
 
         self.measurements = measurements if measurements else []
@@ -57,17 +57,18 @@ class Analysis():
             self.measurements.append(measurement)
         return measurement
 
-    def get_comparison(self, measure_class, sub_measure, groups):
+    def get_comparison(self, measure_class, sub_measure, groups, permutations):
         comparison = None
         for c in self.comparisons:
             if (c.measure_class == measure_class and
                 c.sub_measure == sub_measure and
                 c.groups[0] == groups[0] and
-                c.groups[1] == groups[1]):
+                c.groups[1] == groups[1] and
+                c.permutations == permutations):
                 comparison = c
                 break
         if not comparison:
-            comparison = self.calculate_comparison(measure_class, sub_measure, groups)
+            comparison = self.calculate_comparison(measure_class, sub_measure, groups, permutations)
             self.comparisons.append(comparison)
         return comparison
 

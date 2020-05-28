@@ -3,6 +3,7 @@ import json
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from PyQt5.QtWidgets import *
 from braphy.graph.graphs import *
+from braphy.graph.measures.measure import Measure
 from braphy.workflows import *
 from braphy.cohort.cohort import Cohort
 from braphy.gui.cohort_editor_gui import CohortEditor
@@ -27,6 +28,7 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         self.graphMeasuresWidget.init()
         self.startAnalysisWidget.hide()
         self.tabWidget.tabBar().hide()
+        self.tabWidget.currentChanged.connect(self.tab_changed)
 
         if subject_class == SubjectMRI:
             self.correlationMatrixWidget.set_structural_view()
@@ -81,6 +83,14 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         self.comboBoxGraph.currentTextChanged.connect(self.set_graph_type)
         self.comboBoxCorrelation.currentTextChanged.connect(self.set_correlation)
         self.comboBoxNegative.currentTextChanged.connect(self.set_negative_rule)
+
+    def tab_changed(self):
+        if self.tabWidget.currentIndex() == 1:
+            self.globalMeasuresWidget.update_table()
+        elif self.tabWidget.currentIndex() == 2:
+            self.nodalMeasuresWidget.update_table()
+        elif self.tabWidget.currentIndex() == 3:
+            self.binodalMeasuresWidget.update_table()
 
     def set_analysis_name(self, name):
         if self.analysis:
@@ -148,10 +158,10 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         self.comboBoxNegative.setEnabled(False)
 
         self.tabWidget.tabBar().show()
-        self.startAnalysisWidget.init(self.graph_type, self)
-        self.globalMeasuresWidget.init('global', self.analysis)
-        self.nodalMeasuresWidget.init('nodal', self.analysis)
-        self.binodalMeasuresWidget.init('binodal', self.analysis)
+        self.startAnalysisWidget.init(self.graph_type, self, self.analysis)
+        self.globalMeasuresWidget.init(Measure.GLOBAL, self.analysis)
+        self.nodalMeasuresWidget.init(Measure.NODAL, self.analysis)
+        self.binodalMeasuresWidget.init(Measure.BINODAL, self.analysis)
 
     def open(self):
         pass
