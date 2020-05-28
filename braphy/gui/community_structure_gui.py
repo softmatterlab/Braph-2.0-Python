@@ -56,10 +56,13 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
         if community_structure is None:
             community_structure = self.analysis.get_community_structure(self.comboBox.currentIndex())
         self.community_structure = community_structure.copy()
-        number_of_communities = max(community_structure) + 1
+        number_of_communities = max(self.community_structure) + 1
         brain_regions = self.analysis.cohort.atlas.brain_regions
         self.tableWidget.setRowCount(len(brain_regions))
-        self.tableWidget.setColumnCount(1 + number_of_communities)
+        self.tableWidget.setColumnCount(2 + number_of_communities)
+        headers = ['Brain region']
+        headers = headers + [str(community_number) for community_number in range(number_of_communities+1)]
+        self.tableWidget.setHorizontalHeaderLabels(headers)
 
         for i in range(len(brain_regions)):
             region = brain_regions[i]
@@ -70,7 +73,7 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
                 item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
             self.tableWidget.setItem(i, 0, item)
             button_group = QButtonGroup(self)
-            for j in range(number_of_communities):
+            for j in range(number_of_communities + 1):
                 radio_button = self.get_radio_button_widget()
                 if community_structure[i] == j:
                     radio_button.button.setChecked(True)
@@ -98,6 +101,15 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
             return
         radio_button = self.sender()
         self.community_structure[radio_button.region] = radio_button.community
+        self.minimize_community_indices()
+        self.update_table(self.community_structure)
+
+    def minimize_community_indices(self):
+        for community in range(max(self.community_structure)):
+            if community not in self.community_structure:
+                for i in range(len(self.community_structure)):
+                    if self.community_structure[i] > community:
+                        self.community_structure[i] -= 1
 
     def fixed_structure(self):
         self.btnHidden.setChecked(True)
