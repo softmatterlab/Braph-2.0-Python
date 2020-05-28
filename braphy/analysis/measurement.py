@@ -7,3 +7,12 @@ class Measurement():
 
     def get_value(self):
         return self.value
+
+    def is_global(self):
+        return self.measure_class.is_global(self.sub_measure)
+
+    def is_nodal(self):
+        return self.measure_class.is_nodal(self.sub_measure)
+
+    def is_binodal(self):
+        return self.measure_class.is_binodal(self.sub_measure)

@@ -41,7 +41,7 @@ class CalculateGroupMeasures(QtWidgets.QMainWindow, Ui_MainWindow):
         group_index = self.comboBoxGroup1.currentIndex()
         for sub_measure in sub_measures:
             measure_class = self.graphMeasuresWidget.inverted_measures_dict[sub_measure]
-            self.analysis.calculate_measurement(measure_class, sub_measure, group_index)
+            self.analysis.get_measurement(measure_class, sub_measure, group_index)
         self.textBrowser.setPlainText('DONE')
 
     def resume(self):

@@ -27,6 +27,7 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         self.graphMeasuresWidget.init()
         self.startAnalysisWidget.hide()
         self.tabWidget.tabBar().hide()
+        self.tabWidget.currentChanged.connect(self.tab_changed)
 
         if subject_class == SubjectMRI:
             self.correlationMatrixWidget.set_structural_view()
@@ -81,6 +82,14 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         self.comboBoxGraph.currentTextChanged.connect(self.set_graph_type)
         self.comboBoxCorrelation.currentTextChanged.connect(self.set_correlation)
         self.comboBoxNegative.currentTextChanged.connect(self.set_negative_rule)
+
+    def tab_changed(self):
+        if self.tabWidget.currentIndex() == 1:
+            self.globalMeasuresWidget.update_table()
+        elif self.tabWidget.currentIndex() == 2:
+            self.nodalMeasuresWidget.update_table()
+        elif self.tabWidget.currentIndex() == 3:
+            self.binodalMeasuresWidget.update_table()
 
     def set_analysis_name(self, name):
         if self.analysis:

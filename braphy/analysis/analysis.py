@@ -7,7 +7,7 @@ class Analysis():
     def __init__(self, cohort, name = 'analysis', measurements = None, random_comparisons = None, comparisons = None):
         self.cohort = cohort
         self.name = name
-        self.graph_settings = GraphSettings.get_bd()
+        self.graph_settings = GraphSettings.get_wd()
         self.community_structure = [0]*len(self.cohort.atlas.brain_regions)
 
         self.measurements = measurements if measurements else []

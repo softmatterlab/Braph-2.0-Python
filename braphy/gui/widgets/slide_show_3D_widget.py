@@ -61,7 +61,7 @@ class SlideShow3DWidget(BrainAtlasWidget):
     def init(self, color):
         mesh_data = load_nv(brain_mesh_file)
         self.set_brain_mesh(mesh_data)
-        self.set_locked(True)
+        #self.set_locked(True)
         self.animate(True)
         self.setBrainBackgroundColor(color)
         self.change_transparency(0.3)
