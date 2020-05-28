@@ -3,6 +3,7 @@ import json
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from PyQt5.QtWidgets import *
 from braphy.graph.graphs import *
+from braphy.graph.measures.measure import Measure
 from braphy.workflows import *
 from braphy.cohort.cohort import Cohort
 from braphy.gui.cohort_editor_gui import CohortEditor
@@ -158,9 +159,9 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.tabWidget.tabBar().show()
         self.startAnalysisWidget.init(self.graph_type, self, self.analysis)
-        self.globalMeasuresWidget.init('global', self.analysis)
-        self.nodalMeasuresWidget.init('nodal', self.analysis)
-        self.binodalMeasuresWidget.init('binodal', self.analysis)
+        self.globalMeasuresWidget.init(Measure.GLOBAL, self.analysis)
+        self.nodalMeasuresWidget.init(Measure.NODAL, self.analysis)
+        self.binodalMeasuresWidget.init(Measure.BINODAL, self.analysis)
 
     def open(self):
         pass

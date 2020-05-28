@@ -43,7 +43,7 @@ class CompareGroupMeasures(QtWidgets.QMainWindow, Ui_MainWindow):
         groups = (group_index_1, group_index_2)
         for sub_measure in sub_measures:
             measure_class = self.graphMeasuresWidget.inverted_measures_dict[sub_measure]
-            self.analysis.get_comparison(measure_class, sub_measure, groups) # permutations ??
+            self.analysis.get_comparison(measure_class, sub_measure, groups, permutations)
         self.textBrowser.setPlainText('DONE')
 
     def resume(self):

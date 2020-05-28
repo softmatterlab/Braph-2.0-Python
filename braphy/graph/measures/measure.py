@@ -18,6 +18,11 @@ class Measure(ABC):
         return s
 
     @classmethod
+    def dimension(cls, sub_measure):
+        dimensions = cls.dimensions()
+        return dimensions[sub_measure]
+
+    @classmethod
     def is_global(cls, sub_measure):
         dimensions = cls.dimensions()
         return dimensions[sub_measure] == Measure.GLOBAL

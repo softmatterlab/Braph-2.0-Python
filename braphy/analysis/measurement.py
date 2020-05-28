@@ -16,3 +16,6 @@ class Measurement():
 
     def is_binodal(self):
         return self.measure_class.is_binodal(self.sub_measure)
+
+    def dimension(self):
+        return self.measure_class.dimension(self.sub_measure)
