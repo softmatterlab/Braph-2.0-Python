@@ -3,6 +3,7 @@ from PyQt5 import QtCore, QtGui, uic, QtWidgets
 import numpy as np
 from braphy.utility.helper_functions import abs_path_from_relative, FloatDelegate, float_to_string
 from braphy.graph.measures.measure import Measure
+from braphy.workflows import *
 
 ui_file = abs_path_from_relative(__file__, "../ui_files/measures_widget.ui")
 Form, Base = uic.loadUiType(ui_file)
@@ -20,6 +21,11 @@ class MeasuresWidget(Base, Form):
         self.measure_type = measure_type
         if measure_type == Measure.GLOBAL:
             self.comboBoxRegion.hide()
+            self.labelRegion.hide()
+        if analysis.cohort.subject_class == SubjectMRI:
+            self.btnGroup.hide()
+            self.btnSubject.hide()
+            self.comboBoxSubject.hide()
         self.init_combo_boxes()
         self.btnMeasure.setChecked(True)
         self.measure()
@@ -62,14 +68,17 @@ class MeasuresWidget(Base, Form):
 
     def measure(self):
         self.comboBoxGroup2.setEnabled(False)
+        self.labelGroup.setText('Choose group:')
         self.update_table()
 
     def comparison(self):
         self.comboBoxGroup2.setEnabled(True)
+        self.labelGroup.setText('Choose groups:')
         self.update_table()
 
     def random_comparison(self):
         self.comboBoxGroup2.setEnabled(False)
+        self.labelGroup.setText('Choose group:')
         self.update_table()
 
     def update_table(self):
