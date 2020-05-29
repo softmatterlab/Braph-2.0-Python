@@ -1,4 +1,5 @@
 import json
+import os
 from braphy.cohort.group import Group
 from braphy.atlas.brain_atlas import BrainAtlas
 from braphy.utility.helper_functions import ListManager as lm
@@ -259,6 +260,25 @@ class Cohort:
         group.add_subjects(subjects)
         self.add_group(group=group)
         return duplicates
+
+    def load_from_folder(self, folder):
+        group_name = folder.split('/')[-1]
+        group = Group(self.subject_class, name = group_name)
+        files = os.listdir(folder)
+        xlsx_files = []
+        for file_name in files:
+            extension = file_name.split(".")[-1]
+            if extension == 'xlsx':
+                xlsx_files.append(os.path.join(folder, file_name))
+        assert len(xlsx_files) > 0, "The selected folder does not contain any xlsx files."
+        subjects = self.subject_class.from_xlsx(xlsx_files, self.atlas.brain_region_number())
+        warning = False
+        if len(xlsx_files) != len(subjects):
+            warning = True
+        subjects, duplicates = self.add_subjects(subjects)
+        group.add_subjects(subjects)
+        self.add_group(group=group)
+        return duplicates, warning
 
     def save_to_txt(self, file_name):
         self.subject_class.to_txt(self.subjects, file_name, self.atlas.get_brain_region_labels())

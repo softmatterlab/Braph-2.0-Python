@@ -46,15 +46,22 @@ class SubjectfMRI(Subject):
                 subjects.append(subject)
         return subjects
 
-    def from_xlsx(file_xlsx, data_length):
-        subject_id = file_xlsx.split('/')[-1].split('.')[0]
-        subject = SubjectfMRI(id = subject_id)
-        data = pd.read_excel(file_xlsx)
-        first_row = np.array(data.columns)
-        data = np.vstack([first_row, np.array(data)])
-        assert np.size(data, 1) == data_length, 'Data does not match the brain atlas'
-        subject.data_dict['data'].set_value(data)
-        return [subject]
+    def from_xlsx(files_xlsx, data_length):
+        subjects = []
+        if not isinstance(files_xlsx, list):
+            files_xlsx = [files_xlsx]
+        for file_xlsx in files_xlsx:
+            subject_id = file_xlsx.split('/')[-1].split('.')[0]
+            subject = SubjectfMRI(id = subject_id)
+            data = pd.read_excel(file_xlsx)
+            first_row = np.array(data.columns)
+            data = np.vstack([first_row, np.array(data)])
+            if not np.size(data, 1) == data_length:
+                continue
+            subject.data_dict['data'].set_value(data)
+            subjects.append(subject)
+        assert len(subjects) > 0, 'Data does not match the brain atlas'
+        return subjects
 
     def to_txt(subjects, file_path, labels):
         labels = ' '.join(labels)

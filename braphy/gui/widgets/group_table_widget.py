@@ -1,7 +1,9 @@
+import os
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 import numpy as np
 from braphy.utility.helper_functions import abs_path_from_relative
+from braphy.workflows import *
 
 ui_file = abs_path_from_relative(__file__, "../ui_files/group_table_widget.ui")
 Form, Base = uic.loadUiType(ui_file)
@@ -16,6 +18,8 @@ class GroupTableWidget(Base, Form):
 
     def init(self, cohort):
         self.cohort = cohort
+        if self.cohort.subject_class == SubjectMRI:
+            self.btnLoadFolder.hide()
 
     def init_table(self):
         self.tableWidget_groups.setSelectionBehavior(QAbstractItemView.SelectRows)
@@ -32,6 +36,7 @@ class GroupTableWidget(Base, Form):
 
     def init_buttons(self):
         self.btnLoadSubject.clicked.connect(self.load_subject_group)
+        self.btnLoadFolder.clicked.connect(self.load_subject_folder)
 
         self.btnAdd.clicked.connect(self.add_group)
         self.btnRemove.clicked.connect(self.remove_group)
@@ -94,6 +99,24 @@ class GroupTableWidget(Base, Form):
             self.cohort.groups[row].name = self.tableWidget_groups.item(row, column).text()
         elif column == 2: # notes
             self.cohort.groups[row].description = self.tableWidget_groups.item(row, column).text()
+        self.update()
+
+    def load_subject_folder(self):
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        folder = QFileDialog.getExistingDirectory(self,"Load subject folder", "", options = options)
+        if not folder:
+            return
+        duplicates = False
+        warning = False
+        try:
+            duplicates, warning = self.cohort.load_from_folder(folder)
+        except Exception as e:
+            self.load_file_error(str(e))
+        if duplicates:
+            self.load_file_warning("The selected file contains some subjects that are already loaded. These were skipped.")
+        if warning:
+            self.load_file_warning("Some files could not be loaded.")
         self.update()
 
     def load_subject_group(self):

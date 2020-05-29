@@ -73,7 +73,6 @@ class SubjectDataWidget(Base, Form):
         if self.cohort.subject_class == SubjectMRI:
             self.update_table_structural()
         else:
-            print(self.cohort.subject_class)
             self.update_subject_list()
 
     def update_table_functional(self):
