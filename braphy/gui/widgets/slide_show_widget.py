@@ -31,11 +31,14 @@ class SlideShowWidget(Base, Form):
     def pause_animation(self):
         self.slideShow3DWidget.animate(False)
         self.animate = False
+        self.slideShow3DWidget.set_locked(False)
 
     def start_animation(self):
         if not self.btnPause.isChecked():
             self.slideShow3DWidget.animate(True)
             self.animate = True
+            self.slideShow3DWidget.set_locked(True)
+            self.slideShow3DWidget.show_3D()
 
     def timerEvent(self, e = None):
         if not self.animate:
