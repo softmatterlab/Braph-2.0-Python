@@ -17,8 +17,8 @@ class CorrelationMatrixWidget(Base, Form):
         self.init_buttons()
         self.init_actions()
         self.init_sliders()
-        self.radioButtonWeighted.setChecked(True)
-        self.radioButtonGroup.setChecked(True)
+        self.btnWeighted.setChecked(True)
+        self.btnGroup.setChecked(True)
         self.checkBoxDivide.setEnabled(False)
 
     def init(self, analysis, window):
@@ -27,18 +27,18 @@ class CorrelationMatrixWidget(Base, Form):
         self.init_graphics_view(window)
 
     def set_structural_view(self):
-        self.radioButtonGroup.hide()
-        self.radioButtonSubject.hide()
-        self.comboBoxSubject.hide()
+        self.btnGroup.hide()
+        self.btnSubject.hide()
+        self.comboBoxSubjects.hide()
 
     def init_buttons(self):
-        self.radioButtonGroup.toggled.connect(self.analyse_group)
-        self.radioButtonSubject.toggled.connect(self.analyse_subject)
-        self.radioButtonWeighted.toggled.connect(self.weighted_correlation)
-        self.radioButtonHistogram.toggled.connect(self.histogram)
-        self.radioButtonSubject.toggled.connect(self.analyse_subject)
-        self.radioButtonDensity.toggled.connect(self.binary_correlation_density)
-        self.radioButtonThreshold.toggled.connect(self.binary_correlation_threshold)
+        self.btnGroup.toggled.connect(self.analyse_group)
+        self.btnSubject.toggled.connect(self.analyse_subject)
+        self.btnWeighted.toggled.connect(self.weighted_correlation)
+        self.btnHistogram.toggled.connect(self.histogram)
+        self.btnSubject.toggled.connect(self.analyse_subject)
+        self.btnDensity.toggled.connect(self.binary_correlation_density)
+        self.btnThreshold.toggled.connect(self.binary_correlation_threshold)
 
         self.checkBoxRearrange.stateChanged.connect(self.rearrange)
         self.checkBoxDivide.stateChanged.connect(self.divide)
@@ -51,9 +51,20 @@ class CorrelationMatrixWidget(Base, Form):
     def init_comboboxes(self):
         for group in self.analysis.cohort.groups:
             self.comboBoxGroup.addItem(group.name)
-        for subject in self.analysis.cohort.subjects:
-            self.comboBoxSubject.addItem(subject.id)
         self.comboBoxGroup.currentIndexChanged.connect(self.group_change)
+        self.comboBoxSubjects.currentIndexChanged.connect(self.update_correlation)
+        self.update_combo_box_subjects()
+
+    def update_combo_box_subjects(self):
+        self.comboBoxSubjects.clear()
+        current_group_index = self.comboBoxGroup.currentIndex()
+        if current_group_index == -1:
+            return
+        for subject in self.analysis.cohort.groups[current_group_index].subjects:
+            self.comboBoxSubjects.addItem(subject.id)
+        self.comboBoxSubjects.blockSignals(True)
+        self.comboBoxSubjects.setCurrentIndex(0)
+        self.comboBoxSubjects.blockSignals(False)
 
     def init_sliders(self):
         self.spinboxThreshold.valueChanged.connect(self.set_threshold)
@@ -63,22 +74,34 @@ class CorrelationMatrixWidget(Base, Form):
 
     def init_graphics_view(self, window):
         window.addToolBar(NavigationToolbar(self.correlationMatrix, self))
-        self.group_change(0)
+        self.update_correlation()
 
     def update_graphics_view(self):
         if self.correlation is None:
             return
         A = self.correlation
-        if self.radioButtonDensity.isChecked():
+        if self.btnDensity.isChecked():
             A = self.analysis.correlation_density(A, self.spinboxDensity.value())
-        elif self.radioButtonThreshold.isChecked():
+        elif self.btnThreshold.isChecked():
             A = self.analysis.correlation_threshold(A, self.spinboxThreshold.value())
         if self.checkBoxRearrange.isChecked():
             A = self.rearrange_regions(A)
         self.correlationMatrix.update_matrix(A)
 
-    def group_change(self, idx):
-        self.correlation = self.analysis.get_correlation(idx)
+    def group_change(self):
+        self.update_combo_box_subjects()
+        self.update_correlation()
+
+    def update_correlation(self):
+        idx = self.comboBoxGroup.currentIndex()
+        if idx == -1:
+            return
+        correlation = self.analysis.get_correlation(idx)
+        if self.btnGroup.isChecked():
+            correlation = np.mean(correlation, 0)
+        elif self.btnSubject.isChecked():
+            correlation = correlation[self.comboBoxSubjects.currentIndex()]
+        self.correlation = correlation
         self.update_graphics_view()
 
     def get_actions(self):
@@ -107,10 +130,12 @@ class CorrelationMatrixWidget(Base, Form):
         return new_A
 
     def analyse_group(self):
-        self.comboBoxSubject.setEnabled(False)
+        self.comboBoxSubjects.setEnabled(False)
+        self.update_correlation()
 
     def analyse_subject(self):
-        self.comboBoxSubject.setEnabled(True)
+        self.comboBoxSubjects.setEnabled(True)
+        self.update_correlation()
 
     def weighted_correlation(self):
         self.spinboxThreshold.setEnabled(False)

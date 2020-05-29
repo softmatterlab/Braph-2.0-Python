@@ -34,8 +34,10 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
             self.correlationMatrixWidget.set_structural_view()
             self.repetitionLabel.hide()
             self.setWindowTitle('MRI Graph Analysis')
+            self.analysis_class = AnalysisMRI
         elif subject_class == SubjectfMRI:
             self.setWindowTitle('fMRI Graph Analysis')
+            self.analysis_class = AnalysisfMRI
 
         self.subject_class = subject_class
         self.btnViewCohort.setEnabled(False)
@@ -112,7 +114,7 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
                 if cohort.subject_class != self.subject_class:
                     self.import_error('Wrong data type. Load a cohort with subjects of type {} instead.'.format(self.subject_class.__name__))
                     return
-            analysis = AnalysisMRI(cohort)
+            analysis = self.analysis_class(cohort)
             self.textAnalysisName.setText(analysis.name)
             self.btnViewCohort.setEnabled(True)
             self.set_locked(False)

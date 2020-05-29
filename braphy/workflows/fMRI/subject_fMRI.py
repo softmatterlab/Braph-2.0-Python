@@ -76,3 +76,11 @@ class SubjectfMRI(Subject):
             file_name = '{}/{}.xlsx'.format(file_path, subject.id)
             with open(file_name, 'w') as f:
                 df.to_excel(file_name, index = None, columns = None, header = False)
+
+    def correlation(subjects):
+        if isinstance(subjects, np.ndarray):
+            subjects = subjects.tolist()
+        correlations = []
+        for subject in subjects:
+            correlations.append(np.corrcoef(subject.data_dict['data'].value.T))
+        return np.array(correlations)
