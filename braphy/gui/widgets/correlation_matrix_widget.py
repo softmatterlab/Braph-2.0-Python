@@ -28,6 +28,7 @@ class CorrelationMatrixWidget(Base, Form):
 
     def set_structural_view(self):
         self.btnGroup.hide()
+        self.btnGroup.setCheckable(False)
         self.btnSubject.hide()
         self.comboBoxSubjects.hide()
 
