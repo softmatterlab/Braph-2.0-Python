@@ -39,11 +39,16 @@ class MeasuresWidget(Base, Form):
         self.btnComparison.clicked.connect(self.comparison)
         self.btnRandomComparison.clicked.connect(self.random_comparison)
 
+        self.btnGroup.clicked.connect(self.group_average)
+        self.btnSubject.clicked.connect(self.subject)
+
+        self.btnGroup.setChecked(True)
+
     def init_combo_boxes(self):
         self.comboBoxRegion.currentIndexChanged.connect(self.update_table)
         self.comboBoxGroup1.currentIndexChanged.connect(self.update_table)
         self.comboBoxGroup2.currentIndexChanged.connect(self.update_table)
-        self.comboBoxRegion.currentIndexChanged.connect(self.update_table)
+        self.comboBoxSubject.currentIndexChanged.connect(self.update_table)
 
         for group in self.analysis.cohort.groups:
             self.comboBoxGroup1.addItem(group.name)
@@ -68,17 +73,40 @@ class MeasuresWidget(Base, Form):
 
     def measure(self):
         self.comboBoxGroup2.setEnabled(False)
+        self.comboBoxSubject.setEnabled(True)
+        self.btnSubject.setEnabled(True)
         self.labelGroup.setText('Choose group:')
         self.update_table()
 
     def comparison(self):
         self.comboBoxGroup2.setEnabled(True)
+        self.comboBoxSubject.setEnabled(False)
+        self.btnSubject.setEnabled(False)
         self.labelGroup.setText('Choose groups:')
+        self.btnGroup.blockSignals(True)
+        self.btnGroup.setChecked(True)
+        self.btnGroup.blockSignals(False)
         self.update_table()
 
     def random_comparison(self):
         self.comboBoxGroup2.setEnabled(False)
+        self.comboBoxSubject.setEnabled(True)
+        self.btnSubject.setEnabled(True)
         self.labelGroup.setText('Choose group:')
+        self.update_table()
+
+    def group_average(self):
+        self.comboBoxSubject.setEnabled(False)
+        self.update_table()
+
+    def subject(self):
+        self.comboBoxSubject.blockSignals(True)
+        self.comboBoxSubject.setEnabled(True)
+        self.comboBoxSubject.clear()
+        group = self.analysis.cohort.groups[self.comboBoxGroup1.currentIndex()]
+        for subject in group.subjects:
+            self.comboBoxSubject.addItem(subject.id)
+        self.comboBoxSubject.blockSignals(False)
         self.update_table()
 
     def update_table(self):
@@ -103,7 +131,14 @@ class MeasuresWidget(Base, Form):
                 row = self.tableWidget.rowCount()
                 self.measurement_index_mapping[row] = i
                 self.tableWidget.setRowCount(row + 1)
-                contents = [(measurement.value), '-', measurement.sub_measure, self.analysis.cohort.groups[measurement.group].name, '-']
+                if self.analysis.cohort.subject_class == SubjectfMRI:
+                    if self.btnGroup.isChecked():
+                        value = np.mean(measurement.value, axis = 0)
+                    else:
+                        value = measurement.value[self.comboBoxSubject.currentIndex()]
+                else:
+                    value = (measurement.value)
+                contents = [value, '-', measurement.sub_measure, self.analysis.cohort.groups[measurement.group].name, '-']
                 for j, content in enumerate(contents):
                     if isinstance(content, np.ndarray):
                         content = content[current_region_index]
@@ -122,9 +157,15 @@ class MeasuresWidget(Base, Form):
                 row = self.tableWidget.rowCount()
                 self.comparison_index_mapping[row] = i
                 self.tableWidget.setRowCount(row + 1)
-                contents = [(comparison.measures[1] - comparison.measures[0]), (comparison.p_values[0]),
-                            (comparison.p_values[1]), (comparison.measures[0]),
-                            (comparison.measures[1]), (comparison.confidence_interval[0]),
+                if self.analysis.cohort.subject_class == SubjectfMRI:
+                    value_0 = np.mean(comparison.measures[0], axis = 0)
+                    value_1 = np.mean(comparison.measures[1], axis = 0)
+                else:
+                    value_0 = comparison.measures[0]
+                    value_1 = comparison.measures[1]
+                contents = [value_1 - value_0, (comparison.p_values[0]),
+                            (comparison.p_values[1]), (value_0),
+                            (value_1), (comparison.confidence_interval[0]),
                             (comparison.confidence_interval[1]), '-',
                             comparison.sub_measure, self.analysis.cohort.groups[comparison.groups[0]].name,
                             self.analysis.cohort.groups[comparison.groups[1]].name, '-']
