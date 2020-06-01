@@ -30,8 +30,8 @@ class GraphBD(Graph):
         return description
 
     def get_random_graph(self, attempts_per_edge = 5):
-        J_edges = np.where(self.A)[0]
-        I_edges = np.where(self.A)[1]
+        J_edges = np.where(self.A)[1]
+        I_edges = np.where(self.A)[0]
         E = len(I_edges)
 
         randomized_graph = self.A.copy()
@@ -54,7 +54,9 @@ class GraphBD(Graph):
             # 6) node_start_2 ~= node_end_1
             if not (randomized_graph[node_start_1, node_end_2] or 
                     randomized_graph[node_start_2, node_end_1] or 
-                    node_start_1 == node_start_2 or node_start_1 == node_end_2 or 
+                    node_start_1 == node_start_2 or 
+                    node_end_1 == node_end_2 or
+                    node_start_1 == node_end_2 or 
                     node_start_2 == node_end_1):
 
                 # erase old edges
