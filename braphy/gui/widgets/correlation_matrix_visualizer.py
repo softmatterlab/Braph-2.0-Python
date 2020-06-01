@@ -23,8 +23,6 @@ class CorrelationMatrixVisualizer(FigureCanvas):
         self.text = None
         self.matrix = None
         self.mouse_mode_inspect = False
-        background_color = self.parent().palette().color(QtGui.QPalette.Window).name()
-        fig.patch.set_facecolor(background_color)
 
     def init(self, matrix):
         self.matrix = matrix
