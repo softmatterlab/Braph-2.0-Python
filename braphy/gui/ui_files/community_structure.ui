@@ -186,7 +186,7 @@
        </widget>
       </item>
       <item>
-       <widget class="BrainAtlasWidget" name="graphicsView"/>
+       <widget class="BrainAtlasWidget" name="brainWidget"/>
       </item>
      </layout>
     </item>

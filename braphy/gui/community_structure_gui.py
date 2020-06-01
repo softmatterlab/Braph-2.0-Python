@@ -18,6 +18,7 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
         self.init_combo_box()
         self.init_buttons()
         self.init_table()
+        self.init_actions()
 
     def init_combo_box(self):
         for group in self.analysis.cohort.groups:
@@ -47,6 +48,10 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def init_table(self):
         self.update_table(self.analysis.community_structure)
+
+    def init_actions(self):
+        for action in self.brainWidget.get_actions():
+            self.toolBar.addAction(action)
 
     def set_gamma(self, gamma):
         self.analysis.set_gamma(gamma)
