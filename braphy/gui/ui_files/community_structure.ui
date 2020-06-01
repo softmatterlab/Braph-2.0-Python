@@ -205,7 +205,6 @@
     <property name="title">
      <string>About</string>
     </property>
-    <addaction name="actionAbout"/>
    </widget>
    <widget class="QMenu" name="menuFigure">
     <property name="title">
@@ -230,187 +229,11 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionZoom_in"/>
-   <addaction name="actionZoom_out"/>
-   <addaction name="action3D_rotation"/>
-   <addaction name="action3D"/>
-   <addaction name="actionSagittal_left"/>
-   <addaction name="actionSagittal_right"/>
-   <addaction name="actionAxial_dorsal"/>
-   <addaction name="actionAxial_ventral"/>
-   <addaction name="actionCoronal_anterior"/>
-   <addaction name="actionCoronal_posterior"/>
    <addaction name="separator"/>
-   <addaction name="actionBrain"/>
-   <addaction name="actionShow_axis"/>
-   <addaction name="actionShow_grid"/>
-   <addaction name="actionShow_symbols"/>
-   <addaction name="actionRegions"/>
-   <addaction name="actionShow_labels"/>
   </widget>
   <action name="actionQuit">
    <property name="text">
     <string>Close</string>
-   </property>
-  </action>
-  <action name="actionGenerate_figure">
-   <property name="text">
-    <string>Generate figure</string>
-   </property>
-  </action>
-  <action name="actionAbout">
-   <property name="text">
-    <string>About ...</string>
-   </property>
-  </action>
-  <action name="actionZoom_in">
-   <property name="text">
-    <string>Zoom in</string>
-   </property>
-  </action>
-  <action name="actionZoom_out">
-   <property name="text">
-    <string>Zoom out</string>
-   </property>
-  </action>
-  <action name="action3D_rotation">
-   <property name="text">
-    <string>3D rotation</string>
-   </property>
-  </action>
-  <action name="action3D">
-   <property name="icon">
-    <iconset resource="../icons/icons.qrc">
-     <normaloff>:/buttons/icon_view_3d.png</normaloff>:/buttons/icon_view_3d.png</iconset>
-   </property>
-   <property name="text">
-    <string>3D</string>
-   </property>
-  </action>
-  <action name="actionSagittal_left">
-   <property name="icon">
-    <iconset resource="../icons/icons.qrc">
-     <normaloff>:/buttons/icon_view_sl.png</normaloff>:/buttons/icon_view_sl.png</iconset>
-   </property>
-   <property name="text">
-    <string>Sagittal left</string>
-   </property>
-  </action>
-  <action name="actionSagittal_right">
-   <property name="icon">
-    <iconset resource="../icons/icons.qrc">
-     <normaloff>:/buttons/icon_view_sr.png</normaloff>:/buttons/icon_view_sr.png</iconset>
-   </property>
-   <property name="text">
-    <string>Sagittal right</string>
-   </property>
-  </action>
-  <action name="actionAxial_dorsal">
-   <property name="icon">
-    <iconset resource="../icons/icons.qrc">
-     <normaloff>:/buttons/icon_view_ad.png</normaloff>:/buttons/icon_view_ad.png</iconset>
-   </property>
-   <property name="text">
-    <string>Axial dorsal</string>
-   </property>
-  </action>
-  <action name="actionAxial_ventral">
-   <property name="icon">
-    <iconset resource="../icons/icons.qrc">
-     <normaloff>:/buttons/icon_view_av.png</normaloff>:/buttons/icon_view_av.png</iconset>
-   </property>
-   <property name="text">
-    <string>Axial ventral</string>
-   </property>
-  </action>
-  <action name="actionCoronal_anterior">
-   <property name="icon">
-    <iconset resource="../icons/icons.qrc">
-     <normaloff>:/buttons/icon_view_ca.png</normaloff>:/buttons/icon_view_ca.png</iconset>
-   </property>
-   <property name="text">
-    <string>Coronal anterior</string>
-   </property>
-  </action>
-  <action name="actionCoronal_posterior">
-   <property name="icon">
-    <iconset resource="../icons/icons.qrc">
-     <normaloff>:/buttons/icon_view_cp.png</normaloff>:/buttons/icon_view_cp.png</iconset>
-   </property>
-   <property name="text">
-    <string>Coronal posterior</string>
-   </property>
-  </action>
-  <action name="actionBrain">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../icons/icons.qrc">
-     <normaloff>:/buttons/icon_brain.png</normaloff>:/buttons/icon_brain.png</iconset>
-   </property>
-   <property name="text">
-    <string>Brain</string>
-   </property>
-  </action>
-  <action name="actionShow_axis">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../icons/icons.qrc">
-     <normaloff>:/buttons/icon_axis.png</normaloff>:/buttons/icon_axis.png</iconset>
-   </property>
-   <property name="text">
-    <string>Show axis</string>
-   </property>
-  </action>
-  <action name="actionShow_grid">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../icons/icons.qrc">
-     <normaloff>:/buttons/icon_grid.png</normaloff>:/buttons/icon_grid.png</iconset>
-   </property>
-   <property name="text">
-    <string>Show grid</string>
-   </property>
-  </action>
-  <action name="actionShow_symbols">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../icons/icons.qrc">
-     <normaloff>:/buttons/icon_symbol.png</normaloff>:/buttons/icon_symbol.png</iconset>
-   </property>
-   <property name="text">
-    <string>Show symbols</string>
-   </property>
-  </action>
-  <action name="actionRegions">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../icons/icons.qrc">
-     <normaloff>:/buttons/icon_sphere.png</normaloff>:/buttons/icon_sphere.png</iconset>
-   </property>
-   <property name="text">
-    <string>Regions</string>
-   </property>
-  </action>
-  <action name="actionShow_labels">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../icons/icons.qrc">
-     <normaloff>:/buttons/icon_label.png</normaloff>:/buttons/icon_label.png</iconset>
-   </property>
-   <property name="text">
-    <string>Show labels</string>
    </property>
   </action>
   <action name="actionGenerate_figure_2">
@@ -434,7 +257,7 @@
  </resources>
  <connections/>
  <buttongroups>
-  <buttongroup name="buttonGroup"/>
   <buttongroup name="buttonGroup_2"/>
+  <buttongroup name="buttonGroup"/>
  </buttongroups>
 </ui>
