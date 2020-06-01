@@ -20,6 +20,7 @@ class SlideShowWidget(Base, Form):
     def init(self, color):
         self.animate = True
         self.slideShow3DWidget.init(color)
+        self.btnPause.setToolTip("Pause the animation to be able to move the brain in any direction.")
         self.btnPause.clicked.connect(self.set_animation)
 
     def set_animation(self, checked):
