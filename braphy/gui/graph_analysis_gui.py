@@ -138,7 +138,7 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         self.cohort_editor_gui.show()
 
     def edit_community(self):
-        self.community_structure_gui = CommunityStructure(self.analysis, AppWindow = self)
+        self.community_structure_gui = CommunityStructure(self.analysis, self.brain_mesh_data, AppWindow = self)
         self.community_structure_gui.spinBoxGamma.valueChanged.connect(self.update_gamma)
         self.community_structure_gui.show()
 

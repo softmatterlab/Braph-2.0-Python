@@ -2,22 +2,25 @@ import sys
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QRadioButton, QTableWidgetItem, QButtonGroup
 from braphy.utility.helper_functions import abs_path_from_relative
+from braphy.gui.widgets.brain_view_options_widget import BrainViewOptionsWidget
 
 qtCreatorFile = abs_path_from_relative(__file__, "ui_files/community_structure.ui")
 
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 
 class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
-    def __init__(self, analysis, AppWindow = None):
+    def __init__(self, analysis, brain_mesh_data, AppWindow = None):
         if AppWindow:
             self.AppWindow = AppWindow
         QtWidgets.QMainWindow.__init__(self, parent = None)
         self.setupUi(self)
         self.analysis = analysis
         self.read_only = False
+        self.brain_mesh_data = brain_mesh_data
         self.init_combo_box()
         self.init_buttons()
         self.init_table()
+        self.init_brain_widget()
         self.init_actions()
 
     def init_combo_box(self):
@@ -52,6 +55,26 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
     def init_actions(self):
         for action in self.brainWidget.get_actions():
             self.toolBar.addAction(action)
+        for action in self.brain_view_options_widget.settingsWidget.get_actions():
+            self.toolBar.addAction(action)
+
+    def init_brain_widget(self):
+        self.brainWidget.init_brain_mesh(self.brain_mesh_data)
+        color = self.palette().color(QtGui.QPalette.Window).getRgb()
+        self.brainWidget.set_brain_background_color(color)
+
+        self.brain_view_options_widget = BrainViewOptionsWidget(parent = self.groupBoxBrain)
+        self.brain_view_options_widget.tabWidget.tabBar().hide()
+        self.brain_view_options_widget.init(self.brainWidget)
+        self.brain_view_options_widget.settingsWidget.change_transparency()
+        self.brain_view_options_widget.show()
+
+        show_only_selected = self.brain_view_options_widget.settingsWidget.checkBoxShowOnlySelected.isChecked()
+        show_brain_regions = self.brain_view_options_widget.settingsWidget.actionShow_brain_regions.isChecked()
+        self.brainWidget.init_brain_regions(self.analysis.cohort.atlas.brain_regions, 4, [], show_brain_regions, show_only_selected)
+
+        self.groupBoxBrain_old_resize = self.groupBoxBrain.resizeEvent
+        self.groupBoxBrain.resizeEvent = self.resize_brain
 
     def set_gamma(self, gamma):
         self.analysis.set_gamma(gamma)
@@ -145,6 +168,13 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def reset_community_structure(self):
         self.update_table(self.analysis.community_structure)
+
+    def resize_brain(self, event):
+        self.groupBoxBrain_old_resize(event)
+        self.brain_view_options_widget.update_move()
+
+    def resizeEvent(self, event):
+        self.brain_view_options_widget.update_move()
 
 def run():
     app = QtWidgets.QApplication(sys.argv)

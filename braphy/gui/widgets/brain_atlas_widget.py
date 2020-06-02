@@ -51,7 +51,7 @@ class BrainAtlasWidget(GLViewWidget):
     def add_selected_observer(self, observer):
         self.selected_observers.append(observer)
 
-    def setBrainBackgroundColor(self, rgba):
+    def set_brain_background_color(self, rgba):
         self.brainBackgroundColor = rgba
         self.setBackgroundColor(self.brainBackgroundColor)
 
