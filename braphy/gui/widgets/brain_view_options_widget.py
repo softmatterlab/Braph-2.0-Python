@@ -54,18 +54,25 @@ class BrainViewOptionsWidget(Base, Form):
         self.subjectVisualizationWidget.set_list(subjects)
 
     def tab_changed(self, index):
-        if index == 0:
+        if index == self.tabWidget.indexOf(self.tabPlot):
             self.brain_widget.reset_brain_region_colors()
             self.settingsWidget.change_brain_region_size()
             self.brain_widget.enable_brain_region_selection(True)
-        elif index == 1:
+
+        elif index == self.tabWidget.indexOf(self.tabSubjects):
             self.subjectVisualizationWidget.update_visualization()
             self.brain_widget.enable_brain_region_selection(False)
-        elif index == 2:
+
+        elif index == self.tabWidget.indexOf(self.tabGroups):
             self.groupVisualizationWidget.update_visualization()
             self.brain_widget.enable_brain_region_selection(False)
-        else:
+
+        elif index == self.tabWidget.indexOf(self.tabComparison):
             self.comparisonVisualizationWidget.update_visualization()
+            self.brain_widget.enable_brain_region_selection(False)
+
+        elif index == self.tabWidget.indexOf(self.tabCommunity):
+            self.communityVisualizationWidget.update_table()
             self.brain_widget.enable_brain_region_selection(False)
 
     def update_move(self):

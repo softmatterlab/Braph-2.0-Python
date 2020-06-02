@@ -22,6 +22,7 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
         self.init_table()
         self.init_brain_widget()
         self.init_actions()
+        self.brain_view_options_widget.communityVisualizationWidget.init(self.analysis.community_structure, self.brainWidget.set_brain_region_color_list)
 
     def init_combo_box(self):
         for group in self.analysis.cohort.groups:
@@ -64,7 +65,8 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
         self.brainWidget.set_brain_background_color(color)
 
         self.brain_view_options_widget = BrainViewOptionsWidget(parent = self.groupBoxBrain)
-        self.brain_view_options_widget.tabWidget.tabBar().hide()
+        for i in [3,2,1]:
+            self.brain_view_options_widget.tabWidget.removeTab(i)
         self.brain_view_options_widget.init(self.brainWidget)
         self.brain_view_options_widget.settingsWidget.change_transparency()
         self.brain_view_options_widget.show()
@@ -89,7 +91,7 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
         self.tableWidget.setRowCount(len(brain_regions))
         self.tableWidget.setColumnCount(2 + number_of_communities)
         headers = ['Brain region']
-        headers = headers + [str(community_number) for community_number in range(number_of_communities+1)]
+        headers = headers + [str(community_number+1) for community_number in range(number_of_communities+2)]
         self.tableWidget.setHorizontalHeaderLabels(headers)
 
         for i in range(len(brain_regions)):
@@ -165,6 +167,7 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def set_community_structure(self):
         self.analysis.community_structure = self.community_structure.copy()
+        self.brain_view_options_widget.communityVisualizationWidget.update_table(self.analysis.community_structure)
 
     def reset_community_structure(self):
         self.update_table(self.analysis.community_structure)

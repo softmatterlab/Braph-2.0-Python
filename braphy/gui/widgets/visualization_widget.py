@@ -315,5 +315,3 @@ class ComparisonVisualizationWidget(VisualizationWidget):
         if self.checkBoxPvalueDouble.isChecked():
             values = p_values[1]
             self.set_visualization(self.comboBoxPvalueDouble, values)
-
-

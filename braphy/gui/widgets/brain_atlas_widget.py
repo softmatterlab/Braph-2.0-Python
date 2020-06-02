@@ -167,6 +167,10 @@ class BrainAtlasWidget(GLViewWidget):
             if gui_brain_region.selected:
                 gui_brain_region.setColor(color)
 
+    def set_brain_region_color_list(self, color, regions):
+        for region in regions:
+            self.gui_brain_regions[region].setColor(color)
+
     def show_3D(self):
         self.set_orthographic(False)
         self.opts['center'] = pyqtgraph.Vector(0, 0, 0)
