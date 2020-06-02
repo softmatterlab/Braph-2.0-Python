@@ -228,7 +228,7 @@
     <property name="title">
      <string>Figure</string>
     </property>
-    <addaction name="actionGenerate_figure_2"/>
+    <addaction name="actionGenerate_figure"/>
    </widget>
    <addaction name="menuFigure"/>
    <addaction name="menuAbout"/>
@@ -254,7 +254,7 @@
     <string>Close</string>
    </property>
   </action>
-  <action name="actionGenerate_figure_2">
+  <action name="actionGenerate_figure">
    <property name="text">
     <string>Generate figure</string>
    </property>

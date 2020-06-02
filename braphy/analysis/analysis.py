@@ -8,14 +8,20 @@ class Analysis():
         self.cohort = cohort
         self.name = name
         self.graph_settings = GraphSettings.get_wd()
-        self.community_structure = [0]*len(self.cohort.atlas.brain_regions)
+        self.community_structure = np.zeros([self.number_of_groups(), self.number_of_regions()])
 
         self.measurements = measurements if measurements else []
         self.random_comparisons = random_comparisons if random_comparisons else []
         self.comparisons = comparisons if comparisons else []
 
+    def number_of_regions(self):
+        return len(self.cohort.atlas.brain_regions)
+
+    def number_of_groups(self):
+        return len(self.cohort.groups)
+
     def number_of_communities(self):
-        return max(self.community_structure) + 1
+        return np.max(self.community_structure) + 1
 
     def set_name(self, name):
         self.name = name
@@ -90,7 +96,7 @@ class Analysis():
     def set_negative_rule(self, negative_rule):
         self.graph_settings.rule_semipositivize = negative_rule
 
-    def get_community_structure(self, group_index):
+    def calculate_community_structure(self, group_index):
         return self.get_graph(group_index).get_measure(MeasureCommunityStructure, 'community_structure')
 
     def get_correlation(self, group_index):
