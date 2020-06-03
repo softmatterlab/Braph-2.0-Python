@@ -391,6 +391,11 @@
            <attribute name="title">
             <string>Brain View</string>
            </attribute>
+           <layout class="QHBoxLayout" name="horizontalLayout">
+            <item>
+             <widget class="BrainAtlasWidget" name="brainWidget"/>
+            </item>
+           </layout>
           </widget>
          </widget>
         </item>
@@ -541,6 +546,11 @@
    <extends>QWidget</extends>
    <header>braphy.gui.widgets.measures_widget</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>BrainAtlasWidget</class>
+   <extends>QGraphicsView</extends>
+   <header>braphy.gui.widgets.brain_atlas_widget</header>
   </customwidget>
  </customwidgets>
  <resources>

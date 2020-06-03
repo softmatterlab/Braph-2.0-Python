@@ -21,10 +21,10 @@ class CorrelationMatrixWidget(Base, Form):
         self.btnGroup.setChecked(True)
         self.checkBoxDivide.setEnabled(False)
 
-    def init(self, analysis, window):
+    def init(self, analysis):
         self.analysis = analysis
         self.init_comboboxes()
-        self.init_graphics_view(window)
+        self.init_graphics_view()
 
     def set_structural_view(self):
         self.btnGroup.hide()
@@ -73,9 +73,8 @@ class CorrelationMatrixWidget(Base, Form):
         self.spinboxDensity.valueChanged.connect(self.set_density)
         self.horizontalSliderDensity.valueChanged.connect(self.set_density)
 
-    def init_graphics_view(self, window):
-        window.addToolBar(NavigationToolbar(self.correlationMatrix, self))
-        self.update_correlation()
+    def init_graphics_view(self):
+        self.toolbar = NavigationToolbar(self.correlationMatrix, self)
 
     def update_graphics_view(self):
         if self.correlation is None:
@@ -107,6 +106,8 @@ class CorrelationMatrixWidget(Base, Form):
 
     def get_actions(self):
         actions = [self.actionShow_labels, self.actionShow_colorbar, self.actionInspect]
+        if self.toolbar:
+            actions.extend(self.toolbar.actions())
         return actions
 
     def set_threshold(self, value):

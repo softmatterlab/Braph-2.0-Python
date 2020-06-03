@@ -69,10 +69,24 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionQuit.triggered.connect(self.close)
         self.actionAbout.triggered.connect(self.about)
 
-    def init_correlation_matrix_actions(self):
-        actions = self.correlationMatrixWidget.get_actions()
-        for action in actions:
+    def init_brain_view_actions(self):
+        for action in self.brainWidget.get_actions():
             self.toolBar.addAction(action)
+        self.set_brain_view_actions_visible(False)
+
+    def set_brain_view_actions_visible(self, state):
+        for action in self.brainWidget.get_actions():
+            action.setVisible(state)
+#        for action in self.brain_view_options_widget.settingsWidget.get_actions():
+#            action.setVisible(state)
+
+    def init_correlation_matrix_actions(self):
+        for action in self.correlationMatrixWidget.get_actions():
+            self.toolBar.addAction(action)
+
+    def set_correlation_actions_visible(self, state):
+        for action in self.correlationMatrixWidget.get_actions():
+            action.setVisible(state)
 
     def init_comboboxes(self):
         graphs = ['weighted undirected', 'weighted directed', 'binary undirected', 'binary directed']
@@ -87,12 +101,24 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         self.comboBoxNegative.currentTextChanged.connect(self.set_negative_rule)
 
     def tab_changed(self):
-        if self.tabWidget.currentIndex() == 1:
+        if self.tabWidget.currentIndex() == 0:
+            self.set_brain_view_actions_visible(False)
+            self.set_correlation_actions_visible(True)
+        elif self.tabWidget.currentIndex() == 1:
             self.globalMeasuresWidget.update_table()
+            self.set_brain_view_actions_visible(False)
+            self.set_correlation_actions_visible(False)
         elif self.tabWidget.currentIndex() == 2:
             self.nodalMeasuresWidget.update_table()
+            self.set_brain_view_actions_visible(False)
+            self.set_correlation_actions_visible(False)
         elif self.tabWidget.currentIndex() == 3:
             self.binodalMeasuresWidget.update_table()
+            self.set_brain_view_actions_visible(False)
+            self.set_correlation_actions_visible(False)
+        elif self.tabWidget.currentIndex() == 4:
+            self.set_brain_view_actions_visible(True)
+            self.set_correlation_actions_visible(False)
 
     def set_analysis_name(self, name):
         if self.analysis:
@@ -122,9 +148,10 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
             self.analysis.set_correlation(self.comboBoxCorrelation.currentText())
             self.analysis.set_negative_rule(self.comboBoxNegative.currentText())
             self.set_graph_type(self.comboBoxGraph.currentText())
-            self.correlationMatrixWidget.init(analysis, self)
+            self.correlationMatrixWidget.init(analysis)
             self.set_cohort_labels()
             self.init_correlation_matrix_actions()
+            self.init_brain_view_actions()
             self.update_gamma()
             self.update_community_number()
 
