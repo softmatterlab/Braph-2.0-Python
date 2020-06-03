@@ -67,7 +67,11 @@
       </size>
      </property>
      <property name="text">
-      <string>Pause</string>
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="../icons/icons.qrc">
+       <normaloff>:/buttons/playpause.png</normaloff>:/buttons/playpause.png</iconset>
      </property>
      <property name="checkable">
       <bool>true</bool>
@@ -83,6 +87,8 @@
    <header>braphy.gui.widgets.slide_show_3D_widget</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../icons/icons.qrc"/>
+ </resources>
  <connections/>
 </ui>
