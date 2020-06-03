@@ -124,7 +124,8 @@ class CorrelationMatrixWidget(Base, Form):
         self.update_graphics_view()
 
     def rearrange_regions(self, A):
-        sorted_regions = np.argsort(self.analysis.community_structure)
+        group_index = self.comboBoxGroup.currentIndex()
+        sorted_regions = np.argsort(self.analysis.community_structure[group_index])
         new_A = A.copy()
         for (i, j), _ in np.ndenumerate(new_A):
             new_A[i, j] = A[sorted_regions[i], sorted_regions[j]]
