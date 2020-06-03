@@ -3,6 +3,7 @@ from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QRadioButton, QTableWidgetItem, QButtonGroup
 from braphy.utility.helper_functions import abs_path_from_relative
 from braphy.gui.widgets.brain_view_options_widget import BrainViewOptionsWidget
+from braphy.workflows import *
 import numpy as np
 
 qtCreatorFile = abs_path_from_relative(__file__, "ui_files/community_structure.ui")
@@ -23,27 +24,21 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
         self.init_table()
         self.init_brain_widget()
         self.init_actions()
-        self.brain_view_options_widget.communityVisualizationWidget.init(self.analysis.community_structure, self.comboBox.currentIndex(), self.brainWidget.set_brain_region_color_list)
+        self.brain_view_options_widget.communityVisualizationWidget.init(self.analysis.community_structure, self.comboBoxGroup.currentIndex(), self.brainWidget.set_brain_region_color_list)
+        if analysis.cohort.subject_class == SubjectMRI:
+            self.btnGroup.hide()
+            self.btnSubject.hide()
+            self.comboBoxSubject.hide()
 
     def init_combo_box(self):
         for group in self.analysis.cohort.groups:
-            self.comboBox.addItem(group.name)
-        self.comboBox.currentIndexChanged.connect(self.group_changed)
+            self.comboBoxGroup.addItem(group.name)
+        self.comboBoxGroup.currentIndexChanged.connect(self.group_changed)
+        self.comboBoxAlgorithm.addItem('Louvain')
 
     def init_buttons(self):
         self.btnFixed.toggled.connect(self.fixed_structure)
         self.btnDynamic.toggled.connect(self.dynamic_structure)
-        self.btnLouvain.toggled.connect(self.louvain_algorithm)
-        self.btnNewman.toggled.connect(self.newman_algorithm)
-        self.btnHidden = QRadioButton()
-        self.btnHidden.hide()
-
-        button_group = QButtonGroup(self)
-        for item in [self.btnFixed, self.btnDynamic]:
-            button_group.addButton(item)
-        button_group = QButtonGroup(self)
-        for item in [self.btnLouvain, self.btnNewman, self.btnHidden]:
-            button_group.addButton(item)
 
         self.btnSet.clicked.connect(self.set_community_structure)
         self.btnReset.clicked.connect(self.reset_community_structure)
@@ -52,7 +47,7 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
         self.spinBoxGamma.valueChanged.connect(self.set_gamma)
 
     def init_table(self):
-        group_index = self.comboBox.currentIndex()
+        group_index = self.comboBoxGroup.currentIndex()
         self.update_table(self.analysis.community_structure[group_index])
 
     def init_actions(self):
@@ -87,7 +82,7 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def update_table(self, community_structure = None):
         if community_structure is None:
-            community_structure = np.array(self.analysis.calculate_community_structure(self.comboBox.currentIndex()))
+            community_structure = np.array(self.analysis.calculate_community_structure(self.comboBoxGroup.currentIndex()))
         self.community_structure = community_structure.copy()
         number_of_communities = self.number_of_communities()
         brain_regions = self.analysis.cohort.atlas.brain_regions
@@ -100,10 +95,7 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
         for i in range(len(brain_regions)):
             region = brain_regions[i]
             item = QTableWidgetItem(region.label)
-            if self.read_only:
-                item.setFlags(QtCore.Qt.ItemIsSelectable)
-            else:
-                item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
+            item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
             self.tableWidget.setItem(i, 0, item)
             button_group = QButtonGroup(self)
             for j in range(number_of_communities + 1):
@@ -150,9 +142,7 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
     def fixed_structure(self, checked):
         if not checked:
             return
-        self.btnHidden.setChecked(True)
-        disabled_items = [self.btnLouvain, self.btnNewman,
-                          self.labelGamma, self.spinBoxGamma]
+        disabled_items = [self.comboBoxAlgorithm, self.labelGamma, self.spinBoxGamma]
         for item in disabled_items:
             item.setDisabled(True)
         self.read_only = False
@@ -161,18 +151,11 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
     def dynamic_structure(self, checked):
         if not checked:
             return
-        disabled_items = [self.btnLouvain, self.btnNewman,
-                          self.labelGamma, self.spinBoxGamma]
+        disabled_items = [self.comboBoxAlgorithm, self.labelGamma, self.spinBoxGamma]
         for item in disabled_items:
             item.setEnabled(True)
         self.read_only = True
         self.update_table()
-
-    def louvain_algorithm(self):
-        pass
-
-    def newman_algorithm(self):
-        pass
 
     def group_changed(self, group_index):
         self.btnFixed.setChecked(True)
@@ -181,12 +164,12 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
         self.brain_view_options_widget.communityVisualizationWidget.update_table(group_index)
 
     def set_community_structure(self):
-        group_index = self.comboBox.currentIndex()
+        group_index = self.comboBoxGroup.currentIndex()
         self.analysis.community_structure[group_index,:] = self.community_structure.copy()
         self.brain_view_options_widget.communityVisualizationWidget.update_table(group_index)
 
     def reset_community_structure(self):
-        group_index = self.comboBox.currentIndex()
+        group_index = self.comboBoxGroup.currentIndex()
         self.update_table(self.analysis.community_structure[group_index])
 
     def resize_brain(self, event):
