@@ -1,4 +1,8 @@
 from braphy.graph.graphs.graph import Graph
+from braphy.graph.graphs.graphBU import GraphBU
+import numpy as np
+import random
+from braphy.utility.helper_functions import *
 
 class GraphWU(Graph):
     weighted = True
@@ -30,5 +34,57 @@ class GraphWU(Graph):
 
         return description
 
-    def get_random_graph(self, attempts_per_edge = 5):
-        return None
+    def get_random_graph(self, number_of_weights, attempts_per_edge = 5):
+        W = self.A.copy()
+        graphBU = GraphBU(W,self.settings)
+        graphBU_random_A = graphBU.get_random_graph()
+        W_bin = W>0
+        N = np.size(graphBU_random_A,0) # number of nodes
+        randomized_graph = np.zeros([N,N]) # initialize null model matrix
+
+        S = sum(W.T) # nodal strength
+        W_sorted = np.sort(W[np.triu(W_bin)]) # sorted weights vector
+        # find all the edges
+        J_edges = np.where(np.triu(graphBU_random_A).T)[0]
+        I_edges = np.where(np.triu(graphBU_random_A).T)[1]
+        edges = I_edges + J_edges*N
+        # expected weights matrix
+        P = S[:,np.newaxis]*S[np.newaxis,:] # broadcasting
+
+        for m in range(W_sorted.size,0,-number_of_weights):
+            # sort the expected weights matrix
+            ind = np.argsort(np.take(P.T,edges))
+
+            # random index of sorted expected weight
+            selected_indices = random.sample(range(0,m), min(m, number_of_weights))
+            selected_edges = ind[selected_indices]
+
+            # assign corresponding sorted weight at this index
+            np.put(randomized_graph.T, edges[selected_edges],W_sorted[selected_indices])
+
+            # recalculate expected weight for node I_edges[selected_edge]
+            # cumulative weight
+            WA = accumarray(np.concatenate((I_edges[selected_edges], J_edges[selected_edges]), axis=0), np.concatenate((W_sorted[selected_indices], W_sorted[selected_indices]), axis=0), size=np.array([N, 1]))
+            WA=np.squeeze(WA)
+            IJu = WA>0
+            # readjust expected weight probabilities
+            F = 1 - WA[IJu]/S[IJu]
+            P[IJu,:] = P[IJu,:]*np.repeat(F[:,np.newaxis],4,axis=1)
+            P[:,IJu] = P[:,IJu]*np.repeat(F[np.newaxis,:],4,axis=0)
+            # readjust strengths
+            S[IJu] = S[IJu] - WA[IJu]
+
+            # remove the edge/weight from further consideration
+            selected_edges = ind[selected_indices]
+            edges = np.delete(edges, selected_edges)
+            I_edges = np.delete(I_edges, selected_edges)
+            J_edges = np.delete(J_edges, selected_edges)
+            W_sorted = np.delete(W_sorted, selected_edges)
+
+        # calculate the final matrix
+        randomized_graph = randomized_graph + randomized_graph.T
+
+        rpos = np.corrcoef(sum(W), sum(randomized_graph))
+        correlation_coefficients = np.array([rpos.item(2)])
+
+        return randomized_graph #, correlation_coefficients
