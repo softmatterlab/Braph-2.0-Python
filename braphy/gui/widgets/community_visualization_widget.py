@@ -20,25 +20,26 @@ class CommunityVisualizationWidget(Base, Form):
         self.brain_region_change_callback = brain_region_change_callback
         self.update_table()
 
-    def update_table(self, group_index = 0):
+    def update_table(self, group_index = None):
         self.tableWidget.clear()
-        self.group_index = group_index
+        if group_index is not None:
+            self.group_index = group_index
         number_of_communities = self.number_of_communities()
-        if group_index not in self.colors.keys():
-            self.colors[group_index] = []
-        if number_of_communities < len(self.colors[group_index]):
-            self.colors[group_index] = self.colors[group_index][:number_of_communities]
+        if self.group_index not in self.colors.keys():
+            self.colors[self.group_index] = []
+        if number_of_communities < len(self.colors[self.group_index]):
+            self.colors[self.group_index] = self.colors[self.group_index][:number_of_communities]
         self.tableWidget.setRowCount(number_of_communities)
         for i in range(number_of_communities):
             push_button = self.get_push_button_widget()
             self.tableWidget.setCellWidget(i, 0, push_button)
-            if i >= len(self.colors[group_index]):
-                self.colors[group_index].append(QColor('blue'))
-            color = self.colors[group_index][i]
+            if i >= len(self.colors[self.group_index]):
+                self.colors[self.group_index].append(QColor('blue'))
+            color = self.colors[self.group_index][i]
             style_sheet = 'background-color: {};'.format(color.name())
             push_button.button.setStyleSheet(style_sheet)
             push_button.button.community = i
-            push_button.button.group_index = group_index
+            push_button.button.group_index = self.group_index
             self.update_brain_regions(i)
 
     def number_of_communities(self):

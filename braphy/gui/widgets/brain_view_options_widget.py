@@ -75,6 +75,9 @@ class BrainViewOptionsWidget(Base, Form):
             self.communityVisualizationWidget.update_table()
             self.brain_widget.enable_brain_region_selection(False)
 
+    def community_tab_selected(self):
+        return self.tabWidget.currentIndex() == self.tabWidget.indexOf(self.tabCommunity)
+
     def update_move(self):
         self.move(9, self.parent().height()-self.height() - 9)
 

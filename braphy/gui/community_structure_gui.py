@@ -161,7 +161,10 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
         self.btnFixed.setChecked(True)
         community_structure = self.analysis.community_structure[group_index]
         self.update_table(community_structure)
-        self.brain_view_options_widget.communityVisualizationWidget.update_table(group_index)
+        if self.brain_view_options_widget.community_tab_selected():
+            self.brain_view_options_widget.communityVisualizationWidget.update_table(group_index)
+        else:
+            self.brain_view_options_widget.communityVisualizationWidget.group_index = group_index
 
     def set_community_structure(self):
         group_index = self.comboBoxGroup.currentIndex()
