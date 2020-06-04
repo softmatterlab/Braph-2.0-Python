@@ -9,6 +9,15 @@ import numpy as np
 class AnalysisfMRI(Analysis):
     def __init__(self, cohort, name = 'analysis', measurements = None, random_comparisons = None, comparisons = None):
         super().__init__(cohort, name, measurements, random_comparisons, comparisons)
+        self.community_structure = {}
+        for i in range(len(self.cohort.groups)):
+            self.community_structure[i] = np.zeros([len(self.cohort.groups[i].subjects), self.number_of_regions()])
+
+    def get_community_structure(self, group_index, subject_index):
+        return self.community_structure[group_index][subject_index, :]
+
+    def set_community_structure(self, group_index, community_structure, subject_index):
+        self.community_structure[group_index][subject_index, :] = community_structure
 
     def calculate_measurement(self, measure_class, sub_measure, group_index):
         graphs = self.get_graph(group_index)

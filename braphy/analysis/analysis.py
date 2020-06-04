@@ -8,7 +8,6 @@ class Analysis():
         self.cohort = cohort
         self.name = name
         self.graph_settings = GraphSettings.get_wd()
-        self.community_structure = np.zeros([self.number_of_groups(), self.number_of_regions()])
 
         self.measurements = measurements if measurements else []
         self.random_comparisons = random_comparisons if random_comparisons else []

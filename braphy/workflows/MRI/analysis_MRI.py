@@ -8,6 +8,15 @@ import numpy as np
 class AnalysisMRI(Analysis):
     def __init__(self, cohort, name = 'analysis', measurements = None, random_comparisons = None, comparisons = None):
         super().__init__(cohort, name, measurements, random_comparisons, comparisons)
+        self.community_structure = {}
+        for i in range(len(self.cohort.groups)):
+            self.community_structure[i] = np.zeros(self.number_of_regions())
+
+    def get_community_structure(self, group_index):
+        return self.community_structure[group_index]
+
+    def set_community_structure(self, group_index, community_structure):
+        self.community_structure[group_index] = community_structure
 
     def calculate_measurement(self, measure_class, sub_measure, group_index):
         graph = self.get_graph(group_index)
