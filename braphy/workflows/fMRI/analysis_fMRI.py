@@ -1,6 +1,7 @@
 from braphy.analysis.analysis import Analysis
 from braphy.workflows.fMRI.measurement_fMRI import MeasurementfMRI
 from braphy.workflows.fMRI.comparison_fMRI import ComparisonfMRI
+from braphy.graph.measures.measure_community_structure import MeasureCommunityStructure
 from braphy.utility.permutation import Permutation
 from braphy.utility.stat_functions import StatFunctions as stat
 from braphy.graph.graph_factory import GraphFactory
@@ -9,6 +10,18 @@ import numpy as np
 class AnalysisfMRI(Analysis):
     def __init__(self, cohort, name = 'analysis', measurements = None, random_comparisons = None, comparisons = None):
         super().__init__(cohort, name, measurements, random_comparisons, comparisons)
+        self.community_structure = {}
+        for i in range(len(self.cohort.groups)):
+            self.community_structure[i] = np.zeros([len(self.cohort.groups[i].subjects), self.number_of_regions()])
+
+    def number_of_communities(self, group_index):
+        return np.max(self.community_structure[group_index], axis = 1) +1
+
+    def get_community_structure(self, group_index, subject_index):
+        return self.community_structure[group_index][subject_index, :]
+
+    def set_community_structure(self, group_index, community_structure, subject_index):
+        self.community_structure[group_index][subject_index, :] = community_structure
 
     def calculate_measurement(self, measure_class, sub_measure, group_index):
         graphs = self.get_graph(group_index)
@@ -53,3 +66,12 @@ class AnalysisfMRI(Analysis):
         for i in range(A.shape[0]):
             graphs.append(GraphFactory.get_graph(A[i,:,:], self.graph_settings))
         return graphs
+
+    def calculate_community_structure(self, group_index, subject_index = None):
+        graphs = self.get_graph(group_index)
+        if subject_index is not None:
+            return graphs[subject_index].get_measure(MeasureCommunityStructure, 'community_structure')
+        else:
+            A = np.mean([graph.A for graph in graphs], axis = 0)
+            graph = GraphFactory.get_graph(A, self.graph_settings)
+            return graph.get_measure(MeasureCommunityStructure, 'community_structure')

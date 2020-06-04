@@ -1,6 +1,7 @@
 from braphy.analysis.analysis import Analysis
 from braphy.workflows.MRI.measurement_MRI import MeasurementMRI
 from braphy.workflows.MRI.comparison_MRI import ComparisonMRI
+from braphy.graph.measures.measure_community_structure import MeasureCommunityStructure
 from braphy.utility.permutation import Permutation
 from braphy.utility.stat_functions import StatFunctions as stat
 from braphy.graph.graph_factory import GraphFactory
@@ -8,6 +9,18 @@ import numpy as np
 class AnalysisMRI(Analysis):
     def __init__(self, cohort, name = 'analysis', measurements = None, random_comparisons = None, comparisons = None):
         super().__init__(cohort, name, measurements, random_comparisons, comparisons)
+        self.community_structure = {}
+        for i in range(len(self.cohort.groups)):
+            self.community_structure[i] = np.zeros(self.number_of_regions())
+
+    def number_of_communities(self, group_index):
+        return np.max(self.community_structure[group_index]) +1
+
+    def get_community_structure(self, group_index):
+        return self.community_structure[group_index]
+
+    def set_community_structure(self, group_index, community_structure):
+        self.community_structure[group_index] = community_structure
 
     def calculate_measurement(self, measure_class, sub_measure, group_index):
         graph = self.get_graph(group_index)
@@ -51,3 +64,6 @@ class AnalysisMRI(Analysis):
     def get_graph(self, group_index):
         A = self.get_correlation(group_index)
         return GraphFactory.get_graph(A, self.graph_settings)
+
+    def calculate_community_structure(self, group_index):
+        return self.get_graph(group_index).get_measure(MeasureCommunityStructure, 'community_structure')
