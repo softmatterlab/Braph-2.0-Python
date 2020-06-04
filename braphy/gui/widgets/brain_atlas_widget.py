@@ -6,6 +6,7 @@ from PyQt5.QtGui import QColor
 from PyQt5.QtWidgets import QFileDialog
 from braphy.utility.helper_functions import abs_path_from_relative
 from braphy.gui.gui_brain_region import GUIBrainRegion
+from braphy.gui.gui_brain_edge import GUIBrainEdge
 import pyqtgraph.Vector
 import numpy as np
 
@@ -144,6 +145,46 @@ class BrainAtlasWidget(GLViewWidget):
         new_color[-1] = alpha
         self.brain_color = new_color
         self.brain_mesh.setColor(self.brain_color)
+
+    def set_edges(self, edges):
+        brain_removed = False
+        try:
+            self.removeItem(self.brain_mesh)
+            brain_removed = True
+        except:
+            pass
+        for i in range(edges.shape[0]):
+            for j in range(i, edges.shape[0]):
+                radius = edges[i, j][0]
+                color = edges[i, j][1]
+                coords = (self.brain_region[i].pos(), self.brain_region[j].pos())
+                edge = GUIBrainEdge(coords[0], coords[1], color, radius)
+                self.addItem(edge)
+        if brain_removed:
+            self.addItem(self.brain_mesh)
+
+    def add_edge(self, coords, color, radius = 1.0, label = None):
+        brain_removed = False
+        try:
+            self.removeItem(self.brain_mesh)
+            brain_removed = True
+        except:
+            pass
+        brain_edge = GUIBrainEdge(coords[0], coords[1], color, radius, label)
+        self.addItem(brain_edge)
+        if brain_removed:
+            self.addItem(self.brain_mesh)
+
+    def get_gui_brain_edge_items(self):
+        gui_brain_edge_items = []
+        for item in self.items:
+            if isinstance(item, GUIBrainEdge):
+                gui_brain_edge_items.append(item)
+        return gui_brain_edge_items
+
+    def clear_gui_brain_edges(self):
+        for item in self.get_gui_brain_edge_items():
+            self.removeItem(item)
 
     def change_brain_region_size(self, size):
         for gui_brain_region in self.gui_brain_regions:

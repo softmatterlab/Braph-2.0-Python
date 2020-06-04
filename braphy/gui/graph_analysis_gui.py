@@ -9,6 +9,7 @@ from braphy.cohort.cohort import Cohort
 from braphy.gui.cohort_editor_gui import CohortEditor
 from braphy.analysis.analysis import Analysis
 from braphy.gui.community_structure_gui import CommunityStructure
+from braphy.gui.widgets.brain_view_options_widget import BrainViewOptionsWidget
 from braphy.utility.helper_functions import abs_path_from_relative
 
 qtCreatorFile = abs_path_from_relative(__file__, "ui_files/graph_analysis.ui")
@@ -45,6 +46,9 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         self.textAnalysisName.textChanged.connect(self.set_analysis_name)
         self.set_locked(True)
 
+        self.brain_view_options_widget = BrainViewOptionsWidget(parent=self.tabBrainView)
+        self.brain_view_options_widget.raise_()
+
     def set_locked(self, locked):
         lock_items = [self.correlationMatrixWidget, self.graphMeasuresWidget, self.textAnalysisName,
                       self.comboBoxGraph, self.comboBoxCorrelation, self.comboBoxNegative,
@@ -72,13 +76,15 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
     def init_brain_view_actions(self):
         for action in self.brainWidget.get_actions():
             self.toolBar.addAction(action)
+        for action in self.brain_view_options_widget.settingsWidget.get_actions():
+            self.toolBar.addAction(action)
         self.set_brain_view_actions_visible(False)
 
     def set_brain_view_actions_visible(self, state):
         for action in self.brainWidget.get_actions():
             action.setVisible(state)
-#        for action in self.brain_view_options_widget.settingsWidget.get_actions():
-#            action.setVisible(state)
+        for action in self.brain_view_options_widget.settingsWidget.get_actions():
+            action.setVisible(state)
 
     def init_correlation_matrix_actions(self):
         for action in self.correlationMatrixWidget.get_actions():
@@ -119,6 +125,7 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         elif self.tabWidget.currentIndex() == 4:
             self.set_brain_view_actions_visible(True)
             self.set_correlation_actions_visible(False)
+            self.brain_view_options_widget.update_move()
 
     def set_analysis_name(self, name):
         if self.analysis:
@@ -192,6 +199,18 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         self.nodalMeasuresWidget.init(Measure.NODAL, self.analysis)
         self.binodalMeasuresWidget.init(Measure.BINODAL, self.analysis)
 
+        self.brainWidget.set_brain_mesh(self.brain_mesh_data)
+
+        self.brain_view_options_widget.init(self.brainWidget)
+        self.brain_view_options_widget.settingsWidget.change_transparency()
+        self.brain_view_options_widget.set_graph_view_mode()
+        self.brain_view_options_widget.show()
+        self.brain_view_options_widget.graphViewWidget.set_analysis(self.analysis)
+
+        show_only_selected = self.brain_view_options_widget.settingsWidget.checkBoxShowOnlySelected.isChecked()
+        show_brain_regions = self.brain_view_options_widget.settingsWidget.actionShow_brain_regions.isChecked()
+        self.brainWidget.init_brain_regions(self.analysis.cohort.atlas.brain_regions, 4, [], show_brain_regions, show_only_selected)
+
     def open(self):
         pass
 
@@ -229,6 +248,9 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def update_community_number(self):
         self.labelCommunity.setText('community number = {}'.format(self.analysis.number_of_communities()))
+
+    def resizeEvent(self, event):
+        self.brain_view_options_widget.update_move()
 
     def import_error(self, msg):
         msg_box = QMessageBox()

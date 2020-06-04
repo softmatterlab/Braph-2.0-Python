@@ -113,6 +113,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         self.brainWidget.set_brain_mesh(self.brain_mesh_data)
         self.brain_view_options_widget.init(self.brainWidget)
         self.brain_view_options_widget.settingsWidget.change_transparency()
+        self.brain_view_options_widget.tabWidget.removeTab(4)
         self.brain_view_options_widget.show()
 
     def init_buttons(self):

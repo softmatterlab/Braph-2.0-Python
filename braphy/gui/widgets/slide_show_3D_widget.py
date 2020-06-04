@@ -68,10 +68,6 @@ class SlideShow3DWidget(BrainAtlasWidget):
         self.setCameraPosition(distance = 275)
         self.set_degree()
 
-    def clear_animation(self):
-        self.clear_gui_brain_edges()
-        self.clear_gui_brain_regions()
-
     def paintGL(self, *args, **kwds):
         GLViewWidget.paintGL(self, *args, **kwds)
         self.qglColor(QColor("k"))
@@ -79,29 +75,6 @@ class SlideShow3DWidget(BrainAtlasWidget):
             if edge.label:
                 pos = edge.get_center_pos()
                 self.renderText(pos[0], pos[1], pos[2], edge.label)
-
-    def add_edge(self, coords, color, radius = 1.0, label = None):
-        brain_removed = False
-        try:
-            self.removeItem(self.brain_mesh)
-            brain_removed = True
-        except:
-            pass
-        brain_edge = GUIBrainEdge(coords[0], coords[1], color, radius, label)
-        self.addItem(brain_edge)
-        if brain_removed:
-            self.addItem(self.brain_mesh)
-
-    def get_gui_brain_edge_items(self):
-        gui_brain_edge_items = []
-        for item in self.items:
-            if isinstance(item, GUIBrainEdge):
-                gui_brain_edge_items.append(item)
-        return gui_brain_edge_items
-
-    def clear_gui_brain_edges(self):
-        for item in self.get_gui_brain_edge_items():
-            self.removeItem(item)
 
     def add_region(self, coord, color, radius):
         brain_removed = False
@@ -115,6 +88,10 @@ class SlideShow3DWidget(BrainAtlasWidget):
         self.addItem(gui_brain_region)
         if brain_removed:
             self.addItem(self.brain_mesh)
+
+    def clear_animation(self):
+        self.clear_gui_brain_edges()
+        self.clear_gui_brain_regions()
 
     def set_triangles(self):
         description = 'Number of TRIANGLES around a node is the number of neighbors of that node '\

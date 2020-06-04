@@ -34,8 +34,15 @@ class BrainViewOptionsWidget(Base, Form):
         self.groupVisualizationWidget.init(self.settingsWidget)
         self.subjectVisualizationWidget.init(self.settingsWidget)
         self.comparisonVisualizationWidget.init(self.settingsWidget)
+        self.graphViewWidget.init(self.brain_widget)
 
         self.add_custom_colormap_callbacks()
+
+    def set_graph_view_mode(self):
+        self.tabWidget.removeTab(4)
+        self.tabWidget.removeTab(3)
+        self.tabWidget.removeTab(2)
+        self.tabWidget.removeTab(1)
 
     def add_custom_colormap_callbacks(self):
         callback_subject = self.subjectVisualizationWidget.comboBoxColormap.add_colormap

@@ -83,7 +83,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>5</number>
      </property>
      <widget class="QWidget" name="tabPlot">
       <attribute name="title">
@@ -135,6 +135,16 @@
        </item>
       </layout>
      </widget>
+     <widget class="QWidget" name="tabGraph">
+      <attribute name="title">
+       <string>View graph</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="GraphViewWidget" name="graphViewWidget" native="true"/>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
   </layout>
@@ -168,6 +178,12 @@
    <class>CommunityVisualizationWidget</class>
    <extends>QWidget</extends>
    <header>braphy.gui.widgets.community_visualization_widget</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>GraphViewWidget</class>
+   <extends>QWidget</extends>
+   <header>braphy.gui.widgets.graph_view_widget</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
