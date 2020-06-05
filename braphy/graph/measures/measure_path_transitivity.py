@@ -5,6 +5,11 @@ import copy
 
 class MeasurePathTransitivity(Measure):
 
+    def dimensions():
+        d = {}
+        d['path_transitivity'] = Measure.BINODAL
+        return d
+
     def get_description():
         description = {}
         description['path_transitivity'] = 'The path transitivity provides the density of ' +\
