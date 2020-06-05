@@ -154,10 +154,12 @@ class BrainAtlasWidget(GLViewWidget):
         except:
             pass
         for i in range(edges.shape[0]):
-            for j in range(i, edges.shape[0]):
+            for j in range(i+1, edges.shape[0]):
                 radius = edges[i, j][0]
+                if radius <= 0:
+                    continue
                 color = edges[i, j][1]
-                coords = (self.brain_region[i].pos(), self.brain_region[j].pos())
+                coords = (self.brain_regions[i].pos(), self.brain_regions[j].pos())
                 edge = GUIBrainEdge(coords[0], coords[1], color, radius)
                 self.addItem(edge)
         if brain_removed:

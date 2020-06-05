@@ -3,6 +3,7 @@ from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from pyqtgraph import ColorMap as cm
 import numpy as np
 from braphy.utility.helper_functions import abs_path_from_relative
+from braphy.graph.graphs.graph import Graph
 from braphy.workflows import *
 
 ui_file = abs_path_from_relative(__file__, "../ui_files/graph_view_widget.ui")
@@ -12,6 +13,7 @@ class GraphViewWidget(Base, Form):
     def __init__(self, parent = None):
         super(GraphViewWidget, self).__init__(parent)
         self.setupUi(self)
+        self.edge_color = QtGui.QColor('blue')
         self.init_buttons()
         self.init_check_boxes()
         self.init_spin_boxes()
@@ -26,7 +28,10 @@ class GraphViewWidget(Base, Form):
             self.comboBoxSubject.hide()
             self.btnGroup.hide()
             self.btnSubject.hide()
+            self.btnGroup.setCheckable(False)
+            self.btnSubject.setCheckable(False)
         self.init_combo_boxes()
+        self.update_correlation()
 
     def init_buttons(self):
         self.btnGroup.clicked.connect(self.group)
@@ -35,6 +40,9 @@ class GraphViewWidget(Base, Form):
         self.btnWeighted.toggled.connect(self.weighted)
         self.btnBinaryDensity.toggled.connect(self.binary_density)
         self.btnBinaryThreshold.toggled.connect(self.binary_threshold)
+
+        style_sheet = 'background-color: {};'.format(self.edge_color.name())
+        self.btnColor.setStyleSheet(style_sheet)
 
     def init_combo_boxes(self):
         for group in self.analysis.cohort.groups:
@@ -126,9 +134,9 @@ class GraphViewWidget(Base, Form):
         if group_index == -1:
             return
         correlation = self.analysis.get_correlation(group_index)
-        if btnGroup.is_checked():
+        if self.btnGroup.isChecked():
             correlation = np.mean(correlation, axis = 0)
-        elif btnSubject.isChecked():
+        elif self.btnSubject.isChecked():
             correlation = correlation[self.comboBoxSubject.currentIndex()]
         self.correlation = correlation
         self.update_visualization()
@@ -136,14 +144,24 @@ class GraphViewWidget(Base, Form):
     def update_visualization(self):
         if self.correlation is None:
             return
-        self.brainWidget.clear_edges()
+        self.brain_widget.clear_gui_brain_edges()
         A = self.correlation
+        A = Graph.remove_diagonal(A, np.mean(A))
+        A = Graph.standardize(A, 'range')
+        A = Graph.remove_diagonal(A, 0)
         if self.btnWeighted.isChecked():
             pass
         elif self.btnBinaryDensity.isChecked():
             A = self.analysis.correlation_density(A, self.spinBoxDensity.value())
         elif self.btnBinaryThreshold.isChecked():
             A = self.analysis.correlation_threshold(A, self.spinBoxThreshold.value())
+        edge_matrix = [[0]*A.shape[0]]*A.shape[0]
+        for (i, j), value in np.ndenumerate(A):
+            color = QtGui.QColor('blue')
+            radius = value * 3
+            edge_matrix[i][j] = (radius, color)
+        edge_matrix = np.array(edge_matrix)
+        self.brain_widget.set_edges(edge_matrix)
         #build matrix
         #brainWidget.set_edges(matrix)
 

@@ -200,16 +200,15 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         self.binodalMeasuresWidget.init(Measure.BINODAL, self.analysis)
 
         self.brainWidget.set_brain_mesh(self.brain_mesh_data)
+        show_only_selected = self.brain_view_options_widget.settingsWidget.checkBoxShowOnlySelected.isChecked()
+        show_brain_regions = self.brain_view_options_widget.settingsWidget.actionShow_brain_regions.isChecked()
+        self.brainWidget.init_brain_regions(self.analysis.cohort.atlas.brain_regions, 4, [], show_brain_regions, show_only_selected)
 
         self.brain_view_options_widget.init(self.brainWidget)
         self.brain_view_options_widget.settingsWidget.change_transparency()
         self.brain_view_options_widget.set_graph_view_mode()
         self.brain_view_options_widget.show()
         self.brain_view_options_widget.graphViewWidget.set_analysis(self.analysis)
-
-        show_only_selected = self.brain_view_options_widget.settingsWidget.checkBoxShowOnlySelected.isChecked()
-        show_brain_regions = self.brain_view_options_widget.settingsWidget.actionShow_brain_regions.isChecked()
-        self.brainWidget.init_brain_regions(self.analysis.cohort.atlas.brain_regions, 4, [], show_brain_regions, show_only_selected)
 
     def open(self):
         pass

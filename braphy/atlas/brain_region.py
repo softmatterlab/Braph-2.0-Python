@@ -63,3 +63,6 @@ class BrainRegion():
                            x = d['x'],
                            y = d['y'],
                            z = d['z'])
+
+    def pos(self):
+        return (self.x ,self.y, self.z)
