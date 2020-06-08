@@ -17,6 +17,7 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
         QtWidgets.QMainWindow.__init__(self, parent = None)
         self.setupUi(self)
         self.analysis = analysis
+        self.community_structure = self.analysis.community_structure.copy()
         self.read_only = False
         self.brain_mesh_data = brain_mesh_data
         self.init_combo_box()
@@ -29,6 +30,12 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
             self.btnGroup.hide()
             self.btnSubject.hide()
             self.comboBoxSubject.hide()
+        if analysis.graph_settings.weighted:
+            self.labelBinary.hide()
+            self.spinBoxBinary.hide()
+        else:
+            self.labelBinary.setText(analysis.graph_settings.rule_binary)
+        self.fixed_structure(True)
 
     def init_combo_box(self):
         for group in self.analysis.cohort.groups:
@@ -46,6 +53,8 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.spinBoxGamma.setValue(self.analysis.get_gamma())
         self.spinBoxGamma.valueChanged.connect(self.set_gamma)
+        self.spinBoxBinary.setValue(self.analysis.get_binary_value())
+        self.spinBoxBinary.valueChanged.connect(self.set_binary_value)
 
     def init_table(self):
         group_index = self.comboBoxGroup.currentIndex()
@@ -64,7 +73,7 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
         self.brainWidget.set_brain_background_color(color)
 
         self.brain_view_options_widget = BrainViewOptionsWidget(parent = self.groupBoxBrain)
-        for i in [3,2,1]:
+        for i in [5, 3,2,1]:
             self.brain_view_options_widget.tabWidget.removeTab(i)
         self.brain_view_options_widget.init(self.brainWidget)
         self.brain_view_options_widget.settingsWidget.change_transparency()
@@ -79,6 +88,10 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def set_gamma(self, gamma):
         self.analysis.set_gamma(gamma)
+        self.update_table()
+
+    def set_binary_value(self, value):
+        self.analysis.set_binary_value(value)
         self.update_table()
 
     def update_table(self, community_structure = None):
@@ -143,20 +156,22 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
     def fixed_structure(self, checked):
         if not checked:
             return
-        disabled_items = [self.comboBoxAlgorithm, self.labelGamma, self.spinBoxGamma]
-        for item in disabled_items:
-            item.setDisabled(True)
+        self.lock_structure_settings(True)
         self.read_only = False
         self.update_table(self.community_structure)
 
     def dynamic_structure(self, checked):
         if not checked:
             return
-        disabled_items = [self.comboBoxAlgorithm, self.labelGamma, self.spinBoxGamma]
-        for item in disabled_items:
-            item.setEnabled(True)
+        self.lock_structure_settings(False)
         self.read_only = True
         self.update_table()
+
+    def lock_structure_settings(self, locked):
+        items = [self.comboBoxAlgorithm, self.labelGamma, self.spinBoxGamma,
+                          self.labelBinary, self.spinBoxBinary]
+        for item in items:
+            item.setDisabled(locked)
 
     def group_changed(self, group_index):
         self.btnFixed.setChecked(True)

@@ -1,5 +1,6 @@
 from braphy.graph.graph_factory import GraphFactory, GraphSettings
 from braphy.graph.measures.measure_community_structure import MeasureCommunityStructure
+from braphy.graph.graphs.graph import Graph
 import numpy as np
 from abc import ABC, abstractmethod
 
@@ -32,6 +33,13 @@ class Analysis():
     def set_gamma(self, gamma):
         assert gamma >= 0 and gamma <= 1
         self.graph_settings.gamma = gamma
+
+    def get_binary_value(self):
+        return self.graph_settings.value_binary
+
+    def set_binary_value(self, value):
+        assert value >= 0 and value <= 1
+        self.graph_settings.value_binary = value
 
     def set_graph_type(self, graph_type):
         self.graph_settings.weighted = graph_type.weighted
@@ -96,6 +104,9 @@ class Analysis():
     def set_negative_rule(self, negative_rule):
         self.graph_settings.rule_semipositivize = negative_rule
 
+    def set_binary_rule(self, binary_rule):
+        self.graph_settings.rule_binary = binary_rule
+
     def calculate_community_structure(self, group_index):
         return self.get_graph(group_index).get_measure(MeasureCommunityStructure, 'community_structure')
 
@@ -103,12 +114,10 @@ class Analysis():
         return self.cohort.groups[group_index].correlation()
 
     def correlation_threshold(self, A, threshold):
-        return np.where(A > threshold, 1, 0)
+        return Graph.binarize(A, 'threshold', threshold)
 
     def correlation_density(self, A, density):
-        assert density >=0 and density <= 1
-        threshold = np.sort(A.flatten())[int(density*(np.size(A)-1))]
-        return self.correlation_threshold(A, threshold)
+        return Graph.binarize(A, 'density', density)
 
     @abstractmethod
     def get_graph(self, group_index):

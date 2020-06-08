@@ -51,7 +51,7 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def set_locked(self, locked):
         lock_items = [self.correlationMatrixWidget, self.graphMeasuresWidget, self.textAnalysisName,
-                      self.comboBoxGraph, self.comboBoxCorrelation, self.comboBoxNegative,
+                      self.comboBoxGraph, self.comboBoxCorrelation, self.comboBoxNegative, self.comboBoxBinary,
                       self.btnSubgraphAnalysis, self.btnStartAnalysis, self.groupBoxCommunityStructure]
         for item in lock_items:
             item.setEnabled(not locked)
@@ -98,13 +98,16 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         graphs = ['weighted undirected', 'weighted directed', 'binary undirected', 'binary directed']
         correlations = ['pearson', 'spearman', 'kendall', 'partial pearson', 'partial spearman']
         rules = ['zero', 'none', 'abs']
+        binary = ['threshold', 'density']
         self.comboBoxGraph.addItems(graphs)
         self.comboBoxCorrelation.addItems(correlations)
         self.comboBoxNegative.addItems(rules)
+        self.comboBoxBinary.addItems(binary)
 
         self.comboBoxGraph.currentTextChanged.connect(self.set_graph_type)
         self.comboBoxCorrelation.currentTextChanged.connect(self.set_correlation)
         self.comboBoxNegative.currentTextChanged.connect(self.set_negative_rule)
+        self.comboBoxBinary.currentTextChanged.connect(self.set_binary_rule)
 
     def tab_changed(self):
         if self.tabWidget.currentIndex() == 0:
@@ -154,6 +157,7 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
             self.analysis = analysis
             self.analysis.set_correlation(self.comboBoxCorrelation.currentText())
             self.analysis.set_negative_rule(self.comboBoxNegative.currentText())
+            self.analysis.set_binary_rule(self.comboBoxBinary.currentText())
             self.set_graph_type(self.comboBoxGraph.currentText())
             self.correlationMatrixWidget.init(analysis)
             self.set_cohort_labels()
@@ -233,6 +237,12 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         self.graphMeasuresWidget.update_measure_list(self.graph_type)
         self.analysis.set_graph_type(self.graph_type)
         self.correlationMatrixWidget.update_graphics_view()
+        if self.graph_type.weighted:
+            self.labelBinary.setEnabled(False)
+            self.comboBoxBinary.setEnabled(False)
+        else:
+            self.labelBinary.setEnabled(True)
+            self.comboBoxBinary.setEnabled(True)
 
     def set_correlation(self, correlation_type):
         self.analysis.set_correlation(correlation_type)
@@ -241,6 +251,9 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
     def set_negative_rule(self, negative_rule):
         self.analysis.set_negative_rule(negative_rule)
         self.correlationMatrixWidget.update_graphics_view()
+
+    def set_binary_rule(self, binary_rule):
+        self.analysis.set_binary_rule(binary_rule)
 
     def update_gamma(self):
         self.labelGamma.setText('gamma = {}'.format(self.analysis.get_gamma()))

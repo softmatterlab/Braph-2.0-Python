@@ -86,8 +86,13 @@ class Graph(ABC):
             A = np.maximum(A, A.T)
         return A
 
-    def binarize(A):
-        A[A != 0] = 1
+    def binarize(A, rule, value):
+        if rule == 'density':
+            assert value >=0 and value <= 1
+            threshold = np.sort(A.flatten())[int(value*(np.size(A)-1))]
+            A = np.where(A > threshold, 1, 0)
+        elif rule == 'threshold':
+            A = np.where(A > value, 1, 0)
         return A
 
     def standardize(A, rule):

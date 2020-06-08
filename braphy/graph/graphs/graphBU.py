@@ -9,7 +9,7 @@ class GraphBU(Graph):
         A = Graph.symmetrize(A, settings.rule_symmetrize)
         A = Graph.remove_diagonal(A)
         A = Graph.semipositivize(A, settings.rule_semipositivize)
-        A = Graph.binarize(A)
+        A = Graph.binarize(A, settings.rule_binary, settings.value_binary)
         super().__init__(A, settings)
 
     def is_selfconnected(self):

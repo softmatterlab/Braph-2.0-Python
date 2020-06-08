@@ -7,9 +7,11 @@ class GraphSettings():
     SEMIPOSITIVIZE_DEFAULT = 'zero'
     STANDARDIZE_DEFAULT = 'range'
     SYMMETRIZE_DEFUALT = 'max'
+    BINARY_DEFAULT = 'threshold'
+    BINARY_VALUE_DEFAULT = 0
 
     def __init__(self, weighted, directed, measure_list, gamma, community_algorithm,
-                 rule_semipositivize, rule_symmetrize, rule_standardize):
+                 rule_semipositivize, rule_symmetrize, rule_standardize, rule_binary, value_binary):
         self.weighted = weighted
         self.directed = directed
         self.measure_list = measure_list
@@ -18,11 +20,14 @@ class GraphSettings():
         self.rule_semipositivize = rule_semipositivize
         self.rule_symmetrize = rule_symmetrize
         self.rule_standardize = rule_standardize
+        self.rule_binary = rule_binary
+        self.value_binary = value_binary
 
     def get_bd(measure_list = MeasureParser.list_measures(), gamma = GAMMA_DEFAULT,
                community_algorithm = COMMUNITY_ALGORITHM_DEFAULT,
                rule_semipositivize = SEMIPOSITIVIZE_DEFAULT, rule_symmetrize = SYMMETRIZE_DEFUALT, 
-               rule_standardize = STANDARDIZE_DEFAULT):
+               rule_standardize = STANDARDIZE_DEFAULT, rule_binary = BINARY_DEFAULT,
+               value_binary = BINARY_VALUE_DEFAULT):
         return GraphSettings(weighted = False,
                              directed = True,
                              measure_list = measure_list[GraphBD],
@@ -30,12 +35,15 @@ class GraphSettings():
                              community_algorithm = community_algorithm,
                              rule_semipositivize = rule_semipositivize,
                              rule_symmetrize = rule_symmetrize,
-                             rule_standardize = rule_standardize)
+                             rule_standardize = rule_standardize,
+                             rule_binary = rule_binary,
+                             value_binary = value_binary)
 
     def get_bu(measure_list = MeasureParser.list_measures(), gamma = GAMMA_DEFAULT,
                community_algorithm = COMMUNITY_ALGORITHM_DEFAULT,
                rule_semipositivize = SEMIPOSITIVIZE_DEFAULT, rule_symmetrize = SYMMETRIZE_DEFUALT, 
-               rule_standardize = STANDARDIZE_DEFAULT):
+               rule_standardize = STANDARDIZE_DEFAULT, rule_binary = BINARY_DEFAULT,
+               value_binary = BINARY_VALUE_DEFAULT):
         return GraphSettings(weighted = False,
                              directed = False,
                              measure_list = measure_list[GraphBU],
@@ -43,12 +51,15 @@ class GraphSettings():
                              community_algorithm = community_algorithm,
                              rule_semipositivize = rule_semipositivize,
                              rule_symmetrize = rule_symmetrize,
-                             rule_standardize = rule_standardize)
+                             rule_standardize = rule_standardize,
+                             rule_binary = rule_binary,
+                             value_binary = value_binary)
 
     def get_wd(measure_list = MeasureParser.list_measures(), gamma = GAMMA_DEFAULT,
                community_algorithm = COMMUNITY_ALGORITHM_DEFAULT,
                rule_semipositivize = SEMIPOSITIVIZE_DEFAULT, rule_symmetrize = SYMMETRIZE_DEFUALT, 
-               rule_standardize = STANDARDIZE_DEFAULT):
+               rule_standardize = STANDARDIZE_DEFAULT, rule_binary = BINARY_DEFAULT,
+               value_binary = BINARY_VALUE_DEFAULT):
         return GraphSettings(weighted = True,
                              directed = True,
                              measure_list = measure_list[GraphWD],
@@ -56,12 +67,15 @@ class GraphSettings():
                              community_algorithm = community_algorithm,
                              rule_semipositivize = rule_semipositivize,
                              rule_symmetrize = rule_symmetrize,
-                             rule_standardize = rule_standardize)
+                             rule_standardize = rule_standardize,
+                             rule_binary = rule_binary,
+                             value_binary = value_binary)
 
     def get_wu(measure_list = MeasureParser.list_measures(), gamma = GAMMA_DEFAULT,
                community_algorithm = COMMUNITY_ALGORITHM_DEFAULT,
                rule_semipositivize = SEMIPOSITIVIZE_DEFAULT, rule_symmetrize = SYMMETRIZE_DEFUALT, 
-               rule_standardize = STANDARDIZE_DEFAULT):
+               rule_standardize = STANDARDIZE_DEFAULT, rule_binary = BINARY_DEFAULT,
+               value_binary = BINARY_VALUE_DEFAULT):
         return GraphSettings(weighted = True,
                              directed = False,
                              measure_list = measure_list[GraphWU],
@@ -69,7 +83,9 @@ class GraphSettings():
                              community_algorithm = community_algorithm,
                              rule_semipositivize = rule_semipositivize,
                              rule_symmetrize = rule_symmetrize,
-                             rule_standardize = rule_standardize)
+                             rule_standardize = rule_standardize,
+                             rule_binary = rule_binary,
+                             value_binary = value_binary)
 
     def graph_class(self):
         cls = None

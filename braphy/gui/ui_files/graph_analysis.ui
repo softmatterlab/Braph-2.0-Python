@@ -192,6 +192,16 @@
             <item row="2" column="1">
              <widget class="QComboBox" name="comboBoxNegative"/>
             </item>
+            <item row="3" column="0">
+             <widget class="QLabel" name="labelBinary">
+              <property name="text">
+               <string>Binary</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="QComboBox" name="comboBoxBinary"/>
+            </item>
            </layout>
           </item>
           <item>
@@ -524,6 +534,11 @@
  </widget>
  <customwidgets>
   <customwidget>
+   <class>BrainAtlasWidget</class>
+   <extends>QGraphicsView</extends>
+   <header>braphy.gui.widgets.brain_atlas_widget</header>
+  </customwidget>
+  <customwidget>
    <class>CorrelationMatrixWidget</class>
    <extends>QWidget</extends>
    <header>braphy.gui.widgets.correlation_matrix_widget</header>
@@ -546,11 +561,6 @@
    <extends>QWidget</extends>
    <header>braphy.gui.widgets.measures_widget</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>BrainAtlasWidget</class>
-   <extends>QGraphicsView</extends>
-   <header>braphy.gui.widgets.brain_atlas_widget</header>
   </customwidget>
  </customwidgets>
  <resources>
