@@ -259,7 +259,8 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         self.labelGamma.setText('gamma = {}'.format(self.analysis.get_gamma()))
 
     def update_community_number(self):
-        self.labelCommunity.setText('community number = {}'.format(self.analysis.number_of_communities()))
+        pass
+        #self.labelCommunity.setText('community number = {}'.format(self.analysis.number_of_communities()))
 
     def resizeEvent(self, event):
         self.brain_view_options_widget.update_move()

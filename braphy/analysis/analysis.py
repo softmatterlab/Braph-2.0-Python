@@ -1,5 +1,4 @@
 from braphy.graph.graph_factory import GraphFactory, GraphSettings
-from braphy.graph.measures.measure_community_structure import MeasureCommunityStructure
 from braphy.graph.graphs.graph import Graph
 import numpy as np
 from abc import ABC, abstractmethod
@@ -9,7 +8,6 @@ class Analysis():
         self.cohort = cohort
         self.name = name
         self.graph_settings = GraphSettings.get_wd()
-        self.community_structure = np.zeros([self.number_of_groups(), self.number_of_regions()])
 
         self.measurements = measurements if measurements else []
         self.random_comparisons = random_comparisons if random_comparisons else []
@@ -21,8 +19,9 @@ class Analysis():
     def number_of_groups(self):
         return len(self.cohort.groups)
 
-    def number_of_communities(self):
-        return np.max(self.community_structure) + 1
+    @abstractmethod
+    def number_of_communities(self, group_index):
+        pass
 
     def set_name(self, name):
         self.name = name
@@ -107,8 +106,9 @@ class Analysis():
     def set_binary_rule(self, binary_rule):
         self.graph_settings.rule_binary = binary_rule
 
+    @abstractmethod
     def calculate_community_structure(self, group_index):
-        return self.get_graph(group_index).get_measure(MeasureCommunityStructure, 'community_structure')
+        pass
 
     def get_correlation(self, group_index):
         return self.cohort.groups[group_index].correlation()
