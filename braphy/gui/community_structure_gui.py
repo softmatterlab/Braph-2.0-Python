@@ -41,6 +41,7 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
         self.btnDynamic.toggled.connect(self.dynamic_structure)
 
         self.btnSet.clicked.connect(self.set_community_structure)
+        self.btnSetAll.clicked.connect(self.set_all_community_structure)
         self.btnReset.clicked.connect(self.reset_community_structure)
 
         self.spinBoxGamma.setValue(self.analysis.get_gamma())
@@ -169,6 +170,12 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
     def set_community_structure(self):
         group_index = self.comboBoxGroup.currentIndex()
         self.analysis.community_structure[group_index,:] = self.community_structure.copy()
+        self.brain_view_options_widget.communityVisualizationWidget.update_table(group_index)
+
+    def set_all_community_structure(self):
+        for i, group in enumerate(self.analysis.cohort.groups):
+            self.analysis.community_structure[i,:] = self.community_structure.copy()
+        group_index = self.comboBoxGroup.currentIndex()
         self.brain_view_options_widget.communityVisualizationWidget.update_table(group_index)
 
     def reset_community_structure(self):

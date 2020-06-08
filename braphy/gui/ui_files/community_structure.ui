@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1346</width>
+    <width>1455</width>
     <height>822</height>
    </rect>
   </property>
@@ -104,22 +104,15 @@
               <property name="topMargin">
                <number>0</number>
               </property>
-              <item row="0" column="1">
-               <widget class="QDoubleSpinBox" name="spinBoxGamma">
-                <property name="maximum">
-                 <double>1.000000000000000</double>
-                </property>
-                <property name="singleStep">
-                 <double>0.050000000000000</double>
+              <item row="0" column="0">
+               <widget class="QLabel" name="labelBinary">
+                <property name="text">
+                 <string>Density</string>
                 </property>
                </widget>
               </item>
-              <item row="0" column="0">
-               <widget class="QLabel" name="labelGamma">
-                <property name="text">
-                 <string>Gamma</string>
-                </property>
-               </widget>
+              <item row="0" column="1">
+               <widget class="QDoubleSpinBox" name="spinBoxBinary"/>
               </item>
              </layout>
             </item>
@@ -175,6 +168,27 @@
               </attribute>
              </widget>
             </item>
+            <item row="2" column="3">
+             <layout class="QGridLayout" name="gridLayout_3">
+              <item row="0" column="0">
+               <widget class="QLabel" name="labelGamma">
+                <property name="text">
+                 <string>Gamma</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QDoubleSpinBox" name="spinBoxGamma">
+                <property name="maximum">
+                 <double>1.000000000000000</double>
+                </property>
+                <property name="singleStep">
+                 <double>0.050000000000000</double>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
            </layout>
           </item>
          </layout>
@@ -187,7 +201,14 @@
           <item>
            <widget class="QPushButton" name="btnSet">
             <property name="text">
-             <string>Set</string>
+             <string>Set for current</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btnSetAll">
+            <property name="text">
+             <string>Set for all</string>
             </property>
            </widget>
           </item>
@@ -234,7 +255,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1346</width>
+     <width>1455</width>
      <height>22</height>
     </rect>
    </property>
@@ -294,8 +315,7 @@
  </resources>
  <connections/>
  <buttongroups>
-  <buttongroup name="buttonGroup_2"/>
-  <buttongroup name="buttonGroup_3"/>
   <buttongroup name="buttonGroup"/>
+  <buttongroup name="buttonGroup_3"/>
  </buttongroups>
 </ui>
