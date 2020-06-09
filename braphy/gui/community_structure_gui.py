@@ -45,6 +45,9 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
         self.comboBoxAlgorithm.addItem('Louvain')
 
     def init_buttons(self):
+        self.btnGroup.toggled.connect(self.group_average)
+        self.btnSubject.toggled.connect(self.subject)
+
         self.btnFixed.toggled.connect(self.fixed_structure)
         self.btnDynamic.toggled.connect(self.dynamic_structure)
 
@@ -196,6 +199,30 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
                     if self.community_structure[i] > community:
                         self.community_structure[i] -= 1
 
+    def group_average(self, checked):
+        if not checked:
+            return
+        self.comboBoxSubject.blockSignals(True)
+        self.comboBoxSubject.setEnabled(False)
+        self.comboBoxSubject.clear()
+        self.comboBoxSubject.blockSignals(False)
+        self.update_table(self.get_community_structure())
+
+    def subject(self, checked):
+        if not checked:
+            return
+        self.comboBoxSubject.setEnabled(True)
+        self.update_subjects()
+        self.update_table(self.get_community_structure())
+
+    def update_subjects(self):
+        group_index = self.comboBoxGroup.currentIndex()
+        self.comboBoxSubject.blockSignals(True)
+        self.comboBoxSubject.clear()
+        for subject in self.analysis.cohort.groups[group_index].subjects:
+            self.comboBoxSubject.addItem(subject.id)
+        self.comboBoxSubject.blockSignals(False)
+
     def fixed_structure(self, checked):
         if not checked:
             return
@@ -224,11 +251,7 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
         else:
             self.brain_view_options_widget.communityVisualizationWidget.group_index = group_index
         if self.analysis.__class__ == AnalysisfMRI:
-            self.comboBoxSubject.blockSignals(True)
-            self.comboBoxSubject.clear()
-            for subject in self.analysis.cohort.groups[group_index].subjects:
-                self.comboBoxSubject.addItem(subject.id)
-            self.comboBoxSubject.blockSignals(False)
+            self.update_subjects()
         community_structure = self.get_community_structure()
         self.update_table(community_structure)
 
@@ -243,7 +266,7 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
         return community_structure
 
     def subject_changed(self, subject_index):
-        pass
+        self.update_table(self.get_community_structure())
 
     def set_community_structure(self):
         group_index = self.comboBoxGroup.currentIndex()
