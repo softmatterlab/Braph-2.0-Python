@@ -20,8 +20,12 @@ class AnalysisfMRI(Analysis):
     def get_community_structure(self, group_index, subject_index):
         return self.community_structure[group_index][subject_index, :]
 
-    def set_community_structure(self, group_index, community_structure, subject_index):
-        self.community_structure[group_index][subject_index, :] = community_structure
+    def set_community_structure(self, group_index, community_structure, subject_index = None):
+        if subject_index is None:
+            for subject_index in range(len(self.cohort.groups[group_index].subjects)):
+                self.community_structure[group_index][subject_index, :] = community_structure
+        else:
+            self.community_structure[group_index][subject_index, :] = community_structure
 
     def calculate_measurement(self, measure_class, sub_measure, group_index):
         graphs = self.get_graph(group_index)
