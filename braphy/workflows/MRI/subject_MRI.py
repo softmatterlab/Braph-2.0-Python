@@ -122,4 +122,10 @@ class SubjectMRI(Subject):
                     correlation[i, j] = corr
                     correlation[j, i] = corr
             return correlation
+        elif correlation_type == 'kendall':
+            correlation = np.zeros((data.shape[0], data.shape[0]))
+            for i in range(data.shape[0]):
+                for j in range(data.shape[0]):
+                    correlation[i, j] = stats.kendalltau(data[i], data[j])[0]
+            return correlation
 
