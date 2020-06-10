@@ -227,12 +227,16 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def group_changed(self, group_index):
         self.btnFixed.setChecked(True)
-        if self.brain_view_options_widget.community_tab_selected():
-            self.brain_view_options_widget.communityVisualizationWidget.update_table(group_index)
-        else:
-            self.brain_view_options_widget.communityVisualizationWidget.group_index = group_index
         if self.analysis.__class__ == AnalysisfMRI:
             self.update_subjects()
+        if self.brain_view_options_widget.community_tab_selected():
+            if self.analysis.__class__ == AnalysisfMRI:
+                self.brain_view_options_widget.communityVisualizationWidget.update_table(group_index, 0)
+            else:
+                self.brain_view_options_widget.communityVisualizationWidget.update_table(group_index)
+        else:
+            self.brain_view_options_widget.communityVisualizationWidget.group_index = group_index
+            self.brain_view_options_widget.communityVisualizationWidget.subject_index = 0
         community_structure = self.get_community_structure()
         self.update_table(community_structure)
 
@@ -248,6 +252,15 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def subject_changed(self, subject_index):
         self.btnFixed.setChecked(True)
+        group_index = self.comboBoxGroup.currentIndex()
+        if self.brain_view_options_widget.community_tab_selected():
+            if self.analysis.__class__ == AnalysisfMRI:
+                self.brain_view_options_widget.communityVisualizationWidget.update_table(group_index, subject_index)
+            else:
+                self.brain_view_options_widget.communityVisualizationWidget.update_table(group_index)
+        else:
+            self.brain_view_options_widget.communityVisualizationWidget.group_index = group_index
+            self.brain_view_options_widget.communityVisualizationWidget.subject_index = subject_index
         self.update_table(self.get_community_structure())
 
     def set_community_structure(self):
@@ -255,15 +268,21 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
         subject_index = self.comboBoxSubject.currentIndex()
         if subject_index != -1: #fmri subject
             self.analysis.set_community_structure(group_index, self.community_structure.copy(), subject_index)
+            self.brain_view_options_widget.communityVisualizationWidget.update_table(group_index, subject_index)
         else: #mri or fmri group average
             self.analysis.set_community_structure(group_index, self.community_structure.copy())
-        self.brain_view_options_widget.communityVisualizationWidget.update_table(group_index)
+            if not self.btnGroup.isChecked():
+                self.brain_view_options_widget.communityVisualizationWidget.update_table(group_index)
 
     def set_all_community_structure(self):
         for i, group in enumerate(self.analysis.cohort.groups):
             self.analysis.set_community_structure(i, self.community_structure.copy())
         group_index = self.comboBoxGroup.currentIndex()
-        self.brain_view_options_widget.communityVisualizationWidget.update_table(group_index)
+        subject_index = self.comboBoxSubject.currentIndex()
+        if self.analysis.__class__ == AnalysisMRI:
+            self.brain_view_options_widget.communityVisualizationWidget.update_table(group_index)
+        else:
+            self.brain_view_options_widget.communityVisualizationWidget.update_table(group_index, subject_index)
 
     def reset_community_structure(self):
         self.btnFixed.setChecked(True)
