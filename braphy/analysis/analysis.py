@@ -1,13 +1,13 @@
-from braphy.graph.graph_factory import GraphFactory, GraphSettings
+from braphy.graph.graph_factory import GraphFactory
 from braphy.graph.graphs.graph import Graph
 import numpy as np
 from abc import ABC, abstractmethod
 
 class Analysis():
-    def __init__(self, cohort, name = 'analysis', measurements = None, random_comparisons = None, comparisons = None):
+    def __init__(self, cohort, graph_settings, name = 'analysis', measurements = None, random_comparisons = None, comparisons = None):
         self.cohort = cohort
         self.name = name
-        self.graph_settings = GraphSettings.get_wd()
+        self.graph_settings = graph_settings
 
         self.measurements = measurements if measurements else []
         self.random_comparisons = random_comparisons if random_comparisons else []
@@ -98,10 +98,10 @@ class Analysis():
         pass
 
     def set_correlation(self, correlation_type):
-        pass
+        self.graph_settings.correlation_type = correlation_type
 
     def set_negative_rule(self, negative_rule):
-        self.graph_settings.rule_semipositivize = negative_rule
+        self.graph_settings.rule_negative = negative_rule
 
     def set_binary_rule(self, binary_rule):
         self.graph_settings.rule_binary = binary_rule
@@ -111,7 +111,7 @@ class Analysis():
         pass
 
     def get_correlation(self, group_index):
-        return self.cohort.groups[group_index].correlation()
+        return self.cohort.groups[group_index].correlation(self.graph_settings.correlation_type)
 
     def correlation_threshold(self, A, threshold):
         return Graph.binarize(A, 'threshold', threshold)

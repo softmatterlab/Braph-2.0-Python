@@ -98,5 +98,5 @@ class Group:
 
         return averages, stds, p_values
 
-    def correlation(self):
-        return self.subject_class.correlation(self.subjects)
+    def correlation(self, correlation_type):
+        return self.subject_class.correlation(self.subjects, correlation_type)

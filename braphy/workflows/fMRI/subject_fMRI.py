@@ -84,7 +84,7 @@ class SubjectfMRI(Subject):
             with open(file_name, 'w') as f:
                 df.to_excel(file_name, index = None, columns = None, header = False)
 
-    def correlation(subjects):
+    def correlation(subjects, correlation_type):
         if isinstance(subjects, np.ndarray):
             subjects = subjects.tolist()
         correlations = []

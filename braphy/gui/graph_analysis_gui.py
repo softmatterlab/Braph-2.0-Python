@@ -4,6 +4,8 @@ from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from PyQt5.QtWidgets import *
 from braphy.graph.graphs import *
 from braphy.graph.measures.measure import Measure
+from braphy.graph.measures.measure_parser import MeasureParser
+from braphy.graph.graph_factory import GraphSettings
 from braphy.workflows import *
 from braphy.cohort.cohort import Cohort
 from braphy.gui.cohort_editor_gui import CohortEditor
@@ -150,21 +152,36 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
                 if cohort.subject_class != self.subject_class:
                     self.import_error('Wrong data type. Load a cohort with subjects of type {} instead.'.format(self.subject_class.__name__))
                     return
-            analysis = self.analysis_class(cohort)
+            graph_settings = self.get_graph_settings()
+            analysis = self.analysis_class(cohort, graph_settings)
             self.textAnalysisName.setText(analysis.name)
             self.btnViewCohort.setEnabled(True)
             self.set_locked(False)
             self.analysis = analysis
-            self.analysis.set_correlation(self.comboBoxCorrelation.currentText())
-            self.analysis.set_negative_rule(self.comboBoxNegative.currentText())
-            self.analysis.set_binary_rule(self.comboBoxBinary.currentText())
-            self.set_graph_type(self.comboBoxGraph.currentText())
             self.correlationMatrixWidget.init(analysis)
             self.set_cohort_labels()
             self.init_correlation_matrix_actions()
             self.init_brain_view_actions()
             self.update_gamma()
             self.update_community_number()
+
+    def get_graph_settings(self):
+        graph_class = GraphAnalysis.graph_cls_from_str(self.comboBoxGraph.currentText())
+        weighted = graph_class.weighted
+        directed = graph_class.directed
+        measure_list = MeasureParser.list_measures()[graph_class]
+        gamma = 1
+        community_algorithm = 'Louvain'
+        rule_negative = self.comboBoxNegative.currentText()
+        rule_symmetrize = 'max'
+        rule_standardize = 'range'
+        rule_binary = self.comboBoxBinary.currentText()
+        value_binary = 0
+        rule_correlation = self.comboBoxCorrelation.currentText()
+        graph_settings = GraphSettings(weighted, directed, measure_list, gamma, community_algorithm,
+                                        rule_negative, rule_symmetrize, rule_standardize, rule_binary,
+                                        value_binary, rule_correlation)
+        return graph_settings
 
     def set_cohort_labels(self):
         self.subjectLabel.setText('Number of subjects = {}'.format(len(self.analysis.cohort.subjects)))
@@ -234,9 +251,8 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def set_graph_type(self, graph_type):
         self.graph_type = GraphAnalysis.graph_cls_from_str(graph_type)
-        self.graphMeasuresWidget.update_measure_list(self.graph_type)
         self.analysis.set_graph_type(self.graph_type)
-        self.correlationMatrixWidget.update_graphics_view()
+        self.graphMeasuresWidget.update_measure_list(self.graph_type)
         if self.graph_type.weighted:
             self.labelBinary.setEnabled(False)
             self.comboBoxBinary.setEnabled(False)
@@ -246,11 +262,10 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def set_correlation(self, correlation_type):
         self.analysis.set_correlation(correlation_type)
-        self.correlationMatrixWidget.update_graphics_view()
+        self.correlationMatrixWidget.update_correlation()
 
     def set_negative_rule(self, negative_rule):
         self.analysis.set_negative_rule(negative_rule)
-        self.correlationMatrixWidget.update_graphics_view()
 
     def set_binary_rule(self, binary_rule):
         self.analysis.set_binary_rule(binary_rule)

@@ -9,7 +9,7 @@ class GraphWU(Graph):
     directed = False
     def __init__(self, A, settings):
         A = Graph.remove_diagonal(A)
-        A = Graph.semipositivize(A, settings.rule_semipositivize)
+        A = Graph.semipositivize(A, settings.rule_negative)
         A = Graph.standardize(A, settings.rule_standardize)
         A = Graph.symmetrize(A, settings.rule_symmetrize)
         super().__init__(A, settings)

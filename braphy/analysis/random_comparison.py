@@ -3,3 +3,6 @@ class RandomComparison():
         self.id = id
         self.atlas = atlas
         self.group = group
+
+    def dimension(self):
+        return self.measure_class.dimension(self.sub_measure)

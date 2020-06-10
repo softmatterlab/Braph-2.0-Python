@@ -7,7 +7,7 @@ class GraphBD(Graph):
     directed = True
     def __init__(self, A, settings):
         A = Graph.remove_diagonal(A)
-        A = Graph.semipositivize(A, settings.rule_semipositivize)
+        A = Graph.semipositivize(A, settings.rule_negative)
         A = Graph.binarize(A, settings.rule_binary, settings.value_binary)
         super().__init__(A, settings)
 

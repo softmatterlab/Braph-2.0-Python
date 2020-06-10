@@ -11,7 +11,7 @@ class TestStrength(TestUtility):
                       [13, 0.0, 1.2, 5.7, -0.01],
                       [5.5, 8.2, 0.3, 0.0005, -0.5],
                       [1, 0.0, 345, 8.7, -2]])
-        settings = GraphSettings.get_wd(rule_semipositivize = 'null')
+        settings = GraphSettings.get_wd(rule_negative = 'null')
         graph = GraphFactory.get_graph(A, settings)
         self.assertSequenceAlmostEqual(graph.get_measure(MeasureStrength, 'strength').tolist(),
                                        [0.0828, 0.0707, 1.0720, 0.1018, 1.0281], 4)

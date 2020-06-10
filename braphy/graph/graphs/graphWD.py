@@ -8,7 +8,7 @@ class GraphWD(Graph):
     directed = True
     def __init__(self,A, settings):
         A = Graph.remove_diagonal(A)
-        A = Graph.semipositivize(A, settings.rule_semipositivize)
+        A = Graph.semipositivize(A, settings.rule_negative)
         A = Graph.standardize(A, settings.rule_standardize)
         super().__init__(A, settings)
 
