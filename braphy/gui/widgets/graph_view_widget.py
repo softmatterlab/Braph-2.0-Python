@@ -19,8 +19,9 @@ class GraphViewWidget(Base, Form):
         self.init_spin_boxes()
         self.init_sliders()
 
-    def init(self, brain_widget):
+    def init(self, brain_widget, analysis):
         self.brain_widget = brain_widget
+        self.set_analysis(analysis)
 
     def set_analysis(self, analysis):
         self.analysis = analysis

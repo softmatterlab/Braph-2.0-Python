@@ -238,9 +238,8 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.brain_view_options_widget.init(self.brainWidget)
         self.brain_view_options_widget.settingsWidget.change_transparency()
-        self.brain_view_options_widget.set_graph_view_mode()
+        self.brain_view_options_widget.set_graph_analysis_mode(self.analysis)
         self.brain_view_options_widget.show()
-        self.brain_view_options_widget.graph_view_widget.set_analysis(self.analysis)
 
     def open(self):
         pass
