@@ -106,6 +106,9 @@ class Analysis():
     def set_binary_rule(self, binary_rule):
         self.graph_settings.rule_binary = binary_rule
 
+    def set_symmetrize_rule(self, symmetrize_rule):
+        self.graph_settings.rule_symmetrize = symmetrize_rule
+
     @abstractmethod
     def calculate_community_structure(self, group_index):
         pass

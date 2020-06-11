@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1397</width>
-    <height>983</height>
+    <height>998</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -201,6 +201,16 @@
             </item>
             <item row="3" column="1">
              <widget class="QComboBox" name="comboBoxBinary"/>
+            </item>
+            <item row="4" column="0">
+             <widget class="QLabel" name="labelSymmetrize">
+              <property name="text">
+               <string>Symmetrize</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="1">
+             <widget class="QComboBox" name="comboBoxSymmetrize"/>
             </item>
            </layout>
           </item>
