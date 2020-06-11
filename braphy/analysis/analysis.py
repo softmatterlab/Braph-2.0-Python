@@ -109,6 +109,9 @@ class Analysis():
     def set_symmetrize_rule(self, symmetrize_rule):
         self.graph_settings.rule_symmetrize = symmetrize_rule
 
+    def set_standardize_rule(self, standardize_rule):
+        self.graph_settings.rule_standardize = standardize_rule
+
     @abstractmethod
     def calculate_community_structure(self, group_index):
         pass

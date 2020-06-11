@@ -55,7 +55,7 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         lock_items = [self.correlationMatrixWidget, self.graphMeasuresWidget, self.textAnalysisName,
                       self.comboBoxGraph, self.comboBoxCorrelation, self.comboBoxNegative, self.comboBoxBinary,
                       self.btnSubgraphAnalysis, self.btnStartAnalysis, self.groupBoxCommunityStructure,
-                      self.comboBoxSymmetrize]
+                      self.comboBoxSymmetrize, self.comboBoxStandardize]
         for item in lock_items:
             item.setEnabled(not locked)
 
@@ -103,17 +103,20 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         negative = ['zero', 'none', 'abs']
         binary = ['threshold', 'density']
         symmetrize = ['sum', 'average', 'min', 'max']
+        standardize = ['range', 'threshold']
         self.comboBoxGraph.addItems(graphs)
         self.comboBoxCorrelation.addItems(correlations)
         self.comboBoxNegative.addItems(negative)
         self.comboBoxBinary.addItems(binary)
         self.comboBoxSymmetrize.addItems(symmetrize)
+        self.comboBoxStandardize.addItems(standardize)
 
         self.comboBoxGraph.currentTextChanged.connect(self.set_graph_type)
         self.comboBoxCorrelation.currentTextChanged.connect(self.set_correlation)
         self.comboBoxNegative.currentTextChanged.connect(self.set_negative_rule)
         self.comboBoxBinary.currentTextChanged.connect(self.set_binary_rule)
         self.comboBoxSymmetrize.currentTextChanged.connect(self.set_symmetrize_rule)
+        self.comboBoxStandardize.currentTextChanged.connect(self.set_standardize_rule)
 
     def tab_changed(self):
         if self.tabWidget.currentIndex() == 0:
@@ -178,7 +181,7 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         community_algorithm = 'Louvain'
         rule_negative = self.comboBoxNegative.currentText()
         rule_symmetrize = self.comboBoxSymmetrize.currentText()
-        rule_standardize = 'range'
+        rule_standardize = self.comboBoxStandardize.currentText()
         rule_binary = self.comboBoxBinary.currentText()
         value_binary = 0
         rule_correlation = self.comboBoxCorrelation.currentText()
@@ -260,9 +263,13 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         if self.graph_type.weighted:
             self.labelBinary.setEnabled(False)
             self.comboBoxBinary.setEnabled(False)
+            self.labelStandardize.setEnabled(True)
+            self.comboBoxStandardize.setEnabled(True)
         else:
             self.labelBinary.setEnabled(True)
             self.comboBoxBinary.setEnabled(True)
+            self.labelStandardize.setEnabled(False)
+            self.comboBoxStandardize.setEnabled(False)
         if self.graph_type.directed:
             self.labelSymmetrize.setEnabled(False)
             self.comboBoxSymmetrize.setEnabled(False)
@@ -282,6 +289,9 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def set_symmetrize_rule(self, symmetrize_rule):
         self.analysis.set_symmetrize_rule(symmetrize_rule)
+
+    def set_standardize_rule(self, standardize_rule):
+        self.analysis.set_standardize_rule(standardize_rule)
 
     def update_gamma(self):
         self.labelGamma.setText('gamma = {}'.format(self.analysis.get_gamma()))
