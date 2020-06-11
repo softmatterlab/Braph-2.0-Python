@@ -9,7 +9,7 @@ class MeasureTransitivity(Measure):
 
     def dimensions():
         d = {}
-        d['transitivity'] = Measure.NODAL
+        d['transitivity'] = Measure.GLOBAL
         return d
 
     def get_description():
