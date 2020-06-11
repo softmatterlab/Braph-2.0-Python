@@ -3,6 +3,9 @@ from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from pyqtgraph import ColorMap as cm
 import numpy as np
 from braphy.utility.helper_functions import abs_path_from_relative
+from braphy.gui.widgets.graph_view_widget import GraphViewWidget
+from braphy.gui.widgets.visualization_widget import *
+from braphy.gui.widgets.community_visualization_widget import CommunityVisualizationWidget
 
 ui_file = abs_path_from_relative(__file__, "../ui_files/brain_view_options_widget.ui")
 Form, Base = uic.loadUiType(ui_file)
@@ -28,62 +31,78 @@ class BrainViewOptionsWidget(Base, Form):
         self.update_visible()
         self.tabWidget.currentChanged.connect(self.tab_changed)
 
+        self.graph_view_widget = GraphViewWidget()
+        self.subject_visualization_widget = SubjectVisualizationWidget()
+        self.group_visualization_widget = GroupVisualizationWidget()
+        self.comparison_visualization_widget = ComparisonVisualizationWidget()
+        self.community_visualization_widget = CommunityVisualizationWidget()
+
     def init(self, brain_widget):
         self.brain_widget = brain_widget
         self.settingsWidget.init(brain_widget)
-        self.groupVisualizationWidget.init(self.settingsWidget)
-        self.subjectVisualizationWidget.init(self.settingsWidget)
-        self.comparisonVisualizationWidget.init(self.settingsWidget)
-        self.graphViewWidget.init(self.brain_widget)
 
+    def add_graph_view_tab(self):
+        self.graph_view_widget.init(self.brain_widget)
+        self.tabWidget.addTab(self.graph_view_widget, 'View graph')
+
+    def add_visualize_subjects_tab(self):
+        self.subject_visualization_widget.init(self.settingsWidget)
+        self.tabWidget.addTab(self.subject_visualization_widget, 'Visualize subjects')
+
+    def add_visualize_groups_tab(self):
+        self.group_visualization_widget.init(self.settingsWidget)
+        self.tabWidget.addTab(self.group_visualization_widget, 'Visualize groups')
+
+    def add_visualize_comparison_tab(self):
+        self.comparison_visualization_widget.init(self.settingsWidget)
+        self.tabWidget.addTab(self.comparison_visualization_widget, 'Visualize comparison')
+
+    def add_visualize_communities_tab(self, community_structure, group_index, color_callback):
+        self.community_visualization_widget.init(community_structure, group_index, color_callback)
+        self.tabWidget.addTab(self.community_visualization_widget, 'Visualize communities')
+
+    def set_cohort_mode(self):
+        self.add_visualize_subjects_tab()
+        self.add_visualize_groups_tab()
+        self.add_visualize_comparison_tab()
         self.add_custom_colormap_callbacks()
 
-    def set_graph_view_mode(self):
-        self.tabWidget.removeTab(4)
-        self.tabWidget.removeTab(3)
-        self.tabWidget.removeTab(2)
-        self.tabWidget.removeTab(1)
-
     def add_custom_colormap_callbacks(self):
-        callback_subject = self.subjectVisualizationWidget.comboBoxColormap.add_colormap
-        callback_group = self.groupVisualizationWidget.comboBoxColormap.add_colormap
-        callback_comparison = self.comparisonVisualizationWidget.comboBoxColormap.add_colormap
+        callback_subject = self.subject_visualization_widget.comboBoxColormap.add_colormap
+        callback_group = self.group_visualization_widget.comboBoxColormap.add_colormap
+        callback_comparison = self.comparison_visualization_widget.comboBoxColormap.add_colormap
 
-        self.subjectVisualizationWidget.comboBoxColormap.set_custom_color_map_callbacks([callback_group, callback_comparison])
-        self.groupVisualizationWidget.comboBoxColormap.set_custom_color_map_callbacks([callback_subject, callback_comparison])
-        self.comparisonVisualizationWidget.comboBoxColormap.set_custom_color_map_callbacks([callback_subject, callback_group])
+        self.subject_visualization_widget.comboBoxColormap.set_custom_color_map_callbacks([callback_group, callback_comparison])
+        self.group_visualization_widget.comboBoxColormap.set_custom_color_map_callbacks([callback_subject, callback_comparison])
+        self.comparison_visualization_widget.comboBoxColormap.set_custom_color_map_callbacks([callback_subject, callback_group])
 
     def set_groups(self, groups):
-        self.groupVisualizationWidget.set_list(groups)
-        self.comparisonVisualizationWidget.set_list(groups)
+        self.group_visualization_widget.set_list(groups)
+        self.comparison_visualization_widget.set_list(groups)
 
     def set_subjects(self, subjects):
-        self.subjectVisualizationWidget.set_list(subjects)
+        self.subject_visualization_widget.set_list(subjects)
 
     def tab_changed(self, index):
         if index == self.tabWidget.indexOf(self.tabPlot):
             self.brain_widget.reset_brain_region_colors()
             self.settingsWidget.change_brain_region_size()
             self.brain_widget.enable_brain_region_selection(True)
-
-        elif index == self.tabWidget.indexOf(self.tabSubjects):
-            self.subjectVisualizationWidget.update_visualization()
+        elif index == self.tabWidget.indexOf(self.subject_visualization_widget):
+            self.subject_visualization_widget.update_visualization()
             self.brain_widget.enable_brain_region_selection(False)
-
-        elif index == self.tabWidget.indexOf(self.tabGroups):
-            self.groupVisualizationWidget.update_visualization()
+        elif index == self.tabWidget.indexOf(self.group_visualization_widget):
+            self.group_visualization_widget.update_visualization()
             self.brain_widget.enable_brain_region_selection(False)
-
-        elif index == self.tabWidget.indexOf(self.tabComparison):
-            self.comparisonVisualizationWidget.update_visualization()
+        elif index == self.tabWidget.indexOf(self.comparison_visualization_widget):
+            self.comparison_visualization_widget.update_visualization()
             self.brain_widget.enable_brain_region_selection(False)
-
-        elif index == self.tabWidget.indexOf(self.tabCommunity):
-            self.communityVisualizationWidget.update_table()
+        elif index == self.tabWidget.indexOf(self.community_visualization_widget):
+            self.community_visualization_widget.update_table()
             self.brain_widget.enable_brain_region_selection(False)
 
     def community_tab_selected(self):
-        return self.tabWidget.currentIndex() == self.tabWidget.indexOf(self.tabCommunity)
+        return self.tabWidget.currentIndex() == self.tabWidget.indexOf(self.community_visualization_widget)
 
     def update_move(self):
         self.move(9, self.parent().height()-self.height() - 9)

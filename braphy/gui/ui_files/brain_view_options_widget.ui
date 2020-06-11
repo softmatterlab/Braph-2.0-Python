@@ -95,56 +95,6 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tabSubjects">
-      <attribute name="title">
-       <string>Visualize subjects</string>
-      </attribute>
-      <layout class="QHBoxLayout" name="horizontalLayout_7">
-       <item>
-        <widget class="SubjectVisualizationWidget" name="subjectVisualizationWidget" native="true"/>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="tabGroups">
-      <attribute name="title">
-       <string> Visualize groups</string>
-      </attribute>
-      <layout class="QHBoxLayout" name="horizontalLayout_4">
-       <item>
-        <widget class="GroupVisualizationWidget" name="groupVisualizationWidget" native="true"/>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="tabComparison">
-      <attribute name="title">
-       <string>Visualize comparison</string>
-      </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout">
-       <item>
-        <widget class="ComparisonVisualizationWidget" name="comparisonVisualizationWidget" native="true"/>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="tabCommunity">
-      <attribute name="title">
-       <string>Visualize communities</string>
-      </attribute>
-      <layout class="QHBoxLayout" name="horizontalLayout_3">
-       <item>
-        <widget class="CommunityVisualizationWidget" name="communityVisualizationWidget" native="true"/>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="tabGraph">
-      <attribute name="title">
-       <string>View graph</string>
-      </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_3">
-       <item>
-        <widget class="GraphViewWidget" name="graphViewWidget" native="true"/>
-       </item>
-      </layout>
-     </widget>
     </widget>
    </item>
   </layout>
@@ -154,36 +104,6 @@
    <class>BrainAtlasSettingsWidget</class>
    <extends>QWidget</extends>
    <header>braphy.gui.widgets.brain_atlas_settings_widget</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>ComparisonVisualizationWidget</class>
-   <extends>QWidget</extends>
-   <header>braphy.gui.widgets.visualization_widget</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>GroupVisualizationWidget</class>
-   <extends>QWidget</extends>
-   <header>braphy.gui.widgets.visualization_widget</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>SubjectVisualizationWidget</class>
-   <extends>QWidget</extends>
-   <header>braphy.gui.widgets.visualization_widget</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>CommunityVisualizationWidget</class>
-   <extends>QWidget</extends>
-   <header>braphy.gui.widgets.community_visualization_widget</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>GraphViewWidget</class>
-   <extends>QWidget</extends>
-   <header>braphy.gui.widgets.graph_view_widget</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
