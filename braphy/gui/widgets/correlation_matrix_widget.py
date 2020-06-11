@@ -75,18 +75,21 @@ class CorrelationMatrixWidget(Base, Form):
 
     def init_graphics_view(self):
         self.toolbar = NavigationToolbar(self.correlationMatrix, self)
+        self.correlationMatrix.labels = self.analysis.cohort.atlas.get_brain_region_labels()
 
     def update_graphics_view(self):
         if self.correlation is None:
             return
         A = self.correlation
+        labels = self.analysis.cohort.atlas.get_brain_region_labels()
         if self.btnDensity.isChecked():
             A = self.analysis.correlation_density(A, self.spinboxDensity.value())
         elif self.btnThreshold.isChecked():
             A = self.analysis.correlation_threshold(A, self.spinboxThreshold.value())
         if self.checkBoxRearrange.isChecked():
-            A = self.rearrange_regions(A)
+            A, labels = self.rearrange_regions(A)
         self.correlationMatrix.update_matrix(A)
+        self.correlationMatrix.set_labels(labels)
 
     def group_change(self):
         self.update_combo_box_subjects()
@@ -128,9 +131,12 @@ class CorrelationMatrixWidget(Base, Form):
         group_index = self.comboBoxGroup.currentIndex()
         sorted_regions = np.argsort(self.analysis.community_structure[group_index])
         new_A = A.copy()
+        new_labels = []
+        for i in range(new_A.shape[0]):
+            new_labels.append(self.analysis.cohort.atlas.get_brain_region_labels()[sorted_regions[i]])
         for (i, j), _ in np.ndenumerate(new_A):
             new_A[i, j] = A[sorted_regions[i], sorted_regions[j]]
-        return new_A
+        return new_A, new_labels
 
     def analyse_group(self):
         self.comboBoxSubjects.setEnabled(False)

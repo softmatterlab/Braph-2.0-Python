@@ -23,6 +23,8 @@ class CorrelationMatrixVisualizer(FigureCanvas):
         self.text = None
         self.matrix = None
         self.mouse_mode_inspect = False
+        self.labels = []
+        self.labels_visible = False
 
     def init(self, matrix):
         self.matrix = matrix
@@ -35,6 +37,10 @@ class CorrelationMatrixVisualizer(FigureCanvas):
             self.matrix = matrix
             self.cax.set_data(self.matrix)
             self.draw()
+
+    def set_labels(self, labels):
+        self.labels = labels
+        self.show_labels(self.labels_visible)
 
     def plot(self):
         self.ax = self.figure.add_subplot(111)
@@ -51,11 +57,14 @@ class CorrelationMatrixVisualizer(FigureCanvas):
         self.show_colorbar(False)
 
     def show_labels(self, show):
+        self.labels_visible = show
         if show:
+            if len(self.labels) != self.matrix.shape[0]:
+                self.labels = ['region']*self.matrix.shape[0]
             self.ax.set_xticks(np.arange(len(self.matrix)))
             self.ax.set_yticks(np.arange(len(self.matrix)))
-            self.ax.set_xticklabels(['region']*len(self.matrix))
-            self.ax.set_yticklabels(['region']*len(self.matrix))
+            self.ax.set_xticklabels(self.labels)
+            self.ax.set_yticklabels(self.labels)
         else:
             self.ax.set_xticks(np.array([]))
             self.ax.set_yticks(np.array([]))
