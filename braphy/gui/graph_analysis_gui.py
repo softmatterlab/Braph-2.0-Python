@@ -31,6 +31,7 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         self.graphMeasuresWidget.init()
         self.startAnalysisWidget.hide()
         self.tabWidget.tabBar().hide()
+        self.binodalMeasuresWidget.hide()
         self.tabWidget.currentChanged.connect(self.tab_changed)
 
         if subject_class == SubjectMRI:
@@ -131,7 +132,7 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
             self.set_brain_view_actions_visible(False)
             self.set_correlation_actions_visible(False)
         elif self.tabWidget.currentIndex() == 3:
-            self.binodalMeasuresWidget.update_table()
+            #self.binodalMeasuresWidget.update_table()
             self.set_brain_view_actions_visible(False)
             self.set_correlation_actions_visible(False)
         elif self.tabWidget.currentIndex() == 4:
@@ -220,9 +221,12 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         self.comboBoxCorrelation.setEnabled(False)
         self.comboBoxGraph.setEnabled(False)
         self.comboBoxNegative.setEnabled(False)
+        self.comboBoxBinary.setEnabled(False)
+        self.comboBoxSymmetrize.setEnabled(False)
+        self.comboBoxStandardize.setEnabled(False)
 
         self.tabWidget.tabBar().show()
-        self.startAnalysisWidget.init(self.graph_type, self, self.analysis)
+        self.startAnalysisWidget.init(self, self.analysis)
         self.globalMeasuresWidget.init(Measure.GLOBAL, self.analysis)
         self.nodalMeasuresWidget.init(Measure.NODAL, self.analysis)
         self.binodalMeasuresWidget.init(Measure.BINODAL, self.analysis)

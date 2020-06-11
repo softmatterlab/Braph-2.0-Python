@@ -18,11 +18,11 @@ class StartAnalysisWidget(Base, Form):
         super(StartAnalysisWidget, self).__init__(parent)
         self.setupUi(self)
 
-    def init(self, graph_type, graph_analysis_gui_class, analysis):
+    def init(self, graph_analysis_gui_class, analysis):
         self.analysis = analysis
-        self.graph_type = graph_type
+        self.graph_type = analysis.graph_settings.graph_class()
         self.init_buttons(graph_analysis_gui_class)
-        self.graphMeasuresWidget.init(graph_type)
+        self.graphMeasuresWidget.init(self.graph_type)
 
     def init_buttons(self, graph_analysis_gui):
         self.btnViewCommunity.clicked.connect(lambda signal, analysis_gui=graph_analysis_gui: self.view_community(analysis_gui))

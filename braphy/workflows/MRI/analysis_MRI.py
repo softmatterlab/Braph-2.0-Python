@@ -42,11 +42,11 @@ class AnalysisMRI(Analysis):
         for _ in range(permutations):
             permutated_subjects_1, permutated_subjects_2 = Permutation.permute(np.array(group_1.subjects), np.array(group_2.subjects), True)
 
-            A_permutated_1 = group_1.subject_class.correlation(permutated_subjects_1)
+            A_permutated_1 = group_1.subject_class.correlation(permutated_subjects_1, self.graph_settings.correlation_type)
             graph_permutated_1 = GraphFactory.get_graph(A_permutated_1, self.graph_settings)
             measure_permutated_1 = graph_permutated_1.get_measure(measure_class, sub_measure, False)
 
-            A_permutated_2 = group_2.subject_class.correlation(permutated_subjects_2)
+            A_permutated_2 = group_2.subject_class.correlation(permutated_subjects_2, self.graph_settings.correlation_type)
             graph_permutated_2 = GraphFactory.get_graph(A_permutated_2, self.graph_settings)
             measure_permutated_2 = graph_permutated_2.get_measure(measure_class, sub_measure, False)
 
