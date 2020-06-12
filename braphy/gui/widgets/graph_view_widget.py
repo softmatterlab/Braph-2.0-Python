@@ -38,9 +38,9 @@ class GraphViewWidget(Base, Form):
         self.btnBinaryDensity.blockSignals(True)
         self.btnBinaryDensity.setChecked(True)
         self.btnBinaryDensity.blockSignals(False)
-        self.spinBoxDensity.blockSignals(True)
-        self.spinBoxDensity.setValue(0.2)
-        self.spinBoxDensity.blockSignals(False)
+        #self.spinBoxDensity.blockSignals(True)
+        #self.spinBoxDensity.setValue(0.5)
+        #self.spinBoxDensity.blockSignals(False)
 
     def init_buttons(self):
         self.btnGroup.clicked.connect(self.group)
@@ -56,7 +56,6 @@ class GraphViewWidget(Base, Form):
     def init_combo_boxes(self):
         for group in self.analysis.cohort.groups:
             self.comboBoxGroup.addItem(group.name)
-        #self.comboBoxGroup.setCurrentIndex(0)
         self.comboBoxGroup.currentIndexChanged.connect(self.update_correlation)
         self.comboBoxSubject.currentIndexChanged.connect(self.update_correlation)
         self.comboBoxColor.reset()
@@ -147,6 +146,7 @@ class GraphViewWidget(Base, Form):
     def set_threshold(self, value):
         if not isinstance(value, float):
             value = value/100.0
+        print(value)
         self.spinBoxThreshold.setValue(value)
         self.sliderThreshold.setValue(int(value*100))
         self.update_visualization()
@@ -154,6 +154,7 @@ class GraphViewWidget(Base, Form):
     def set_density(self, value):
         if not isinstance(value, float):
             value = value/100.0
+        print(value)
         self.spinBoxDensity.setValue(value)
         self.sliderDensity.setValue(int(value*100))
         self.update_visualization()
