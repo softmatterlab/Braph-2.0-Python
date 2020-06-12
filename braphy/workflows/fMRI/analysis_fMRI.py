@@ -65,7 +65,7 @@ class AnalysisfMRI(Analysis):
         return comparison
 
     def get_graph(self, group_index):
-        A = self.get_correlation(group_index, self.graph_settings.correlation_type)
+        A = self.get_correlation(group_index)
         graphs = []
         for i in range(A.shape[0]):
             graphs.append(GraphFactory.get_graph(A[i,:,:], self.graph_settings))
