@@ -203,6 +203,11 @@ class BrainAtlasWidget(GLViewWidget):
             if not gui_brain_region.selected:
                 gui_brain_region.setColor(color)
 
+    def set_brain_edge_color(self, color):
+        gui_brain_edges = self.get_gui_brain_edge_items()
+        for gui_brain_edge in gui_brain_edges:
+            gui_brain_edge.setColor(color)
+
     def set_selected_brain_region_color(self, color):
         self.selected_region_color = color
         for gui_brain_region in self.gui_brain_regions:

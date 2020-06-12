@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import *
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from pyqtgraph import ColorMap as cm
 import numpy as np
-from braphy.utility.helper_functions import abs_path_from_relative
+from braphy.utility.helper_functions import abs_path_from_relative, QColor_to_list, QColor_from_list
 from braphy.graph.graphs.graph import Graph
 from braphy.workflows import *
 
@@ -18,6 +18,9 @@ class GraphViewWidget(Base, Form):
         self.init_check_boxes()
         self.init_spin_boxes()
         self.init_sliders()
+        self.correlation = None
+        self.btnColor.color = self.edge_color
+        self.colormaps = self.get_colormaps()
 
     def init(self, brain_widget, analysis):
         self.brain_widget = brain_widget
@@ -32,7 +35,12 @@ class GraphViewWidget(Base, Form):
             self.btnGroup.setCheckable(False)
             self.btnSubject.setCheckable(False)
         self.init_combo_boxes()
-        self.update_correlation()
+        self.btnBinaryDensity.blockSignals(True)
+        self.btnBinaryDensity.setChecked(True)
+        self.btnBinaryDensity.blockSignals(False)
+        self.spinBoxDensity.blockSignals(True)
+        self.spinBoxDensity.setValue(0.2)
+        self.spinBoxDensity.blockSignals(False)
 
     def init_buttons(self):
         self.btnGroup.clicked.connect(self.group)
@@ -48,9 +56,13 @@ class GraphViewWidget(Base, Form):
     def init_combo_boxes(self):
         for group in self.analysis.cohort.groups:
             self.comboBoxGroup.addItem(group.name)
+        #self.comboBoxGroup.setCurrentIndex(0)
         self.comboBoxGroup.currentIndexChanged.connect(self.update_correlation)
-        self.comboBoxGroup.setCurrentIndex(0)
         self.comboBoxSubject.currentIndexChanged.connect(self.update_correlation)
+        self.comboBoxColor.reset()
+        for colormap in self.colormaps.values():
+            self.comboBoxColor.add_colormap(colormap)
+        self.comboBoxColor.setCurrentIndex(0)
         self.comboBoxColor.currentIndexChanged.connect(self.update_visualization)
 
     def init_check_boxes(self):
@@ -86,27 +98,42 @@ class GraphViewWidget(Base, Form):
         self.comboBoxSubject.blockSignals(False)
 
     def set_edge_color(self):
-        pass
+        color = self.pick_color()
+        if color.isValid():
+            style_sheet = 'background-color: {};'.format(color.name())
+            self.btnColor.setStyleSheet(style_sheet)
+            self.btnColor.color = color
+            self.brain_widget.set_brain_edge_color(QColor_to_list(color))
+
+    def pick_color(self):
+        options = QtWidgets.QColorDialog.ColorDialogOptions()
+        options |= QtWidgets.QColorDialog.DontUseNativeDialog
+        return QtWidgets.QColorDialog.getColor(options = options)
 
     def weighted(self, checked):
         if not checked:
             self.checkBoxColor.setChecked(False)
             self.checkBoxRadius.setChecked(False)
+            return
         self.checkBoxColor.setEnabled(checked)
         self.checkBoxRadius.setEnabled(checked)
+        self.update_visualization()
 
     def binary_density(self, checked):
         self.spinBoxDensity.setEnabled(checked)
         self.sliderDensity.setEnabled(checked)
+        self.update_visualization()
 
     def binary_threshold(self, checked):
         self.spinBoxThreshold.setEnabled(checked)
         self.sliderThreshold.setEnabled(checked)
+        self.update_visualization()
 
     def visualize_color(self, checked):
         self.comboBoxColor.setEnabled(checked)
         self.labelColor.setEnabled(not checked)
         self.btnColor.setEnabled(not checked)
+        self.update_visualization()
 
     def visualize_radius(self, checked):
         self.labelMin.setEnabled(checked)
@@ -115,6 +142,7 @@ class GraphViewWidget(Base, Form):
         self.spinBoxMax.setEnabled(checked)
         self.labelRadius.setEnabled(not checked)
         self.spinBoxEdgeRadius.setEnabled(not checked)
+        self.update_visualization()
 
     def set_threshold(self, value):
         if not isinstance(value, float):
@@ -144,27 +172,49 @@ class GraphViewWidget(Base, Form):
 
     def update_visualization(self):
         if self.correlation is None:
+            self.update_correlation()
             return
         self.brain_widget.clear_gui_brain_edges()
         A = self.correlation
         A = Graph.remove_diagonal(A, np.mean(A))
         A = Graph.standardize(A, 'range')
         A = Graph.remove_diagonal(A, 0)
-        if self.btnWeighted.isChecked():
-            pass
-        elif self.btnBinaryDensity.isChecked():
-            A = self.analysis.correlation_density(A, self.spinBoxDensity.value())
-        elif self.btnBinaryThreshold.isChecked():
-            A = self.analysis.correlation_threshold(A, self.spinBoxThreshold.value())
         edge_matrix = [[0]*A.shape[0]]*A.shape[0]
-        for (i, j), value in np.ndenumerate(A):
-            color = QtGui.QColor('blue')
-            radius = value * 3
-            edge_matrix[i][j] = (radius, color)
+        default_radius = self.spinBoxEdgeRadius.value()
+        default_color = self.btnColor.color
+        if self.btnWeighted.isChecked():
+            for (i, j), value in np.ndenumerate(A):
+                if self.checkBoxColor.isChecked():
+                    colormap = self.comboBoxColor.colormap()
+                    color = colormap.map(value, mode = 'float')
+                else:
+                    color = default_color
+                if self.checkBoxRadius.isChecked():
+                    max_radius = self.spinBoxMax.value()
+                    min_radius = self.spinBoxMin.value()
+                    diff = max_radius - min_radius
+                    radius = value * diff + min_radius
+                else:
+                    radius = default_radius
+                edge_matrix[i][j] = (radius, color)
+        else:
+            if self.btnBinaryDensity.isChecked():
+                A = self.analysis.correlation_density(A, self.spinBoxDensity.value())
+            elif self.btnBinaryThreshold.isChecked():
+                A = self.analysis.correlation_threshold(A, self.spinBoxThreshold.value())
+            for (i, j), value in np.ndenumerate(A):
+                edge_matrix[i][j] = (default_radius * value, default_color)
         edge_matrix = np.array(edge_matrix)
         self.brain_widget.set_edges(edge_matrix)
-        #build matrix
-        #brainWidget.set_edges(matrix)
+
+    def get_colormaps(self):
+        colormaps = {}
+        colormaps['spring'] = cm([0.0, 1.0], [[1.0, 0.28, 0.85, 1.0], [1.0, 0.94, 0.28, 1.0]])
+        colormaps['cool'] = cm([0.0, 1.0], [[0.298, 0.964, 0.956, 1.0], [1.0, 0.28, 0.85, 1.0]])
+        colormaps['hot'] = cm([0.0, 0.33, 0.67, 1.0], [[0.0, 0.0, 0.0, 1.0], [1.0, 0.0, 0.0, 1.0], [1.0, 1.0, 0.0, 1.0], [1.0, 1.0, 1.0, 1.0]])
+        colormaps['parula'] = cm([0.0, 0.5, 1.0], [[0.317, 0.223, 0.937, 1.0], [0.333, 0.666, 0.5, 1.0], [1.0, 0.94, 0.28, 1.0]])
+        return colormaps
+
 
 
 

@@ -7,7 +7,7 @@ class GUIBrainEdge(gl.GLMeshItem):
         self.start = start
         self.end = end
         length = math.sqrt((end[0] - start[0])**2 + (end[1] - start[1])**2 + (end[2] - start[2])**2)
-        meshdata = gl.MeshData.cylinder(10, 20, radius=[radius, radius], length = length)
+        meshdata = gl.MeshData.cylinder(2, 5, radius=[radius, radius], length = length)
         super().__init__(meshdata = meshdata, shader = 'shaded', smooth = True, color = color)
         direction = [x - y for x, y in zip(end, start)]
         orthogonal_direction = [-direction[1], direction[0], 0]

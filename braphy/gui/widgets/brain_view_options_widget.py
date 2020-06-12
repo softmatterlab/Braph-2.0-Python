@@ -98,6 +98,7 @@ class BrainViewOptionsWidget(Base, Form):
             self.brain_widget.reset_brain_region_colors()
             self.settingsWidget.change_brain_region_size()
             self.brain_widget.enable_brain_region_selection(True)
+            self.brain_widget.clear_gui_brain_edges()
         elif index == self.tabWidget.indexOf(self.subject_visualization_widget):
             self.subject_visualization_widget.update_visualization()
             self.brain_widget.enable_brain_region_selection(False)
@@ -110,6 +111,11 @@ class BrainViewOptionsWidget(Base, Form):
         elif index == self.tabWidget.indexOf(self.community_visualization_widget):
             self.community_visualization_widget.update_table()
             self.brain_widget.enable_brain_region_selection(False)
+        elif index == self.tabWidget.indexOf(self.measure_visualization_widget):
+            self.brain_widget.clear_gui_brain_edges()
+            self.measure_visualization_widget.update_visualization()
+        elif index == self.tabWidget.indexOf(self.graph_view_widget):
+            self.graph_view_widget.update_visualization()
 
     def community_tab_selected(self):
         return self.tabWidget.currentIndex() == self.tabWidget.indexOf(self.community_visualization_widget)
