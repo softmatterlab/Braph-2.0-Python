@@ -8,36 +8,47 @@ from braphy.gui.color_bar_combo_box import ColorBar
 ui_file = abs_path_from_relative(__file__, "../ui_files/measure_visualization_widget.ui")
 Form, Base = uic.loadUiType(ui_file)
 
-class MeasureVisualizationWidget(Base, Form):
+class MeasureComparisonVisualizationWidget(Base, Form):
     def __init__(self, parent = None):
-        super(MeasureVisualizationWidget, self).__init__(parent)
+        super(MeasureComparisonVisualizationWidget, self).__init__(parent)
         self.setupUi(self)
-        self.visualization_options = ['Color', 'Size', 'Color and size']
+        self.visualization_options = ['Color', 'Size']
         self.colormaps = self.get_colormaps()
-        self.checkBoxDiff.hide()
-        self.checkBoxSingle.hide()
-        self.checkBoxDouble.hide()
-        self.comboBoxDiff.hide()
-        self.comboBoxSingle.hide()
-        self.comboBoxDouble.hide()
-        self.comboBoxGroup2.hide()
+        self.label.hide()
+        self.comboBoxType.hide()
+        self.init_check_boxes()
 
-    def init(self, settings_widget, measurements, groups):
-        self.measurements = measurements
+    def init(self, settings_widget, comparisons, groups):
+        self.comparisons = comparisons
         self.init_combo_boxes(groups)
         self.brain_widget = settings_widget.brain_widget
         self.settings_widget = settings_widget
         self.update_list(0)
         self.visualization_type_changed(0)
-        self.listWidget.currentTextChanged.connect(self.update_visualization)
+        self.listWidget.currentRowChanged.connect(self.list_item_changed)
         self.init_spin_boxes()
 
+    def init_check_boxes(self):
+        self.checkBoxDiff.stateChanged.connect(self.visualize_difference)
+        self.checkBoxSingle.stateChanged.connect(self.visualize_single)
+        self.checkBoxDouble.stateChanged.connect(self.visualize_double)
+        self.checkBoxDiff.setEnabled(False)
+        self.checkBoxSingle.setEnabled(False)
+        self.checkBoxDouble.setEnabled(False)
+
     def init_combo_boxes(self, groups):
-        self.comboBoxType.addItems(self.visualization_options)
-        self.comboBoxType.currentIndexChanged.connect(self.visualization_type_changed)
+        combo_boxes = [self.comboBoxDiff, self.comboBoxSingle, self.comboBoxDouble]
+        for combo_box in combo_boxes:
+            combo_box.addItems(self.visualization_options)
+            combo_box.currentIndexChanged.connect(lambda index, combo_box = combo_box: self.set_combo_box_visualization(index, combo_box))
+            combo_box.setEnabled(False)
+            combo_box.setCurrentIndex(-1)
+
         for group in groups:
             self.comboBoxGroup.addItem(group.name)
+            self.comboBoxGroup2.addItem(group.name)
         self.comboBoxGroup.currentIndexChanged.connect(self.group_changed)
+        self.comboBoxGroup2.currentIndexChanged.connect(self.group_changed)
         self.comboBoxBinary.currentIndexChanged.connect(self.update_visualization)
 
         self.comboBoxColormap.reset()
@@ -73,15 +84,63 @@ class MeasureVisualizationWidget(Base, Form):
         self.update_binary_values(group_index)
         self.update_visualization()
 
+    def disable_check_boxes(self):
+        check_boxes = [self.checkBoxDiff, self.checkBoxSingle, self.checkBoxDouble]
+        number_of_checked_boxes = sum([box.isChecked() for box in check_boxes])
+        for box in check_boxes:
+            box.setEnabled(True)
+            if number_of_checked_boxes >= 2:
+                if not box.isChecked():
+                    box.setEnabled(False)
+
+    def set_combo_box_visualization(self, index, combo_box):
+        combo_boxes = [self.comboBoxDiff, self.comboBoxSingle, self.comboBoxDouble]
+        for box in combo_boxes:
+            if box == combo_box:
+                continue
+            if box.currentIndex() == index:
+                box.blockSignals(True)
+                box.setCurrentIndex(-1)
+                box.blockSignals(False)
+        self.update_visualization()
+
+    def visualize_difference(self, state):
+        self.comboBoxDiff.setEnabled(state)
+        self.disable_check_boxes()
+        self.update_visualization()
+
+    def visualize_single(self, state):
+        self.comboBoxSingle.setEnabled(state)
+        self.disable_check_boxes()
+        self.update_visualization()
+
+    def visualize_double(self, state):
+        self.comboBoxDouble.setEnabled(state)
+        self.disable_check_boxes()
+        self.update_visualization()
+
     def update_list(self, group_index):
-        self.listWidget.blockSignals(True)
+        group_index_0 = self.comboBoxGroup.currentIndex()
+        group_index_1 = self.comboBoxGroup2.currentIndex()
         self.listWidget.clear()
-        self.measure_mapping = {}
-        for i, measurement in enumerate(self.measurements):
-            if measurement.group == group_index and measurement.is_nodal():
-                self.listWidget.addItem(measurement.sub_measure)
-                self.measure_mapping[measurement.sub_measure] = i
+        self.listWidget.blockSignals(True)
+        self.comparison_mapping = {}
+        for i, comparison in enumerate(self.comparisons):
+            is_nodal = comparison.measure_class.is_nodal(comparison.sub_measure)
+            if comparison.groups[0] == group_index_0 and comparison.groups[1] == group_index_1 and is_nodal:
+                self.listWidget.addItem(comparison.sub_measure)
+                self.comparison_mapping[comparison.sub_measure] = i
         self.listWidget.blockSignals(False)
+
+    def list_item_changed(self, index):
+        enabled = True if index > -1 else False
+        if enabled:
+            self.disable_check_boxes()
+        else:
+            check_boxes = [self.checkBoxDiff, self.checkBoxSingle, self.checkBoxDouble]
+            for check_box in check_boxes:
+                check_box.setEnabled(False)
+        self.update_visualization()
 
     def update_binary_values(self, group_index):
         pass
@@ -108,6 +167,8 @@ class MeasureVisualizationWidget(Base, Form):
         self.update_visualization()
 
     def update_visualization(self):
+
+        return
         self.brain_widget.reset_brain_region_colors()
         self.settings_widget.change_brain_region_size()
         if self.listWidget.currentRow() == -1:

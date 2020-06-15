@@ -7,6 +7,7 @@ from braphy.gui.widgets.graph_view_widget import GraphViewWidget
 from braphy.gui.widgets.visualization_widget import *
 from braphy.gui.widgets.community_visualization_widget import CommunityVisualizationWidget
 from braphy.gui.widgets.measure_visualization_widget import MeasureVisualizationWidget
+from braphy.gui.widgets.measure_comparison_visualization_widget import MeasureComparisonVisualizationWidget
 
 ui_file = abs_path_from_relative(__file__, "../ui_files/brain_view_options_widget.ui")
 Form, Base = uic.loadUiType(ui_file)
@@ -38,6 +39,7 @@ class BrainViewOptionsWidget(Base, Form):
         self.comparison_visualization_widget = ComparisonVisualizationWidget()
         self.community_visualization_widget = CommunityVisualizationWidget()
         self.measure_visualization_widget = MeasureVisualizationWidget()
+        self.measure_comparison_visualization_widget = MeasureComparisonVisualizationWidget()
 
     def init(self, brain_widget):
         self.brain_widget = brain_widget
@@ -50,6 +52,10 @@ class BrainViewOptionsWidget(Base, Form):
     def add_visualize_measure_tab(self, measurements, groups):
         self.measure_visualization_widget.init(self.settingsWidget, measurements, groups)
         self.tabWidget.addTab(self.measure_visualization_widget, 'Visualize measures')
+
+    def add_visualize_measure_comparison_tab(self, comparisons, groups):
+        self.measure_comparison_visualization_widget.init(self.settingsWidget, comparisons, groups)
+        self.tabWidget.addTab(self.measure_comparison_visualization_widget, 'Visualize comparisons')
 
     def add_visualize_subjects_tab(self):
         self.subject_visualization_widget.init(self.settingsWidget)
@@ -76,6 +82,7 @@ class BrainViewOptionsWidget(Base, Form):
     def set_graph_analysis_mode(self, analysis):
         self.add_graph_view_tab(analysis)
         self.add_visualize_measure_tab(analysis.measurements, analysis.cohort.groups)
+        self.add_visualize_measure_comparison_tab(analysis.comparisons, analysis.cohort.groups)
 
     def add_custom_colormap_callbacks(self):
         callback_subject = self.subject_visualization_widget.comboBoxColormap.add_colormap
