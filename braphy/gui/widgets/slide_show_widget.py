@@ -39,7 +39,7 @@ class SlideShowWidget(Base, Form):
             self.slideShow3DWidget.animate(True)
             self.animate = True
             self.slideShow3DWidget.set_locked(True)
-            self.slideShow3DWidget.reset_animate_view()
+            self.slideShow3DWidget.show_3D()
 
     def timerEvent(self, e = None):
         if not self.animate:
