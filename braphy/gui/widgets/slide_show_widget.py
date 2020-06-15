@@ -35,7 +35,7 @@ class SlideShowWidget(Base, Form):
         self.slideShow3DWidget.set_locked(False)
 
     def start_animation(self):
-        if not self.btnPause.isChecked():
+        if (not self.btnPause.isChecked()) and not self.animate:
             self.slideShow3DWidget.animate(True)
             self.animate = True
             self.slideShow3DWidget.set_locked(True)

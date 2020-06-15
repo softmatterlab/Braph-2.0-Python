@@ -35,6 +35,7 @@ class BrainAtlasWidget(GLViewWidget):
         self.interaction_enabled = True
         self.selection_enabled = True
         self.timer = None
+        self.shader = 'normalColor'
         self.brain_mesh = None
         self.brainBackgroundColor = (200, 200, 200, 255)
         self.selected_observers = []
@@ -121,12 +122,13 @@ class BrainAtlasWidget(GLViewWidget):
     def init_brain_mesh(self, mesh_data):
         self.setBackgroundColor(self.brainBackgroundColor)
 
-        self.brain_mesh = gl.GLMeshItem(vertexes=mesh_data['vertices'], faces=mesh_data['faces'], shader = 'normalColor')
+        self.brain_mesh = gl.GLMeshItem(vertexes=mesh_data['vertices'], faces=mesh_data['faces'], shader = self.shader)
         self.brain_mesh.setGLOptions('translucent')
         self.addItem(self.brain_mesh)
 
     def set_shader(self, shader):
-        self.brain_mesh.setShader(shader)
+        self.shader = shader
+        self.brain_mesh.setShader(self.shader)
 
     def paintGL(self, *args, **kwds):
         GLViewWidget.paintGL(self, *args, **kwds)
