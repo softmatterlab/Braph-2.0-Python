@@ -13,7 +13,8 @@ import xml.etree.ElementTree as ET
 import numpy as np
 
 from braphy.cohort.cohort import Cohort
-from braphy.workflows import *
+from braphy.workflows.MRI.subject_MRI import SubjectMRI
+from braphy.workflows.fMRI.subject_fMRI import SubjectfMRI
 
 from braphy.gui.widgets.brain_view_options_widget import BrainViewOptionsWidget
 

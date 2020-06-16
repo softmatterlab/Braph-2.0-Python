@@ -6,7 +6,10 @@ from braphy.graph.graphs import *
 from braphy.graph.measures.measure import Measure
 from braphy.graph.measures.measure_parser import MeasureParser
 from braphy.graph.graph_factory import GraphSettings
-from braphy.workflows import *
+from braphy.workflows.MRI.subject_MRI import SubjectMRI
+from braphy.workflows.fMRI.subject_fMRI import SubjectfMRI
+from braphy.workflows.MRI.analysis_MRI import AnalysisMRI
+from braphy.workflows.fMRI.analysis_fMRI import AnalysisfMRI
 from braphy.cohort.cohort import Cohort
 from braphy.gui.cohort_editor_gui import CohortEditor
 from braphy.analysis.analysis import Analysis
@@ -46,17 +49,59 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         self.subject_class = subject_class
         self.btnViewCohort.setEnabled(False)
         self.analysis = None
+        self.file_name = None
         self.textAnalysisName.textChanged.connect(self.set_analysis_name)
         self.set_locked(True)
 
         self.brain_view_options_widget = BrainViewOptionsWidget(parent=self.tabBrainView)
         self.brain_view_options_widget.raise_()
 
+    def to_dict(self):
+        d = {}
+        if self.analysis is not None:
+            d['analysis'] = self.analysis.to_dict()
+        brain_mesh_data = {}
+        brain_mesh_data['vertices'] = self.brain_mesh_data['vertices'].tolist()
+        brain_mesh_data['faces'] = self.brain_mesh_data['faces'].tolist()
+        d['brain_mesh_data'] = brain_mesh_data
+        return d
+
+    def to_file(self, file_name):
+        self.file_name = file_name
+        with open(file_name, 'w') as f:
+            json.dump(self.to_dict(), f, sort_keys=True, indent=4)
+
+    def from_dict(self, d):
+        self.analysis = Analysis.from_dict(d['analysis'])
+        self.init_brain_mesh(d)
+        self.init_analysis()
+
+    def from_file(self, file_name):
+        with open(file_name, 'r') as f:
+            d = json.load(f)
+        self.from_dict(d)
+        self.set_locked(False)
+        self.file_name = file_name
+
+    def init_brain_mesh(self, d):
+        vertices = np.asarray(d['brain_mesh_data']['vertices'])
+        faces = np.asarray(d['brain_mesh_data']['faces'])
+        brain_mesh_data = {'vertices': vertices, 'faces': faces}
+        self.brain_mesh_data = brain_mesh_data
+        self.init_brain_widget()
+
+    def init_brain_widget(self):
+        self.brainWidget.set_brain_mesh(self.brain_mesh_data)
+        self.brain_view_options_widget.init(self.brainWidget)
+        self.brain_view_options_widget.set_cohort_mode()
+        self.brain_view_options_widget.settingsWidget.change_transparency()
+        self.brain_view_options_widget.show()
+
     def set_locked(self, locked):
         lock_items = [self.correlationMatrixWidget, self.graphMeasuresWidget, self.textAnalysisName,
                       self.comboBoxGraph, self.comboBoxCorrelation, self.comboBoxNegative, self.comboBoxBinary,
                       self.btnSubgraphAnalysis, self.btnStartAnalysis, self.groupBoxCommunityStructure,
-                      self.comboBoxSymmetrize, self.comboBoxStandardize]
+                      self.comboBoxSymmetrize, self.comboBoxStandardize, self.actionSave]
         for item in lock_items:
             item.setEnabled(not locked)
 
@@ -162,16 +207,19 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
                     return
             graph_settings = self.get_graph_settings()
             analysis = self.analysis_class(cohort, graph_settings)
-            self.textAnalysisName.setText(analysis.name)
-            self.btnViewCohort.setEnabled(True)
-            self.set_locked(False)
             self.analysis = analysis
-            self.correlationMatrixWidget.init(analysis)
-            self.set_cohort_labels()
-            self.init_correlation_matrix_actions()
-            self.init_brain_view_actions()
-            self.update_gamma()
-            self.update_community_number()
+            self.init_analysis()
+
+    def init_analysis(self):
+        self.textAnalysisName.setText(self.analysis.name)
+        self.btnViewCohort.setEnabled(True)
+        self.set_locked(False)
+        self.correlationMatrixWidget.init(self.analysis)
+        self.set_cohort_labels()
+        self.init_correlation_matrix_actions()
+        self.init_brain_view_actions()
+        self.update_gamma()
+        self.update_community_number()
 
     def get_graph_settings(self):
         graph_class = GraphAnalysis.graph_cls_from_str(self.comboBoxGraph.currentText())
@@ -242,13 +290,27 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         self.brain_view_options_widget.show()
 
     def open(self):
-        pass
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        file_name, name = QFileDialog.getOpenFileName(self,"Open analysis", "",
+                                                      "analysis files (*.analysis)", options = options)
+        if file_name:
+            self.from_file(file_name)
 
     def save(self):
-        pass
+        if self.file_name:
+            self.to_file(self.file_name)
+        else:
+            self.save_as()
 
     def save_as(self):
-        pass
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        file_name, name = QFileDialog.getSaveFileName(self, "Save analysis", "untitled.analysis",
+                                                      "analysis files (*.analysis)", options = options)
+        if file_name:
+            self.file_name = file_name
+            self.to_file(file_name)
 
     def import_xml(self):
         pass

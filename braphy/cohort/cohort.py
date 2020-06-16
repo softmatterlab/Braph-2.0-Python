@@ -4,7 +4,8 @@ from braphy.cohort.group import Group
 from braphy.atlas.brain_atlas import BrainAtlas
 from braphy.utility.helper_functions import ListManager as lm
 from braphy.utility.get_version import get_version
-from braphy.workflows import *
+from braphy.workflows.MRI.subject_MRI import SubjectMRI
+from braphy.workflows.fMRI.subject_fMRI import SubjectfMRI
 import numpy as np
 
 class Cohort:

@@ -2,7 +2,8 @@ import numpy as np
 from braphy.utility.stat_functions import StatFunctions as stat
 from braphy.utility.permutation import Permutation
 import statistics
-from braphy.workflows import *
+from braphy.workflows.MRI.subject_MRI import SubjectMRI
+from braphy.workflows.fMRI.subject_fMRI import SubjectfMRI
 
 class Group:
     def __init__(self, subject_class, subjects = None, name = 'Group', description = '-'):

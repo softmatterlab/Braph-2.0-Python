@@ -7,7 +7,8 @@ from braphy.atlas.brain_atlas import BrainAtlas
 from braphy.utility.helper_functions import abs_path_from_relative, load_nv, FloatDelegate, float_to_string
 import numpy as np
 from braphy.gui.widgets.brain_atlas_widget import BrainAtlasWidget
-from braphy.workflows import *
+from braphy.workflows.MRI.subject_MRI import SubjectMRI
+from braphy.workflows.fMRI.subject_fMRI import SubjectfMRI
 
 qtCreatorFile = abs_path_from_relative(__file__, "ui_files/brain_atlas.ui")
 brain_mesh_file_name_default = "meshes/BrainMesh_ICBM152.nv"

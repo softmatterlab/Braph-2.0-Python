@@ -1,5 +1,9 @@
-from braphy.graph.graph_factory import GraphFactory
+from braphy.graph.graph_factory import GraphFactory, GraphSettings
 from braphy.graph.graphs.graph import Graph
+from braphy.cohort.cohort import Cohort
+from braphy.analysis.measurement import Measurement
+from braphy.analysis.comparison import Comparison
+from braphy.analysis.random_comparison import RandomComparison
 import numpy as np
 from abc import ABC, abstractmethod
 
@@ -12,6 +16,25 @@ class Analysis():
         self.measurements = measurements if measurements else []
         self.random_comparisons = random_comparisons if random_comparisons else []
         self.comparisons = comparisons if comparisons else []
+
+    def to_dict(self):
+        d = {}
+        d['cohort'] = self.cohort.to_dict()
+        d['name'] = self.name
+        d['graph_settings'] = self.graph_settings.to_dict()
+        d['measurements'] = [measurement.to_dict() for measurement in self.measurements]
+        d['random_comparisons'] = [random_comparison.to_dict() for random_comparison in self.random_comparisons]
+        d['comparisons'] = [comparison.to_dict() for comparison in self.comparisons]
+        return d
+
+    def from_dict(d):
+        cohort = Cohort.from_dict(d['cohort'])
+        name = d['name']
+        graph_settings = GraphSettings.from_dict(d['graph_settings'])
+        measurements = [Measurement.from_dict(measurement) for measurement in d['measurements']]
+        random_comparisons = [RandomComparison.from_dict(random_comparison) for random_comparison in d['random_comparisons']]
+        comparisons = [Comparison.from_dict(comparison) for comparison in d['comparisons']]
+        return Analysis(cohort, graph_settings, name, measurements, random_comparisons, comparisons)
 
     def number_of_regions(self):
         return len(self.cohort.atlas.brain_regions)

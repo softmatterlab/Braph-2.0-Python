@@ -6,7 +6,9 @@ from braphy.utility.helper_functions import abs_path_from_relative, load_nv
 from braphy.gui.cohort_editor_gui import CohortEditor
 from braphy.gui.graph_analysis_gui import GraphAnalysis
 from braphy.gui.exit_dialog import ExitDialog
-from braphy.workflows import *
+
+from braphy.workflows.MRI.subject_MRI import SubjectMRI
+from braphy.workflows.fMRI.subject_fMRI import SubjectfMRI
 from PyQt5.QtCore import Qt
 
 qtCreatorFile = abs_path_from_relative(__file__, "ui_files/braph.ui")
@@ -17,6 +19,7 @@ class MainWindow(ExitDialog, Ui_MainWindow):
         QtWidgets.QMainWindow.__init__(self)
         Ui_MainWindow.__init__(self)
         self.setupUi(self)
+        self.subject_class = SubjectMRI
 
         self.color = self.palette().color(QtGui.QPalette.Window).getRgb()
         self.init_buttons()
@@ -56,10 +59,8 @@ class MainWindow(ExitDialog, Ui_MainWindow):
             self.cohort_editor_gui = CohortEditor(self, subject_class = subject_class)
         self.cohort_editor_gui.show()
 
-    def graph_analysis(self, subject_class = None):
-        if not subject_class:
-            subject_class = self.subject_class
-        self.graph_analysis_gui = GraphAnalysis(self, subject_class)
+    def graph_analysis(self):
+        self.graph_analysis_gui = GraphAnalysis(self, self.subject_class)
         self.graph_analysis_gui.show()
 
     def set_MRI_btn_options(self):
