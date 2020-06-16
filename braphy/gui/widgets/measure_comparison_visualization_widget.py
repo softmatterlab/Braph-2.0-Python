@@ -4,6 +4,7 @@ from pyqtgraph import ColorMap as cm
 import numpy as np
 from braphy.utility.helper_functions import abs_path_from_relative
 from braphy.gui.color_bar_combo_box import ColorBar
+import traceback
 
 ui_file = abs_path_from_relative(__file__, "../ui_files/measure_visualization_widget.ui")
 Form, Base = uic.loadUiType(ui_file)
@@ -24,7 +25,7 @@ class MeasureComparisonVisualizationWidget(Base, Form):
         self.brain_widget = settings_widget.brain_widget
         self.settings_widget = settings_widget
         self.update_list(0)
-        self.visualization_type_changed(0)
+        self.visualization_type_changed()
         self.listWidget.currentRowChanged.connect(self.list_item_changed)
         self.init_spin_boxes()
 
@@ -42,7 +43,9 @@ class MeasureComparisonVisualizationWidget(Base, Form):
             combo_box.addItems(self.visualization_options)
             combo_box.currentIndexChanged.connect(lambda index, combo_box = combo_box: self.set_combo_box_visualization(index, combo_box))
             combo_box.setEnabled(False)
+            combo_box.blockSignals(True)
             combo_box.setCurrentIndex(-1)
+            combo_box.blockSignals(False)
 
         for group in groups:
             self.comboBoxGroup.addItem(group.name)
@@ -82,7 +85,6 @@ class MeasureComparisonVisualizationWidget(Base, Form):
     def group_changed(self, group_index):
         self.update_list(group_index)
         self.update_binary_values(group_index)
-        self.update_visualization()
 
     def disable_check_boxes(self):
         check_boxes = [self.checkBoxDiff, self.checkBoxSingle, self.checkBoxDouble]
@@ -92,6 +94,7 @@ class MeasureComparisonVisualizationWidget(Base, Form):
             if number_of_checked_boxes >= 2:
                 if not box.isChecked():
                     box.setEnabled(False)
+        self.visualization_type_changed()
 
     def set_combo_box_visualization(self, index, combo_box):
         combo_boxes = [self.comboBoxDiff, self.comboBoxSingle, self.comboBoxDouble]
@@ -102,22 +105,19 @@ class MeasureComparisonVisualizationWidget(Base, Form):
                 box.blockSignals(True)
                 box.setCurrentIndex(-1)
                 box.blockSignals(False)
-        self.update_visualization()
+        self.visualization_type_changed()
 
     def visualize_difference(self, state):
         self.comboBoxDiff.setEnabled(state)
         self.disable_check_boxes()
-        self.update_visualization()
 
     def visualize_single(self, state):
         self.comboBoxSingle.setEnabled(state)
         self.disable_check_boxes()
-        self.update_visualization()
 
     def visualize_double(self, state):
         self.comboBoxDouble.setEnabled(state)
         self.disable_check_boxes()
-        self.update_visualization()
 
     def update_list(self, group_index):
         group_index_0 = self.comboBoxGroup.currentIndex()
@@ -139,55 +139,75 @@ class MeasureComparisonVisualizationWidget(Base, Form):
         else:
             check_boxes = [self.checkBoxDiff, self.checkBoxSingle, self.checkBoxDouble]
             for check_box in check_boxes:
+                check_box.blockSignals(True)
+                check_box.setChecked(False)
                 check_box.setEnabled(False)
+                check_box.blockSignals(False)
+            combo_boxes = [self.comboBoxDiff, self.comboBoxSingle, self.comboBoxDouble]
+            for combo_box in combo_boxes:
+                combo_box.setEnabled(False)
+            self.comboBoxColormap.setEnabled(False)
+            self.spinBoxMin.setEnabled(False)
+            self.spinBoxMax.setEnabled(False)
+            self.labelMin.setEnabled(False)
+            self.labelMax.setEnabled(False)
         self.update_visualization()
 
     def update_binary_values(self, group_index):
         pass
 
-    def visualization_type_changed(self, index):
-        if index == 0: # color
-            self.spinBoxMin.setEnabled(False)
-            self.spinBoxMax.setEnabled(False)
-            self.labelMin.setEnabled(False)
-            self.labelMax.setEnabled(False)
-            self.comboBoxColormap.setEnabled(True)
-        elif index == 1: # size
-            self.spinBoxMin.setEnabled(True)
-            self.spinBoxMax.setEnabled(True)
-            self.labelMin.setEnabled(True)
-            self.labelMax.setEnabled(True)
-            self.comboBoxColormap.setEnabled(False)
-        else:
-            self.spinBoxMin.setEnabled(True)
-            self.spinBoxMax.setEnabled(True)
-            self.labelMin.setEnabled(True)
-            self.labelMax.setEnabled(True)
-            self.comboBoxColormap.setEnabled(True)
+    def visualization_type_changed(self):
+        self.spinBoxMin.setEnabled(False)
+        self.spinBoxMax.setEnabled(False)
+        self.labelMin.setEnabled(False)
+        self.labelMax.setEnabled(False)
+        self.comboBoxColormap.setEnabled(False)
+        combo_boxes = [self.comboBoxDiff, self.comboBoxSingle, self.comboBoxDouble]
+        for combo_box in combo_boxes:
+            if combo_box.isEnabled():
+                current_index = combo_box.currentIndex()
+                if current_index == 0: # color
+                    self.comboBoxColormap.setEnabled(True)
+                elif current_index == 1: # size
+                    self.spinBoxMin.setEnabled(True)
+                    self.spinBoxMax.setEnabled(True)
+                    self.labelMin.setEnabled(True)
+                    self.labelMax.setEnabled(True)
         self.update_visualization()
 
     def update_visualization(self):
-
-        return
         self.brain_widget.reset_brain_region_colors()
         self.settings_widget.change_brain_region_size()
         if self.listWidget.currentRow() == -1:
             return
         current_list_item = self.listWidget.currentItem().text()
-
-        measurement_index = self.measure_mapping[current_list_item]
-        measurement = self.measurements[measurement_index]
-        values = measurement.value
-
-        values_min = np.min(values)
-        values_max = np.max(values)
-        values = (values - values_min)/(values_max - values_min)
-        visualization_type = self.comboBoxType.currentIndex()
+        comparison_index = self.comparison_mapping[current_list_item]
+        comparison = self.comparisons[comparison_index]
         for i, region in enumerate(self.brain_widget.gui_brain_regions):
-            if visualization_type == 0 or visualization_type == 2:
-                region.set_color(self.get_color(values[i]))
-            if visualization_type == 1 or visualization_type == 2:
-                region.set_size(values[i] * self.spinBoxMax.value() + self.spinBoxMin.value())
+            if self.checkBoxDiff.isChecked():
+                values = self.normalize(comparison.measures[1] - comparison.measures[0])
+                if self.comboBoxDiff.currentIndex() == 0:
+                    region.set_color(self.get_color(values[i]))
+                elif self.comboBoxDiff.currentIndex() == 1:
+                    region.set_size(values[i] * self.spinBoxMax.value() + self.spinBoxMin.value())
+            if self.checkBoxSingle.isChecked():
+                values = self.normalize(comparison.p_values[0])
+                if self.comboBoxSingle.currentIndex() == 0:
+                    region.set_color(self.get_color(values[i]))
+                elif self.comboBoxSingle.currentIndex() == 1:
+                    region.set_size(values[i] * self.spinBoxMax.value() + self.spinBoxMin.value())
+            if self.checkBoxDouble.isChecked():
+                values = self.normalize(comparison.p_values[1])
+                if self.comboBoxDouble.currentIndex() == 0:
+                    region.set_color(self.get_color(values[i]))
+                elif self.comboBoxDouble.currentIndex() == 1:
+                    region.set_size(values[i] * self.spinBoxMax.value() + self.spinBoxMin.value())
+
+    def normalize(self, array):
+        array_min = np.min(array)
+        array_max = np.max(array)
+        normalized_array = (array - array_min)/(array_max - array_min)
+        return normalized_array
 
     def get_colormaps(self):
         colormaps = {}
