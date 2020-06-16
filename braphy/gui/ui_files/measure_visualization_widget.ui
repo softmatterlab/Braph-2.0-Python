@@ -35,6 +35,22 @@
         </widget>
        </item>
        <item>
+        <widget class="QComboBox" name="comboBoxGroup2">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>300</width>
+           <height>16777215</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QListWidget" name="listWidget">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Maximum" vsizetype="Expanding">
@@ -89,56 +105,106 @@
        <property name="rightMargin">
         <number>0</number>
        </property>
-       <item row="1" column="0">
+       <item row="5" column="0">
         <widget class="QLabel" name="label_2">
          <property name="text">
           <string>Colormap</string>
          </property>
         </widget>
        </item>
-       <item row="0" column="0">
+       <item row="4" column="0">
         <widget class="QLabel" name="label">
          <property name="text">
           <string>Visualize measure as</string>
          </property>
         </widget>
        </item>
-       <item row="0" column="1">
+       <item row="4" column="1">
         <widget class="QComboBox" name="comboBoxType"/>
        </item>
-       <item row="2" column="0">
+       <item row="6" column="0">
         <widget class="QLabel" name="label_3">
          <property name="text">
           <string>Size</string>
          </property>
         </widget>
        </item>
-       <item row="1" column="1">
+       <item row="5" column="1">
         <widget class="ColorBarComboBox" name="comboBoxColormap"/>
        </item>
-       <item row="2" column="1">
+       <item row="6" column="1">
         <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
-          <widget class="QLabel" name="label_5">
+          <widget class="QLabel" name="labelMin">
            <property name="text">
             <string>Min</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QSpinBox" name="spinBoxMin"/>
+          <widget class="QSpinBox" name="spinBoxMin">
+           <property name="minimum">
+            <number>1</number>
+           </property>
+           <property name="maximum">
+            <number>9</number>
+           </property>
+           <property name="value">
+            <number>1</number>
+           </property>
+          </widget>
          </item>
          <item>
-          <widget class="QLabel" name="label_4">
+          <widget class="QLabel" name="labelMax">
            <property name="text">
             <string>Max</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QSpinBox" name="spinBoxMax"/>
+          <widget class="QSpinBox" name="spinBoxMax">
+           <property name="minimum">
+            <number>2</number>
+           </property>
+           <property name="maximum">
+            <number>10</number>
+           </property>
+           <property name="value">
+            <number>5</number>
+           </property>
+          </widget>
          </item>
         </layout>
+       </item>
+       <item row="2" column="0">
+        <widget class="QCheckBox" name="checkBoxDouble">
+         <property name="text">
+          <string>Visualize p-value (double)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QComboBox" name="comboBoxSingle"/>
+       </item>
+       <item row="1" column="0">
+        <widget class="QCheckBox" name="checkBoxSingle">
+         <property name="text">
+          <string>Visualize p-value (single)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QComboBox" name="comboBoxDouble"/>
+       </item>
+       <item row="0" column="0">
+        <widget class="QCheckBox" name="checkBoxDiff">
+         <property name="text">
+          <string>Visualize group difference</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QComboBox" name="comboBoxDiff"/>
        </item>
       </layout>
      </item>
