@@ -112,21 +112,29 @@ class MeasureVisualizationWidget(Base, Form):
         self.settings_widget.change_brain_region_size()
         if self.listWidget.currentRow() == -1:
             return
-        current_list_item = self.listWidget.currentItem().text()
-
-        measurement_index = self.measure_mapping[current_list_item]
-        measurement = self.measurements[measurement_index]
-        values = measurement.value
-
-        values_min = np.min(values)
-        values_max = np.max(values)
-        values = (values - values_min)/(values_max - values_min)
+        values = self.get_visualization_values()
         visualization_type = self.comboBoxType.currentIndex()
         for i, region in enumerate(self.brain_widget.gui_brain_regions):
             if visualization_type == 0 or visualization_type == 2:
                 region.set_color(self.get_color(values[i]))
             if visualization_type == 1 or visualization_type == 2:
                 region.set_size(values[i] * self.spinBoxMax.value() + self.spinBoxMin.value())
+
+    def get_visualization_values(self):
+        current_list_item = self.listWidget.currentItem().text()
+        measurement_index = self.measure_mapping[current_list_item]
+        measurement = self.measurements[measurement_index]
+        values = measurement.value
+        if isinstance(values[0], np.ndarray): # fmri: compute average
+            values = np.mean(values, axis = 0)
+        values = self.normalize(values)
+        return values
+    
+    def normalize(self, array):
+        array_min = np.min(array)
+        array_max = np.max(array)
+        normalized_array = (array - array_min)/(array_max - array_min)
+        return normalized_array
 
     def get_colormaps(self):
         colormaps = {}

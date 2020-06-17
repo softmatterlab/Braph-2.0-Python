@@ -180,28 +180,44 @@ class MeasureComparisonVisualizationWidget(Base, Form):
         self.settings_widget.change_brain_region_size()
         if self.listWidget.currentRow() == -1:
             return
-        current_list_item = self.listWidget.currentItem().text()
-        comparison_index = self.comparison_mapping[current_list_item]
-        comparison = self.comparisons[comparison_index]
+        
         for i, region in enumerate(self.brain_widget.gui_brain_regions):
             if self.checkBoxDiff.isChecked():
-                values = self.normalize(comparison.measures[1] - comparison.measures[0])
+                values = self.get_visualization_values('diff')
                 if self.comboBoxDiff.currentIndex() == 0:
                     region.set_color(self.get_color(values[i]))
                 elif self.comboBoxDiff.currentIndex() == 1:
                     region.set_size(values[i] * self.spinBoxMax.value() + self.spinBoxMin.value())
             if self.checkBoxSingle.isChecked():
-                values = self.normalize(comparison.p_values[0])
+                values = self.get_visualization_values('single')
                 if self.comboBoxSingle.currentIndex() == 0:
                     region.set_color(self.get_color(values[i]))
                 elif self.comboBoxSingle.currentIndex() == 1:
                     region.set_size(values[i] * self.spinBoxMax.value() + self.spinBoxMin.value())
             if self.checkBoxDouble.isChecked():
-                values = self.normalize(comparison.p_values[1])
+                values = self.get_visualization_values('double')
                 if self.comboBoxDouble.currentIndex() == 0:
                     region.set_color(self.get_color(values[i]))
                 elif self.comboBoxDouble.currentIndex() == 1:
                     region.set_size(values[i] * self.spinBoxMax.value() + self.spinBoxMin.value())
+
+    def get_visualization_values(self, type):
+        current_list_item = self.listWidget.currentItem().text()
+        comparison_index = self.comparison_mapping[current_list_item]
+        comparison = self.comparisons[comparison_index]
+        if type == 'diff':
+            values_0 = comparison.measures[0]
+            values_1 = comparison.measures[1]
+            if isinstance(values_0[0], np.ndarray):
+                values_0 = np.mean(values_0, axis = 0)
+                values_1 = np.mean(values_1, axis = 0)
+            values = values_0 - values_1
+        elif type == 'single':
+            values = comparison.p_values[0]
+        elif type == 'double':
+            values = comparison.p_values[1]
+        values = self.normalize(values)
+        return values
 
     def normalize(self, array):
         array_min = np.min(array)
