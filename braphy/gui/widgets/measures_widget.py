@@ -45,6 +45,9 @@ class MeasuresWidget(Base, Form):
 
         self.btnGroup.setChecked(True)
 
+        self.btnExportTxt.clicked.connect(lambda state, file_type = 'txt', export_function = self.export_txt: self.export(file_type, export_function))
+        self.btnExportXlsx.clicked.connect(lambda state, file_type = 'xlsx', export_function = self.export_xlsx: self.export(file_type, export_function))
+
     def init_combo_boxes(self):
         self.comboBoxRegion.currentIndexChanged.connect(self.update_table)
         self.comboBoxGroup1.currentIndexChanged.connect(self.update_table)
@@ -186,4 +189,21 @@ class MeasuresWidget(Base, Form):
     def get_selected(self):
         selected = [item.row() for item in self.tableWidget.selectionModel().selectedRows()]
         return selected
+
+    def export_txt(self, file_name):
+        pass
+
+    def export_xlsx(self, file_name):
+        pass
+
+    def export(self, file_type, export_function):
+        print(file_type)
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        file_name, name = QFileDialog.getSaveFileName(self, "Export data",
+                                                      "untitled.{}".format(file_type),
+                                                      "{} files (*.{})".format(file_type, file_type),
+                                                      options = options)
+        if file_name:
+            export_function(file_name)
 
