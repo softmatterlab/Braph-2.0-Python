@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 import numpy as np
+import pandas as pd
 from braphy.utility.helper_functions import abs_path_from_relative, FloatDelegate, float_to_string
 from braphy.graph.measures.measure import Measure
 from braphy.workflows.MRI.subject_MRI import SubjectMRI
@@ -194,10 +195,18 @@ class MeasuresWidget(Base, Form):
         pass
 
     def export_xlsx(self, file_name):
-        pass
+        table = {}
+        for column in range(self.tableWidget.columnCount()):
+            header = self.tableWidget.horizontalHeaderItem(column).text()
+            data = []
+            for row in range(self.tableWidget.rowCount()):
+                data.append(self.tableWidget.item(row, column).text())
+            table[header] = data
+        df = pd.DataFrame.from_dict(table)
+        with open(file_name, 'w') as f:
+            df.to_excel(file_name, index = None, columns = None)
 
     def export(self, file_type, export_function):
-        print(file_type)
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
         file_name, name = QFileDialog.getSaveFileName(self, "Export data",
