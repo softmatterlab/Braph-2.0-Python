@@ -128,8 +128,11 @@ class MeasuresWidget(Base, Form):
             self.update_random_comparison_table(current_group_1, current_region_index)
 
     def update_measurements_table(self, current_group, current_region_index):
-        self.tableWidget.setColumnCount(5)
-        self.tableWidget.setHorizontalHeaderLabels(['Value', 'Notes', 'Measure', 'Group', 'Param'])
+        labels = ['Value', 'Notes', 'Measure', 'Group', 'Param']
+        if self.measure_type == Measure.NODAL:
+            labels.append('Region')
+        self.tableWidget.setColumnCount(len(labels))
+        self.tableWidget.setHorizontalHeaderLabels(labels)
         self.measurement_index_mapping = {}
         for i, measurement in enumerate(self.analysis.measurements):
             if measurement.dimension() == self.measure_type and current_group == measurement.group:
@@ -144,6 +147,8 @@ class MeasuresWidget(Base, Form):
                 else:
                     value = (measurement.value)
                 contents = [value, '-', measurement.sub_measure, self.analysis.cohort.groups[measurement.group].name, '-']
+                if self.measure_type == Measure.NODAL:
+                    contents.append(self.comboBoxRegion.currentText())
                 for j, content in enumerate(contents):
                     if isinstance(content, np.ndarray):
                         content = content[current_region_index]
@@ -154,8 +159,11 @@ class MeasuresWidget(Base, Form):
                     self.tableWidget.setItem(row, j, item)
 
     def update_comparison_table(self, current_group_1, current_group_2, current_region_index):
-        self.tableWidget.setColumnCount(12)
-        self.tableWidget.setHorizontalHeaderLabels(['Difference', 'p (1-tailed)', 'p (2-tailed)', 'Value 1', 'Value 2', 'CI lower', 'CI upper', 'Notes', 'Measure', 'Group 1', 'Group 2', 'Param'])
+        labels = ['Difference', 'p (1-tailed)', 'p (2-tailed)', 'Value 1', 'Value 2', 'CI lower', 'CI upper', 'Notes', 'Measure', 'Group 1', 'Group 2', 'Param']
+        if self.measure_type == Measure.NODAL:
+            labels.append('Region')
+        self.tableWidget.setColumnCount(len(labels))
+        self.tableWidget.setHorizontalHeaderLabels(labels)
         self.comparison_index_mapping = {}
         for i, comparison in enumerate(self.analysis.comparisons):
             if comparison.dimension() == self.measure_type and current_group_1 == comparison.groups[0] and current_group_2 == comparison.groups[1]:
@@ -174,6 +182,8 @@ class MeasuresWidget(Base, Form):
                             (comparison.confidence_interval[1]), '-',
                             comparison.sub_measure, self.analysis.cohort.groups[comparison.groups[0]].name,
                             self.analysis.cohort.groups[comparison.groups[1]].name, '-']
+                if self.measure_type == Measure.NODAL:
+                    contents.append(self.comboBoxRegion.currentText())
                 for j, content in enumerate(contents):
                     if isinstance(content, np.ndarray):
                         content = content[current_region_index]
