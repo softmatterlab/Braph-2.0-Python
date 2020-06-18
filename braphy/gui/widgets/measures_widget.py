@@ -129,6 +129,8 @@ class MeasuresWidget(Base, Form):
 
     def update_measurements_table(self, current_group, current_region_index):
         labels = ['Value', 'Notes', 'Measure', 'Group', 'Param']
+        if self.analysis.cohort.subject_class == SubjectfMRI and not self.btnGroup.isChecked():
+            labels.append('Subject')
         if self.measure_type == Measure.NODAL:
             labels.append('Region')
         self.tableWidget.setColumnCount(len(labels))
@@ -147,6 +149,8 @@ class MeasuresWidget(Base, Form):
                 else:
                     value = (measurement.value)
                 contents = [value, '-', measurement.sub_measure, self.analysis.cohort.groups[measurement.group].name, '-']
+                if self.analysis.cohort.subject_class == SubjectfMRI and not self.btnGroup.isChecked():
+                    contents.append(self.comboBoxSubject.currentText())
                 if self.measure_type == Measure.NODAL:
                     contents.append(self.comboBoxRegion.currentText())
                 for j, content in enumerate(contents):
@@ -160,6 +164,8 @@ class MeasuresWidget(Base, Form):
 
     def update_comparison_table(self, current_group_1, current_group_2, current_region_index):
         labels = ['Difference', 'p (1-tailed)', 'p (2-tailed)', 'Value 1', 'Value 2', 'CI lower', 'CI upper', 'Notes', 'Measure', 'Group 1', 'Group 2', 'Param']
+        if self.analysis.cohort.subject_class == SubjectfMRI and not self.btnGroup.isChecked():
+            labels.append('Subject')
         if self.measure_type == Measure.NODAL:
             labels.append('Region')
         self.tableWidget.setColumnCount(len(labels))
@@ -182,6 +188,8 @@ class MeasuresWidget(Base, Form):
                             (comparison.confidence_interval[1]), '-',
                             comparison.sub_measure, self.analysis.cohort.groups[comparison.groups[0]].name,
                             self.analysis.cohort.groups[comparison.groups[1]].name, '-']
+                if self.analysis.cohort.subject_class == SubjectfMRI and not self.btnGroup.isChecked():
+                    contents.append(self.comboBoxSubject.currentText())
                 if self.measure_type == Measure.NODAL:
                     contents.append(self.comboBoxRegion.currentText())
                 for j, content in enumerate(contents):
