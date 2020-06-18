@@ -210,7 +210,18 @@ class MeasuresWidget(Base, Form):
         return selected
 
     def export_txt(self, file_name):
-        pass
+        table_string = ''
+        for column in range(self.tableWidget.columnCount()):
+            table_string += self.tableWidget.horizontalHeaderItem(column).text()
+            table_string += ' '
+        table_string += '\n'
+        for row in range(self.tableWidget.rowCount()):
+            for column in range(self.tableWidget.columnCount()):
+                table_string += self.tableWidget.item(row, column).text()
+                table_string += ' '
+            table_string += '\n'
+        with open(file_name, 'w') as f:
+            f.write(table_string)
 
     def export_xlsx(self, file_name):
         table = {}
