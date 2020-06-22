@@ -6,8 +6,7 @@ from braphy.utility.helper_functions import abs_path_from_relative
 from braphy.gui.widgets.graph_view_widget import GraphViewWidget
 from braphy.gui.widgets.visualization_widget import *
 from braphy.gui.widgets.community_visualization_widget import CommunityVisualizationWidget
-from braphy.gui.widgets.measure_visualization_widget import MeasureVisualizationWidget
-from braphy.gui.widgets.measure_comparison_visualization_widget import MeasureComparisonVisualizationWidget
+from braphy.gui.widgets.analysis_visualization_widget import MeasureVisualizationWidget, MeasureComparisonVisualizationWidget
 
 ui_file = abs_path_from_relative(__file__, "../ui_files/brain_view_options_widget.ui")
 Form, Base = uic.loadUiType(ui_file)

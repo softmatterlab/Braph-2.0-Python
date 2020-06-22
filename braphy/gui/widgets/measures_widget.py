@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 import numpy as np
+import pandas as pd
 from braphy.utility.helper_functions import abs_path_from_relative, FloatDelegate, float_to_string
 from braphy.graph.measures.measure import Measure
 from braphy.workflows.MRI.subject_MRI import SubjectMRI
@@ -44,6 +45,9 @@ class MeasuresWidget(Base, Form):
         self.btnSubject.clicked.connect(self.subject)
 
         self.btnGroup.setChecked(True)
+
+        self.btnExportTxt.clicked.connect(lambda state, file_type = 'txt', export_function = self.export_txt: self.export(file_type, export_function))
+        self.btnExportXlsx.clicked.connect(lambda state, file_type = 'xlsx', export_function = self.export_xlsx: self.export(file_type, export_function))
 
     def init_combo_boxes(self):
         self.comboBoxRegion.currentIndexChanged.connect(self.update_table)
@@ -124,8 +128,13 @@ class MeasuresWidget(Base, Form):
             self.update_random_comparison_table(current_group_1, current_region_index)
 
     def update_measurements_table(self, current_group, current_region_index):
-        self.tableWidget.setColumnCount(5)
-        self.tableWidget.setHorizontalHeaderLabels(['Value', 'Notes', 'Measure', 'Group', 'Param'])
+        labels = ['Value', 'Notes', 'Measure', 'Group', 'Param']
+        if self.analysis.cohort.subject_class == SubjectfMRI and not self.btnGroup.isChecked():
+            labels.append('Subject')
+        if self.measure_type == Measure.NODAL:
+            labels.append('Region')
+        self.tableWidget.setColumnCount(len(labels))
+        self.tableWidget.setHorizontalHeaderLabels(labels)
         self.measurement_index_mapping = {}
         for i, measurement in enumerate(self.analysis.measurements):
             if measurement.dimension() == self.measure_type and current_group == measurement.group:
@@ -140,6 +149,10 @@ class MeasuresWidget(Base, Form):
                 else:
                     value = (measurement.value)
                 contents = [value, '-', measurement.sub_measure, self.analysis.cohort.groups[measurement.group].name, '-']
+                if self.analysis.cohort.subject_class == SubjectfMRI and not self.btnGroup.isChecked():
+                    contents.append(self.comboBoxSubject.currentText())
+                if self.measure_type == Measure.NODAL:
+                    contents.append(self.comboBoxRegion.currentText())
                 for j, content in enumerate(contents):
                     if isinstance(content, np.ndarray):
                         content = content[current_region_index]
@@ -150,8 +163,13 @@ class MeasuresWidget(Base, Form):
                     self.tableWidget.setItem(row, j, item)
 
     def update_comparison_table(self, current_group_1, current_group_2, current_region_index):
-        self.tableWidget.setColumnCount(12)
-        self.tableWidget.setHorizontalHeaderLabels(['Difference', 'p (1-tailed)', 'p (2-tailed)', 'Value 1', 'Value 2', 'CI lower', 'CI upper', 'Notes', 'Measure', 'Group 1', 'Group 2', 'Param'])
+        labels = ['Difference', 'p (1-tailed)', 'p (2-tailed)', 'Value 1', 'Value 2', 'CI lower', 'CI upper', 'Notes', 'Measure', 'Group 1', 'Group 2', 'Param']
+        if self.analysis.cohort.subject_class == SubjectfMRI and not self.btnGroup.isChecked():
+            labels.append('Subject')
+        if self.measure_type == Measure.NODAL:
+            labels.append('Region')
+        self.tableWidget.setColumnCount(len(labels))
+        self.tableWidget.setHorizontalHeaderLabels(labels)
         self.comparison_index_mapping = {}
         for i, comparison in enumerate(self.analysis.comparisons):
             if comparison.dimension() == self.measure_type and current_group_1 == comparison.groups[0] and current_group_2 == comparison.groups[1]:
@@ -170,6 +188,10 @@ class MeasuresWidget(Base, Form):
                             (comparison.confidence_interval[1]), '-',
                             comparison.sub_measure, self.analysis.cohort.groups[comparison.groups[0]].name,
                             self.analysis.cohort.groups[comparison.groups[1]].name, '-']
+                if self.analysis.cohort.subject_class == SubjectfMRI and not self.btnGroup.isChecked():
+                    contents.append(self.comboBoxSubject.currentText())
+                if self.measure_type == Measure.NODAL:
+                    contents.append(self.comboBoxRegion.currentText())
                 for j, content in enumerate(contents):
                     if isinstance(content, np.ndarray):
                         content = content[current_region_index]
@@ -186,4 +208,40 @@ class MeasuresWidget(Base, Form):
     def get_selected(self):
         selected = [item.row() for item in self.tableWidget.selectionModel().selectedRows()]
         return selected
+
+    def export_txt(self, file_name):
+        table_string = ''
+        for column in range(self.tableWidget.columnCount()):
+            table_string += self.tableWidget.horizontalHeaderItem(column).text()
+            table_string += ' '
+        table_string += '\n'
+        for row in range(self.tableWidget.rowCount()):
+            for column in range(self.tableWidget.columnCount()):
+                table_string += self.tableWidget.item(row, column).text()
+                table_string += ' '
+            table_string += '\n'
+        with open(file_name, 'w') as f:
+            f.write(table_string)
+
+    def export_xlsx(self, file_name):
+        table = {}
+        for column in range(self.tableWidget.columnCount()):
+            header = self.tableWidget.horizontalHeaderItem(column).text()
+            data = []
+            for row in range(self.tableWidget.rowCount()):
+                data.append(self.tableWidget.item(row, column).text())
+            table[header] = data
+        df = pd.DataFrame.from_dict(table)
+        with open(file_name, 'w') as f:
+            df.to_excel(file_name, index = None, columns = None)
+
+    def export(self, file_type, export_function):
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        file_name, name = QFileDialog.getSaveFileName(self, "Export data",
+                                                      "untitled.{}".format(file_type),
+                                                      "{} files (*.{})".format(file_type, file_type),
+                                                      options = options)
+        if file_name:
+            export_function(file_name)
 
