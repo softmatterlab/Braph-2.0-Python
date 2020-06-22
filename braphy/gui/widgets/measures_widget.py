@@ -128,7 +128,7 @@ class MeasuresWidget(Base, Form):
             self.update_random_comparison_table(current_group_1, current_region_index)
 
     def update_measurements_table(self, current_group, current_region_index):
-        labels = ['Value', 'Notes', 'Measure', 'Group', 'Param']
+        labels = ['Value', 'Notes', 'Group', 'Measure', 'Param']
         if self.analysis.cohort.subject_class == SubjectfMRI and not self.btnGroup.isChecked():
             labels.append('Subject')
         if self.measure_type == Measure.NODAL:
@@ -148,7 +148,7 @@ class MeasuresWidget(Base, Form):
                         value = measurement.value[self.comboBoxSubject.currentIndex()]
                 else:
                     value = (measurement.value)
-                contents = [value, '-', measurement.sub_measure, self.analysis.cohort.groups[measurement.group].name, '-']
+                contents = [value, '-', self.analysis.cohort.groups[measurement.group].name, measurement.sub_measure, '-']
                 if self.analysis.cohort.subject_class == SubjectfMRI and not self.btnGroup.isChecked():
                     contents.append(self.comboBoxSubject.currentText())
                 if self.measure_type == Measure.NODAL:
