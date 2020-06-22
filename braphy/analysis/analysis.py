@@ -4,6 +4,8 @@ from braphy.cohort.cohort import Cohort
 from braphy.analysis.measurement import Measurement
 from braphy.analysis.comparison import Comparison
 from braphy.analysis.random_comparison import RandomComparison
+from braphy.workflows.MRI.subject_MRI import SubjectMRI
+from braphy.workflows.fMRI.subject_fMRI import SubjectfMRI
 import numpy as np
 from abc import ABC, abstractmethod
 
@@ -36,6 +38,12 @@ class Analysis():
         random_comparisons = [RandomComparison.from_dict(random_comparison) for random_comparison in d['random_comparisons']]
         comparisons = [Comparison.from_dict(comparison) for comparison in d['comparisons']]
         return cls(cohort, graph_settings, name, measurements, random_comparisons, comparisons)
+
+    def is_MRI(self):
+        return self.cohort.subject_class == SubjectMRI
+
+    def is_fMRI(self):
+        return self.cohort.subject_class == SubjectfMRI
 
     def number_of_regions(self):
         return len(self.cohort.atlas.brain_regions)
