@@ -2,6 +2,7 @@ from braphy.cohort.subject import Subject
 from braphy.cohort.data_types.data_scalar import DataScalar
 from braphy.cohort.data_types.data_functional import DataFunctional
 from braphy.utility.helper_functions import float_to_string
+from braphy.utility.stat_functions import StatFunctions
 import xml.etree.ElementTree as ET
 import pandas as pd
 import numpy as np
@@ -89,5 +90,7 @@ class SubjectfMRI(Subject):
             subjects = subjects.tolist()
         correlations = []
         for subject in subjects:
-            correlations.append(np.corrcoef(subject.data_dict['data'].value.T))
-        return np.array(correlations)
+            data = subject.data_dict['data'].value.T
+            correlations.append(StatFunctions.correlation(data, correlation_type))
+        return correlations
+

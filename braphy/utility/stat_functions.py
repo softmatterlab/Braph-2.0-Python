@@ -1,4 +1,5 @@
 import numpy as np
+from scipy import stats, linalg
 
 class StatFunctions():
     def false_discovery_rate(p_values, q = 0.05):
@@ -87,3 +88,48 @@ class StatFunctions():
         # calculates the Bonferroni correction for p-values. p is the starting p-value.
         r = p / len(p_values)
         return r
+
+    def correlation(data, correlation_type):
+        correlation_type = correlation_type.replace(' ', '_')
+        corr = np.zeros((data.shape[1], data.shape[1]), dtype=np.float)
+        try:
+            correlation_function = eval('StatFunctions.correlation_{}'.format(correlation_type))
+            corr = correlation_function(data)
+        except Exception as e:
+            print('Correlation function {} not implemented'.format(correlation_type))
+            print(e)
+        return corr
+
+    def correlation_pearson(data):
+        return np.corrcoef(data)
+
+    def correlation_spearman(data):
+        rank = np.argsort(data)
+        return np.corrcoef(rank)
+
+    def correlation_kendall(data):
+        correlation = np.zeros((data.shape[0], data.shape[0]))
+        for i in range(data.shape[0]):
+            for j in range(data.shape[0]):
+                correlation[i, j] = stats.kendalltau(data[i], data[j])[0]
+        return correlation
+
+    def correlation_partial_pearson(data):
+        data = data.T
+        data = np.asarray(data)
+        nodes = data.shape[1]
+        correlation = np.zeros((nodes, nodes), dtype=np.float)
+        for i in range(nodes):
+            correlation[i, i] = 1
+            for j in range(i+1, nodes):
+                idx = np.ones(nodes, dtype=np.bool)
+                idx[i] = False
+                idx[j] = False
+                beta_i = linalg.lstsq(data[:, idx], data[:, j])[0]
+                beta_j = linalg.lstsq(data[:, idx], data[:, i])[0]
+                res_j = data[:, j] - data[:, idx].dot(beta_i)
+                res_i = data[:, i] - data[:, idx].dot(beta_j)
+                corr = stats.pearsonr(res_i, res_j)[0]
+                correlation[i, j] = corr
+                correlation[j, i] = corr
+        return correlation

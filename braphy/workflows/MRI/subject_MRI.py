@@ -1,6 +1,7 @@
 from braphy.cohort.subject import Subject
 from braphy.cohort.data_types.data_scalar import DataScalar
 from braphy.cohort.data_types.data_structural import DataStructural
+from braphy.utility.stat_functions import StatFunctions
 import xml.etree.ElementTree as ET
 import pandas as pd
 import numpy as np
@@ -98,34 +99,4 @@ class SubjectMRI(Subject):
             subjects = subjects.tolist()
         data = np.array([subject.data_dict['data'].value for subject in subjects])
         data = data.T
-        if correlation_type == 'spearman':
-            rank = np.argsort(data)
-            return np.corrcoef(rank)
-        elif correlation_type == 'pearson':
-            return np.corrcoef(data)
-        elif correlation_type == 'partial pearson':
-            data = data.T
-            data = np.asarray(data)
-            nodes = data.shape[1]
-            correlation = np.zeros((nodes, nodes), dtype=np.float)
-            for i in range(nodes):
-                correlation[i, i] = 1
-                for j in range(i+1, nodes):
-                    idx = np.ones(nodes, dtype=np.bool)
-                    idx[i] = False
-                    idx[j] = False
-                    beta_i = linalg.lstsq(data[:, idx], data[:, j])[0]
-                    beta_j = linalg.lstsq(data[:, idx], data[:, i])[0]
-                    res_j = data[:, j] - data[:, idx].dot(beta_i)
-                    res_i = data[:, i] - data[:, idx].dot(beta_j)
-                    corr = stats.pearsonr(res_i, res_j)[0]
-                    correlation[i, j] = corr
-                    correlation[j, i] = corr
-            return correlation
-        elif correlation_type == 'kendall':
-            correlation = np.zeros((data.shape[0], data.shape[0]))
-            for i in range(data.shape[0]):
-                for j in range(data.shape[0]):
-                    correlation[i, j] = stats.kendalltau(data[i], data[j])[0]
-            return correlation
-
+        return StatFunctions.correlation(data, correlation_type)
