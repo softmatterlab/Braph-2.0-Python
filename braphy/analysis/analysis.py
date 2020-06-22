@@ -27,14 +27,15 @@ class Analysis():
         d['comparisons'] = [comparison.to_dict() for comparison in self.comparisons]
         return d
 
-    def from_dict(d):
+    @classmethod
+    def from_dict(cls, d):
         cohort = Cohort.from_dict(d['cohort'])
         name = d['name']
         graph_settings = GraphSettings.from_dict(d['graph_settings'])
         measurements = [Measurement.from_dict(measurement) for measurement in d['measurements']]
         random_comparisons = [RandomComparison.from_dict(random_comparison) for random_comparison in d['random_comparisons']]
         comparisons = [Comparison.from_dict(comparison) for comparison in d['comparisons']]
-        return Analysis(cohort, graph_settings, name, measurements, random_comparisons, comparisons)
+        return cls(cohort, graph_settings, name, measurements, random_comparisons, comparisons)
 
     def number_of_regions(self):
         return len(self.cohort.atlas.brain_regions)
@@ -117,7 +118,7 @@ class Analysis():
         pass
 
     @abstractmethod
-    def calculate_comparison(self, measure_code, group_index):
+    def calculate_comparison(self, measure_class, sub_measure, groups, permutations):
         pass
 
     def set_correlation(self, correlation_type):
