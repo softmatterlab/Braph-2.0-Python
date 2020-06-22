@@ -1,5 +1,6 @@
 from braphy.workflows.MRI.subject_MRI import SubjectMRI
 from braphy.workflows.fMRI.subject_fMRI import SubjectfMRI
+from braphy.graph.measures import *
 
 class Measurement():
     def __init__(self, group, measure_class, sub_measure, value = None):
@@ -10,16 +11,20 @@ class Measurement():
 
     def to_dict(self):
         d = {}
-        d['groups'] = [str(group) for group in self.groups]
+        d['group'] = str(self.group)
         d['measure_class'] = self.measure_class.__name__
         d['sub_measure'] = self.sub_measure
+        d['value'] = self.value.tolist() if isinstance(self.value, np.ndarray) else self.value
         return d
 
-    def from_dict(d):
-        groups = [int(group) for group in d['groups']]
+    @classmethod
+    def from_dict(cls, d):
+        group = int(d['group'])
         measure_class = eval(d['measure_class'])
         sub_measure = d['sub_measure']
-        return Measurement(groups, measure_class, sub_measure)
+        value = d['value']
+        value = np.array(value) if isinstance(value, list) else value
+        return cls(group, measure_class, sub_measure, value)
 
     def get_value(self):
         return self.value

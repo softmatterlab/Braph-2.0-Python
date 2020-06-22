@@ -72,7 +72,7 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
             json.dump(self.to_dict(), f, sort_keys=True, indent=4)
 
     def from_dict(self, d):
-        self.analysis = Analysis.from_dict(d['analysis'])
+        self.analysis = self.analysis_class.from_dict(d['analysis'])
         self.init_brain_mesh(d)
         self.init_analysis()
 
@@ -296,6 +296,7 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
                                                       "analysis files (*.analysis)", options = options)
         if file_name:
             self.from_file(file_name)
+            self.start_analysis()
 
     def save(self):
         if self.file_name:

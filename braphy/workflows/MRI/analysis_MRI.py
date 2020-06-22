@@ -7,8 +7,8 @@ from braphy.utility.stat_functions import StatFunctions as stat
 from braphy.graph.graph_factory import GraphFactory
 import numpy as np
 class AnalysisMRI(Analysis):
-    def __init__(self, cohort, name = 'analysis', measurements = None, random_comparisons = None, comparisons = None):
-        super().__init__(cohort, name, measurements, random_comparisons, comparisons)
+    def __init__(self, cohort, graph_settings, name = 'analysis', measurements = None, random_comparisons = None, comparisons = None):
+        super().__init__(cohort, graph_settings, name, measurements, random_comparisons, comparisons)
         self.community_structure = {}
         for i in range(len(self.cohort.groups)):
             self.community_structure[i] = np.zeros(self.number_of_regions())
