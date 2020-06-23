@@ -1,6 +1,6 @@
 import sys
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
-from PyQt5.QtWidgets import QWidget, QHBoxLayout, QRadioButton, QTableWidgetItem, QButtonGroup
+from PyQt5.QtWidgets import QWidget, QHBoxLayout, QRadioButton, QTableWidgetItem, QButtonGroup, QAbstractItemView
 from braphy.utility.helper_functions import abs_path_from_relative
 from braphy.gui.widgets.brain_view_options_widget import BrainViewOptionsWidget
 from braphy.workflows.MRI.subject_MRI import SubjectMRI
@@ -12,7 +12,7 @@ qtCreatorFile = abs_path_from_relative(__file__, "ui_files/community_structure.u
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 
 class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
-    def __init__(self, analysis, brain_mesh_data, AppWindow = None):
+    def __init__(self, analysis, brain_mesh_data, start_analysis_gui_function, AppWindow = None):
         if AppWindow:
             self.AppWindow = AppWindow
         QtWidgets.QMainWindow.__init__(self, parent = None)
@@ -20,6 +20,7 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
         self.analysis = analysis
         self.read_only = False
         self.brain_mesh_data = brain_mesh_data
+        self.start_analysis_gui_function = start_analysis_gui_function
         self.init_combo_box()
         self.init_buttons()
         self.init_brain_widget()
@@ -39,6 +40,8 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
         else:
             self.labelBinary.setText(analysis.graph_settings.rule_binary)
         self.fixed_structure(True)
+        self.tableWidget.setSelectionBehavior(QAbstractItemView.SelectColumns)
+        self.tableWidget.setSelectionMode(QAbstractItemView.SingleSelection)
 
     def init_combo_box(self):
         for group in self.analysis.cohort.groups:
@@ -57,6 +60,7 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
         self.btnSet.clicked.connect(self.set_community_structure)
         self.btnSetAll.clicked.connect(self.set_all_community_structure)
         self.btnReset.clicked.connect(self.reset_community_structure)
+        self.btnSubgraphAnalysis.clicked.connect(self.start_subgraph_analysis)
 
         self.spinBoxGamma.setValue(self.analysis.get_gamma())
         self.spinBoxGamma.valueChanged.connect(self.set_gamma)
@@ -288,6 +292,24 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
         self.btnFixed.setChecked(True)
         community_structure = self.get_community_structure()
         self.update_table(community_structure)
+
+    def start_subgraph_analysis(self):
+        columns = [item.column() for item in self.tableWidget.selectionModel().selectedColumns()]
+        if not columns:
+            return
+        column = columns[0]
+        selected_nodes = []
+        for row in range(self.tableWidget.rowCount()):
+            widget = self.tableWidget.cellWidget(row, column)
+            button = widget.button
+            if button.isChecked():
+                selected_nodes.append(row)
+        if not selected_nodes:
+            return
+        subgraph_analysis = self.analysis.get_subgraph_analysis(selected_nodes)
+        self.subgraph_analysis_gui = self.start_analysis_gui_function(analysis = subgraph_analysis,
+                                                                      brain_mesh_data = self.brain_mesh_data)
+        self.subgraph_analysis_gui.show()
 
     def resize_brain(self, event):
         self.groupBoxBrain_old_resize(event)

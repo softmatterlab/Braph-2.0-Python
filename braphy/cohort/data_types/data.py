@@ -21,3 +21,6 @@ class Data:
     def from_dict(self, d):
         pass
 
+    def get_subgraph_data(self, selected_nodes):
+        return self
+

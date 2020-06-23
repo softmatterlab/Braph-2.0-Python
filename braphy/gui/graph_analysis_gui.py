@@ -22,7 +22,7 @@ qtCreatorFile = abs_path_from_relative(__file__, "ui_files/graph_analysis.ui")
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 
 class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
-    def __init__(self, AppWindow = None, subject_class = SubjectMRI):
+    def __init__(self, AppWindow = None, subject_class = SubjectMRI, analysis = None, brain_mesh_data = None):
         if AppWindow:
             self.AppWindow = AppWindow
         QtWidgets.QMainWindow.__init__(self, parent = None)
@@ -37,24 +37,33 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         self.binodalMeasuresWidget.hide()
         self.tabWidget.currentChanged.connect(self.tab_changed)
 
-        if subject_class == SubjectMRI:
+        self.brain_view_options_widget = BrainViewOptionsWidget(parent=self.tabBrainView)
+        self.brain_view_options_widget.raise_()
+
+        if analysis:
+            self.subject_class = analysis.cohort.subject_class
+            if brain_mesh_data:
+                self.brain_mesh_data = brain_mesh_data
+        else:
+            self.analysis = None
+            self.subject_class = subject_class
+        if self.subject_class == SubjectMRI:
             self.correlationMatrixWidget.set_structural_view()
             self.repetitionLabel.hide()
             self.setWindowTitle('MRI Graph Analysis')
             self.analysis_class = AnalysisMRI
-        elif subject_class == SubjectfMRI:
+        elif self.subject_class == SubjectfMRI:
             self.setWindowTitle('fMRI Graph Analysis')
             self.analysis_class = AnalysisfMRI
 
-        self.subject_class = subject_class
         self.btnViewCohort.setEnabled(False)
-        self.analysis = None
         self.file_name = None
         self.textAnalysisName.textChanged.connect(self.set_analysis_name)
         self.set_locked(True)
 
-        self.brain_view_options_widget = BrainViewOptionsWidget(parent=self.tabBrainView)
-        self.brain_view_options_widget.raise_()
+        if analysis:
+            self.analysis = analysis
+            self.init_analysis()
 
     def to_dict(self):
         d = {}
@@ -88,19 +97,18 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         faces = np.asarray(d['brain_mesh_data']['faces'])
         brain_mesh_data = {'vertices': vertices, 'faces': faces}
         self.brain_mesh_data = brain_mesh_data
-        self.init_brain_widget()
 
     def init_brain_widget(self):
         self.brainWidget.set_brain_mesh(self.brain_mesh_data)
         self.brain_view_options_widget.init(self.brainWidget)
-        self.brain_view_options_widget.set_cohort_mode()
         self.brain_view_options_widget.settingsWidget.change_transparency()
+        self.brain_view_options_widget.set_graph_analysis_mode(self.analysis)
         self.brain_view_options_widget.show()
 
     def set_locked(self, locked):
         lock_items = [self.correlationMatrixWidget, self.graphMeasuresWidget, self.textAnalysisName,
                       self.comboBoxGraph, self.comboBoxCorrelation, self.comboBoxNegative, self.comboBoxBinary,
-                      self.btnSubgraphAnalysis, self.btnStartAnalysis, self.groupBoxCommunityStructure,
+                      self.btnStartAnalysis, self.groupBoxCommunityStructure,
                       self.comboBoxSymmetrize, self.comboBoxStandardize, self.actionSave]
         for item in lock_items:
             item.setEnabled(not locked)
@@ -110,7 +118,6 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         self.btnViewCohort.clicked.connect(self.view_cohort)
         self.btnEdit.clicked.connect(self.edit_community)
         self.btnDefault.clicked.connect(self.default)
-        self.btnSubgraphAnalysis.clicked.connect(self.subgraph_analysis)
         self.btnStartAnalysis.clicked.connect(self.start_analysis)
 
     def init_actions(self):
@@ -249,21 +256,17 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         self.cohort_editor_gui.show()
 
     def edit_community(self):
-        self.community_structure_gui = CommunityStructure(self.analysis, self.brain_mesh_data, AppWindow = self)
+        self.community_structure_gui = CommunityStructure(self.analysis, self.brain_mesh_data, self.__class__, AppWindow = self)
         self.community_structure_gui.spinBoxGamma.valueChanged.connect(self.update_gamma)
         self.community_structure_gui.show()
 
     def default(self):
         pass
 
-    def subgraph_analysis(self):
-        pass
-
     def start_analysis(self):
         self.groupBoxCommunityStructure.hide()
         self.startAnalysisWidget.show()
         self.btnStartAnalysis.hide()
-        self.btnSubgraphAnalysis.hide()
         self.graphMeasuresWidget.hide()
 
         self.comboBoxCorrelation.setEnabled(False)
@@ -279,15 +282,10 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         self.nodalMeasuresWidget.init(Measure.NODAL, self.analysis)
         self.binodalMeasuresWidget.init(Measure.BINODAL, self.analysis)
 
-        self.brainWidget.set_brain_mesh(self.brain_mesh_data)
+        self.init_brain_widget()
         show_only_selected = self.brain_view_options_widget.settingsWidget.checkBoxShowOnlySelected.isChecked()
         show_brain_regions = self.brain_view_options_widget.settingsWidget.actionShow_brain_regions.isChecked()
         self.brainWidget.init_brain_regions(self.analysis.cohort.atlas.brain_regions, 4, [], show_brain_regions, show_only_selected)
-
-        self.brain_view_options_widget.init(self.brainWidget)
-        self.brain_view_options_widget.settingsWidget.change_transparency()
-        self.brain_view_options_widget.set_graph_analysis_mode(self.analysis)
-        self.brain_view_options_widget.show()
 
     def open(self):
         options = QFileDialog.Options()

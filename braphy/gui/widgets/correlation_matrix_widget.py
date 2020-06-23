@@ -75,6 +75,7 @@ class CorrelationMatrixWidget(Base, Form):
 
     def init_graphics_view(self):
         self.toolbar = NavigationToolbar(self.correlationMatrix, self)
+        self.toolbar.hide()
         self.correlationMatrix.labels = self.analysis.cohort.atlas.get_brain_region_labels()
 
     def update_graphics_view(self):

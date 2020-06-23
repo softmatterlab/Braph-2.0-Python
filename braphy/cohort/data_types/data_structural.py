@@ -13,3 +13,9 @@ class DataStructural(Data):
 
     def from_dict(self, d):
         self.set_value(np.asarray(d['value']))
+
+    def get_subgraph_data(self, selected_nodes):
+        new_value = self.value[selected_nodes]
+        new_data = DataStructural()
+        new_data.set_value(new_value)
+        return new_data

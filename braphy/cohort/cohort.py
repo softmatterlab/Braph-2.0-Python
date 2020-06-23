@@ -7,6 +7,7 @@ from braphy.utility.get_version import get_version
 from braphy.workflows.MRI.subject_MRI import SubjectMRI
 from braphy.workflows.fMRI.subject_fMRI import SubjectfMRI
 import numpy as np
+import copy
 
 class Cohort:
     def __init__(self, name, subject_class, atlas, subjects = None, groups = None):
@@ -295,3 +296,19 @@ class Cohort:
 
     def load_from_xlsx(self, file_name):
         return self.load_from_file(file_name, self.subject_class.from_xlsx)
+
+    def get_subgraph_cohort(self, selected_nodes):
+        atlas = self.atlas.get_subgraph_atlas(selected_nodes)
+        subgraph_subjects = []
+        subgraph_groups = copy.deepcopy(self.groups)
+        for group in subgraph_groups:
+            group.subjects = []
+        for subject in self.subjects:
+            subgraph_subject = subject.get_subgraph_subject(selected_nodes)
+            subgraph_subjects.append(subgraph_subject)
+            for i, group in enumerate(self.groups):
+                if subject in group.subjects:
+                    subgraph_groups[i].add_subject(subgraph_subject)
+        cohort = Cohort('subgraph cohort', self.subject_class, atlas, subgraph_subjects, subgraph_groups)
+        return cohort
+

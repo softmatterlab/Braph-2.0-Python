@@ -221,3 +221,8 @@ class BrainAtlas():
         for brain_region in d['brain_regions']:
             brain_regions.append(BrainRegion.from_dict(brain_region))
         return BrainAtlas(mesh_file = d['mesh_file'], name = d['name'], brain_regions = brain_regions)
+
+    def get_subgraph_atlas(self, selected_nodes):
+        brain_regions = [self.brain_regions[i] for i in selected_nodes]
+        atlas = BrainAtlas(self.mesh_file, 'subgraph atlas', brain_regions)
+        return atlas

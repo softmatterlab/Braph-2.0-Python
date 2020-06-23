@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1397</width>
-    <height>998</height>
+    <height>1060</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -314,25 +314,6 @@
              </size>
             </property>
            </spacer>
-          </item>
-          <item>
-           <widget class="QPushButton" name="btnSubgraphAnalysis">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>40</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>Subgraph analysis</string>
-            </property>
-           </widget>
           </item>
           <item>
            <widget class="QPushButton" name="btnStartAnalysis">

@@ -161,3 +161,8 @@ class Analysis():
     def get_graph(self, group_index):
         pass
 
+    def get_subgraph_analysis(self, selected_nodes):
+        cohort = self.cohort.get_subgraph_cohort(selected_nodes)
+        analysis = self.__class__(cohort, self.graph_settings, 'subgraph analysis')
+        return analysis
+

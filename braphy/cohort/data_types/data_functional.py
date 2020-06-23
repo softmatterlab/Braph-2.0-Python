@@ -21,3 +21,9 @@ class DataFunctional(Data):
     def remove_row(self):
         if np.size(self.value, 0) > 1:
             self.value = self.value[:-1, :]
+
+    def get_subgraph_data(self, selected_nodes):
+        new_value = self.value[:, selected_nodes]
+        new_data = DataFunctional()
+        new_data.set_value(new_value)
+        return new_data
