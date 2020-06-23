@@ -133,3 +133,23 @@ class StatFunctions():
                 correlation[i, j] = corr
                 correlation[j, i] = corr
         return correlation
+
+    def correlation_partial_spearman(data):
+        data = data.T
+        data = np.asarray(data)
+        nodes = data.shape[1]
+        correlation = np.zeros((nodes, nodes), dtype=np.float)
+        for i in range(nodes):
+            correlation[i, i] = 1
+            for j in range(i+1, nodes):
+                idx = np.ones(nodes, dtype=np.bool)
+                idx[i] = False
+                idx[j] = False
+                beta_i = linalg.lstsq(data[:, idx], data[:, j])[0]
+                beta_j = linalg.lstsq(data[:, idx], data[:, i])[0]
+                res_j = data[:, j] - data[:, idx].dot(beta_i)
+                res_i = data[:, i] - data[:, idx].dot(beta_j)
+                corr = stats.spearmanr(res_i, res_j)[0]
+                correlation[i, j] = corr
+                correlation[j, i] = corr
+        return correlation
