@@ -3,11 +3,12 @@ from braphy.workflows.fMRI.subject_fMRI import SubjectfMRI
 from braphy.graph.measures import *
 
 class Measurement():
-    def __init__(self, group, measure_class, sub_measure, value = None):
+    def __init__(self, group, measure_class, sub_measure, value = None, binary_value = 0):
         self.group = group
         self.measure_class = measure_class
         self.sub_measure = sub_measure
         self.value = value
+        self.binary_value = binary_value
 
     def to_dict(self):
         d = {}
@@ -15,6 +16,7 @@ class Measurement():
         d['measure_class'] = self.measure_class.__name__
         d['sub_measure'] = self.sub_measure
         d['value'] = self.value.tolist() if isinstance(self.value, np.ndarray) else self.value
+        d['binary_value'] = self.binary_value
         return d
 
     @classmethod
@@ -24,7 +26,18 @@ class Measurement():
         sub_measure = d['sub_measure']
         value = d['value']
         value = np.array(value) if isinstance(value, list) else value
-        return cls(group, measure_class, sub_measure, value)
+        binary_value = d['binary_value']
+        return cls(group, measure_class, sub_measure, value, binary_value)
+
+    def equal(self, other):
+        if type(self) != type(other):
+            return False
+        eq = (self.measure_class == other.measure_class and
+              self.sub_measure == other.sub_measure and
+              self.group == other.group and
+              self.binary_value == other.binary_value)
+        return eq
+
 
     def get_value(self):
         return self.value

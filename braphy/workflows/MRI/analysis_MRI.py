@@ -26,7 +26,7 @@ class AnalysisMRI(Analysis):
         graph = self.get_graph(group_index)
         value = graph.get_measure(measure_class, sub_measure, save = False)
 
-        measurement = MeasurementMRI(group_index, measure_class, sub_measure, value)
+        measurement = MeasurementMRI(group_index, measure_class, sub_measure, value, self.graph_settings.value_binary)
         return measurement
 
     def calculate_random_comparison(self, measure_class, sub_measure, group):

@@ -45,6 +45,12 @@ class Analysis():
     def is_fMRI(self):
         return self.cohort.subject_class == SubjectfMRI
 
+    def is_weighted(self):
+        return self.graph_settings.weighted
+
+    def is_binary(self):
+        return not self.graph_settings.weighted
+
     def number_of_regions(self):
         return len(self.cohort.atlas.brain_regions)
 
@@ -78,10 +84,9 @@ class Analysis():
 
     def get_measurement(self, measure_class, sub_measure, group):
         measurement = None
+        check_measurement = Measurement(group, measure_class, sub_measure, self.graph_settings.value_binary)
         for m in self.measurements:
-            if (m.measure_class == measure_class and
-                m.sub_measure == sub_measure and
-                m.group == group):
+            if m.equal(check_measurement):
                 measurement = m
                 break
         if not measurement:
