@@ -58,7 +58,8 @@ class AnalysisMRI(Analysis):
         p2 = stat.p_value(difference_mean, permutation_diffs, False)
         percentiles = None #stat.quantiles(difference_mean, 100)
 
-        comparison = ComparisonMRI(groups, measure_class, sub_measure, permutation_diffs, (p1, p2), (0, 0), (measure_1, measure_2), permutations)
+        comparison = ComparisonMRI(groups, measure_class, sub_measure, permutation_diffs,
+                                   (p1, p2), (0, 0), (measure_1, measure_2), permutations,self.graph_settings.value_binary)
         return comparison
 
     def get_graph(self, group_index):

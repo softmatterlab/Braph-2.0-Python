@@ -70,7 +70,6 @@ class CalculateGroupMeasures(QtWidgets.QMainWindow, Ui_MainWindow):
         pass
 
     def min_changed(self, value):
-        print("Set max minimum : {}".format(value))
         self.spinBoxMax.setMinimum(value)
         self.update_step()
 

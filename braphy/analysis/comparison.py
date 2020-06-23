@@ -2,8 +2,8 @@ from braphy.graph.measures import *
 import numpy as np
 
 class Comparison():
-    def __init__(self, groups, measure_class, sub_measure, all_differences, p_values,
-                 confidence_interval, measures, permutations):
+    def __init__(self, groups, measure_class, sub_measure, all_differences = None, p_values = None,
+                 confidence_interval = None, measures = None, permutations = 0, binary_value = 0):
         self.groups = groups
         self.measure_class = measure_class
         self.sub_measure = sub_measure
@@ -12,6 +12,18 @@ class Comparison():
         self.confidence_interval = confidence_interval
         self.measures = measures
         self.permutations = permutations
+        self.binary_value = binary_value
+
+    def equal(self, other):
+        if type(self) != type(other):
+            return False
+        eq = (self.groups[0] == other.groups[0] and
+              self.groups[1] == other.groups[1] and
+              self.measure_class == other.measure_class and
+              self.sub_measure == other.sub_measure and
+              self.permutations == other.permutations and
+              self.binary_value == other.binary_value)
+        return eq
 
     def to_dict(self):
         d = {}

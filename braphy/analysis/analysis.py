@@ -109,12 +109,10 @@ class Analysis():
 
     def get_comparison(self, measure_class, sub_measure, groups, permutations):
         comparison = None
+        check_comparison = Comparison(groups, measure_class, sub_measure,
+                                      permutations = permutations, binary_value = self.graph_settings.value_binary)
         for c in self.comparisons:
-            if (c.measure_class == measure_class and
-                c.sub_measure == sub_measure and
-                c.groups[0] == groups[0] and
-                c.groups[1] == groups[1] and
-                c.permutations == permutations):
+            if (c.equal(check_comparison)):
                 comparison = c
                 break
         if not comparison:

@@ -32,7 +32,7 @@ class AnalysisfMRI(Analysis):
         values = []
         for graph in graphs:
             values.append(graph.get_measure(measure_class, sub_measure, save = False))
-        measurement = MeasurementfMRI(group_index, measure_class, sub_measure, values)
+        measurement = MeasurementfMRI(group_index, measure_class, sub_measure, values, self.graph_settings.value_binary)
         return measurement
 
     def calculate_random_comparison(self, measure_class, sub_measure, group):
@@ -61,7 +61,8 @@ class AnalysisfMRI(Analysis):
         p2 = stat.p_value(difference_mean, permutation_diffs, False)
         percentiles = None #stat.quantiles(difference_mean, 100)
 
-        comparison = ComparisonfMRI(groups, measure_class, sub_measure, permutation_diffs, (p1, p2), (0, 0), (measures_1, measures_2), permutations)
+        comparison = ComparisonfMRI(groups, measure_class, sub_measure, permutation_diffs,
+                                    (p1, p2), (0, 0), (measures_1, measures_2), permutations, self.graph_settings.value_binary)
         return comparison
 
     def get_graph(self, group_index):

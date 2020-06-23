@@ -169,7 +169,10 @@ class MeasuresWidget(Base, Form):
                     self.tableWidget.setItem(row, j, item)
 
     def update_comparison_table(self, current_group_1, current_group_2, current_region_index):
-        labels = ['Difference', 'p (1-tailed)', 'p (2-tailed)', 'Value 1', 'Value 2', 'CI lower', 'CI upper', 'Notes', 'Measure', 'Group 1', 'Group 2', 'Param']
+        labels = ['Difference']
+        if self.analysis.is_binary():
+            labels.append(self.analysis.graph_settings.rule_binary)
+        labels.extend(['p (1-tailed)', 'p (2-tailed)', 'Value 1', 'Value 2', 'CI lower', 'CI upper', 'Notes', 'Measure', 'Group 1', 'Group 2', 'Param'])
         if self.analysis.cohort.subject_class == SubjectfMRI and not self.btnGroup.isChecked():
             labels.append('Subject')
         if self.measure_type == Measure.NODAL:
@@ -188,12 +191,15 @@ class MeasuresWidget(Base, Form):
                 else:
                     value_0 = comparison.measures[0]
                     value_1 = comparison.measures[1]
-                contents = [value_1 - value_0, (comparison.p_values[0]),
-                            (comparison.p_values[1]), (value_0),
-                            (value_1), (comparison.confidence_interval[0]),
-                            (comparison.confidence_interval[1]), '-',
-                            comparison.sub_measure, self.analysis.cohort.groups[comparison.groups[0]].name,
-                            self.analysis.cohort.groups[comparison.groups[1]].name, '-']
+                contents = [value_1 - value_0]
+                if self.analysis.is_binary():
+                    contents.append(comparison.binary_value)
+                contents.extend([(comparison.p_values[0]),
+                                  (comparison.p_values[1]), (value_0),
+                                  (value_1), (comparison.confidence_interval[0]),
+                                  (comparison.confidence_interval[1]), '-',
+                                  comparison.sub_measure, self.analysis.cohort.groups[comparison.groups[0]].name,
+                                  self.analysis.cohort.groups[comparison.groups[1]].name, '-'])
                 if self.analysis.cohort.subject_class == SubjectfMRI and not self.btnGroup.isChecked():
                     contents.append(self.comboBoxSubject.currentText())
                 if self.measure_type == Measure.NODAL:
