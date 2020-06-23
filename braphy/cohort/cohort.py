@@ -22,10 +22,10 @@ class Cohort:
     def set_name(self, name):
         self.name = name
 
-    def to_file(self):
+    def to_file(self, file_name):
         d = {}
         d['cohort'] = self.to_dict()
-        with open(atlas_file, 'w') as f:
+        with open(file_name, 'w') as f:
             json.dump(d, f, sort_keys=True, indent=4)
 
     def to_dict(self):
@@ -44,8 +44,8 @@ class Cohort:
         d['atlas'] = self.atlas.to_dict()
         return d
 
-    def from_file(cohort_file):
-        with open(cohort_file, 'r') as f:
+    def from_file(file_name):
+        with open(file_name, 'r') as f:
             d = json.load(f)
         return Cohort.from_dict(d['cohort'])
 
