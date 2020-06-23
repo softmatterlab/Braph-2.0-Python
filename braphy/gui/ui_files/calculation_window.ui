@@ -53,27 +53,13 @@
            <number>0</number>
           </property>
           <item row="1" column="1">
-           <widget class="QLineEdit" name="lineEditMatrix">
+           <widget class="QLineEdit" name="lineEditPermutation">
             <property name="text">
              <string>1000</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="labelSwaps">
-            <property name="text">
-             <string>random swaps no.</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="labelMatrix">
-            <property name="text">
-             <string>random matrix no.</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="1">
+          <item row="4" column="1">
            <widget class="QCheckBox" name="checkBox">
             <property name="text">
              <string>longitudinal</string>
@@ -81,25 +67,80 @@
            </widget>
           </item>
           <item row="2" column="1">
-           <widget class="QLineEdit" name="lineEditSwaps">
+           <widget class="QLineEdit" name="lineEditMatrix">
             <property name="text">
-             <string>10</string>
+             <string>1000</string>
             </property>
            </widget>
           </item>
-          <item row="0" column="0">
+          <item row="1" column="0">
            <widget class="QLabel" name="labelPermutation">
             <property name="text">
              <string>permutation number</string>
             </property>
            </widget>
           </item>
-          <item row="0" column="1">
-           <widget class="QLineEdit" name="lineEditPermutation">
+          <item row="3" column="0">
+           <widget class="QLabel" name="labelSwaps">
             <property name="text">
-             <string>1000</string>
+             <string>random swaps no.</string>
             </property>
            </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QLineEdit" name="lineEditSwaps">
+            <property name="text">
+             <string>10</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="labelMatrix">
+            <property name="text">
+             <string>random matrix no.</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="labelBinary">
+            <property name="text">
+             <string>Set density values</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <layout class="QGridLayout" name="gridLayout">
+            <item row="0" column="0">
+             <widget class="QLabel" name="labelMin">
+              <property name="text">
+               <string>Min</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="3">
+             <widget class="QDoubleSpinBox" name="spinBoxMax"/>
+            </item>
+            <item row="0" column="1">
+             <widget class="QDoubleSpinBox" name="spinBoxMin"/>
+            </item>
+            <item row="0" column="2">
+             <widget class="QLabel" name="labelMax">
+              <property name="text">
+               <string>Max</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="4">
+             <widget class="QLabel" name="labelStep">
+              <property name="text">
+               <string>Step</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="5">
+             <widget class="QDoubleSpinBox" name="spinBoxStep"/>
+            </item>
+           </layout>
           </item>
          </layout>
         </item>
