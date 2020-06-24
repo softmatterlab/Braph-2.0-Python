@@ -34,7 +34,6 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         self.graphMeasuresWidget.init()
         self.startAnalysisWidget.hide()
         self.tabWidget.tabBar().hide()
-        self.binodalMeasuresWidget.hide()
         self.tabWidget.currentChanged.connect(self.tab_changed)
 
         self.brain_view_options_widget = BrainViewOptionsWidget(parent=self.tabBrainView)
@@ -184,7 +183,7 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
             self.set_brain_view_actions_visible(False)
             self.set_correlation_actions_visible(False)
         elif self.tabWidget.currentIndex() == 3:
-            #self.binodalMeasuresWidget.update_table()
+            self.binodalMeasuresWidget.update_table()
             self.set_brain_view_actions_visible(False)
             self.set_correlation_actions_visible(False)
         elif self.tabWidget.currentIndex() == 4:

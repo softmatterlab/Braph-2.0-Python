@@ -23,7 +23,10 @@ class MeasuresWidget(Base, Form):
         self.measure_type = measure_type
         if measure_type == Measure.GLOBAL:
             self.comboBoxRegion.hide()
+            self.comboBoxRegion2.hide()
             self.labelRegion.hide()
+        elif measure_type == Measure.NODAL:
+            self.comboBoxRegion2.hide()
         if analysis.cohort.subject_class == SubjectMRI:
             self.btnGroup.hide()
             self.btnSubject.hide()
@@ -51,6 +54,7 @@ class MeasuresWidget(Base, Form):
 
     def init_combo_boxes(self):
         self.comboBoxRegion.currentIndexChanged.connect(self.update_table)
+        self.comboBoxRegion2.currentIndexChanged.connect(self.update_table)
         self.comboBoxGroup1.currentIndexChanged.connect(self.update_table)
         self.comboBoxGroup2.currentIndexChanged.connect(self.update_table)
         self.comboBoxSubject.currentIndexChanged.connect(self.update_table)
@@ -61,6 +65,7 @@ class MeasuresWidget(Base, Form):
 
         for label in self.analysis.cohort.atlas.get_brain_region_labels():
             self.comboBoxRegion.addItem(label)
+            self.comboBoxRegion2.addItem(label)
 
     def remove(self):
         selected = self.get_selected()
@@ -136,6 +141,8 @@ class MeasuresWidget(Base, Form):
             labels.append('Subject')
         if self.measure_type == Measure.NODAL:
             labels.append('Region')
+        elif self.measure_type == Measure.BINODAL:
+            labels.extend(['Region 1', 'Region 2'])
         self.tableWidget.setColumnCount(len(labels))
         self.tableWidget.setHorizontalHeaderLabels(labels)
         self.measurement_index_mapping = {}
@@ -159,9 +166,15 @@ class MeasuresWidget(Base, Form):
                     contents.append(self.comboBoxSubject.currentText())
                 if self.measure_type == Measure.NODAL:
                     contents.append(self.comboBoxRegion.currentText())
+                elif self.measure_type == Measure.BINODAL:
+                    contents.extend([self.comboBoxRegion.currentText(), self.comboBoxRegion2.currentText()])
                 for j, content in enumerate(contents):
                     if isinstance(content, np.ndarray):
-                        content = content[current_region_index]
+                        if self.measure_type == Measure.BINODAL:
+                            current_region2_index = self.comboBoxRegion2.currentIndex()
+                            content = content[current_region_index][current_region2_index]
+                        else:
+                            content = content[current_region_index]
                     if not isinstance(content, str):
                         content = float_to_string(content)
                     item = QTableWidgetItem(content)
@@ -177,6 +190,8 @@ class MeasuresWidget(Base, Form):
             labels.append('Subject')
         if self.measure_type == Measure.NODAL:
             labels.append('Region')
+        elif self.measure_type == Measure.BINODAL:
+            labels.extend(['Region 1', 'Region 2'])
         self.tableWidget.setColumnCount(len(labels))
         self.tableWidget.setHorizontalHeaderLabels(labels)
         self.comparison_index_mapping = {}
@@ -204,9 +219,15 @@ class MeasuresWidget(Base, Form):
                     contents.append(self.comboBoxSubject.currentText())
                 if self.measure_type == Measure.NODAL:
                     contents.append(self.comboBoxRegion.currentText())
+                elif self.measure_type == Measure.BINODAL:
+                    contents.extend([self.comboBoxRegion.currentText(), self.comboBoxRegion2.currentText()])
                 for j, content in enumerate(contents):
                     if isinstance(content, np.ndarray):
-                        content = content[current_region_index]
+                        if self.measure_type == Measure.BINODAL:
+                            current_region2_index = self.comboBoxRegion2.currentIndex()
+                            content = content[current_region_index][current_region2_index]
+                        else:
+                            content = content[current_region_index]
                     if not isinstance(content, str):
                         content = float_to_string(content)
                     item = QTableWidgetItem(content)

@@ -33,13 +33,13 @@ class CorrelationMatrixWidget(Base, Form):
         self.comboBoxSubjects.hide()
 
     def init_buttons(self):
-        self.btnGroup.toggled.connect(self.analyse_group)
-        self.btnSubject.toggled.connect(self.analyse_subject)
-        self.btnWeighted.toggled.connect(self.weighted_correlation)
-        self.btnHistogram.toggled.connect(self.histogram)
-        self.btnSubject.toggled.connect(self.analyse_subject)
-        self.btnDensity.toggled.connect(self.binary_correlation_density)
-        self.btnThreshold.toggled.connect(self.binary_correlation_threshold)
+        self.btnGroup.clicked.connect(self.analyse_group)
+        self.btnSubject.clicked.connect(self.analyse_subject)
+        self.btnWeighted.clicked.connect(self.weighted_correlation)
+        self.btnHistogram.clicked.connect(self.histogram)
+        self.btnSubject.clicked.connect(self.analyse_subject)
+        self.btnDensity.clicked.connect(self.binary_correlation_density)
+        self.btnThreshold.clicked.connect(self.binary_correlation_threshold)
 
         self.checkBoxRearrange.stateChanged.connect(self.rearrange)
         self.checkBoxDivide.stateChanged.connect(self.divide)
@@ -89,8 +89,11 @@ class CorrelationMatrixWidget(Base, Form):
             A = self.analysis.correlation_threshold(A, self.spinboxThreshold.value())
         if self.checkBoxRearrange.isChecked():
             A, labels = self.rearrange_regions(A)
-        self.correlationMatrix.update_matrix(A)
-        self.correlationMatrix.set_labels(labels)
+        if self.btnHistogram.isChecked():
+            self.correlationMatrix.update_matrix(A, histogram = True)
+        else:
+            self.correlationMatrix.update_matrix(A)
+            self.correlationMatrix.set_labels(labels)
 
     def group_change(self):
         self.update_combo_box_subjects()
@@ -159,6 +162,7 @@ class CorrelationMatrixWidget(Base, Form):
         self.horizontalSliderThreshold.setEnabled(False)
         self.spinboxDensity.setEnabled(False)
         self.horizontalSliderDensity.setEnabled(False)
+        self.update_graphics_view()
 
     def binary_correlation_density(self):
         self.spinboxDensity.setEnabled(True)
