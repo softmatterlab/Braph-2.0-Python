@@ -30,19 +30,26 @@ class CorrelationMatrixVisualizer(FigureCanvas):
         self.matrix = matrix
         self.plot()
 
-    def update_matrix(self, matrix):
+    def update_matrix(self, matrix, histogram = False):
         if self.matrix is None:
             self.init(matrix)
         else:
             self.matrix = matrix
-            self.cax.set_data(self.matrix)
-            self.draw()
+            if histogram:
+                self.histogram()
+            else:
+                if self.cax is None:
+                    self.plot()
+                else:
+                    self.cax.set_data(self.matrix)
+                    self.draw()
 
     def set_labels(self, labels):
         self.labels = labels
         self.show_labels(self.labels_visible)
 
     def plot(self):
+        self.figure.clear()
         self.ax = self.figure.add_subplot(111)
         self.cax = self.ax.imshow(self.matrix)
         self.show_colorbar(True)
@@ -55,6 +62,14 @@ class CorrelationMatrixVisualizer(FigureCanvas):
         self.draw()
         self.show_labels(False)
         self.show_colorbar(False)
+
+    def histogram(self):
+        self.figure.clear()
+        self.ax.clear()
+        self.ax = self.figure.add_subplot(111)
+        self.ax.hist(self.matrix.flatten())
+        self.cax = None
+        self.draw()
 
     def show_labels(self, show):
         self.labels_visible = show
@@ -97,3 +112,4 @@ class CorrelationMatrixVisualizer(FigureCanvas):
         if self.text:
             self.text.remove()
             self.text = None
+
