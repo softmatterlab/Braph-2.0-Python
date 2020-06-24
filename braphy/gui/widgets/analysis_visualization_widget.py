@@ -1,8 +1,8 @@
 from PyQt5.QtWidgets import *
-from PyQt5 import QtCore, QtGui, uic, QtWidgets
+from PyQt5 import QtCore, QtGui, uic, QtWidgets, Qt
 from pyqtgraph import ColorMap as cm
 import numpy as np
-from braphy.utility.helper_functions import abs_path_from_relative
+from braphy.utility.helper_functions import abs_path_from_relative, float_to_string
 from braphy.gui.color_bar_combo_box import ColorBar
 
 ui_file = abs_path_from_relative(__file__, "../ui_files/measure_visualization_widget.ui")
@@ -15,13 +15,17 @@ class AnalysisVisualizationWidget(Base, Form):
         self.visualization_options = ['Color', 'Size', 'Color and size']
         self.colormaps = self.get_colormaps()
 
-    def init(self, settings_widget, groups):
+    def init(self, settings_widget, groups, is_binary):
+        self.is_binary = is_binary
         self.init_combo_boxes(groups)
         self.brain_widget = settings_widget.brain_widget
         self.settings_widget = settings_widget
-        self.update_list(0)
+        self.update_list()
         self.visualization_type_changed(0)
         self.init_spin_boxes()
+        self.listWidget.currentRowChanged.connect(self.list_item_changed)
+        if not self.is_binary:
+            self.comboBoxBinary.hide()
 
     def init_combo_boxes(self, groups):
         for group in groups:
@@ -58,7 +62,12 @@ class AnalysisVisualizationWidget(Base, Form):
             self.spinBoxMin.blockSignals(False)
         self.update_visualization()
 
-    def update_binary_values(self, group_index):
+    def group_changed(self, group_index):
+        self.update_list()
+        self.update_binary_values()
+        self.update_visualization()
+
+    def update_binary_values(self):
         pass
 
     def normalize(self, array):
@@ -80,7 +89,6 @@ class AnalysisVisualizationWidget(Base, Form):
         color = colormap.map(value, mode='float')
         return color
 
-
 class MeasureVisualizationWidget(AnalysisVisualizationWidget):
     def __init__(self, parent = None):
         super(MeasureVisualizationWidget, self).__init__(parent)
@@ -92,30 +100,63 @@ class MeasureVisualizationWidget(AnalysisVisualizationWidget):
         self.comboBoxDouble.hide()
         self.comboBoxGroup2.hide()
 
-    def init(self, settings_widget, measurements, groups):
+    def init(self, settings_widget, measurements, groups, is_binary):
         self.measurements = measurements
-        self.listWidget.currentTextChanged.connect(self.update_visualization)
-        super().init(settings_widget, groups)
+        super().init(settings_widget, groups, is_binary)
 
     def init_combo_boxes(self, groups):
         super().init_combo_boxes(groups)
         self.comboBoxType.addItems(self.visualization_options)
         self.comboBoxType.currentIndexChanged.connect(self.visualization_type_changed)
+        self.comboBoxType.setEnabled(False)
+        self.comboBoxColormap.setEnabled(False)
 
-    def group_changed(self, group_index):
-        self.update_list(group_index)
-        self.update_binary_values(group_index)
-        self.update_visualization()
-
-    def update_list(self, group_index):
-        self.listWidget.blockSignals(True)
+    def update_list(self):
+        group_index = self.comboBoxGroup.currentIndex()
         self.listWidget.clear()
+        self.listWidget.blockSignals(True)
         self.measure_mapping = {}
         for i, measurement in enumerate(self.measurements):
-            if measurement.group == group_index and measurement.is_nodal():
+            is_nodal = measurement.is_nodal()
+            items = self.listWidget.findItems(measurement.sub_measure, Qt.Qt.MatchExactly)
+            items_text = [item.text() for item in items]
+            if (measurement.group == group_index and
+                is_nodal and
+                measurement.sub_measure not in items_text):
                 self.listWidget.addItem(measurement.sub_measure)
                 self.measure_mapping[measurement.sub_measure] = i
         self.listWidget.blockSignals(False)
+
+    def list_item_changed(self, index):
+        enabled = True if index > -1 else False
+        items = [self.comboBoxType, self.comboBoxColormap, self.labelMin, self.labelMax, self.spinBoxMin, self.spinBoxMax]
+        if enabled:
+            self.comboBoxBinary.setEnabled(True)
+            for item in items:
+                item.setEnabled(True)
+        else:
+            self.comboBoxBinary.setEnabled(False)
+            for item in items:
+                item.setEnabled(False)
+        if self.is_binary:
+            self.update_binary_values()
+        self.update_visualization()
+
+    def update_binary_values(self):
+        self.comboBoxBinary.blockSignals(True)
+        if self.listWidget.currentRow() == -1:
+            self.comboBoxBinary.blockSignals(False)
+            return
+        group_index = self.comboBoxGroup.currentIndex()
+        self.comboBoxBinary.clear()
+        self.binary_mapping = []
+        current_list_item = self.listWidget.currentItem().text()
+        for i, measurement in enumerate(self.measurements):
+            if (measurement.sub_measure == current_list_item and
+                measurement.group == group_index):
+                self.binary_mapping.append(i)
+                self.comboBoxBinary.addItem(float_to_string(measurement.binary_value))
+        self.comboBoxBinary.blockSignals(False)
 
     def visualization_type_changed(self, index):
         if index == 0: # color
@@ -143,6 +184,8 @@ class MeasureVisualizationWidget(AnalysisVisualizationWidget):
         self.settings_widget.change_brain_region_size()
         if self.listWidget.currentRow() == -1:
             return
+        if self.is_binary and self.comboBoxBinary.currentIndex == -1:
+            return
         values = self.get_visualization_values()
         visualization_type = self.comboBoxType.currentIndex()
         for i, region in enumerate(self.brain_widget.gui_brain_regions):
@@ -152,8 +195,12 @@ class MeasureVisualizationWidget(AnalysisVisualizationWidget):
                 region.set_size(values[i] * self.spinBoxMax.value() + self.spinBoxMin.value())
 
     def get_visualization_values(self):
-        current_list_item = self.listWidget.currentItem().text()
-        measurement_index = self.measure_mapping[current_list_item]
+        if self.is_binary:
+            binary_index = self.comboBoxBinary.currentIndex()
+            measurement_index = self.binary_mapping[binary_index]
+        else:
+            current_list_item = self.listWidget.currentItem().text()
+            measurement_index = self.measure_mapping[current_list_item]
         measurement = self.measurements[measurement_index]
         values = measurement.value
         if isinstance(values[0], np.ndarray): # fmri: compute average
@@ -169,10 +216,9 @@ class MeasureComparisonVisualizationWidget(AnalysisVisualizationWidget):
         self.comboBoxType.hide()
         self.init_check_boxes()
 
-    def init(self, settings_widget, comparisons, groups):
+    def init(self, settings_widget, comparisons, groups, is_binary):
         self.comparisons = comparisons
-        self.listWidget.currentRowChanged.connect(self.list_item_changed)
-        super().init(settings_widget, groups)
+        super().init(settings_widget, groups, is_binary)
 
     def init_check_boxes(self):
         self.checkBoxDiff.stateChanged.connect(self.visualize_difference)
@@ -192,10 +238,6 @@ class MeasureComparisonVisualizationWidget(AnalysisVisualizationWidget):
             combo_box.blockSignals(True)
             combo_box.setCurrentIndex(-1)
             combo_box.blockSignals(False)
-
-    def group_changed(self, group_index):
-        self.update_list(group_index)
-        self.update_binary_values(group_index)
 
     def disable_check_boxes(self):
         check_boxes = [self.checkBoxDiff, self.checkBoxSingle, self.checkBoxDouble]
@@ -230,7 +272,7 @@ class MeasureComparisonVisualizationWidget(AnalysisVisualizationWidget):
         self.comboBoxDouble.setEnabled(state)
         self.disable_check_boxes()
 
-    def update_list(self, group_index):
+    def update_list(self):
         group_index_0 = self.comboBoxGroup.currentIndex()
         group_index_1 = self.comboBoxGroup2.currentIndex()
         self.listWidget.clear()
@@ -238,7 +280,12 @@ class MeasureComparisonVisualizationWidget(AnalysisVisualizationWidget):
         self.comparison_mapping = {}
         for i, comparison in enumerate(self.comparisons):
             is_nodal = comparison.measure_class.is_nodal(comparison.sub_measure)
-            if comparison.groups[0] == group_index_0 and comparison.groups[1] == group_index_1 and is_nodal:
+            items = self.listWidget.findItems(comparison.sub_measure, Qt.Qt.MatchExactly)
+            items_text = [item.text() for item in items]
+            if (comparison.groups[0] == group_index_0 and
+                comparison.groups[1] == group_index_1 and
+                is_nodal and
+                comparison.sub_measure not in items_text):
                 self.listWidget.addItem(comparison.sub_measure)
                 self.comparison_mapping[comparison.sub_measure] = i
         self.listWidget.blockSignals(False)
@@ -247,7 +294,10 @@ class MeasureComparisonVisualizationWidget(AnalysisVisualizationWidget):
         enabled = True if index > -1 else False
         if enabled:
             self.disable_check_boxes()
+            self.comboBoxBinary.setEnabled(True)
         else:
+            self.comboBoxBinary.setEnabled(False)
+            self.update_binary_values()
             check_boxes = [self.checkBoxDiff, self.checkBoxSingle, self.checkBoxDouble]
             for check_box in check_boxes:
                 check_box.blockSignals(True)
@@ -262,7 +312,28 @@ class MeasureComparisonVisualizationWidget(AnalysisVisualizationWidget):
             self.spinBoxMax.setEnabled(False)
             self.labelMin.setEnabled(False)
             self.labelMax.setEnabled(False)
+        if self.is_binary:
+            self.update_binary_values()
         self.update_visualization()
+
+    def update_binary_values(self):
+        self.comboBoxBinary.blockSignals(True)
+        self.comboBoxBinary.clear()
+        if self.listWidget.currentRow() == -1:
+            self.comboBoxBinary.blockSignals(False)
+            return
+        group_index_0 = self.comboBoxGroup.currentIndex()
+        group_index_1 = self.comboBoxGroup2.currentIndex()
+        self.comboBoxBinary.clear()
+        self.binary_mapping = []
+        current_list_item = self.listWidget.currentItem().text()
+        for i, comparison in enumerate(self.comparisons):
+            if (comparison.sub_measure == current_list_item and
+                comparison.groups[0] == group_index_0 and
+                comparison.groups[1] == group_index_1):
+                self.binary_mapping.append(i)
+                self.comboBoxBinary.addItem(float_to_string(comparison.binary_value))
+        self.comboBoxBinary.blockSignals(False)
 
     def visualization_type_changed(self, index = 0):
         self.spinBoxMin.setEnabled(False)
@@ -288,6 +359,8 @@ class MeasureComparisonVisualizationWidget(AnalysisVisualizationWidget):
         self.settings_widget.change_brain_region_size()
         if self.listWidget.currentRow() == -1:
             return
+        if self.is_binary and self.comboBoxBinary.currentIndex == -1:
+            return
         for i, region in enumerate(self.brain_widget.gui_brain_regions):
             if self.checkBoxDiff.isChecked():
                 values = self.get_visualization_values('diff')
@@ -309,8 +382,12 @@ class MeasureComparisonVisualizationWidget(AnalysisVisualizationWidget):
                     region.set_size(values[i] * self.spinBoxMax.value() + self.spinBoxMin.value())
 
     def get_visualization_values(self, type):
-        current_list_item = self.listWidget.currentItem().text()
-        comparison_index = self.comparison_mapping[current_list_item]
+        if self.is_binary:
+            binary_index = self.comboBoxBinary.currentIndex()
+            comparison_index = self.binary_mapping[binary_index]
+        else:
+            current_list_item = self.listWidget.currentItem().text()
+            comparison_index = self.comparison_mapping[current_list_item]
         comparison = self.comparisons[comparison_index]
         if type == 'diff':
             values_0 = comparison.measures[0]

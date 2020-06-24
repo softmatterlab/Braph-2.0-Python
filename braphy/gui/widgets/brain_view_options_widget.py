@@ -48,12 +48,12 @@ class BrainViewOptionsWidget(Base, Form):
         self.graph_view_widget.init(self.brain_widget, analysis)
         self.tabWidget.addTab(self.graph_view_widget, 'View graph')
 
-    def add_visualize_measure_tab(self, measurements, groups):
-        self.measure_visualization_widget.init(self.settingsWidget, measurements, groups)
+    def add_visualize_measure_tab(self, measurements, groups, is_binary):
+        self.measure_visualization_widget.init(self.settingsWidget, measurements, groups, is_binary)
         self.tabWidget.addTab(self.measure_visualization_widget, 'Visualize measures')
 
-    def add_visualize_measure_comparison_tab(self, comparisons, groups):
-        self.measure_comparison_visualization_widget.init(self.settingsWidget, comparisons, groups)
+    def add_visualize_measure_comparison_tab(self, comparisons, groups, is_binary):
+        self.measure_comparison_visualization_widget.init(self.settingsWidget, comparisons, groups, is_binary)
         self.tabWidget.addTab(self.measure_comparison_visualization_widget, 'Visualize comparisons')
 
     def add_visualize_subjects_tab(self):
@@ -80,8 +80,8 @@ class BrainViewOptionsWidget(Base, Form):
 
     def set_graph_analysis_mode(self, analysis):
         self.add_graph_view_tab(analysis)
-        self.add_visualize_measure_tab(analysis.measurements, analysis.cohort.groups)
-        self.add_visualize_measure_comparison_tab(analysis.comparisons, analysis.cohort.groups)
+        self.add_visualize_measure_tab(analysis.measurements, analysis.cohort.groups, not analysis.graph_settings.weighted)
+        self.add_visualize_measure_comparison_tab(analysis.comparisons, analysis.cohort.groups, not analysis.graph_settings.weighted)
 
     def add_custom_colormap_callbacks(self):
         callback_subject = self.subject_visualization_widget.comboBoxColormap.add_colormap
