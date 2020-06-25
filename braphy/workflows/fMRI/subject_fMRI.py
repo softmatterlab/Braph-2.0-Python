@@ -92,5 +92,5 @@ class SubjectfMRI(Subject):
         for subject in subjects:
             data = subject.data_dict['data'].value.T
             correlations.append(StatFunctions.correlation(data, correlation_type))
-        return correlations
+        return np.array(correlations)
 
