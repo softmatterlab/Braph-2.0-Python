@@ -15,7 +15,7 @@ class Comparison():
         self.binary_value = binary_value
 
     def equal(self, other):
-        if type(self) != type(other):
+        if not isinstance(other, Comparison):
             return False
         eq = (self.groups[0] == other.groups[0] and
               self.groups[1] == other.groups[1] and

@@ -30,14 +30,14 @@ class Measurement():
         return cls(group, measure_class, sub_measure, value, binary_value)
 
     def equal(self, other):
-        if type(self) != type(other):
+        if not isinstance(other, Measurement):
+            print('type not equal')
             return False
         eq = (self.measure_class == other.measure_class and
               self.sub_measure == other.sub_measure and
               self.group == other.group and
               self.binary_value == other.binary_value)
         return eq
-
 
     def get_value(self):
         return self.value
