@@ -10,7 +10,7 @@ qtCreatorFile = abs_path_from_relative(__file__, "ui_files/calculation_window.ui
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 
 class CalculateGroupMeasures(QtWidgets.QMainWindow, Ui_MainWindow):
-    def __init__(self, AppWindow, analysis, graph_type):
+    def __init__(self, AppWindow, analysis, graph_type, update_callbacks = []):
         self.AppWindow = AppWindow
         QtWidgets.QMainWindow.__init__(self, parent = None)
         self.setupUi(self)
@@ -40,6 +40,8 @@ class CalculateGroupMeasures(QtWidgets.QMainWindow, Ui_MainWindow):
         self.init_combo_box()
         self.init_spin_boxes()
 
+        self.update_callbacks = update_callbacks
+
     def init_buttons(self):
         self.btnCalculate.clicked.connect(self.calculate)
         self.btnResume.clicked.connect(self.resume)
@@ -65,6 +67,11 @@ class CalculateGroupMeasures(QtWidgets.QMainWindow, Ui_MainWindow):
             else:
                 self.analysis.get_measurement(measure_class, sub_measure, group_index)
         self.textBrowser.setPlainText('DONE')
+        self.call_update()
+
+    def call_update(self):
+        for func in self.update_callbacks:
+            func()
 
     def resume(self):
         pass

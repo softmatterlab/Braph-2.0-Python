@@ -19,37 +19,41 @@ class StartAnalysisWidget(Base, Form):
         super(StartAnalysisWidget, self).__init__(parent)
         self.setupUi(self)
 
-    def init(self, graph_analysis_gui_class, analysis):
-        self.analysis = analysis
-        self.graph_type = analysis.graph_settings.graph_class()
-        self.init_buttons(graph_analysis_gui_class)
+    def init(self, graph_analysis_gui):
+        self.analysis_gui = graph_analysis_gui
+        self.analysis = self.analysis_gui.analysis
+        self.graph_type = self.analysis.graph_settings.graph_class()
+        self.init_buttons()
         self.graphMeasuresWidget.init(self.graph_type)
 
-    def init_buttons(self, graph_analysis_gui):
-        self.btnViewCommunity.clicked.connect(lambda signal, analysis_gui=graph_analysis_gui: self.view_community(analysis_gui))
-        self.btnNewAnalysis.clicked.connect(lambda signal, cls=graph_analysis_gui.__class__: self.new_analysis(cls))
+    def init_buttons(self):
+        self.btnViewCommunity.clicked.connect(self.view_community)
+        self.btnNewAnalysis.clicked.connect(self.new_analysis)
 
         self.btnCalculate.clicked.connect(self.calculate_group_measures)
         self.btnCompare.clicked.connect(self.compare_group_measures)
         self.btnRandom.clicked.connect(self.compare_with_random_graph)
 
-    def view_community(self, analysis_gui):
-        self.community_structure = CommunityStructure(analysis_gui.analysis, analysis_gui.brain_mesh_data, analysis_gui.__class__)
-        self.community_structure.spinBoxGamma.valueChanged.connect(analysis_gui.update_gamma)
+    def view_community(self):
+        self.community_structure = CommunityStructure(self.analysis, self.analysis_gui.brain_mesh_data, self.analysis_gui.__class__)
+        self.community_structure.spinBoxGamma.valueChanged.connect(self.analysis_gui.update_gamma)
         self.community_structure.show()
 
-    def new_analysis(self, cls):
-        self.graph_analysis_gui = cls()
+    def new_analysis(self):
+        self.graph_analysis_gui = self.analysis_gui.__class__()
         self.graph_analysis_gui.show()
 
     def calculate_group_measures(self):
-        self.calculate_group_measures_gui = CalculateGroupMeasures(self, self.analysis, self.graph_type)
+        self.calculate_group_measures_gui = CalculateGroupMeasures(self, self.analysis, self.graph_type, self.table_update_callbacks())
         self.calculate_group_measures_gui.show()
 
     def compare_group_measures(self):
-        self.compare_group_measures_gui = CompareGroupMeasures(self, self.analysis, self.graph_type)
+        self.compare_group_measures_gui = CompareGroupMeasures(self, self.analysis, self.graph_type, self.table_update_callbacks())
         self.compare_group_measures_gui.show()
 
     def compare_with_random_graph(self):
-        self.compare_with_random_graph_gui = CompareWithRandomGraph(self, self.analysis, self.graph_type)
+        self.compare_with_random_graph_gui = CompareWithRandomGraph(self, self.analysis, self.graph_type, self.table_update_callbacks())
         self.compare_with_random_graph_gui.show()
+
+    def table_update_callbacks(self):
+        return self.analysis_gui.table_update_callbacks()

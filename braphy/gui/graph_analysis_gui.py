@@ -276,7 +276,7 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         self.comboBoxStandardize.setEnabled(False)
 
         self.tabWidget.tabBar().show()
-        self.startAnalysisWidget.init(self, self.analysis)
+        self.startAnalysisWidget.init(self)
         self.globalMeasuresWidget.init(Measure.GLOBAL, self.analysis)
         self.nodalMeasuresWidget.init(Measure.NODAL, self.analysis)
         self.binodalMeasuresWidget.init(Measure.BINODAL, self.analysis)
@@ -384,6 +384,9 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         elif s == 'weighted directed':
             graph_type = GraphWD
         return graph_type
+
+    def table_update_callbacks(self):
+        return [widget.update_table for widget in [self.globalMeasuresWidget, self.nodalMeasuresWidget, self.binodalMeasuresWidget]]
 
 def run():
     app = QtWidgets.QApplication(sys.argv)

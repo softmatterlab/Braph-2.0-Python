@@ -9,7 +9,7 @@ qtCreatorFile = abs_path_from_relative(__file__, "ui_files/calculation_window.ui
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 
 class CompareWithRandomGraph(QtWidgets.QMainWindow, Ui_MainWindow):
-    def __init__(self, AppWindow, analysis, graph_type):
+    def __init__(self, AppWindow, analysis, graph_type, update_callbacks = []):
         self.AppWindow = AppWindow
         QtWidgets.QMainWindow.__init__(self, parent = None)
         self.setupUi(self)
