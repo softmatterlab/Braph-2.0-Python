@@ -38,7 +38,7 @@ class AnalysisfMRI(Analysis):
     def calculate_random_comparison(self, measure_class, sub_measure, group):
         pass
 
-    def calculate_comparison(self, measure_class, sub_measure, groups, permutations = 1000):
+    def calculate_comparison(self, measure_class, sub_measure, groups, permutations = 1000, longitudinal = False):
         group_1 = self.cohort.groups[groups[0]]
         group_2 = self.cohort.groups[groups[1]]
         measures_1 = np.array(self.get_measurement(measure_class, sub_measure, groups[0]).get_value())
@@ -62,7 +62,7 @@ class AnalysisfMRI(Analysis):
         percentiles = None #stat.quantiles(difference_mean, 100)
 
         comparison = ComparisonfMRI(groups, measure_class, sub_measure, permutation_diffs,
-                                    (p1, p2), (0, 0), (measures_1, measures_2), permutations, self.graph_settings.value_binary)
+                                    (p1, p2), (0, 0), (measures_1, measures_2), permutations, self.graph_settings.value_binary, longitudinal)
         return comparison
 
     def get_graph(self, group_index):

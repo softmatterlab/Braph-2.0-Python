@@ -107,7 +107,7 @@ class Analysis():
             self.measurements.append(measurement)
         return measurement
 
-    def get_comparison(self, measure_class, sub_measure, groups, permutations):
+    def get_comparison(self, measure_class, sub_measure, groups, permutations, longitudinal):
         comparison = None
         check_comparison = Comparison(groups, measure_class, sub_measure,
                                       permutations = permutations, binary_value = self.graph_settings.value_binary)
@@ -116,7 +116,7 @@ class Analysis():
                 comparison = c
                 break
         if not comparison:
-            comparison = self.calculate_comparison(measure_class, sub_measure, groups, permutations)
+            comparison = self.calculate_comparison(measure_class, sub_measure, groups, permutations, longitudinal)
             self.comparisons.append(comparison)
         return comparison
 
@@ -129,7 +129,7 @@ class Analysis():
         pass
 
     @abstractmethod
-    def calculate_comparison(self, measure_class, sub_measure, groups, permutations):
+    def calculate_comparison(self, measure_class, sub_measure, groups, permutations, longitudinal):
         pass
 
     def set_correlation(self, correlation_type):

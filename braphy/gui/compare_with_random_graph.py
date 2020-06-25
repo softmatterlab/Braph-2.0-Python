@@ -16,7 +16,7 @@ class CompareWithRandomGraph(QtWidgets.QMainWindow, Ui_MainWindow):
         self.comboBoxGroup2.hide()
         self.labelPermutation.hide()
         self.lineEditPermutation.hide()
-        self.checkBox.hide()
+        self.checkBoxLongitudinal.hide()
 
         self.analysis = analysis
         self.graphMeasuresWidget.init(graph_type)

@@ -3,7 +3,7 @@ import numpy as np
 
 class Comparison():
     def __init__(self, groups, measure_class, sub_measure, all_differences = None, p_values = None,
-                 confidence_interval = None, measures = None, permutations = 0, binary_value = 0):
+                 confidence_interval = None, measures = None, permutations = 0, binary_value = 0, longitudinal = False):
         self.groups = groups
         self.measure_class = measure_class
         self.sub_measure = sub_measure
@@ -13,6 +13,7 @@ class Comparison():
         self.measures = measures
         self.permutations = permutations
         self.binary_value = binary_value
+        self.longitudinal = longitudinal
 
     def equal(self, other):
         if type(self) != type(other):
@@ -22,7 +23,9 @@ class Comparison():
               self.measure_class == other.measure_class and
               self.sub_measure == other.sub_measure and
               self.permutations == other.permutations and
-              self.binary_value == other.binary_value)
+              self.binary_value == other.binary_value and
+              self.longitudinal == other.longitudinal)
+
         return eq
 
     def to_dict(self):
@@ -43,6 +46,8 @@ class Comparison():
         d['measures'] = measures
         d['confidence_interval'] = ''
         d['permutations'] = self.permutations
+        d['binary_value'] = self.binary_value
+        d['longitudinal'] = self.longitudinal
         return d
 
     @classmethod
@@ -63,8 +68,10 @@ class Comparison():
         else:
             measures = (measures[0], measures[1])
         permutations = d['permutations']
+        binary_value = d['binary_value']
+        longitudinal = d['longitudinal']
 
-        return cls(groups, measure_class, sub_measure, all_differences, p_values, confidence_interval, measures, permutations)
+        return cls(groups, measure_class, sub_measure, all_differences, p_values, confidence_interval, measures, permutations, binary_value, longitudinal)
 
     def dimension(self):
         return self.measure_class.dimension(self.sub_measure)

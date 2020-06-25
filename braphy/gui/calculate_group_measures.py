@@ -21,7 +21,7 @@ class CalculateGroupMeasures(QtWidgets.QMainWindow, Ui_MainWindow):
         self.lineEditPermutation.hide()
         self.lineEditMatrix.hide()
         self.lineEditSwaps.hide()
-        self.checkBox.hide()
+        self.checkBoxLongitudinal.hide()
         if analysis.is_weighted():
             self.labelBinary.hide()
             self.labelMin.hide()

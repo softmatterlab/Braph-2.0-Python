@@ -32,15 +32,14 @@ class AnalysisMRI(Analysis):
     def calculate_random_comparison(self, measure_class, sub_measure, group):
         pass
 
-    def calculate_comparison(self, measure_class, sub_measure, groups, permutations = 1000):
-        #is_longitudinal = False
+    def calculate_comparison(self, measure_class, sub_measure, groups, permutations = 1000, longitudinal = False):
         group_1 = self.cohort.groups[groups[0]]
         group_2 = self.cohort.groups[groups[1]]
         measure_1 = self.get_measurement(measure_class, sub_measure, groups[0]).get_value()
         measure_2 = self.get_measurement(measure_class, sub_measure, groups[1]).get_value()
         permutation_diffs = []
         for _ in range(permutations):
-            permutated_subjects_1, permutated_subjects_2 = Permutation.permute(np.array(group_1.subjects), np.array(group_2.subjects), True)
+            permutated_subjects_1, permutated_subjects_2 = Permutation.permute(np.array(group_1.subjects), np.array(group_2.subjects), longitudinal)
 
             A_permutated_1 = group_1.subject_class.correlation(permutated_subjects_1, self.graph_settings.correlation_type)
             graph_permutated_1 = GraphFactory.get_graph(A_permutated_1, self.graph_settings)
@@ -59,7 +58,7 @@ class AnalysisMRI(Analysis):
         percentiles = None #stat.quantiles(difference_mean, 100)
 
         comparison = ComparisonMRI(groups, measure_class, sub_measure, permutation_diffs,
-                                   (p1, p2), (0, 0), (measure_1, measure_2), permutations,self.graph_settings.value_binary)
+                                   (p1, p2), (0, 0), (measure_1, measure_2), permutations,self.graph_settings.value_binary, longitudinal)
         return comparison
 
     def get_graph(self, group_index):
