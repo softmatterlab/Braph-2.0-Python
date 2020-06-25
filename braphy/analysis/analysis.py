@@ -88,10 +88,8 @@ class Analysis():
         for m in self.measurements:
             if m.equal(check_measurement):
                 measurement = m
-                print('equal')
                 break
         if not measurement:
-            print('not equal')
             measurement = self.calculate_measurement(measure_class, sub_measure, group)
             self.measurements.append(measurement)
         return measurement

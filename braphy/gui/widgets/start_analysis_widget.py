@@ -34,7 +34,7 @@ class StartAnalysisWidget(Base, Form):
         self.btnRandom.clicked.connect(self.compare_with_random_graph)
 
     def view_community(self, analysis_gui):
-        self.community_structure = CommunityStructure(analysis_gui.analysis, analysis_gui.brain_mesh_data)
+        self.community_structure = CommunityStructure(analysis_gui.analysis, analysis_gui.brain_mesh_data, analysis_gui.__class__)
         self.community_structure.spinBoxGamma.valueChanged.connect(analysis_gui.update_gamma)
         self.community_structure.show()
 

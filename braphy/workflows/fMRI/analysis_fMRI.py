@@ -43,12 +43,9 @@ class AnalysisfMRI(Analysis):
         group_2 = self.cohort.groups[groups[1]]
         measures_1 = np.array(self.get_measurement(measure_class, sub_measure, groups[0]).get_value())
         measures_2 = np.array(self.get_measurement(measure_class, sub_measure, groups[1]).get_value())
-        measures = np.concatenate((measures_1, measures_2))
         permutation_diffs = []
         for _ in range(permutations):
-            np.random.shuffle(measures)
-            permutated_measures_1 = np.array(measures[:len(measures_1)])
-            permutated_measures_2 = np.array(measures[len(measures_1):])
+            permutated_measures_1, permutated_measures_2 = Permutation.permute(measures_1, measures_2, longitudinal)
 
             mean_permutated_1 = np.mean(permutated_measures_1, axis = 0)
             mean_permutated_2 = np.mean(permutated_measures_2, axis = 0)
