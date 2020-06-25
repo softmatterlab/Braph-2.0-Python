@@ -57,6 +57,7 @@ class CompareGroupMeasures(QtWidgets.QMainWindow, Ui_MainWindow):
         sub_measures = self.graphMeasuresWidget.get_selected_measures()
         group_index_1 = self.comboBoxGroup1.currentIndex()
         group_index_2 = self.comboBoxGroup2.currentIndex()
+        longitudinal = self.checkBoxLongitudinal.isChecked()
         groups = (group_index_1, group_index_2)
         for sub_measure in sub_measures:
             measure_class = self.graphMeasuresWidget.inverted_measures_dict[sub_measure]
@@ -64,9 +65,9 @@ class CompareGroupMeasures(QtWidgets.QMainWindow, Ui_MainWindow):
                 binary_values = np.arange(self.spinBoxMin.value(), self.spinBoxMax.value(), self.spinBoxStep.value())
                 for value in binary_values:
                     self.analysis.set_binary_value(value)
-                    self.analysis.get_comparison(measure_class, sub_measure, groups, permutations)
+                    self.analysis.get_comparison(measure_class, sub_measure, groups, permutations, longitudinal)
             else:
-                self.analysis.get_comparison(measure_class, sub_measure, groups, permutations)
+                self.analysis.get_comparison(measure_class, sub_measure, groups, permutations, longitudinal)
         self.textBrowser.setPlainText('DONE')
 
     def resume(self):

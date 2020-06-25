@@ -185,7 +185,7 @@ class MeasuresWidget(Base, Form):
         labels = ['Difference']
         if self.analysis.is_binary():
             labels.append(self.analysis.graph_settings.rule_binary)
-        labels.extend(['p (1-tailed)', 'p (2-tailed)', 'Value 1', 'Value 2', 'CI lower', 'CI upper', 'Notes', 'Measure', 'Group 1', 'Group 2', 'Param'])
+        labels.extend(['p (1-tailed)', 'p (2-tailed)', 'Value 1', 'Value 2', 'CI lower', 'CI upper', 'Notes', 'Measure', 'Group 1', 'Group 2', 'Param', 'Longitudinal'])
         if self.analysis.cohort.subject_class == SubjectfMRI and not self.btnGroup.isChecked():
             labels.append('Subject')
         if self.measure_type == Measure.NODAL:
@@ -214,7 +214,7 @@ class MeasuresWidget(Base, Form):
                                   (value_1), (comparison.confidence_interval[0]),
                                   (comparison.confidence_interval[1]), '-',
                                   comparison.sub_measure, self.analysis.cohort.groups[comparison.groups[0]].name,
-                                  self.analysis.cohort.groups[comparison.groups[1]].name, '-'])
+                                  self.analysis.cohort.groups[comparison.groups[1]].name, '-', str(comparison.longitudinal)])
                 if self.analysis.cohort.subject_class == SubjectfMRI and not self.btnGroup.isChecked():
                     contents.append(self.comboBoxSubject.currentText())
                 if self.measure_type == Measure.NODAL:
