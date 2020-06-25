@@ -31,7 +31,6 @@ class Measurement():
 
     def equal(self, other):
         if not isinstance(other, Measurement):
-            print('type not equal')
             return False
         eq = (self.measure_class == other.measure_class and
               self.sub_measure == other.sub_measure and
