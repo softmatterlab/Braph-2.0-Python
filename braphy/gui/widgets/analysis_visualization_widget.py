@@ -26,6 +26,7 @@ class AnalysisVisualizationWidget(Base, Form):
         self.listWidget.currentRowChanged.connect(self.list_item_changed)
         if not self.is_binary:
             self.comboBoxBinary.hide()
+        self.comboBoxBinary.setEnabled(False)
 
     def init_combo_boxes(self, groups):
         for group in groups:
@@ -99,6 +100,7 @@ class MeasureVisualizationWidget(AnalysisVisualizationWidget):
         self.comboBoxSingle.hide()
         self.comboBoxDouble.hide()
         self.comboBoxGroup2.hide()
+        self.comboBoxColormap.setEnabled(False)
 
     def init(self, settings_widget, measurements, groups, is_binary):
         self.measurements = measurements
