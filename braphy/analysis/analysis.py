@@ -84,7 +84,7 @@ class Analysis():
 
     def get_measurement(self, measure_class, sub_measure, group):
         measurement = None
-        check_measurement = Measurement(group, measure_class, sub_measure, self.graph_settings.value_binary)
+        check_measurement = Measurement(group, measure_class, sub_measure, binary_value = self.graph_settings.value_binary)
         for m in self.measurements:
             if m.equal(check_measurement):
                 measurement = m
