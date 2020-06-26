@@ -99,12 +99,12 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def set_locked(self, locked):
         self.locked = locked
-        items = [self.label, self.comboBoxGroup, self.btnGroup, self.btnSubject, self.comboBoxSubject,
-                 self.btnFixed, self.btnDynamic, self.comboBoxAlgorithm, self.labelGamma, self.spinBoxGamma,
+        items = [self.btnGroup, self.btnSubject, self.comboBoxSubject, self.btnFixed,
+                 self.btnDynamic, self.comboBoxAlgorithm, self.labelGamma, self.spinBoxGamma,
                  self.labelBinary, self.spinBoxBinary, self.btnSet, self.btnSetAll, self.btnReset]
         for item in items:
             item.setEnabled(not locked)
-        self.update_table()
+        self.init_community_structure()
 
     def set_gamma(self, gamma):
         self.analysis.set_gamma(gamma)
