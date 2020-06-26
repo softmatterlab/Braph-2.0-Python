@@ -80,8 +80,8 @@ class BrainViewOptionsWidget(Base, Form):
 
     def set_graph_analysis_mode(self, analysis):
         self.add_graph_view_tab(analysis)
-        self.add_visualize_measure_tab(analysis.measurements, analysis.cohort.groups, not analysis.graph_settings.weighted)
-        self.add_visualize_measure_comparison_tab(analysis.comparisons, analysis.cohort.groups, not analysis.graph_settings.weighted)
+        self.add_visualize_measure_tab(analysis.measurements, analysis.cohort.groups, analysis.binary_type())
+        self.add_visualize_measure_comparison_tab(analysis.comparisons, analysis.cohort.groups, analysis.binary_type())
 
     def add_custom_colormap_callbacks(self):
         callback_subject = self.subject_visualization_widget.comboBoxColormap.add_colormap
@@ -146,5 +146,3 @@ class BrainViewOptionsWidget(Base, Form):
             self.resize(100, 20)
             self.visible = True
         self.update_move()
-
-

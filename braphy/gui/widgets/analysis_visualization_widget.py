@@ -15,8 +15,8 @@ class AnalysisVisualizationWidget(Base, Form):
         self.visualization_options = ['Color', 'Size', 'Color and size']
         self.colormaps = self.get_colormaps()
 
-    def init(self, settings_widget, groups, is_binary):
-        self.is_binary = is_binary
+    def init(self, settings_widget, groups, binary_type):
+        self.binary_type = binary_type
         self.init_combo_boxes(groups)
         self.brain_widget = settings_widget.brain_widget
         self.settings_widget = settings_widget
@@ -24,7 +24,10 @@ class AnalysisVisualizationWidget(Base, Form):
         self.visualization_type_changed(0)
         self.init_spin_boxes()
         self.listWidget.currentRowChanged.connect(self.list_item_changed)
-        if not self.is_binary:
+        if self.binary_type:
+            self.labelBinary.setText(binary_type)
+        else:
+            self.labelBinary.hide()
             self.comboBoxBinary.hide()
         self.comboBoxBinary.setEnabled(False)
 
@@ -102,9 +105,9 @@ class MeasureVisualizationWidget(AnalysisVisualizationWidget):
         self.comboBoxGroup2.hide()
         self.comboBoxColormap.setEnabled(False)
 
-    def init(self, settings_widget, measurements, groups, is_binary):
+    def init(self, settings_widget, measurements, groups, binary_type):
         self.measurements = measurements
-        super().init(settings_widget, groups, is_binary)
+        super().init(settings_widget, groups, binary_type)
 
     def init_combo_boxes(self, groups):
         super().init_combo_boxes(groups)
@@ -133,14 +136,16 @@ class MeasureVisualizationWidget(AnalysisVisualizationWidget):
         enabled = True if index > -1 else False
         items = [self.comboBoxType, self.comboBoxColormap, self.labelMin, self.labelMax, self.spinBoxMin, self.spinBoxMax]
         if enabled:
+            self.labelBinary.setEnabled(True)
             self.comboBoxBinary.setEnabled(True)
             for item in items:
                 item.setEnabled(True)
         else:
+            self.labelBinary.setEnabled(False)
             self.comboBoxBinary.setEnabled(False)
             for item in items:
                 item.setEnabled(False)
-        if self.is_binary:
+        if self.binary_type:
             self.update_binary_values()
         self.update_visualization()
 
@@ -186,7 +191,7 @@ class MeasureVisualizationWidget(AnalysisVisualizationWidget):
         self.settings_widget.change_brain_region_size()
         if self.listWidget.currentRow() == -1:
             return
-        if self.is_binary and self.comboBoxBinary.currentIndex == -1:
+        if self.binary_type and self.comboBoxBinary.currentIndex == -1:
             return
         values = self.get_visualization_values()
         visualization_type = self.comboBoxType.currentIndex()
@@ -197,7 +202,7 @@ class MeasureVisualizationWidget(AnalysisVisualizationWidget):
                 region.set_size(values[i] * self.spinBoxMax.value() + self.spinBoxMin.value())
 
     def get_visualization_values(self):
-        if self.is_binary:
+        if self.binary_type:
             binary_index = self.comboBoxBinary.currentIndex()
             measurement_index = self.binary_mapping[binary_index]
         else:
@@ -218,9 +223,9 @@ class MeasureComparisonVisualizationWidget(AnalysisVisualizationWidget):
         self.comboBoxType.hide()
         self.init_check_boxes()
 
-    def init(self, settings_widget, comparisons, groups, is_binary):
+    def init(self, settings_widget, comparisons, groups, binary_type):
         self.comparisons = comparisons
-        super().init(settings_widget, groups, is_binary)
+        super().init(settings_widget, groups, binary_type)
 
     def init_check_boxes(self):
         self.checkBoxDiff.stateChanged.connect(self.visualize_difference)
@@ -314,7 +319,7 @@ class MeasureComparisonVisualizationWidget(AnalysisVisualizationWidget):
             self.spinBoxMax.setEnabled(False)
             self.labelMin.setEnabled(False)
             self.labelMax.setEnabled(False)
-        if self.is_binary:
+        if self.binary_type:
             self.update_binary_values()
         self.update_visualization()
 
@@ -361,7 +366,7 @@ class MeasureComparisonVisualizationWidget(AnalysisVisualizationWidget):
         self.settings_widget.change_brain_region_size()
         if self.listWidget.currentRow() == -1:
             return
-        if self.is_binary and self.comboBoxBinary.currentIndex == -1:
+        if self.binary_type and self.comboBoxBinary.currentIndex == -1:
             return
         for i, region in enumerate(self.brain_widget.gui_brain_regions):
             if self.checkBoxDiff.isChecked():
@@ -384,7 +389,7 @@ class MeasureComparisonVisualizationWidget(AnalysisVisualizationWidget):
                     region.set_size(values[i] * self.spinBoxMax.value() + self.spinBoxMin.value())
 
     def get_visualization_values(self, type):
-        if self.is_binary:
+        if self.binary_type:
             binary_index = self.comboBoxBinary.currentIndex()
             comparison_index = self.binary_mapping[binary_index]
         else:

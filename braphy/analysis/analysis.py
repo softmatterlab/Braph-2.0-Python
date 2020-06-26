@@ -169,3 +169,6 @@ class Analysis():
         analysis = self.__class__(cohort, self.graph_settings, 'subgraph analysis')
         return analysis
 
+    def binary_type(self):
+        binary_type = '' if self.graph_settings.weighted else self.graph_settings.rule_binary
+        return binary_type
