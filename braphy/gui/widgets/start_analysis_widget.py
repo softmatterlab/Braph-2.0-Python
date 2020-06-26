@@ -37,6 +37,7 @@ class StartAnalysisWidget(Base, Form):
     def view_community(self):
         self.community_structure = CommunityStructure(self.analysis, self.analysis_gui.brain_mesh_data, self.analysis_gui.__class__)
         self.community_structure.spinBoxGamma.valueChanged.connect(self.analysis_gui.update_gamma)
+        self.community_structure.set_locked(True)
         self.community_structure.show()
 
     def new_analysis(self):

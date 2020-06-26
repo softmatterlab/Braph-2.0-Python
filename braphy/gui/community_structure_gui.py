@@ -19,6 +19,7 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.analysis = analysis
         self.read_only = False
+        self.locked = False
         self.brain_mesh_data = brain_mesh_data
         self.start_analysis_gui_function = start_analysis_gui_function
         self.init_combo_box()
@@ -96,6 +97,15 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
         self.groupBoxBrain_old_resize = self.groupBoxBrain.resizeEvent
         self.groupBoxBrain.resizeEvent = self.resize_brain
 
+    def set_locked(self, locked):
+        self.locked = locked
+        items = [self.label, self.comboBoxGroup, self.btnGroup, self.btnSubject, self.comboBoxSubject,
+                 self.btnFixed, self.btnDynamic, self.comboBoxAlgorithm, self.labelGamma, self.spinBoxGamma,
+                 self.labelBinary, self.spinBoxBinary, self.btnSet, self.btnSetAll, self.btnReset]
+        for item in items:
+            item.setEnabled(not locked)
+        self.update_table()
+
     def set_gamma(self, gamma):
         self.analysis.set_gamma(gamma)
         self.update_table()
@@ -128,7 +138,7 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
                 radio_button = self.get_radio_button_widget()
                 if self.community_structure[i] == j:
                     radio_button.button.setChecked(True)
-                if self.read_only:
+                if self.read_only or self.locked:
                     radio_button.setDisabled(True)
                 radio_button.button.region = i
                 radio_button.button.community = j
