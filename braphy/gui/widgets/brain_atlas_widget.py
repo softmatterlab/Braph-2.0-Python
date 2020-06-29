@@ -453,11 +453,13 @@ class BrainAtlasWidget(GLViewWidget):
         m = self.projectionMatrix() * self.viewMatrix()
         camera_pos = m.inverted()[0].map(QtGui.QVector3D(0,0,0))
         closest_region = self.gui_brain_region_at([x,y], camera_pos)
-        if closest_region:
+        if closest_region and (closest_region.selected or not self.show_only_selected):
             closest_region.toggle_selected()
             if closest_region.selected:
                 tool_tip_label = "{}\n{}\n{}".format(closest_region.label, closest_region.brain_region.name, closest_region.pos())
                 QtGui.QToolTip.showText(self.mapToGlobal(ev.pos()), tool_tip_label, self)
+            if self.show_only_selected:
+                self.update_brain_regions_plot()
 
     def mouseMoveEventPan(self, ev, invert = False):
         diff = ev.pos() - self.mousePos
