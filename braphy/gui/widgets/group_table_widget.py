@@ -163,6 +163,7 @@ class GroupTableWidget(Base, Form):
     def remove_group(self):
         selected_groups = self.cohort.remove_groups(self.get_selected())
         self.update(selected_groups)
+        self.update_group_operation_buttons()
 
     def move_group_up(self):
         selected_groups = self.cohort.move_up_groups(self.get_selected())
