@@ -12,10 +12,19 @@
 \usepackage{pdfpages}
 \usepackage{titlepic}
 
-\title{Braphy}
-\author{Alice Deimante Neimantaite \\ Lisa Sjöblom \\ Daniel Westerlund}
+\title{%
+	Braphy \\
+	\large The python version of Braph 2.0}
+\author{Alice Neimantaite \\ Lisa Sjöblom \\ Daniel Westerlund}
 \date{June 2020}
-\titlepic{\includegraphics[width=\textwidth]{front_page.png}}
+\titlepic{
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\linewidth]{front_page.png}
+    \caption{Start menu of Braphy}
+    \label{fig:front_page}
+\end{figure}
+}
 
 \begin{document}
 
@@ -28,11 +37,20 @@ This document describes the current state of the python version of Braph 2.0, or
 
 We have tried to finish the implementation for MRI and fMRI first, and have left the other data formats for the future. Hence, these are the only ones described here.
 
+\section{Start Menu}
+
+Figure \ref{fig:front_page} displays the start menu of Braphy. To the left, a rotating brain can be seen. The nodes, edges and text in the figure alters between a couple of different measures. If the pause button is pressed, the brain stops rotating. Once paused, the brain can be displaced using the mouse. Left click and drag to rotate it, scroll to zoom in or out, press mouse wheel and drag to pan in the x/y plane and ctrl + press mouse wheel and drag to pan in the x/z plane.
+
+To the right, the same buttons as in Braph 1.0 can be found. Note that so far, only MRI and fMRI are implemented. 
+
+\section{Brain Atlas}
 
 \section{MRI}
 
-\subsection{Graph Analysis MRI}
+\subsection{MRI Cohort}
 
+\subsection{MRI Graph Analysis}
+\label{sec:mri_ga}
 
 \begin{figure}[h]
     \centering
@@ -50,7 +68,13 @@ We have tried to finish the implementation for MRI and fMRI first, and have left
 
 When the MRI Graph Analysis GUI is opened, the only action available is to load a cohort or an analysis, see \cref{fig:locked}. Examples of cohort and analysis files for MRI are available in the repository. If you select and load a .cohort file, more options will be enabled, see \cref{fig:started}. If you select and load an .analysis file, you will skip ahead and go directly to \cref{sec:start_analysis} and \cref{fig:start_analysis}.
 
-Let's assume that the user loads a .cohort file. The GUI is now in the state of \cref{fig:started}. In Braphy, we have added the 'View Cohort' button, so that you can select a new cohort if you change your mind. As you can see to the left in \cref{fig:started}, we have added the ability to change several graph settings. Only settings relevant for the current graph type are enabled. Further down, the 'Subgraph analysis' button has been removed. This button is instead added to the community structure window, which will be discussed later. At the bottom of the window, the measure table can be seen. Only the description of the selected measure is displayed, to avoid clutter. 
+Let's assume that the user loads a .cohort file. The GUI is now in the state of \cref{fig:started}. In Braphy, we have added the 'View Cohort' button, so that you can select a new cohort if you change your mind. As you can see to the left in \cref{fig:started}, we have added the ability to change several graph settings. Only settings relevant for the current graph type are enabled. 
+
+Further down, the 'Subgraph analysis' button has been removed. This button is instead added to the community structure window, which will be discussed later. 
+
+At the bottom of the window, the measure table can be seen. Only the description of the selected measure is displayed, to avoid clutter.
+
+The view of correlation matrix and the corresponding settings to the right are only for visualization of the correlation. The settings here, such as the graph type and density, have no impact on the rest of the analysis. They only affect the plot of the matrix.
 
 The toolbar is located at the top of the window. The first two icons correspond to opening and saving the analysis. Next, there is a set of buttons that lets the user alter the correlation matrix plot.
 
@@ -85,6 +109,8 @@ To edit the communities, use the tools to the bottom left in \cref{fig:community
 
 Since this is implemented slightly different than in Braph 1.0, we would like your input on our approach. The reason we did it this way is that we wanted to give more flexibility to the user. For example, you can now use a manually defined community structure for one group and a dynamically computed structure for another group. On the downside, this means that we have to save a community structure for each group in memory. This will be a matrix of size nodes*groups.
 
+In the future, it might also be desireable to have the option "compute and set all communities separately with a specific algorithm and gamma value", although this is not implemented yet.
+
 The subgraph analysis can be opened from this window, by selecting a column that includes the nodes that you want to use in the subgraph and then pressing 'Start subgraph analysis for selected community'.
 
 \subsubsection{Start Analysis}
@@ -99,19 +125,87 @@ The subgraph analysis can be opened from this window, by selecting a column that
 
 If you press the 'Start analysis' button in the Graph Analysis GUI, you lock the graph settings and community structure, see \cref{fig:start_analysis}. In Braph 1.0 this opened a new window, but we have chosen to alter the existing window instead, since they are so similar. 
 
-The table of measures don't have a column of descriptions here. Instead, if you hold a cursor over the name of a measure, a desciption of it appears. 
+The table of measures don't have a column of descriptions here. Instead, if you hold a cursor over the name of a measure, a description of it appears. 
 
-The random comparison is not yet implemented. We are still working on the algorithm for randomization of graphs, and are also waiting to see how you will implement the random caomparison (refering to email conversation).
+The random comparison is not yet implemented. We are still working on the algorithm for randomization of graphs, and are also waiting to see how you will implement the random comparison (refering to email conversation a few weeks ago).
 
-In the tabs Global, Nodal and Binodal measures, measures and comparisons that are already computed can be seen. These tables and the settings in them are similar to Braph 1.0. The binodal tab is added, and works in the same way as the nodal one, with an additional brain region selection. The data in these tables can be exported as .txt or as .xlsx files. The data in the exported files will be exactely the rows and columns that are displayed in the table. An idea that we have for the future is that you should be able to export all computed measures/comparisons at once here, and not only the ones that are currently displayed in the tables. Perhaps you know best what kind of export alternatives that could be useful here?
+In the calculation windows, no progress report or timing has been added yet. They will only print 'DONE' once the calculations are finished. Also, the calculations can not be paused/resumed. 
 
-In the last tab, different visulizations can be made. Like before, press the arrow to see the settings. The 'Plot settings' tab is identical to before. In the next tab, the graph can be visualized. Hopefully, the settings here are self explanatory. Unfortunately, this is a bit slow for weighted graphs and graphs with high density.
+In the tabs Global, Nodal and Binodal measures, measures and comparisons that are already computed can be seen. These tables and the settings in them are similar to Braph 1.0. The binodal tab is added, and works in the same way as the nodal one, with an additional brain region selection. 
 
-In the tabs 'Visualize measures' and 'Visualize comparisons', nodal measures and comparisons can be visualized. Only measures that are already computed can be selected here. The user can select to visualize the values by size and/or colors of the brain regions. See figures.
+The 'Notes' column is not yet implemented, but the idea is that the user should be able to write and save notes in this column.
 
+The 'Param' column is also not implemented yet. We are not sure on what should be put here.
+
+The data in these tables can be exported as .txt or as .xlsx files. The data in the exported files will be exactely the rows and columns that are displayed in the table. An idea that we have for the future is that you should be able to export all computed measures/comparisons at once here, and not only the ones that are currently displayed in the tables. Perhaps you know best what kind of export alternatives that could be useful here?
+
+In the last tab, different visulizations can be made. Like before, press the arrow to see the settings. The 'Plot settings' tab is identical to before. In the next tab, the graph can be visualized, see \cref{fig:graph_vis}. Hopefully, the settings here are self explanatory. Unfortunately, this is a bit slow for weighted graphs and graphs with high density.
+
+In the tabs 'Visualize measures' and 'Visualize comparisons', see \cref{fig:measure_vis} and \cref{fig:comparison_vis}, nodal measures and comparisons can be visualized. Only measures and comparisons that are already computed can be selected here. The user can select to visualize the values by size and/or colors of the brain regions. For the comparisons, the difference between the groups and single and double tailed p-values can be visualized.
+
+In these visualizations, the values are scaled such that the largest value always corresponds to the largest region size and/or color to the right of the colormap, and the smallest value to the smallest region size and/or color to the left of the colormap.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\linewidth]{graph_vis.png}
+    \caption{3D visualization of the graph of the specified group.}
+    \label{fig:graph_vis}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\linewidth]{measure_vis.png}
+    \caption{Visualization of nodal measures.}
+    \label{fig:measure_vis}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\linewidth]{comparison_vis.png}
+    \caption{Visualization of nodal comparisons.}
+    \label{fig:comparison_vis}
+\end{figure}
 
 \section{fMRI}
 
-\subsection{Graph Analysis fMRI}
+\section{fMRI Cohort}
+
+\subsection{fMRI Graph Analysis}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\linewidth]{fmri_ga.png}
+    \caption{The fMRI Graph Analysis GUI after a cohort has been loaded.}
+    \label{fig:fmri_ga}
+\end{figure}
+
+The Graph Analysis for fMRI in Braphy is basically equivalent to the one for MRI, described in \cref{sec:mri_ga}. This section will describe a few differences between them. 
+
+First of all, there are no fMRI cohort files available in the repository. This is simply because they are too big to be added on GitHub. Instead, use the fMRI Cohort Editor to create a cohort.
+
+Once the cohort is loaded, the fMRI Graph Analysis GUI looks like \cref{fig:fmri_ga}. To the right, in the visualization of the correlation matrix, the user can choose to visualize either the average correlation for the chosen group, or the correlation of a specific subject. We have chosen to add two radio buttons here to make it a bit more intuitive to choose settings.
+
+\subsubsection{Community Structure GUI}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\linewidth]{fmri_cs.png}
+    \caption{The fMRI Community Structure GUI. Note that the communities can be computed for the average correlation of a group or for each subject separately.}
+    \label{fig:fmri_cs}
+\end{figure}
+
+
+In the community structure GUI for fMRI, see \cref{fig:fmri_cs}, the user can choose between computing and saving the communities for the whole group, using the average correlation matrix, or to set a separate community for each subject. If the 'Group average' radio button is checked, the button at the bottom left says "Set for current group". If the 'Subject' radio button is checked, the button says "Set for current subject" instead. 
+
+\subsubsection{Start Analysis}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\linewidth]{fmri_sa.png}
+    \caption{The fMRI Graph Analysis GUI after the 'Start Analysis' button has been pressed. Note that the measures and comparisons can be displayed as group averages or for each subject separately.}
+    \label{fig:fmri_sa}
+\end{figure}
+
+The computation of measures etc works almost the same as for MRI. In  the tables were the computed values are displayed, you can now choose to visualize either group averages or separate subjects, see \cref{fig:fmri_sa}. In the brain view tab, you can also visualize the graph of either the group average or separate subejcts. Though, in the visualization of measures and comparisons in the brain view tab, only group averages can be visualized. If desired, the ability to choose a separate subject here could be added in the future.
 
 \end{document}
