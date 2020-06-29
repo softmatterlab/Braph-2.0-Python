@@ -247,52 +247,23 @@
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_7">
              <item>
-              <layout class="QVBoxLayout" name="verticalLayout_6">
+              <layout class="QHBoxLayout" name="horizontalLayout_3">
+               <property name="topMargin">
+                <number>0</number>
+               </property>
                <item>
-                <widget class="QLabel" name="labelStructure">
+                <widget class="QPushButton" name="btnEdit">
                  <property name="text">
-                  <string>structure = ---</string>
+                  <string>Edit</string>
                  </property>
                 </widget>
                </item>
                <item>
-                <widget class="QLabel" name="labelAlgorithm">
+                <widget class="QPushButton" name="btnDefault">
                  <property name="text">
-                  <string>algorithm = Louvain</string>
+                  <string>Default</string>
                  </property>
                 </widget>
-               </item>
-               <item>
-                <widget class="QLabel" name="labelGamma">
-                 <property name="text">
-                  <string>gamma = 1</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLabel" name="labelCommunity">
-                 <property name="text">
-                  <string>community number = 0</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_3">
-                 <item>
-                  <widget class="QPushButton" name="btnEdit">
-                   <property name="text">
-                    <string>Edit</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QPushButton" name="btnDefault">
-                   <property name="text">
-                    <string>Default</string>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
                </item>
               </layout>
              </item>

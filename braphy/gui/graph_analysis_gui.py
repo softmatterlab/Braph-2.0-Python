@@ -224,7 +224,6 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         self.set_cohort_labels()
         self.init_correlation_matrix_actions()
         self.init_brain_view_actions()
-        self.update_gamma()
         self.update_community_number()
 
     def get_graph_settings(self):
@@ -256,7 +255,6 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def edit_community(self):
         self.community_structure_gui = CommunityStructure(self.analysis, self.brain_mesh_data, self.__class__, AppWindow = self)
-        self.community_structure_gui.spinBoxGamma.valueChanged.connect(self.update_gamma)
         self.community_structure_gui.show()
 
     def default(self):
@@ -356,12 +354,8 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
     def set_standardize_rule(self, standardize_rule):
         self.analysis.set_standardize_rule(standardize_rule)
 
-    def update_gamma(self):
-        self.labelGamma.setText('gamma = {}'.format(self.analysis.get_gamma()))
-
     def update_community_number(self):
         pass
-        #self.labelCommunity.setText('community number = {}'.format(self.analysis.number_of_communities()))
 
     def resizeEvent(self, event):
         self.brain_view_options_widget.update_move()
