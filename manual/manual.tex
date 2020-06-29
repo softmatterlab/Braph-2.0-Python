@@ -45,9 +45,42 @@ To the right, the same buttons as in Braph 1.0 can be found. Note that so far, o
 
 \section{Brain Atlas}
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\linewidth]{brain_atlas.png}
+    \caption{Start menu of Braphy}
+    \label{fig:brain_atlas}
+\end{figure}
+
+The brain atlas module in Braphy is very similar to the one in Braph 1.0, with a few differencies. The GUI can be seen in \cref{fig:brain_atlas}.
+
+First, we have created new icons for the buttons in the toolbar, located at the top of the window. These will be used throughout the software. They are available at Github and you are free to use them as well if you like. The toolbar has the same functionality as in Braph 1.0, but the on to left is new. If you press it, only the selected brain regions will be visible in the brain view.
+
+At the top right of the brain view, you can select a brain mesh. You can choose from meshes available in the software or load your own brain mesh.
+
+The tools below the brain view is similar to the ones in Braph 1.0, and this panel will be used to control the brain view throughout the software. You can change the color of the brain mesh and the default and selected brain region colors.
+
+There are no check boxes in the brain region table. Instead, select a region by simply clicking on it. To select several regions, press ctrl and click. This way of selecting rows in tables will be used several times in the software.
+
 \section{MRI}
 
 \subsection{MRI Cohort}
+
+The MRI Cohort GUI can be seen in figure. After selecting an atlas, the rest of the GUI becomes enabled. As long as no groups or subjects are added to the cohort, the user can change the atlas by pressing 'Select Atlas' again.
+
+There is only one button for loading subjects from file. By pressing it the user can load one or several files in the formats .txt, .xml or .xlsx.
+
+The groups can be inverted, merged or intersected by using the buttons at the bottom left of the window. Select at least one group to enable the invert button, and at least two groups to enable the merge and intersect buttons. 
+
+On the right side of the window, the different views are placed in separate tabs to make it clear what happens when you switch between them.
+
+In the tab 'Subject Data', the subjects can be exported as .txt or .xlsx files.
+
+The group averages tab has been split into three separate tables. The top one contains averages and standard deviations for all groups. In the second table, the user can select what groups to compare by pressing the radio buttons in the table. In the third table, the comparison of the two groups selected in the second table is displayed.
+
+The brain view tab is very similar to the brain view in the Brain Atlas GUI. Here, the settings are reached by pressing the small arrow nex to the 'Settings' label. Once pressed, the plot settings appear. The first tab of this window contains the same basic plot settings as the Brain Atlas GUI.
+
+In the next tab, the subject data can be visualized by selecting a subject and visualization method (color or size). The colormap can be customed and the range of the brain region sizes can be set. In the 'Visualize groups' tab, the average and/or standard deviation of a group can be visualized in a similar manner. In the last tab, the comparison of two groups can be visualized, that is the average, standard deviation single p-value and double p-value. 
 
 \subsection{MRI Graph Analysis}
 \label{sec:mri_ga}
@@ -74,7 +107,7 @@ Further down, the 'Subgraph analysis' button has been removed. This button is in
 
 At the bottom of the window, the measure table can be seen. Only the description of the selected measure is displayed, to avoid clutter.
 
-The view of correlation matrix and the corresponding settings to the right are only for visualization of the correlation. The settings here, such as the graph type and density, have no impact on the rest of the analysis. They only affect the plot of the matrix.
+The view of the correlation matrix and the corresponding settings to the right are only for visualization of the correlation. The settings here, such as the graph type and density, have no impact on the rest of the analysis. They only affect the plot of the matrix.
 
 The toolbar is located at the top of the window. The first two icons correspond to opening and saving the analysis. Next, there is a set of buttons that lets the user alter the correlation matrix plot.
 
@@ -103,13 +136,13 @@ The toolbar is located at the top of the window. The first two icons correspond 
 
 The community structure GUI is opened by pressing the 'Edit' button in the Graph Analysis GUI. It can bee seen in \cref{fig:community}. At the top of the window, there is a toolbar which contains buttons that lets the user alter the brain view. For example, you can change the viewpoint, zoom in and out, choose wether to show the brain mesh or not and so on.
 
-If you press the arrow at the bottom left corner of the brain view, a window with two tabs containing more brain view settings appear. This window can be hidden by pressing the arrow again. In the 'Plot settings' tab, see \cref{fig:plot_settings} basic brain view settings can be found. In the 'Visualize communities' tab, see \cref{fig:vis_com}, colors for each community can be defined by pressing on the colored buttons. Note that this tab has to be selected to visualize the communities. 
+If you press the arrow at the bottom left corner of the brain view, a window with two tabs containing more brain view settings appear. This window can be hidden by pressing the arrow again. In the 'Plot settings' tab, see \cref{fig:plot_settings}, basic brain view settings can be found. In the 'Visualize communities' tab, see \cref{fig:vis_com}, colors for each community can be defined by pressing on the colored buttons. Note that this tab has to be selected to visualize the communities. 
 
 To edit the communities, use the tools to the bottom left in \cref{fig:community}. Start by selecting what group you want to define the community structure for. Next, choose if you want to use a fixed or a dynamic structure. Here, the fixed structure corresponds to a structure that can be altered manually by the user. A dynamic structure means that the communities are computed according to the selected algorithm and gamma value. Currently, only the Louvain algorithm is implemented. Next, the user can save the community structure displayed in the table. You can either set this structure for the current group, by clicking the button 'Set for current', or you can set it for all group by clicking the button 'Set for all'. If you click 'Reset', the table shows the latest saved community structure for the current group. Note that in order to visualize the communities in the brain view, you have to save them first.
 
-Since this is implemented slightly different than in Braph 1.0, we would like your input on our approach. The reason we did it this way is that we wanted to give more flexibility to the user. For example, you can now use a manually defined community structure for one group and a dynamically computed structure for another group. On the downside, this means that we have to save a community structure for each group in memory. This will be a matrix of size nodes*groups.
+Since this is implemented slightly different than in Braph 1.0, we would like your input on our approach. The reason we did it this way is that we wanted to give more flexibility to the user. For example, you can now use a manually defined community structure for one group and a dynamically computed structure for another group. On the downside, this means that we have to save a community structure for each group in memory. This will be a matrix of size nodes*groups (and nodes*subjects for fMRI).
 
-In the future, it might also be desireable to have the option "compute and set all communities separately with a specific algorithm and gamma value", although this is not implemented yet.
+In the future, it might also be desireable to have the option "compute and set all communities separately but with the same algorithm and gamma value", although this is not implemented yet.
 
 The subgraph analysis can be opened from this window, by selecting a column that includes the nodes that you want to use in the subgraph and then pressing 'Start subgraph analysis for selected community'.
 
@@ -131,11 +164,11 @@ The random comparison is not yet implemented. We are still working on the algori
 
 In the calculation windows, no progress report or timing has been added yet. They will only print 'DONE' once the calculations are finished. Also, the calculations can not be paused/resumed. 
 
-In the tabs Global, Nodal and Binodal measures, measures and comparisons that are already computed can be seen. These tables and the settings in them are similar to Braph 1.0. The binodal tab is added, and works in the same way as the nodal one, with an additional brain region selection. 
+In the tabs Global, Nodal and Binodal measures, measures and comparisons that are already computed can be seen. These tables and the settings in them are similar to Braph 1.0. The graphs for binary graphs has not been implemented yet. The binodal tab is added, and works in the same way as the nodal one, with an additional brain region selection. 
 
 The 'Notes' column is not yet implemented, but the idea is that the user should be able to write and save notes in this column.
 
-The 'Param' column is also not implemented yet. We are not sure on what should be put here.
+The 'Param' column is also not implemented yet. We are not sure of what should be put here.
 
 The data in these tables can be exported as .txt or as .xlsx files. The data in the exported files will be exactely the rows and columns that are displayed in the table. An idea that we have for the future is that you should be able to export all computed measures/comparisons at once here, and not only the ones that are currently displayed in the tables. Perhaps you know best what kind of export alternatives that could be useful here?
 
@@ -143,7 +176,7 @@ In the last tab, different visulizations can be made. Like before, press the arr
 
 In the tabs 'Visualize measures' and 'Visualize comparisons', see \cref{fig:measure_vis} and \cref{fig:comparison_vis}, nodal measures and comparisons can be visualized. Only measures and comparisons that are already computed can be selected here. The user can select to visualize the values by size and/or colors of the brain regions. For the comparisons, the difference between the groups and single and double tailed p-values can be visualized.
 
-In these visualizations, the values are scaled such that the largest value always corresponds to the largest region size and/or color to the right of the colormap, and the smallest value to the smallest region size and/or color to the left of the colormap.
+In these visualizations, the values are scaled such that the current largest node value always corresponds to the largest region size and/or color to the right of the colormap, and the smallest value to the smallest region size and/or color to the left of the colormap. Hence, it is not possible to compare different measures to each other.
 
 \begin{figure}[h]
     \centering
@@ -168,7 +201,7 @@ In these visualizations, the values are scaled such that the largest value alway
 
 \section{fMRI}
 
-\section{fMRI Cohort}
+\subsection{fMRI Cohort}
 
 \subsection{fMRI Graph Analysis}
 
