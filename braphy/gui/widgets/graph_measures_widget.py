@@ -21,8 +21,8 @@ class GraphMeasuresWidget(Base, Form):
                 self.measure_descriptions[sub_measure] = description
         self.listWidgetMeasures.currentTextChanged.connect(self.update_description_text)
 
-    def init(self):
-        pass
+    def init(self, graph_type):
+        self.update_measure_list(graph_type)
 
     def update_measure_list(self, graph_type):
         self.listWidgetMeasures.clear()

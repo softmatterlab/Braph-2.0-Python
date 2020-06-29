@@ -31,7 +31,7 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         self.init_buttons()
         self.init_actions()
         self.init_comboboxes()
-        self.graphMeasuresWidget.init()
+        self.graphMeasuresWidget.init(GraphAnalysis.graph_cls_from_str(self.comboBoxGraph.currentText()))
         self.startAnalysisWidget.hide()
         self.tabWidget.tabBar().hide()
         self.tabWidget.currentChanged.connect(self.tab_changed)
