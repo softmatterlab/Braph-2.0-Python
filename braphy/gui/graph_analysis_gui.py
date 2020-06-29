@@ -108,7 +108,7 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         lock_items = [self.correlationMatrixWidget, self.graphMeasuresWidget, self.textAnalysisName,
                       self.comboBoxGraph, self.comboBoxCorrelation, self.comboBoxNegative, self.comboBoxBinary,
                       self.btnStartAnalysis, self.groupBoxCommunityStructure,
-                      self.comboBoxSymmetrize, self.comboBoxStandardize, self.actionSave]
+                      self.comboBoxSymmetrize, self.comboBoxStandardize, self.actionSave, self.actionSave_as]
         for item in lock_items:
             item.setEnabled(not locked)
 
