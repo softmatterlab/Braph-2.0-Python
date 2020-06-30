@@ -215,6 +215,7 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
             analysis = self.analysis_class(cohort, graph_settings)
             self.analysis = analysis
             self.init_analysis()
+            self.set_graph_type(self.comboBoxGraph.currentText())
 
     def init_analysis(self):
         self.textAnalysisName.setText(self.analysis.name)
