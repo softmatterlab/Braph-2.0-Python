@@ -20,6 +20,7 @@ class CorrelationMatrixWidget(Base, Form):
         self.btnWeighted.setChecked(True)
         self.btnGroup.setChecked(True)
         self.checkBoxDivide.setEnabled(False)
+        self.checkBoxRearrange.setEnabled(False)
 
     def init(self, analysis):
         self.analysis = analysis
@@ -31,6 +32,7 @@ class CorrelationMatrixWidget(Base, Form):
         self.btnGroup.setCheckable(False)
         self.btnSubject.hide()
         self.comboBoxSubjects.hide()
+        self.checkBoxRearrange.setEnabled(True)
 
     def init_buttons(self):
         self.btnGroup.clicked.connect(self.analyse_group)
@@ -133,9 +135,13 @@ class CorrelationMatrixWidget(Base, Form):
 
     def rearrange_regions(self, A):
         group_index = self.comboBoxGroup.currentIndex()
+        subject_index = self.comboBoxSubjects.currentIndex()
         sorted_regions = np.argsort(self.analysis.community_structure[group_index])
+        if self.btnSubject.isChecked() and subject_index != -1:
+            sorted_regions = sorted_regions[subject_index]
         new_A = A.copy()
         new_labels = []
+
         for i in range(new_A.shape[0]):
             new_labels.append(self.analysis.cohort.atlas.get_brain_region_labels()[sorted_regions[i]])
         for (i, j), _ in np.ndenumerate(new_A):
@@ -144,10 +150,13 @@ class CorrelationMatrixWidget(Base, Form):
 
     def analyse_group(self):
         self.comboBoxSubjects.setEnabled(False)
+        self.checkBoxRearrange.setChecked(False)
+        self.checkBoxRearrange.setEnabled(False)
         self.update_correlation()
 
     def analyse_subject(self):
         self.comboBoxSubjects.setEnabled(True)
+        self.checkBoxRearrange.setEnabled(True)
         self.update_correlation()
 
     def weighted_correlation(self):
