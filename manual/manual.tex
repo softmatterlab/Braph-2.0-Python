@@ -33,13 +33,13 @@
 
 \section{Introduction}
 
-This document describes the current state of the python version of Braph 2.0, or as we call it, Braphy. We focus on describing the parts that differ from Braph 1.0, and will therefore assume that the reader has previous knowledge about this software. The descriptions are relatively brief, and it could be a good idea to try the software out yourselves as you read it. In the future, our idea is that this document can be developed into a full manual of Braphy.
+This document describes the current state of the python version of Braph 2.0, or as we call it, Braphy. We focus on describing the parts that differ from Braph 1.0, and will therefore assume that the reader has previous knowledge about this software. The descriptions are relatively brief, and it could be a good idea to try the software out yourselves as you read it. We will mainly describe the software from the perspective of a person using the GUI, and not how it was implemented. In the future, our idea is that this document can be developed into a full manual of Braphy.
 
 We have tried to finish the implementation for MRI and fMRI first, and have left the other data formats for the future. Hence, these are the only ones described here.
 
 \section{Start Menu}
 
-Figure \ref{fig:front_page} displays the start menu of Braphy. To the left, a rotating brain can be seen. The nodes, edges and text in the figure alters between a couple of different measures. If the pause button is pressed, the brain stops rotating. Once paused, the brain can be displaced using the mouse. Left click and drag to rotate it, scroll to zoom in or out, press mouse wheel and drag to pan in the x/y plane and ctrl + press mouse wheel and drag to pan in the x/z plane.
+Figure \ref{fig:front_page} displays the start menu of Braphy. To the left, a rotating brain can be seen. The nodes, edges and text in the figure alters between a couple of different measures. If the pause button is pressed, the brain stops rotating. Once paused, the brain can be displaced using the mouse. Left click and drag to rotate it, scroll to zoom in or out, press mouse wheel and drag to pan in the x/y plane and ctrl + press mouse wheel and drag to pan in the x/z plane. These control may be used anytime the brain view appears in the software.
 
 To the right, the same buttons as in Braph 1.0 can be found. Note that so far, only MRI and fMRI are implemented. 
 
@@ -48,7 +48,7 @@ To the right, the same buttons as in Braph 1.0 can be found. Note that so far, o
 \begin{figure}[h]
     \centering
     \includegraphics[width=\linewidth]{brain_atlas.png}
-    \caption{Start menu of Braphy}
+    \caption{The Brain Atlas window. Six brain regions are selected. These are the pink ones in the brain view. They are also selected in the table to the left.}
     \label{fig:brain_atlas}
 \end{figure}
 
@@ -78,7 +78,7 @@ In the tab 'Subject Data', the subjects can be exported as .txt or .xlsx files.
 
 The group averages tab has been split into three separate tables. The top one contains averages and standard deviations for all groups. In the second table, the user can select what groups to compare by pressing the radio buttons in the table. In the third table, the comparison of the two groups selected in the second table is displayed.
 
-The brain view tab is very similar to the brain view in the Brain Atlas GUI. Here, the settings are reached by pressing the small arrow nex to the 'Settings' label. Once pressed, the plot settings appear. The first tab of this window contains the same basic plot settings as the Brain Atlas GUI.
+The brain view tab is very similar to the brain view in the Brain Atlas GUI. Here, the settings are reached by pressing the small arrow next to the 'Settings' label. Once pressed, the plot settings appear. The first tab of this window contains the same basic plot settings as the Brain Atlas GUI.
 
 In the next tab, the subject data can be visualized by selecting a subject and visualization method (color or size). The colormap can be customed and the range of the brain region sizes can be set. In the 'Visualize groups' tab, the average and/or standard deviation of a group can be visualized in a similar manner. In the last tab, the comparison of two groups can be visualized, that is the average, standard deviation single p-value and double p-value. 
 
@@ -202,6 +202,19 @@ In these visualizations, the values are scaled such that the current largest nod
 \section{fMRI}
 
 \subsection{fMRI Cohort}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\linewidth]{fmri_cohort.png}
+    \caption{Visualization of nodal comparisons.}
+    \label{fig:fmri_cohort}
+\end{figure}
+
+The alterations in the fMRI Cohort Editor are very similar to ones in the MRI Cohort Editor in Braphy. It can be seen in \cref{fig:fmri_cohort}. One addition though is the 'Load subject group from folder' button. It lets the user select a whole folder of .xslx subject files and load them into the same group. As before, by pressing the 'Load subjects from file' button, the user can load .txt, .xml and .xlsx files. Here, one or several files can be selected. Each file will become a separate group. 
+
+We do not have a window for the repetition time here yet, as we have not fully understood what meaning it has.
+
+In the 'Subject data' tab, an additional button has been added to remove rows. See \cref{fig:fmri_cohort} at the bottom right.
 
 \subsection{fMRI Graph Analysis}
 
