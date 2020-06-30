@@ -253,7 +253,7 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
             self.save_as()
 
     def new_graph_analysis(self):
-        self.AppWindow.graph_analysis(subject_class = self.cohort.subject_class)
+        self.AppWindow.graph_analysis()
 
     def about(self):
         QMessageBox.about(self, 'About', 'Cohort Editor')
