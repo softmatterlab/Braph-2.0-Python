@@ -46,6 +46,7 @@ class CommunityVisualizationWidget(Base, Form):
         if number_of_communities < len(self.colors[self.group_index]):
             self.colors[self.group_index] = self.colors[self.group_index][:number_of_communities]
         self.tableWidget.setRowCount(number_of_communities)
+        self.tableWidget.setHorizontalHeaderLabels(['Community color'])
         for i in range(number_of_communities):
             push_button = self.get_push_button_widget()
             self.tableWidget.setCellWidget(i, 0, push_button)
@@ -66,9 +67,12 @@ class CommunityVisualizationWidget(Base, Form):
         if subject_index is not None:
             self.subject_index = subject_index
         number_of_communities = self.number_of_communities_fmri()
+        if self.subject_index == -1:
+            return
         if number_of_communities < len(self.colors[self.group_index][self.subject_index]):
             self.colors[self.group_index][self.subject_index] = self.colors[self.group_index][self.subject_index][:number_of_communities]
         self.tableWidget.setRowCount(number_of_communities)
+        self.tableWidget.setHorizontalHeaderLabels(['Community color'])
         for i in range(number_of_communities):
             push_button = self.get_push_button_widget()
             self.tableWidget.setCellWidget(i, 0, push_button)

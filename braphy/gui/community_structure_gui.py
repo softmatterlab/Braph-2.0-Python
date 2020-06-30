@@ -200,6 +200,7 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
         self.comboBoxSubject.clear()
         self.comboBoxSubject.blockSignals(False)
         self.update_table()
+        self.update_community_visualization_widget_table()
 
     def subject(self, checked):
         if not checked:
@@ -210,6 +211,7 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
         self.update_subjects()
         self.btnFixed.setChecked(True)
         self.update_table(self.get_community_structure())
+        self.update_community_visualization_widget_table()
 
     def update_subjects(self):
         group_index = self.comboBoxGroup.currentIndex()
@@ -291,6 +293,9 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
     def set_all_community_structure(self):
         for i, group in enumerate(self.analysis.cohort.groups):
             self.analysis.set_community_structure(i, self.community_structure.copy())
+        self.update_community_visualization_widget_table()
+
+    def update_community_visualization_widget_table(self):
         group_index = self.comboBoxGroup.currentIndex()
         subject_index = self.comboBoxSubject.currentIndex()
         if self.analysis.is_MRI():
