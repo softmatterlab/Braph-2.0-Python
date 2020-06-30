@@ -132,3 +132,11 @@ dmypy.json
 *.swp
 
 .DS_Store
+
+# Manual
+*.aux
+*.bcf
+*.log
+*.out
+*.run.xml
+*.gz
