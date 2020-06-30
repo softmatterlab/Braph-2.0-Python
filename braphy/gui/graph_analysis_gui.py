@@ -211,6 +211,9 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
                 if cohort.subject_class != self.subject_class:
                     self.import_error('Wrong data type. Load a cohort with subjects of type {} instead.'.format(self.subject_class.__name__))
                     return
+                if len(cohort.groups) == 0 or len(cohort.subjects) == 0:
+                    self.import_error('Can only perform an analysis on a cohort with groups and subjects.')
+                    return
             graph_settings = self.get_graph_settings()
             analysis = self.analysis_class(cohort, graph_settings)
             self.analysis = analysis
