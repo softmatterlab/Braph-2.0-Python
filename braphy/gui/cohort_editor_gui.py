@@ -61,6 +61,9 @@ class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
         if subject_class == SubjectfMRI:
             self.tabWidget.removeTab(3)
             self.tabWidget.removeTab(2)
+            self.menuBrain_View.menuAction().setVisible(False)
+            self.actionGroup_Averages.setVisible(False)
+            self.actionBrain_View.setVisible(False)
 
         self.init_buttons()
         self.init_actions()
