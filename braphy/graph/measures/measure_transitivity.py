@@ -21,23 +21,15 @@ class MeasureTransitivity(Measure):
     def compute_measure(graph):
         measure_dict = {}
         A = graph.A.copy()
-        np.fill_diagonal(A, 0)
+        triangles = graph.get_measure(MeasureTriangles, 'triangles', save = False)
 
-        if graph.is_undirected() and graph.is_binary():
-            transitivity = np.sum(np.diag(A.dot(A.dot(A)))) / (np.sum(np.sum(A.dot(A))) - np.sum(np.diag(A.dot(A))))
-        else:
+        if graph.is_undirected(): # BU and WU
             degree = graph.get_measure(MeasureDegree, 'degree', save = False)
-            triangles = graph.get_measure(MeasureTriangles, 'triangles', save = False)
-            false_connections = 0
-            if graph.directed:
-                false_connections = 2 * np.diag(A.dot(A))
-
-            connected_triples = degree * (degree - 1) - false_connections
-
-            if connected_triples.any():
-                transitivity = 3 * np.sum(triangles) / np.sum(connected_triples)
-            else:
-                transitivity = 0
+            transitivity = 2 * np.sum(triangles) / (np.sum((degree * (degree - 1))))
+        else: # BD and WD
+            in_degree = graph.get_measure(MeasureDegree, 'in_degree', save = False)
+            out_degree = graph.get_measure(MeasureDegree, 'out_degree', save = False)
+            transitivity = np.sum(triangles) / np.sum((((out_degree + in_degree)) * (out_degree + in_degree - 1) - 2 * np.diag(A.dot(A))))
 
         measure_dict['transitivity'] = transitivity
         return measure_dict

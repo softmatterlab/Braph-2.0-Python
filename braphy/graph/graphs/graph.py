@@ -101,6 +101,8 @@ class Graph(ABC):
                 new_A = (A - np.min(A)) / (np.max(A) - np.min(A))
             else:
                 new_A = Graph.binarize(A)
+        elif rule == 'do_not_standardize':
+            new_A = A
         else: # rule == threshold / one / 1
             new_A = A.copy()
             new_A[new_A < 0] = 0

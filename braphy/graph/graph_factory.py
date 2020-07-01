@@ -7,7 +7,7 @@ class GraphSettings():
     COMMUNITY_ALGORITHM_DEFAULT = 'Louvain'
     NEGATIVE_DEFAULT = 'zero'
     STANDARDIZE_DEFAULT = 'range'
-    SYMMETRIZE_DEFUALT = 'max'
+    SYMMETRIZE_DEFAULT = 'max'
     BINARY_DEFAULT = 'threshold'
     BINARY_VALUE_DEFAULT = 0
     CORRELATION_TYPE_DEFAULT = 'pearson'
@@ -64,7 +64,7 @@ class GraphSettings():
 
     def get_bd(measure_list = MeasureParser.list_measures(), gamma = GAMMA_DEFAULT,
                community_algorithm = COMMUNITY_ALGORITHM_DEFAULT,
-               rule_negative = NEGATIVE_DEFAULT, rule_symmetrize = SYMMETRIZE_DEFUALT, 
+               rule_negative = NEGATIVE_DEFAULT, rule_symmetrize = SYMMETRIZE_DEFAULT, 
                rule_standardize = STANDARDIZE_DEFAULT, rule_binary = BINARY_DEFAULT,
                value_binary = BINARY_VALUE_DEFAULT, correlation_type = CORRELATION_TYPE_DEFAULT):
         return GraphSettings(weighted = False,
@@ -81,7 +81,7 @@ class GraphSettings():
 
     def get_bu(measure_list = MeasureParser.list_measures(), gamma = GAMMA_DEFAULT,
                community_algorithm = COMMUNITY_ALGORITHM_DEFAULT,
-               rule_negative = NEGATIVE_DEFAULT, rule_symmetrize = SYMMETRIZE_DEFUALT, 
+               rule_negative = NEGATIVE_DEFAULT, rule_symmetrize = SYMMETRIZE_DEFAULT, 
                rule_standardize = STANDARDIZE_DEFAULT, rule_binary = BINARY_DEFAULT,
                value_binary = BINARY_VALUE_DEFAULT, correlation_type = CORRELATION_TYPE_DEFAULT):
         return GraphSettings(weighted = False,
@@ -98,7 +98,7 @@ class GraphSettings():
 
     def get_wd(measure_list = MeasureParser.list_measures(), gamma = GAMMA_DEFAULT,
                community_algorithm = COMMUNITY_ALGORITHM_DEFAULT,
-               rule_negative = NEGATIVE_DEFAULT, rule_symmetrize = SYMMETRIZE_DEFUALT, 
+               rule_negative = NEGATIVE_DEFAULT, rule_symmetrize = SYMMETRIZE_DEFAULT, 
                rule_standardize = STANDARDIZE_DEFAULT, rule_binary = BINARY_DEFAULT,
                value_binary = BINARY_VALUE_DEFAULT, correlation_type = CORRELATION_TYPE_DEFAULT):
         return GraphSettings(weighted = True,
@@ -115,7 +115,7 @@ class GraphSettings():
 
     def get_wu(measure_list = MeasureParser.list_measures(), gamma = GAMMA_DEFAULT,
                community_algorithm = COMMUNITY_ALGORITHM_DEFAULT,
-               rule_negative = NEGATIVE_DEFAULT, rule_symmetrize = SYMMETRIZE_DEFUALT, 
+               rule_negative = NEGATIVE_DEFAULT, rule_symmetrize = SYMMETRIZE_DEFAULT, 
                rule_standardize = STANDARDIZE_DEFAULT, rule_binary = BINARY_DEFAULT,
                value_binary = BINARY_VALUE_DEFAULT, correlation_type = CORRELATION_TYPE_DEFAULT):
         return GraphSettings(weighted = True,
