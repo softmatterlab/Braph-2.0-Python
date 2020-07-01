@@ -61,6 +61,10 @@ class Analysis():
     def number_of_communities(self, group_index):
         pass
 
+    @abstractmethod
+    def set_default_community_structure(self):
+        pass
+
     def set_name(self, name):
         self.name = name
 

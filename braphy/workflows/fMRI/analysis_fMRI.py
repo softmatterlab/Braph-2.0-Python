@@ -10,9 +10,7 @@ import numpy as np
 class AnalysisfMRI(Analysis):
     def __init__(self, cohort, graph_settings, name = 'analysis', measurements = None, random_comparisons = None, comparisons = None):
         super().__init__(cohort, graph_settings, name, measurements, random_comparisons, comparisons)
-        self.community_structure = {}
-        for i in range(len(self.cohort.groups)):
-            self.community_structure[i] = np.zeros([len(self.cohort.groups[i].subjects), self.number_of_regions()])
+        self.set_default_community_structure()
 
     def number_of_communities(self, group_index):
         return np.max(self.community_structure[group_index], axis = 1) +1
@@ -77,3 +75,8 @@ class AnalysisfMRI(Analysis):
             A = np.mean([graph.A for graph in graphs], axis = 0)
             graph = GraphFactory.get_graph(A, self.graph_settings)
             return graph.get_measure(MeasureCommunityStructure, 'community_structure')
+
+    def set_default_community_structure(self):
+        self.community_structure = {}
+        for i in range(len(self.cohort.groups)):
+            self.community_structure[i] = np.zeros([len(self.cohort.groups[i].subjects), self.number_of_regions()])

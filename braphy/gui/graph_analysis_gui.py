@@ -262,7 +262,7 @@ class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
         self.community_structure_gui.show()
 
     def default(self):
-        pass
+        self.analysis.set_default_community_structure()
 
     def start_analysis(self):
         self.groupBoxCommunityStructure.hide()
