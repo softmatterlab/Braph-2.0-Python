@@ -34,7 +34,7 @@ class GraphWU(Graph):
 
         return description
 
-    def get_random_graph(self, number_of_weights, attempts_per_edge = 5):
+    def get_random_graph(self, number_of_weights = 1, attempts_per_edge = 5):
         W = self.A.copy()
         graphBU = GraphBU(W,self.settings)
         graphBU_random_A = graphBU.get_random_graph()
@@ -68,9 +68,9 @@ class GraphWU(Graph):
             WA=np.squeeze(WA)
             IJu = WA>0
             # readjust expected weight probabilities
-            F = 1 - WA[IJu]/S[IJu]
-            P[IJu,:] = P[IJu,:]*np.repeat(F[:,np.newaxis],4,axis=1)
-            P[:,IJu] = P[:,IJu]*np.repeat(F[np.newaxis,:],4,axis=0)
+            F = 1 - divide_without_warning(WA[IJu],S[IJu])
+            P[IJu,:] = multiply_without_warning(P[IJu,:],np.repeat(F[:,np.newaxis],N,axis=1))
+            P[:,IJu] = multiply_without_warning(P[:,IJu],np.repeat(F[np.newaxis,:],N,axis=0))
             # readjust strengths
             S[IJu] = S[IJu] - WA[IJu]
 

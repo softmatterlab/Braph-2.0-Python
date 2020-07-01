@@ -34,7 +34,7 @@ class GraphWD(Graph):
 
         return description
 
-    def get_random_graph(self, number_of_weights, attempts_per_edge = 5): 
+    def get_random_graph(self, number_of_weights = 1, attempts_per_edge = 5): 
         W = self.A.copy()
         graphBD = GraphBD(W,self.settings)
         graphBD_random_A = graphBD.get_random_graph()
@@ -68,8 +68,8 @@ class GraphWD(Graph):
             WAi=np.squeeze(WAi)
             Iu = WAi>0
             # readjust expected weight probabilities
-            F = 1 - WAi[Iu]/S_out[Iu]
-            P[Iu,:] = P[Iu,:]*np.repeat(F[:,np.newaxis],4,axis=1)
+            F = 1 - divide_without_warning(WAi[Iu],S_out[Iu])
+            P[Iu,:] = multiply_without_warning(P[Iu,:],np.repeat(F[:,np.newaxis],N,axis=1))
             # readjust in-strength
             S_out[Iu] = S_out[Iu] - WAi[Iu]
 
@@ -78,9 +78,8 @@ class GraphWD(Graph):
             WAj=np.squeeze(WAj)
             Ju = WAj>0
             # readjust expected weight probabilities
-            F = 1 - WAj[Ju]/S_in[Ju]
-            P[:,Ju] = P[:,Ju]*np.repeat(F[np.newaxis,:],4,axis=0)
-
+            F = 1 - divide_without_warning(WAj[Ju],S_in[Ju])
+            P[:,Ju] = multiply_without_warning(P[:,Ju],np.repeat(F[np.newaxis,:],N,axis=0))
             # readjust out-strength
             S_in[Ju] = S_in[Ju] - WAj[Ju]
 

@@ -30,8 +30,8 @@ class GraphBD(Graph):
         return description
 
     def get_random_graph(self, attempts_per_edge = 5):
-        J_edges = np.where(self.A)[1]
-        I_edges = np.where(self.A)[0]
+        J_edges = np.where(self.A.T)[0]
+        I_edges = np.where(self.A.T)[1]
         E = len(I_edges)
 
         randomized_graph = self.A.copy()

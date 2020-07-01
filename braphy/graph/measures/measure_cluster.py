@@ -39,15 +39,8 @@ class MeasureCluster(Measure):
 
             in_degree[triangles==0] = np.inf
             out_degree[triangles==0] = np.inf
-
-            if graph.is_binary(): #BD
-                false_connections = np.diag(matrix_power(A, 2))
-
-            else: #WD
-                false_connections = 2*np.diag(matrix_power(A, 2))
-
-            possible_triangles = in_degree*out_degree - np.transpose(false_connections)
-            cluster = triangles/possible_triangles
+            # 'middleman/cycle rule'
+            cluster = triangles/(out_degree*in_degree - np.diag(matrix_power(A, 2)))
 
         else:
             degree = graph.get_measure(MeasureDegree, 'degree', save = False)
