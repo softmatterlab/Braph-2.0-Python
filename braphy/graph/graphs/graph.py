@@ -89,10 +89,13 @@ class Graph(ABC):
     def binarize(A, rule, value):
         if rule == 'density':
             assert value >=0 and value <= 1
-            threshold = np.sort(A.flatten())[int(value*(np.size(A)-1))]
-            A = np.where(A < threshold, 1, 0)
+            index = np.size(A) - 1 - int(value*(np.size(A)))
+            if index == -1:
+                index = 0
+            threshold = np.sort(A.flatten())[index]
+            A = np.where(A > threshold, 1, 0)
         elif rule == 'threshold':
-            A = np.where(A >= value, 1, 0)
+            A = np.where(A >= (value - 0.001), 1, 0)
         return A
 
     def standardize(A, rule):
