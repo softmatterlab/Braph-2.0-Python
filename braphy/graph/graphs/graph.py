@@ -92,7 +92,7 @@ class Graph(ABC):
             threshold = np.sort(A.flatten())[int(value*(np.size(A)-1))]
             A = np.where(A < threshold, 1, 0)
         elif rule == 'threshold':
-            A = np.where(A > value, 1, 0)
+            A = np.where(A >= value, 1, 0)
         return A
 
     def standardize(A, rule):

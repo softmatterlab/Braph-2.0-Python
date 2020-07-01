@@ -52,7 +52,7 @@ class CorrelationMatrixVisualizer(FigureCanvas):
     def plot(self):
         self.figure.clear()
         self.ax = self.figure.add_subplot(111)
-        self.cax = self.ax.imshow(self.matrix)
+        self.cax = self.ax.imshow(self.matrix, vmin = 0, vmax = 1)
         self.show_colorbar(True)
         self.show_labels(True)
         self.ax.tick_params(top=False, bottom=True,
@@ -67,7 +67,6 @@ class CorrelationMatrixVisualizer(FigureCanvas):
     def histogram(self):
         self.figure.clear()
         self.ax.clear()
-        self.labels_visible = False
         self.colorbar_visible = False
         self.show_colorbar(True)
         self.show_labels(True)
@@ -75,7 +74,6 @@ class CorrelationMatrixVisualizer(FigureCanvas):
         self.ax.hist(self.matrix.flatten())
         self.cax = None
         self.draw()
-        self.show_labels(False)
         self.show_colorbar(False)
 
     def show_labels(self, show):

@@ -5,6 +5,7 @@ from braphy.gui.widgets.correlation_matrix_visualizer import CorrelationMatrixVi
 from matplotlib.backends.backend_qt5agg import (
             NavigationToolbar2QT as NavigationToolbar)
 from braphy.utility.helper_functions import abs_path_from_relative
+from braphy.graph.graphs.graph import Graph
 
 ui_file = abs_path_from_relative(__file__, "../ui_files/correlation_matrix_widget.ui")
 Form, Base = uic.loadUiType(ui_file)
@@ -112,7 +113,7 @@ class CorrelationMatrixWidget(Base, Form):
             correlation = np.mean(correlation, 0)
         elif self.btnSubject.isChecked():
             correlation = correlation[self.comboBoxSubjects.currentIndex()]
-        self.correlation = correlation
+        self.correlation = Graph.standardize(correlation, 'range')
         self.update_graphics_view()
 
     def get_actions(self):
