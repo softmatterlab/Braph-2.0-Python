@@ -25,6 +25,7 @@ class CorrelationMatrixVisualizer(FigureCanvas):
         self.mouse_mode_inspect = False
         self.labels = []
         self.labels_visible = False
+        self.colorbar_visible = False
 
     def init(self, matrix):
         self.matrix = matrix
@@ -66,12 +67,20 @@ class CorrelationMatrixVisualizer(FigureCanvas):
     def histogram(self):
         self.figure.clear()
         self.ax.clear()
+        self.labels_visible = False
+        self.colorbar_visible = False
+        self.show_colorbar(True)
+        self.show_labels(True)
         self.ax = self.figure.add_subplot(111)
         self.ax.hist(self.matrix.flatten())
         self.cax = None
         self.draw()
+        self.show_labels(False)
+        self.show_colorbar(False)
 
     def show_labels(self, show):
+        if self.labels_visible == show:
+            return
         self.labels_visible = show
         if show:
             if len(self.labels) != self.matrix.shape[0]:
@@ -88,6 +97,9 @@ class CorrelationMatrixVisualizer(FigureCanvas):
         self.draw()
 
     def show_colorbar(self, show):
+        if self.colorbar_visible == show:
+            return
+        self.colorbar_visible = show
         if show:
             self.colorbar = self.figure.colorbar(self.cax)
         else:

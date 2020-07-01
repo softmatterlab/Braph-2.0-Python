@@ -96,6 +96,8 @@ class CorrelationMatrixWidget(Base, Form):
         else:
             self.correlationMatrix.update_matrix(A)
             self.correlationMatrix.set_labels(labels)
+            self.correlationMatrix.show_labels(self.actionShow_labels.isChecked())
+            self.correlationMatrix.show_colorbar(self.actionShow_colorbar.isChecked())
 
     def group_change(self):
         self.update_combo_box_subjects()
@@ -164,6 +166,8 @@ class CorrelationMatrixWidget(Base, Form):
         self.horizontalSliderThreshold.setEnabled(False)
         self.spinboxDensity.setEnabled(False)
         self.horizontalSliderDensity.setEnabled(False)
+        self.actionShow_colorbar.setEnabled(True)
+        self.actionShow_labels.setEnabled(True)
         self.update_graphics_view()
 
     def histogram(self):
@@ -171,6 +175,8 @@ class CorrelationMatrixWidget(Base, Form):
         self.horizontalSliderThreshold.setEnabled(False)
         self.spinboxDensity.setEnabled(False)
         self.horizontalSliderDensity.setEnabled(False)
+        self.actionShow_colorbar.setEnabled(False)
+        self.actionShow_labels.setEnabled(False)
         self.update_graphics_view()
 
     def binary_correlation_density(self):
@@ -178,6 +184,8 @@ class CorrelationMatrixWidget(Base, Form):
         self.horizontalSliderDensity.setEnabled(True)
         self.spinboxThreshold.setEnabled(False)
         self.horizontalSliderThreshold.setEnabled(False)
+        self.actionShow_colorbar.setEnabled(True)
+        self.actionShow_labels.setEnabled(True)
         self.update_graphics_view()
 
     def binary_correlation_threshold(self):
@@ -185,6 +193,8 @@ class CorrelationMatrixWidget(Base, Form):
         self.horizontalSliderThreshold.setEnabled(True)
         self.spinboxDensity.setEnabled(False)
         self.horizontalSliderDensity.setEnabled(False)
+        self.actionShow_colorbar.setEnabled(True)
+        self.actionShow_labels.setEnabled(True)
         self.update_graphics_view()
 
     def rearrange(self, state):
