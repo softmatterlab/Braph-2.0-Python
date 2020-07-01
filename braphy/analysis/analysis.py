@@ -19,6 +19,8 @@ class Analysis():
         self.random_comparisons = random_comparisons if random_comparisons else []
         self.comparisons = comparisons if comparisons else []
 
+        self.set_default_community_structure()
+
     def to_dict(self):
         d = {}
         d['cohort'] = self.cohort.to_dict()

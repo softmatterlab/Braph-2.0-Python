@@ -9,7 +9,6 @@ import numpy as np
 class AnalysisMRI(Analysis):
     def __init__(self, cohort, graph_settings, name = 'analysis', measurements = None, random_comparisons = None, comparisons = None):
         super().__init__(cohort, graph_settings, name, measurements, random_comparisons, comparisons)
-        self.set_default_community_structure()
 
     def number_of_communities(self, group_index):
         return np.max(self.community_structure[group_index]) +1
