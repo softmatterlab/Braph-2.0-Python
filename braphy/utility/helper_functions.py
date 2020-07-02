@@ -3,6 +3,7 @@ import os
 import subprocess
 from PyQt5.QtGui import QColor
 from PyQt5 import QtCore, QtGui, QtWidgets
+from contextlib import contextmanager
 
 def divide_without_warning(a, b):
     b = np.array(b) # in case b is a scalar
@@ -81,10 +82,19 @@ def QColor_from_list(color):
     return QColor(color[0], color[1], color[2], color[3])
 
 def float_to_string(f):
+    assert isinstance(f, float), 'Input to the function float_to_string must be a single float value. Current input is {} of type {}.'.format(f, type(f))
     s = format(f, '.6f').rstrip('0')
     if s[-1] == '.':
         s += '0'
     return s
+
+@contextmanager
+def wait_cursor():
+    try:
+        QtGui.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+        yield
+    finally:
+        QtGui.QApplication.restoreOverrideCursor()
 
 class ListManager:
 

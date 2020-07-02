@@ -2,8 +2,10 @@ import sys
 import json
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from PyQt5.QtWidgets import *
-from braphy.utility.helper_functions import abs_path_from_relative
+from braphy.utility.helper_functions import abs_path_from_relative, float_to_string, wait_cursor
 import numpy as np
+import time
+import threading
 
 qtCreatorFile = abs_path_from_relative(__file__, "ui_files/calculation_window.ui")
 
@@ -55,22 +57,37 @@ class CompareGroupMeasures(QtWidgets.QMainWindow, Ui_MainWindow):
         self.spinBoxMax.valueChanged.connect(self.max_changed)
 
     def compare(self):
-        permutations = int(self.lineEditPermutation.text())
-        sub_measures = self.graphMeasuresWidget.get_selected_measures()
-        group_index_1 = self.comboBoxGroup1.currentIndex()
-        group_index_2 = self.comboBoxGroup2.currentIndex()
-        longitudinal = self.checkBoxLongitudinal.isChecked()
-        groups = (group_index_1, group_index_2)
-        for sub_measure in sub_measures:
-            measure_class = self.graphMeasuresWidget.inverted_measures_dict[sub_measure]
-            if self.analysis.is_binary():
-                binary_values = np.arange(self.spinBoxMin.value(), self.spinBoxMax.value(), self.spinBoxStep.value())
-                for value in binary_values:
-                    self.analysis.set_binary_value(value)
+        with wait_cursor():
+            text_box_string = ' '
+            self.textBrowser.setPlainText(text_box_string)
+            QtGui.QApplication.processEvents()
+            permutations = int(self.lineEditPermutation.text())
+            sub_measures = self.graphMeasuresWidget.get_selected_measures()
+            group_index_1 = self.comboBoxGroup1.currentIndex()
+            group_index_2 = self.comboBoxGroup2.currentIndex()
+            longitudinal = self.checkBoxLongitudinal.isChecked()
+            groups = (group_index_1, group_index_2)
+            total_time = 0
+            for sub_measure in sub_measures:
+                start_time = time.time()
+                self.textBrowser.setPlainText('Comparing {}...\n'.format(sub_measure) + text_box_string)
+                QtGui.QApplication.processEvents()
+                measure_class = self.graphMeasuresWidget.inverted_measures_dict[sub_measure]
+                if self.analysis.is_binary():
+                    binary_values = np.arange(self.spinBoxMin.value(), self.spinBoxMax.value(), self.spinBoxStep.value())
+                    for value in binary_values:
+                        self.analysis.set_binary_value(value)
+                        self.analysis.get_comparison(measure_class, sub_measure, groups, permutations, longitudinal)
+                else:
                     self.analysis.get_comparison(measure_class, sub_measure, groups, permutations, longitudinal)
-            else:
-                self.analysis.get_comparison(measure_class, sub_measure, groups, permutations, longitudinal)
-        self.textBrowser.setPlainText('DONE')
+                duration = time.time() - start_time
+                total_time = total_time + duration
+                text_box_string = text_box_string + '\n{} {} s.'.format(sub_measure, float_to_string(duration))
+                self.textBrowser.setPlainText(text_box_string)
+                QtGui.QApplication.processEvents()
+            text_box_string = 'DONE \nTotal time: {} s.\n'.format(float_to_string(total_time)) + text_box_string
+            self.textBrowser.setPlainText(text_box_string)
+            QtGui.QApplication.processEvents()
         self.call_update()
 
     def call_update(self):
