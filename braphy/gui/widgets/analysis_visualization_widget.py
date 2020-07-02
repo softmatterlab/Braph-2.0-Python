@@ -196,6 +196,9 @@ class MeasureVisualizationWidget(AnalysisVisualizationWidget):
         values = self.get_visualization_values()
         visualization_type = self.comboBoxType.currentIndex()
         for i, region in enumerate(self.brain_widget.gui_brain_regions):
+            if np.isnan(values[i]) or np.isinf(values[i]):
+                region.set_size(0.1)
+                continue
             if visualization_type == 0 or visualization_type == 2:
                 region.set_color(self.get_color(values[i]))
             if visualization_type == 1 or visualization_type == 2:
