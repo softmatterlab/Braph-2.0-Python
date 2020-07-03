@@ -23,10 +23,11 @@ class GroupsAndDemographicsWidget(Base, Form):
     def init_table(self):
         self.tableWidget.setItemDelegateForColumn(2, IntDelegate(self.tableWidget))
         self.tableWidget.cellChanged.connect(self.cell_changed_in_table)
+        self.tableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
 
     def init_buttons(self):
-        self.btnSelectAll.clicked.connect(self.select_all_subjects)
-        self.btnClearSelection.clicked.connect(self.clear_subject_selection)
+        self.btnSelectAll.clicked.connect(self.tableWidget.selectAll)
+        self.btnClearSelection.clicked.connect(self.tableWidget.clearSelection)
         self.btnAddSubject.clicked.connect(self.add_subject)
         self.btnAddAbove.clicked.connect(self.add_subjects_above)
         self.btnAddBelow.clicked.connect(self.add_subjects_below)
@@ -63,13 +64,12 @@ class GroupsAndDemographicsWidget(Base, Form):
         self.tableWidget.blockSignals(True)
         self.tableWidget.clearContents()
         self.tableWidget.setRowCount(0)
-        self.subject_check_boxes = []
         self.subject_in_group_check_boxes = {}
 
         #Update columns:
-        self.tableWidget.setColumnCount(2)
+        self.tableWidget.setColumnCount(1)
         item = QTableWidgetItem('Subject Code')
-        self.tableWidget.setHorizontalHeaderItem(1, item)
+        self.tableWidget.setHorizontalHeaderItem(0, item)
         try:
             keys = list(self.cohort.subjects[0].data_dict.keys())
         except:
@@ -78,8 +78,8 @@ class GroupsAndDemographicsWidget(Base, Form):
             if keys[i] == 'data':
                 continue
             item = QTableWidgetItem(keys[i])
-            self.tableWidget.setColumnCount(i+3)
-            self.tableWidget.setHorizontalHeaderItem(i+2, item)
+            self.tableWidget.setColumnCount(i+2)
+            self.tableWidget.setHorizontalHeaderItem(i+1, item)
 
         nbr_columns = self.tableWidget.columnCount()
         for i in range(len(self.cohort.groups)):
@@ -91,21 +91,11 @@ class GroupsAndDemographicsWidget(Base, Form):
         # Update subjects:
         for i in range(len(self.cohort.subjects)):
             self.tableWidget.setRowCount(i+1)
-            widget = QWidget()
-            layout = QHBoxLayout()
-            layout.setAlignment(QtCore.Qt.AlignHCenter)
-            check_box = QCheckBox()
-            self.subject_check_boxes.append(check_box)
-            if i in selected:
-                self.subject_check_boxes[i].setChecked(True)
-            layout.addWidget(self.subject_check_boxes[i])
-            widget.setLayout(layout)
-            self.tableWidget.setCellWidget(i, 0, widget)
 
             item = QTableWidgetItem(self.cohort.subjects[i].id)
             if self.read_only:
                 item.setFlags(QtCore.Qt.ItemIsSelectable)
-            self.tableWidget.setItem(i, 1, item)
+            self.tableWidget.setItem(i, 0, item)
 
             for j in range(len(keys)):
                 if keys[j] == 'data':
@@ -113,7 +103,7 @@ class GroupsAndDemographicsWidget(Base, Form):
                 item = QTableWidgetItem(str(self.cohort.subjects[i].data_dict[keys[j]].value))
                 if self.read_only:
                     item.setFlags(QtCore.Qt.ItemIsSelectable)
-                self.tableWidget.setItem(i, j+2, item)
+                self.tableWidget.setItem(i, j+1, item)
 
             for j in range(len(self.cohort.groups)):
                 widget = QWidget()
@@ -134,7 +124,15 @@ class GroupsAndDemographicsWidget(Base, Form):
                 widget.setLayout(layout)
                 self.tableWidget.setCellWidget(i, nbr_columns+j, widget)
 
+        self.set_selected(selected)
         self.tableWidget.blockSignals(False)
+
+    def set_selected(self, selected):
+        mode = self.tableWidget.selectionMode()
+        self.tableWidget.setSelectionMode(QtGui.QAbstractItemView.MultiSelection)
+        for row in selected:
+            self.tableWidget.selectRow(row)
+        self.tableWidget.setSelectionMode(mode)
 
     def subject_in_group_check_box_changed(self):
         check_box = self.sender()
@@ -145,26 +143,8 @@ class GroupsAndDemographicsWidget(Base, Form):
         self.update()
 
     def get_selected(self):
-        selected = []
-        for i in range(len(self.subject_check_boxes)):
-            if self.subject_check_boxes[i].isChecked():
-                selected.append(i)
-        return np.array(selected)
-
-    def set_selected(self, selected):
-        for i in range(len(self.subject_check_boxes)):
-            if i in selected:
-                self.subject_check_boxes[i].setChecked(True)
-            else:
-                self.subject_check_boxes[i].setChecked(False)
-
-    def select_all_subjects(self):
-        for check_box in self.subject_check_boxes:
-            check_box.setChecked(True)
-
-    def clear_subject_selection(self):
-        for check_box in self.subject_check_boxes:
-            check_box.setChecked(False)
+        rows = [item.row() for item in self.tableWidget.selectionModel().selectedRows()]
+        return np.array(rows)
 
     def add_subject(self):
         self.cohort.add_subject()
