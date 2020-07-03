@@ -17,6 +17,7 @@ class CompareGroupMeasures(QtWidgets.QMainWindow, Ui_MainWindow):
         QtWidgets.QMainWindow.__init__(self, parent = None)
         self.setupUi(self)
         self.btnCalculate.setText('Compare groups')
+        self.setWindowTitle('Compare group measures')
 
         self.labelMatrix.hide()
         self.labelSwaps.hide()

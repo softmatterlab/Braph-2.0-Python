@@ -169,6 +169,13 @@
          </layout>
         </item>
         <item>
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Computation status:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QTextBrowser" name="textBrowser"/>
         </item>
         <item>
