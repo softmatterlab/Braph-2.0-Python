@@ -82,7 +82,10 @@ def QColor_from_list(color):
     return QColor(color[0], color[1], color[2], color[3])
 
 def float_to_string(f):
-    assert isinstance(f, float), 'Input to the function float_to_string must be a single float value. Current input is {} of type {}.'.format(f, type(f))
+    try:
+        f = float(f)
+    except:
+        raise ValueError('Input to the function float_to_string must be a single float value. Current input is {} of type {}.'.format(f, type(f)))
     s = format(f, '.6f').rstrip('0')
     if s[-1] == '.':
         s += '0'

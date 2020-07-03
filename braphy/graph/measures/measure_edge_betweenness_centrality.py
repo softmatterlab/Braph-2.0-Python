@@ -5,13 +5,13 @@ import numpy as np
 class MeasureEdgeBetweennessCentrality(Measure):
     def dimensions():
         d = {}
-        d['edge_betweenness_centrality'] = Measure.NODAL
+        d['edge_betweenness_centrality'] = Measure.BINODAL
         return d
 
     def get_description():
         description = {}
         description['edge_betweenness_centrality'] = 'The fraction of all shortest paths in the graph that ' \
-                                                     'pass through a given edge. Edgets with high values of ' \
+                                                     'pass through a given edge. Edges with high values of ' \
                                                      'betweenness centrality participate in a large number ' \
                                                      'of shortest paths.'
         return description
