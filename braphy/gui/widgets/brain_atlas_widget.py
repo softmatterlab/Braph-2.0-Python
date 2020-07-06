@@ -13,7 +13,7 @@ import numpy as np
 ui_file = abs_path_from_relative(__file__, "../ui_files/brain_atlas_widget.ui")
 Form, Base = uic.loadUiType(ui_file)
 
-brain_distance_default = 235
+brain_distance_default = 255
 
 class BrainAtlasWidget(GLViewWidget):
     MOUSE_MODE_DEFAULT = 0
