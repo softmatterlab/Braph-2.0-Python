@@ -11,6 +11,9 @@ class GraphMeasuresWidget(Base, Form):
     def __init__(self, parent = None):
         super(GraphMeasuresWidget, self).__init__(parent)
         self.setupUi(self)
+        size_policy = self.sizePolicy()
+        size_policy.setRetainSizeWhenHidden(True)
+        self.setSizePolicy(size_policy)
 
         self.measures_dict = MeasureParser.list_measures()
         descriptions = MeasureParser.list_measures_descriptions()
