@@ -9,6 +9,7 @@ import numpy as np
 from braphy.gui.widgets.brain_atlas_widget import BrainAtlasWidget
 from braphy.workflows.MRI.subject_MRI import SubjectMRI
 from braphy.workflows.fMRI.subject_fMRI import SubjectfMRI
+from braphy.gui.exit_dialog import ExitDialog
 
 qtCreatorFile = abs_path_from_relative(__file__, "ui_files/brain_atlas.ui")
 brain_mesh_file_name_default = "meshes/BrainMesh_ICBM152.nv"
@@ -16,7 +17,7 @@ brain_mesh_file_default = abs_path_from_relative(__file__, brain_mesh_file_name_
 
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 
-class BrainAtlasGui(QtWidgets.QMainWindow, Ui_MainWindow):
+class BrainAtlasGui(ExitDialog, Ui_MainWindow):
     def __init__(self, AppWindow = None, atlas = None): # should be able to input atlas
         if AppWindow:
             self.AppWindow = AppWindow
