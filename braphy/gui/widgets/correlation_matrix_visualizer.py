@@ -26,6 +26,7 @@ class CorrelationMatrixVisualizer(FigureCanvas):
         self.labels = []
         self.labels_visible = False
         self.colorbar_visible = False
+        self.lines = []
 
     def init(self, matrix):
         self.matrix = matrix
@@ -63,6 +64,32 @@ class CorrelationMatrixVisualizer(FigureCanvas):
         self.draw()
         self.show_labels(False)
         self.show_colorbar(False)
+
+    def divide_communities(self, state, regions = []):
+        if len(regions) > 0:
+            regions.sort()
+        if state:
+            offset = 0.5
+            for i in range(int(max(regions) + 1)):
+                start_coord = np.where(regions == i)[0][0] - offset
+                end_coord = np.where(regions == i)[0][-1] + offset
+                self.draw_rectangle(start_coord, end_coord)
+        else:
+            for line in self.lines:
+                line[0].remove()
+            self.lines = []
+            self.draw()
+
+    def draw_rectangle(self, start_coord, end_coord):
+        self.draw_line([start_coord, start_coord], [start_coord, end_coord])
+        self.draw_line([start_coord, end_coord], [start_coord, start_coord])
+        self.draw_line([start_coord, end_coord], [end_coord, end_coord])
+        self.draw_line([end_coord, end_coord], [start_coord, end_coord])
+
+    def draw_line(self, x, y):
+        line = self.ax.plot(x, y, color='black', linewidth=2)
+        self.lines.append(line)
+        self.draw()
 
     def histogram(self):
         self.figure.clear()

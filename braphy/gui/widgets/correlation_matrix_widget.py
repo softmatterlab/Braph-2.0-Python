@@ -202,8 +202,16 @@ class CorrelationMatrixWidget(Base, Form):
         self.checkBoxDivide.setEnabled(state)
         self.update_graphics_view()
 
-    def divide(self):
-        pass
+    def divide(self, state):
+        if state:
+            group_index = self.comboBoxGroup.currentIndex()
+            subject_index = self.comboBoxSubjects.currentIndex()
+            regions = self.analysis.community_structure[group_index]
+            if self.btnSubject.isChecked() and subject_index != -1:
+                regions = regions[subject_index]
+        else:
+            regions = []
+        self.correlationMatrix.divide_communities(state, regions)
 
     def set_cursor(self, file_name):
         cursor_file = abs_path_from_relative(__file__, file_name)
