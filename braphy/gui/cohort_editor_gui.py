@@ -11,6 +11,7 @@ import braphy.gui.icons_rc
 from functools import partial
 import xml.etree.ElementTree as ET
 import numpy as np
+from braphy.gui.exit_dialog import ExitDialog
 
 from braphy.cohort.cohort import Cohort
 from braphy.workflows.MRI.subject_MRI import SubjectMRI
@@ -24,7 +25,7 @@ brain_mesh_file_default = abs_path_from_relative(__file__, brain_mesh_file_name_
 
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 
-class CohortEditor(QtWidgets.QMainWindow, Ui_MainWindow):
+class CohortEditor(ExitDialog, Ui_MainWindow):
     def __init__(self, AppWindow = None, subject_class = SubjectMRI, cohort = None, atlas = None, brain_mesh_data = None):
         if AppWindow:
             self.AppWindow = AppWindow

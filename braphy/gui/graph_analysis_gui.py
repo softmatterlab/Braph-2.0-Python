@@ -16,12 +16,13 @@ from braphy.analysis.analysis import Analysis
 from braphy.gui.community_structure_gui import CommunityStructure
 from braphy.gui.widgets.brain_view_options_widget import BrainViewOptionsWidget
 from braphy.utility.helper_functions import abs_path_from_relative
+from braphy.gui.exit_dialog import ExitDialog
 
 qtCreatorFile = abs_path_from_relative(__file__, "ui_files/graph_analysis.ui")
 
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 
-class GraphAnalysis(QtWidgets.QMainWindow, Ui_MainWindow):
+class GraphAnalysis(ExitDialog, Ui_MainWindow):
     def __init__(self, AppWindow = None, subject_class = SubjectMRI, analysis = None, brain_mesh_data = None):
         if AppWindow:
             self.AppWindow = AppWindow
