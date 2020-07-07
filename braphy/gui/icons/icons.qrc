@@ -28,5 +28,6 @@
     <file>icon_inspect.png</file>
     <file>icon_colorbar.png</file>
     <file>playpause.png</file>
+    <file>application_icon.png</file>
   </qresource>
 </RCC>
