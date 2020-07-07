@@ -126,9 +126,6 @@
          </size>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_6">
-         <property name="spacing">
-          <number>6</number>
-         </property>
          <property name="leftMargin">
           <number>0</number>
          </property>
@@ -246,68 +243,79 @@
             </widget>
            </item>
            <item>
-            <layout class="QFormLayout" name="formLayout">
-             <item row="0" column="1">
-              <widget class="QComboBox" name="comboBoxGraph"/>
-             </item>
-             <item row="0" column="0">
-              <widget class="QLabel" name="label_3">
-               <property name="text">
-                <string>Graph</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="label_4">
-               <property name="text">
-                <string>Correlation</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="0">
-              <widget class="QLabel" name="label_5">
-               <property name="text">
-                <string>Negative</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QComboBox" name="comboBoxCorrelation"/>
-             </item>
-             <item row="2" column="1">
-              <widget class="QComboBox" name="comboBoxNegative"/>
-             </item>
-             <item row="3" column="0">
-              <widget class="QLabel" name="labelBinary">
-               <property name="text">
-                <string>Binary</string>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="1">
-              <widget class="QComboBox" name="comboBoxBinary"/>
-             </item>
-             <item row="4" column="0">
-              <widget class="QLabel" name="labelSymmetrize">
-               <property name="text">
-                <string>Symmetrize</string>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="1">
-              <widget class="QComboBox" name="comboBoxSymmetrize"/>
-             </item>
-             <item row="5" column="0">
-              <widget class="QLabel" name="labelStandardize">
-               <property name="text">
-                <string>Standardize</string>
-               </property>
-              </widget>
-             </item>
-             <item row="5" column="1">
-              <widget class="QComboBox" name="comboBoxStandardize"/>
-             </item>
-            </layout>
+            <widget class="QGroupBox" name="groupBox">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="title">
+              <string>Graph Settings</string>
+             </property>
+             <layout class="QFormLayout" name="formLayout_2">
+              <item row="0" column="0">
+               <widget class="QLabel" name="label_3">
+                <property name="text">
+                 <string>Graph</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QComboBox" name="comboBoxGraph"/>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="label_4">
+                <property name="text">
+                 <string>Correlation</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QComboBox" name="comboBoxCorrelation"/>
+              </item>
+              <item row="2" column="0">
+               <widget class="QLabel" name="label_5">
+                <property name="text">
+                 <string>Negative</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="1">
+               <widget class="QComboBox" name="comboBoxNegative"/>
+              </item>
+              <item row="3" column="0">
+               <widget class="QLabel" name="labelBinary">
+                <property name="text">
+                 <string>Binary</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="1">
+               <widget class="QComboBox" name="comboBoxBinary"/>
+              </item>
+              <item row="4" column="0">
+               <widget class="QLabel" name="labelSymmetrize">
+                <property name="text">
+                 <string>Symmetrize</string>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="1">
+               <widget class="QComboBox" name="comboBoxSymmetrize"/>
+              </item>
+              <item row="5" column="0">
+               <widget class="QLabel" name="labelStandardize">
+                <property name="text">
+                 <string>Standardize</string>
+                </property>
+               </widget>
+              </item>
+              <item row="5" column="1">
+               <widget class="QComboBox" name="comboBoxStandardize"/>
+              </item>
+             </layout>
+            </widget>
            </item>
            <item>
             <spacer name="verticalSpacer_2">
@@ -320,7 +328,7 @@
              <property name="sizeHint" stdset="0">
               <size>
                <width>20</width>
-               <height>30</height>
+               <height>20</height>
               </size>
              </property>
             </spacer>
@@ -378,7 +386,7 @@
              <property name="sizeHint" stdset="0">
               <size>
                <width>20</width>
-               <height>30</height>
+               <height>20</height>
               </size>
              </property>
             </spacer>
@@ -392,6 +400,12 @@
            </item>
            <item>
             <widget class="StartAnalysisWidget" name="startAnalysisWidget" native="true">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="minimumSize">
               <size>
                <width>0</width>
