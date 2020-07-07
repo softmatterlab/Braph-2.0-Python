@@ -133,16 +133,7 @@ class MeasuresWidget(Base, Form):
             self.update_random_comparison_table(current_group_1, current_region_index)
 
     def update_measurements_table(self, current_group, current_region_index):
-        labels = ['Value']
-        if self.analysis.is_binary():
-            labels.append(self.analysis.graph_settings.rule_binary)
-        labels.extend(['Notes', 'Group', 'Measure', 'Param'])
-        if self.analysis.cohort.subject_class == SubjectfMRI and not self.btnGroup.isChecked():
-            labels.append('Subject')
-        if self.measure_type == Measure.NODAL:
-            labels.append('Region')
-        elif self.measure_type == Measure.BINODAL:
-            labels.extend(['Region 1', 'Region 2'])
+        labels = self.measurement_labels()
         self.tableWidget.setColumnCount(len(labels))
         self.tableWidget.setHorizontalHeaderLabels(labels)
         self.measurement_index_mapping = {}
@@ -151,47 +142,14 @@ class MeasuresWidget(Base, Form):
                 row = self.tableWidget.rowCount()
                 self.measurement_index_mapping[row] = i
                 self.tableWidget.setRowCount(row + 1)
-                if self.analysis.cohort.subject_class == SubjectfMRI:
-                    if self.btnGroup.isChecked():
-                        value = np.mean(measurement.value, axis = 0)
-                    else:
-                        value = measurement.value[self.comboBoxSubject.currentIndex()]
-                else:
-                    value = (measurement.value)
-                contents = [value]
-                if self.analysis.is_binary():
-                    contents.append(measurement.binary_value)
-                contents.extend(['-', self.analysis.cohort.groups[measurement.group].name, measurement.sub_measure, '-'])
-                if self.analysis.cohort.subject_class == SubjectfMRI and not self.btnGroup.isChecked():
-                    contents.append(self.comboBoxSubject.currentText())
-                if self.measure_type == Measure.NODAL:
-                    contents.append(self.comboBoxRegion.currentText())
-                elif self.measure_type == Measure.BINODAL:
-                    contents.extend([self.comboBoxRegion.currentText(), self.comboBoxRegion2.currentText()])
+                contents = self.measurement_contents(measurement)
                 for j, content in enumerate(contents):
-                    if isinstance(content, np.ndarray):
-                        if self.measure_type == Measure.BINODAL:
-                            current_region2_index = self.comboBoxRegion2.currentIndex()
-                            content = content[current_region_index][current_region2_index]
-                        else:
-                            content = content[current_region_index]
-                    if not isinstance(content, str):
-                        content = float_to_string(content)
                     item = QTableWidgetItem(content)
                     item.setFlags(self.table_flags)
                     self.tableWidget.setItem(row, j, item)
 
     def update_comparison_table(self, current_group_1, current_group_2, current_region_index):
-        labels = ['Difference']
-        if self.analysis.is_binary():
-            labels.append(self.analysis.graph_settings.rule_binary)
-        labels.extend(['p (1-tailed)', 'p (2-tailed)', 'Value 1', 'Value 2', 'CI lower', 'CI upper', 'Notes', 'Measure', 'Group 1', 'Group 2', 'Param', 'Longitudinal'])
-        if self.analysis.cohort.subject_class == SubjectfMRI and not self.btnGroup.isChecked():
-            labels.append('Subject')
-        if self.measure_type == Measure.NODAL:
-            labels.append('Region')
-        elif self.measure_type == Measure.BINODAL:
-            labels.extend(['Region 1', 'Region 2'])
+        labels = self.comparison_labels()
         self.tableWidget.setColumnCount(len(labels))
         self.tableWidget.setHorizontalHeaderLabels(labels)
         self.comparison_index_mapping = {}
@@ -200,36 +158,8 @@ class MeasuresWidget(Base, Form):
                 row = self.tableWidget.rowCount()
                 self.comparison_index_mapping[row] = i
                 self.tableWidget.setRowCount(row + 1)
-                if self.analysis.cohort.subject_class == SubjectfMRI:
-                    value_0 = np.mean(comparison.measures[0], axis = 0)
-                    value_1 = np.mean(comparison.measures[1], axis = 0)
-                else:
-                    value_0 = comparison.measures[0]
-                    value_1 = comparison.measures[1]
-                contents = [value_1 - value_0]
-                if self.analysis.is_binary():
-                    contents.append(comparison.binary_value)
-                contents.extend([(comparison.p_values[0]),
-                                  (comparison.p_values[1]), (value_0),
-                                  (value_1), (comparison.confidence_interval[0]),
-                                  (comparison.confidence_interval[1]), '-',
-                                  comparison.sub_measure, self.analysis.cohort.groups[comparison.groups[0]].name,
-                                  self.analysis.cohort.groups[comparison.groups[1]].name, '-', str(comparison.longitudinal)])
-                if self.analysis.cohort.subject_class == SubjectfMRI and not self.btnGroup.isChecked():
-                    contents.append(self.comboBoxSubject.currentText())
-                if self.measure_type == Measure.NODAL:
-                    contents.append(self.comboBoxRegion.currentText())
-                elif self.measure_type == Measure.BINODAL:
-                    contents.extend([self.comboBoxRegion.currentText(), self.comboBoxRegion2.currentText()])
+                contents = self.comparison_contents(comparison)
                 for j, content in enumerate(contents):
-                    if isinstance(content, np.ndarray):
-                        if self.measure_type == Measure.BINODAL:
-                            current_region2_index = self.comboBoxRegion2.currentIndex()
-                            content = content[current_region_index][current_region2_index]
-                        else:
-                            content = content[current_region_index]
-                    if not isinstance(content, str):
-                        content = float_to_string(content)
                     item = QTableWidgetItem(content)
                     item.setFlags(self.table_flags)
                     self.tableWidget.setItem(row, j, item)
@@ -237,6 +167,121 @@ class MeasuresWidget(Base, Form):
     def update_random_comparison_table(self, current_group, current_region_index):
         self.tableWidget.setColumnCount(10)
         self.tableWidget.setHorizontalHeaderLabels(['Comp value', 'p (1-tailed)', 'p (2-tailed)', 'Real value', 'CI lower', 'CI upper', 'Notes', 'Measure', 'Group', 'Param'])
+
+    def measurement_mask(self):
+        subject = self.analysis.cohort.subject_class == SubjectfMRI and not self.btnGroup.isChecked()
+        binary = self.analysis.is_binary()
+        nodal = self.measure_type == Measure.NODAL
+        binodal = self.measure_type == Measure.BINODAL
+        mask = [True, subject, True, True, binary, nodal, binodal, binodal, True, True]
+
+        return mask
+
+    def measurement_labels(self):
+        rule_binary = self.analysis.graph_settings.rule_binary
+        labels = ['Group', 'Subject', 'Measure', 'Param', rule_binary, 'Region', 'Region 1', 'Region 2', 'Value', 'Notes']
+
+        mask = self.measurement_mask()
+        labels = np.array(labels)[np.where(mask)[0]].tolist()
+        return labels
+
+    def measurement_contents(self, measurement):
+        if self.analysis.cohort.subject_class == SubjectfMRI:
+            if self.btnGroup.isChecked():
+                value = np.mean(measurement.value, axis = 0)
+            else:
+                value = measurement.value[self.comboBoxSubject.currentIndex()]
+        else:
+            value = (measurement.value)
+
+        region_1_index = self.comboBoxRegion.currentIndex()
+        region_2_index = self.comboBoxRegion2.currentIndex()
+
+        group = self.analysis.cohort.groups[measurement.group].name
+        subject = self.comboBoxSubject.currentText()
+        measure = measurement.sub_measure
+        param = '-'
+        binary_value = measurement.binary_value
+        region = self.comboBoxRegion.currentText()
+        region_2 = self.comboBoxRegion2.currentText()
+        if self.measure_type == Measure.BINODAL:
+            value = value[region_1_index][region_2_index]
+        elif self.measure_type == Measure.NODAL:
+            value = value[region_1_index]
+        value = float_to_string(value)
+        notes = '-'
+        content = [group, subject, measure, param, binary_value, region, region, region_2, value, notes]
+
+        mask = self.measurement_mask()
+        content = np.array(content)[np.where(mask)[0]].tolist()
+        return content
+
+    def comparison_mask(self):
+        subject = self.analysis.cohort.subject_class == SubjectfMRI and not self.btnGroup.isChecked()
+        binary = self.analysis.is_binary()
+        nodal = self.measure_type == Measure.NODAL
+        binodal = self.measure_type == Measure.BINODAL
+        mask = [True, True, subject, True, True, binary, nodal, binodal, binodal] + [True]*8
+
+        return mask
+
+    def comparison_labels(self):
+        rule_binary = self.analysis.graph_settings.rule_binary
+        labels = ['Group 1', 'Group 2', 'Subject', 'Measure', 'Param', rule_binary, 'Region', 'Region 1', 'Region 2',
+                  'Longitudinal', 'p (1-tailed)', 'p (2-tailed)', 'CI lower', 'CI upper', 'Value 1', 'Value 2', 'Difference']
+
+        mask = self.comparison_mask()
+        labels = np.array(labels)[np.where(mask)[0]].tolist()
+        return labels
+
+    def comparison_contents(self, comparison):
+        if self.analysis.cohort.subject_class == SubjectfMRI:
+            value_1 = np.mean(comparison.measures[0], axis = 0)
+            value_2 = np.mean(comparison.measures[1], axis = 0)
+        else:
+            value_1 = comparison.measures[0]
+            value_2 = comparison.measures[1]
+
+        region_1_index = self.comboBoxRegion.currentIndex()
+        region_2_index = self.comboBoxRegion2.currentIndex()
+
+        group_1 = self.analysis.cohort.groups[comparison.groups[0]].name
+        group_2 = self.analysis.cohort.groups[comparison.groups[1]].name
+        subject = self.comboBoxSubject.currentText()
+        measure = comparison.sub_measure
+        param = '-'
+        binary_value = comparison.binary_value
+        region = self.comboBoxRegion.currentText()
+        region_2 = self.comboBoxRegion2.currentText()
+        longitudinal = str(comparison.longitudinal)
+        p_value_1 = comparison.p_values[0]
+        p_value_2 = comparison.p_values[1]
+        CI_1 = comparison.confidence_interval[0]
+        CI_2 = comparison.confidence_interval[1]
+        if self.measure_type == Measure.BINODAL:
+            value_1 = value_1[region_1_index][region_2_index]
+            value_2 = value_2[region_1_index][region_2_index]
+            p_value_2 = p_value_2[region_1_index][region_2_index]
+            p_value_1 = p_value_1[region_1_index][region_2_index]
+        elif self.measure_type == Measure.NODAL:
+            value_1 = value_1[region_1_index]
+            value_2 = value_2[region_1_index]
+            p_value_2 = p_value_2[region_1_index]
+            p_value_1 = p_value_1[region_1_index]
+        difference = float_to_string(value_2 - value_1)
+        p_value_1 = float_to_string(p_value_1)
+        p_value_2 = float_to_string(p_value_2)
+        CI_1 = float_to_string(CI_1)
+        CI_2 = float_to_string(CI_2)
+        value_1 = float_to_string(value_1)
+        value_2 = float_to_string(value_2)
+
+        content = [group_1, group_2, subject, measure, param, binary_value, region, region, region_2,
+                    longitudinal, p_value_1, p_value_2, CI_1, CI_2, value_1, value_2, difference]
+
+        mask = self.comparison_mask()
+        content = np.array(content)[np.where(mask)[0]].tolist()
+        return content
 
     def get_selected(self):
         selected = [item.row() for item in self.tableWidget.selectionModel().selectedRows()]
