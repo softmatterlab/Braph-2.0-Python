@@ -28,7 +28,7 @@ class MainWindow(ExitDialog, Ui_MainWindow):
         QtWidgets.qApp.focusChanged.connect(self.in_focus)
 
         root = QFileInfo(__file__).absolutePath()
-        self.setWindowIcon(QtGui.QIcon(root+'/icons/icon_view_ad.png'))
+        self.setWindowIcon(QtGui.QIcon(root+'/icons/application_icon.png'))
         self.show() 
 
     def in_focus(self):
