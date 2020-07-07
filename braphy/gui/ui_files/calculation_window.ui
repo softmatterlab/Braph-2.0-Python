@@ -24,7 +24,7 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="GraphMeasuresVerticalWidget" name="graphMeasuresWidget" native="true"/>
+       <widget class="GraphMeasuresWidget" name="graphMeasuresWidget" native="true"/>
       </item>
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -249,9 +249,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>GraphMeasuresVerticalWidget</class>
+   <class>GraphMeasuresWidget</class>
    <extends>QWidget</extends>
-   <header>braphy.gui.widgets.graph_measures_vertical_widget</header>
+   <header>braphy.gui.widgets.graph_measures_widget</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

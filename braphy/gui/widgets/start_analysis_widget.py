@@ -24,7 +24,7 @@ class StartAnalysisWidget(Base, Form):
         self.analysis = self.analysis_gui.analysis
         self.graph_type = self.analysis.graph_settings.graph_class()
         self.init_buttons()
-        self.graphMeasuresWidget.init(self.graph_type)
+        self.init_graph_measures_widget(self.graph_type)
 
     def init_buttons(self):
         self.btnViewCommunity.clicked.connect(self.view_community)
@@ -33,6 +33,9 @@ class StartAnalysisWidget(Base, Form):
         self.btnCalculate.clicked.connect(self.calculate_group_measures)
         self.btnCompare.clicked.connect(self.compare_group_measures)
         self.btnRandom.clicked.connect(self.compare_with_random_graph)
+
+    def init_graph_measures_widget(self, graph_type):
+        self.graphMeasuresWidget.init(graph_type)
 
     def view_community(self):
         self.community_structure = CommunityStructure(self.analysis, self.analysis_gui.brain_mesh_data, self.analysis_gui.__class__)
@@ -57,3 +60,13 @@ class StartAnalysisWidget(Base, Form):
 
     def table_update_callbacks(self):
         return self.analysis_gui.table_update_callbacks()
+
+    def show_buttons(self):
+        for btn in [self.btnViewCommunity, self.btnNewAnalysis, self.btnCalculate, self.btnCompare, self.btnRandom]:
+            btn.show()
+        self.graphMeasuresWidget.show_buttons()
+
+    def hide_buttons(self):
+        for btn in [self.btnViewCommunity, self.btnNewAnalysis, self.btnCalculate, self.btnCompare, self.btnRandom]:
+            btn.hide()
+        self.graphMeasuresWidget.hide_buttons()

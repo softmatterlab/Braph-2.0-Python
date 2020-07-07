@@ -32,8 +32,8 @@ class GraphAnalysis(ExitDialog, Ui_MainWindow):
         self.init_buttons()
         self.init_actions()
         self.init_comboboxes()
-        self.graphMeasuresWidget.init(GraphAnalysis.graph_cls_from_str(self.comboBoxGraph.currentText()))
-        self.startAnalysisWidget.hide()
+        self.startAnalysisWidget.init_graph_measures_widget(GraphAnalysis.graph_cls_from_str(self.comboBoxGraph.currentText()))
+        self.startAnalysisWidget.hide_buttons()
         self.tabWidget.tabBar().hide()
         self.tabWidget.currentChanged.connect(self.tab_changed)
 
@@ -106,8 +106,8 @@ class GraphAnalysis(ExitDialog, Ui_MainWindow):
         self.brain_view_options_widget.show()
 
     def set_locked(self, locked):
-        lock_items = [self.correlationMatrixWidget, self.graphMeasuresWidget, self.textAnalysisName,
-                      self.comboBoxGraph, self.comboBoxCorrelation, self.comboBoxNegative, self.comboBoxBinary,
+        lock_items = [self.correlationMatrixWidget, self.textAnalysisName, self.comboBoxGraph,
+                      self.comboBoxCorrelation, self.comboBoxNegative, self.comboBoxBinary,
                       self.btnStartAnalysis, self.groupBoxCommunityStructure,
                       self.comboBoxSymmetrize, self.comboBoxStandardize, self.actionSave, self.actionSave_as]
         for item in lock_items:
@@ -267,9 +267,8 @@ class GraphAnalysis(ExitDialog, Ui_MainWindow):
 
     def start_analysis(self):
         self.groupBoxCommunityStructure.hide()
-        self.startAnalysisWidget.show()
+        self.startAnalysisWidget.show_buttons()
         self.btnStartAnalysis.hide()
-        self.graphMeasuresWidget.hide()
 
         self.comboBoxCorrelation.setEnabled(False)
         self.comboBoxGraph.setEnabled(False)
@@ -325,7 +324,7 @@ class GraphAnalysis(ExitDialog, Ui_MainWindow):
     def set_graph_type(self, graph_type):
         self.graph_type = GraphAnalysis.graph_cls_from_str(graph_type)
         self.analysis.set_graph_type(self.graph_type)
-        self.graphMeasuresWidget.update_measure_list(self.graph_type)
+        self.startAnalysisWidget.init_graph_measures_widget(self.graph_type)
         if self.graph_type.weighted:
             self.labelBinary.setEnabled(False)
             self.comboBoxBinary.setEnabled(False)

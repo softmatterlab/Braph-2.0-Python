@@ -34,7 +34,7 @@
       </widget>
      </item>
      <item>
-      <widget class="GraphMeasuresVerticalWidget" name="graphMeasuresWidget" native="true"/>
+      <widget class="GraphMeasuresWidget" name="graphMeasuresWidget" native="true"/>
      </item>
      <item>
       <spacer name="verticalSpacer">
@@ -79,9 +79,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>GraphMeasuresVerticalWidget</class>
+   <class>GraphMeasuresWidget</class>
    <extends>QWidget</extends>
-   <header>braphy.gui.widgets.graph_measures_vertical_widget</header>
+   <header>braphy.gui.widgets.graph_measures_widget</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
