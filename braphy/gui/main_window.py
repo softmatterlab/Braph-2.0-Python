@@ -1,5 +1,6 @@
 import sys
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
+from PyQt5.QtCore import QFileInfo
 from braphy.atlas.brain_region import BrainRegion
 from braphy.gui.brain_atlas_gui import BrainAtlasGui
 from braphy.utility.helper_functions import abs_path_from_relative, load_nv
@@ -25,6 +26,10 @@ class MainWindow(ExitDialog, Ui_MainWindow):
         self.init_buttons()
         self.slideShowWidget.init(self.color)
         QtWidgets.qApp.focusChanged.connect(self.in_focus)
+
+        root = QFileInfo(__file__).absolutePath()
+        self.setWindowIcon(QtGui.QIcon(root+'/icons/icon_view_ad.png'))
+        self.show() 
 
     def in_focus(self):
         if self.isActiveWindow():
