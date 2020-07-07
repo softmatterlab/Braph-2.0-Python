@@ -206,7 +206,7 @@ class CorrelationMatrixWidget(Base, Form):
         if state:
             group_index = self.comboBoxGroup.currentIndex()
             subject_index = self.comboBoxSubjects.currentIndex()
-            regions = self.analysis.community_structure[group_index]
+            regions = self.analysis.community_structure[group_index].copy()
             if self.btnSubject.isChecked() and subject_index != -1:
                 regions = regions[subject_index]
         else:
