@@ -56,17 +56,17 @@ class CorrelationMatrixWidget(Base, Form):
         for group in self.analysis.cohort.groups:
             self.comboBoxGroup.addItem(group.name)
         self.comboBoxGroup.currentIndexChanged.connect(self.group_change)
-        self.comboBoxSubjects.currentIndexChanged.connect(self.update_correlation)
+        self.comboBoxSubjects.currentIndexChanged.connect(self.subject_change)
         self.update_combo_box_subjects()
 
     def update_combo_box_subjects(self):
+        self.comboBoxSubjects.blockSignals(True)
         self.comboBoxSubjects.clear()
         current_group_index = self.comboBoxGroup.currentIndex()
         if current_group_index == -1:
             return
         for subject in self.analysis.cohort.groups[current_group_index].subjects:
             self.comboBoxSubjects.addItem(subject.id)
-        self.comboBoxSubjects.blockSignals(True)
         self.comboBoxSubjects.setCurrentIndex(0)
         self.comboBoxSubjects.blockSignals(False)
 
@@ -102,6 +102,13 @@ class CorrelationMatrixWidget(Base, Form):
 
     def group_change(self):
         self.update_combo_box_subjects()
+        if self.checkBoxDivide.isChecked():
+            self.divide(True)
+        self.update_correlation()
+
+    def subject_change(self):
+        if self.checkBoxDivide.isChecked():
+            self.divide(True)
         self.update_correlation()
 
     def update_correlation(self):
@@ -200,6 +207,8 @@ class CorrelationMatrixWidget(Base, Form):
 
     def rearrange(self, state):
         self.checkBoxDivide.setEnabled(state)
+        if (not state and self.checkBoxDivide.isChecked()):
+            self.checkBoxDivide.setChecked(False)
         self.update_graphics_view()
 
     def divide(self, state):
