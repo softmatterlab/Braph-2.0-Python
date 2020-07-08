@@ -27,6 +27,7 @@ class CorrelationMatrixWidget(Base, Form):
         self.analysis = analysis
         self.init_comboboxes()
         self.init_graphics_view()
+        self.update_correlation()
 
     def set_structural_view(self):
         self.btnGroup.hide()
