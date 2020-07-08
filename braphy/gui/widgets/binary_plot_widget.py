@@ -52,12 +52,16 @@ class BinaryPlotWidget(Base, Form):
             return
         self.info_strings.append(info_string)
         self.listWidget.addItem(info_string)
-        self.binaryPlot.add_plot(values)
+        self.binaryPlot.add_plot(info_string, values)
         self.btnClear.setEnabled(True)
 
     def remove_plot(self):
-        pass
-        #remove plot
+        selected = self.get_selected_plots()
+        for info_string in selected:
+            self.binaryPlot.remove_plot(info_string)
+            item = self.listWidget.findItems(info_string, Qt.Qt.MatchExactly)[0]
+            self.listWidget.takeItem(self.listWidget.row(item))
+            self.info_strings.remove(info_string)
 
     def clear_plot(self):
         #clear plot
@@ -67,11 +71,12 @@ class BinaryPlotWidget(Base, Form):
         self.btnClear.setEnabled(False)
 
     def get_selected_plots(self):
-        pass
-
-    def selection_changed(self):
         items = self.listWidget.selectedItems()
         items_text = [item.text() for item in items]
+        return items_text
+
+    def selection_changed(self):
+        items_text = self.get_selected_plots()
         if len(items_text) > 0:
             self.btnRemove.setEnabled(True)
         else:

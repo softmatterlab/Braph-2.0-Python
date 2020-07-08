@@ -20,11 +20,13 @@ class BinaryPlotVisualizer(FigureCanvas):
                 QSizePolicy.Expanding)
         FigureCanvas.updateGeometry(self)
 
-    def add_plot(self, values):
+        self.plots = {}
+
+    def add_plot(self, info_string, values):
         self.figure.clear()
         self.ax = self.figure.add_subplot(111)
-        self.cax = self.ax.plot(values[:, 0], values[:, 1])
-        #self.cax = self.ax.imshow(self.matrix, vmin = 0, vmax = 1)
+        plot = self.ax.plot(values[:, 0], values[:, 1])
+        self.plots[info_string] = plot
 
         self.ax.tick_params(top=False, bottom=True,
                             labeltop=False, labelbottom=True)
@@ -32,3 +34,9 @@ class BinaryPlotVisualizer(FigureCanvas):
         plt.setp(self.ax.get_yticklabels(), fontsize = 7)
         self.figure.tight_layout()
         self.draw()
+
+    def remove_plot(self, info_string):
+        self.plots[info_string][0].remove()
+        del self.plots[info_string]
+        self.draw()
+
