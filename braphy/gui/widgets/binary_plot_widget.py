@@ -33,12 +33,12 @@ class BinaryPlotWidget(Base, Form):
         pass
 
     def set_x_lim(self, checked):
-        items = [self.labelXLim, self.spinBoxXMin, self.labelXMax, self.spinBoxXMax]
+        items = [self.labelXMin, self.spinBoxXMin, self.labelXMax, self.spinBoxXMax]
         for item in items:
             item.setEnabled(checked)
 
     def set_y_lim(self, checked):
-        items = [self.labelYLim, self.spinBoxYMin, self.labelYMax, self.spinBoxYMax]
+        items = [self.labelYMin, self.spinBoxYMin, self.labelYMax, self.spinBoxYMax]
         for item in items:
             item.setEnabled(checked)
 

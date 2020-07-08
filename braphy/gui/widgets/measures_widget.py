@@ -31,6 +31,8 @@ class MeasuresWidget(Base, Form):
             self.btnGroup.hide()
             self.btnSubject.hide()
             self.comboBoxSubject.hide()
+        if analysis.graph_settings.weighted:
+            self.binaryPlotWidget.hide()
         self.init_combo_boxes()
         self.btnMeasure.setChecked(True)
         self.measure()

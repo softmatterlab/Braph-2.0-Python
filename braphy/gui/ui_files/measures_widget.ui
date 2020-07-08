@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1080</width>
+    <width>1085</width>
     <height>703</height>
    </rect>
   </property>
@@ -19,7 +19,7 @@
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
         <widget class="QTableWidget" name="tableWidget">
@@ -296,7 +296,7 @@
         <number>0</number>
        </property>
        <item>
-        <widget class="BinaryPlotWidget" name="widget" native="true"/>
+        <widget class="BinaryPlotWidget" name="binaryPlotWidget" native="true"/>
        </item>
       </layout>
      </widget>

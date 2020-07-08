@@ -65,24 +65,38 @@
          <item row="0" column="1">
           <layout class="QHBoxLayout" name="horizontalLayout_2">
            <item>
-            <widget class="QLabel" name="labelXMim">
+            <widget class="QLabel" name="labelXMin">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="text">
               <string>Min</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QDoubleSpinBox" name="spinBoxXMin"/>
+            <widget class="QDoubleSpinBox" name="spinBoxXMin">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+            </widget>
            </item>
            <item>
             <widget class="QLabel" name="labelXMax">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="text">
               <string>Max</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QDoubleSpinBox" name="spinBoxXMax"/>
+            <widget class="QDoubleSpinBox" name="spinBoxXMax">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+            </widget>
            </item>
           </layout>
          </item>
@@ -97,23 +111,37 @@
           <layout class="QHBoxLayout" name="horizontalLayout_3">
            <item>
             <widget class="QLabel" name="labelYMin">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="text">
               <string>Min</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QDoubleSpinBox" name="spinBoxYMin"/>
+            <widget class="QDoubleSpinBox" name="spinBoxYMin">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+            </widget>
            </item>
            <item>
             <widget class="QLabel" name="labelYMax">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="text">
               <string>Max</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QDoubleSpinBox" name="spinBoxYMax"/>
+            <widget class="QDoubleSpinBox" name="spinBoxYMax">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+            </widget>
            </item>
           </layout>
          </item>
