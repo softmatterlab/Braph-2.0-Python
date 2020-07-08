@@ -210,22 +210,6 @@
          <item row="3" column="2">
           <widget class="QComboBox" name="comboBoxSubject"/>
          </item>
-         <item row="4" column="1">
-          <widget class="QComboBox" name="comboBoxRegion">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>160</width>
-             <height>0</height>
-            </size>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="0">
           <widget class="QPushButton" name="btnSelectAll">
            <property name="sizePolicy">
@@ -285,6 +269,29 @@
          </item>
          <item row="4" column="2">
           <widget class="QComboBox" name="comboBoxRegion2"/>
+         </item>
+         <item row="4" column="1">
+          <widget class="QComboBox" name="comboBoxRegion">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>160</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="4">
+          <widget class="QPushButton" name="btnAdd">
+           <property name="text">
+            <string>Add to plot -&gt;</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>

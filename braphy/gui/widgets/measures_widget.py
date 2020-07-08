@@ -33,6 +33,8 @@ class MeasuresWidget(Base, Form):
             self.comboBoxSubject.hide()
         if analysis.graph_settings.weighted:
             self.binaryPlotWidget.hide()
+        else:
+            self.binaryPlotWidget.init(self.analysis)
         self.init_combo_boxes()
         self.btnMeasure.setChecked(True)
         self.measure()
@@ -51,6 +53,7 @@ class MeasuresWidget(Base, Form):
 
         self.btnGroup.setChecked(True)
 
+        self.btnAdd.clicked.connect(self.add_plot)
         self.btnExportTxt.clicked.connect(lambda state, file_type = 'txt', export_function = self.export_txt: self.export(file_type, export_function))
         self.btnExportXlsx.clicked.connect(lambda state, file_type = 'xlsx', export_function = self.export_xlsx: self.export(file_type, export_function))
 
@@ -68,6 +71,48 @@ class MeasuresWidget(Base, Form):
         for label in self.analysis.cohort.atlas.get_brain_region_labels():
             self.comboBoxRegion.addItem(label)
             self.comboBoxRegion2.addItem(label)
+
+    def add_plot(self):
+        selected = self.get_selected()
+        info_strings = {}
+        all_values = {}
+        sub_measures = []
+        group_1 = self.comboBoxGroup1.currentIndex()
+        region_1 = self.comboBoxRegion.currentText()
+        region_2 = self.comboBoxRegion2.currentText()
+        for i in selected:
+            if self.btnMeasure.isChecked():
+                index = self.measurement_index_mapping[i]
+                sub_measure = self.analysis.measurements[index].sub_measure
+                if sub_measure not in sub_measures:
+                    sub_measures.append(sub_measure)
+
+            elif self.btnComparison.isChecked():
+                index = self.comparison_index_mapping[i]
+                sub_measure = self.analysis.comparisons[index].sub_measure
+                group_2 = self.comboBoxGroup2.currentIndex()
+
+            elif self.btnRandomComparison.isChecked():
+                index = self.random_comparison_index_mapping[i]
+                sub_measure = self.analysis.random_comparisons[index].sub_measure
+
+        headers = self.measurement_labels()
+        measure_column = headers.index('Measure')
+        binary_column = headers.index(self.analysis.graph_settings.rule_binary)
+        value_column = headers.index('Value')
+        for row in range(self.tableWidget.rowCount()):
+            sub_measure = self.tableWidget.item(row, measure_column).text()
+            if sub_measure in sub_measures:
+                binary_value = float(self.tableWidget.item(row, binary_column).text())
+                value = float(self.tableWidget.item(row, value_column).text())
+                if sub_measure not in all_values.keys():
+                    all_values[sub_measure] = []
+                    info_string = sub_measure + ' - ' + self.analysis.cohort.groups[group_1].name + ' - ' + region_1
+                    info_strings[sub_measure] = info_string
+                all_values[sub_measure].append([binary_value, value])
+
+        for sub_measure, values in all_values.items():
+            self.binaryPlotWidget.add_plot(info_strings[sub_measure], np.array(values))
 
     def remove(self):
         selected = self.get_selected()
