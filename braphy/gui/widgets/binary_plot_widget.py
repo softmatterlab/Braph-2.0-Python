@@ -25,6 +25,7 @@ class BinaryPlotWidget(Base, Form):
 
     def init(self, analysis):
         self.analysis = analysis
+        self.binaryPlot.set_x_label(self.analysis.graph_settings.rule_binary)
 
     def init_buttons(self):
         self.btnRemove.clicked.connect(self.remove_plot)

@@ -9,9 +9,10 @@ import math
 import random
 
 class BinaryPlotVisualizer(FigureCanvas):
-    def __init__(self, parent=None, width=8, height=6, dpi=100):
+    def __init__(self, parent = None, width = 8, height = 6, dpi = 100):
         fig = Figure(figsize=(width, height), dpi=dpi)
         self.ax = fig.add_subplot(111)
+        self.ax.set_ylabel('Value')
         FigureCanvas.__init__(self, fig)
         self.setParent(parent)
         FigureCanvas.setSizePolicy(self,
@@ -30,7 +31,7 @@ class BinaryPlotVisualizer(FigureCanvas):
                             markerfacecolor = settings['marker_color'], linewidth = settings['line_width'],
                             markersize = settings['marker_size'], label = info_string)
         self.plots[info_string] = plot
-        self.ax.tick_params(top=False, bottom=True, labeltop=False, labelbottom=True)
+        self.ax.tick_params(top = False, bottom = True, labeltop = False, labelbottom = True)
         plt.setp(self.ax.get_xticklabels(), fontsize = 7)
         plt.setp(self.ax.get_yticklabels(), fontsize = 7)
         self.figure.tight_layout()
@@ -77,5 +78,9 @@ class BinaryPlotVisualizer(FigureCanvas):
             if legend:
                 legend.remove()
         self.draw()
+
+    def set_x_label(self, label):
+        self.ax.set_xlabel(label)
+
 
 
