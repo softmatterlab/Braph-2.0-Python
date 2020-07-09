@@ -18,15 +18,9 @@ class BinaryPlotSettingsWidget(Base, Form):
         self.ci_color = QColor_from_list(self.blue)
 
         self.init_color_buttons()
-        self.init_check_boxes()
         self.init_sliders()
         self.init_combo_boxes()
         self.init_settings_window()
-
-    def init_check_boxes(self):
-        self.checkBoxMarkers.stateChanged.connect(self.show_markers)
-        self.checkBoxLines.stateChanged.connect(self.show_lines)
-        self.checkBoxCI.stateChanged.connect(self.show_ci)
 
     def init_color_buttons(self):
         style_sheet = 'background-color: {};'.format(QColor_from_list(self.blue).name())
@@ -134,8 +128,6 @@ class BinaryPlotSettingsWidget(Base, Form):
 
     def get_plot_settings(self):
         settings = {}
-        settings['show_markers'] = self.checkBoxMarkers.isChecked()
-        settings['show_lines'] = self.checkBoxLines.isChecked()
         settings['line_color'] = self.get_line_color()
         settings['marker_color'] = self.get_marker_color()
         settings['line_style'] = self.get_line_style()

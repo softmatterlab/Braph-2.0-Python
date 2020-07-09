@@ -70,7 +70,6 @@ class BinaryPlotVisualizer(FigureCanvas):
         self.draw()
 
     def show_legend(self, show):
-        print(show)
         if show:
             self.ax.legend()
         else:

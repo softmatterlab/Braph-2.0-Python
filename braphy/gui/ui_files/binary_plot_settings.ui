@@ -66,7 +66,7 @@
           <item row="4" column="3">
            <widget class="QPushButton" name="btnCIColor">
             <property name="enabled">
-             <bool>false</bool>
+             <bool>true</bool>
             </property>
             <property name="text">
              <string/>
@@ -89,16 +89,6 @@
             </property>
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QCheckBox" name="checkBoxMarkers">
-            <property name="text">
-             <string>Show markers</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -131,20 +121,13 @@
           <item row="4" column="4">
            <widget class="QSlider" name="sliderCI">
             <property name="enabled">
-             <bool>false</bool>
+             <bool>true</bool>
             </property>
             <property name="value">
-             <number>50</number>
+             <number>0</number>
             </property>
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="1">
-           <widget class="QCheckBox" name="checkBoxCI">
-            <property name="text">
-             <string>Show confidence intervals</string>
             </property>
            </widget>
           </item>
@@ -155,21 +138,32 @@
             </property>
            </widget>
           </item>
-          <item row="3" column="1">
-           <widget class="QCheckBox" name="checkBoxLines">
-            <property name="text">
-             <string>Show lines</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
           <item row="0" column="5">
            <widget class="QComboBox" name="comboBoxMarkers"/>
           </item>
           <item row="3" column="5">
            <widget class="QComboBox" name="comboBoxLines"/>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>Markers</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QLabel" name="label_3">
+            <property name="text">
+             <string>Lines</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QLabel" name="label_4">
+            <property name="text">
+             <string>Confidence intervals</string>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>
