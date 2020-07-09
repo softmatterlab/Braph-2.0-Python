@@ -36,6 +36,7 @@ class BinaryPlotVisualizer(FigureCanvas):
         self.figure.tight_layout()
         self.ax.relim()
         self.ax.autoscale_view()
+        self.show_legend(self.ax.get_legend())
         self.draw()
 
     def remove_plot(self, info_string):
@@ -43,6 +44,7 @@ class BinaryPlotVisualizer(FigureCanvas):
         del self.plots[info_string]
         self.ax.relim()
         self.ax.autoscale_view()
+        self.show_legend(self.ax.get_legend())
         self.draw()
 
     def resizeEvent(self, event):
@@ -58,11 +60,22 @@ class BinaryPlotVisualizer(FigureCanvas):
             plot[0].set_markerfacecolor(settings['marker_color'])
             plot[0].set_markersize(settings['marker_size'])
             plot[0].set_linewidth(settings['line_width'])
+        self.show_legend(self.ax.get_legend())
         self.draw()
 
     def clear_plot(self):
         self.ax.cla()
         self.plots = {}
+        self.draw()
+
+    def show_legend(self, show):
+        print(show)
+        if show:
+            self.ax.legend()
+        else:
+            legend = self.ax.get_legend()
+            if legend:
+                legend.remove()
         self.draw()
 
 

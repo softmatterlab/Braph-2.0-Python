@@ -89,6 +89,17 @@
     </layout>
    </item>
   </layout>
+  <action name="actionLegend">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Legend</string>
+   </property>
+   <property name="toolTip">
+    <string>Show legend</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>

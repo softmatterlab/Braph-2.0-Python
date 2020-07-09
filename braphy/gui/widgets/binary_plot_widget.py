@@ -21,6 +21,8 @@ class BinaryPlotWidget(Base, Form):
         self.toolbar = NavigationToolbar(self.binaryPlot, self)
         self.toolbar.hide()
 
+        self.actionLegend.triggered.connect(self.binaryPlot.show_legend)
+
     def init(self, analysis):
         self.analysis = analysis
 
@@ -50,6 +52,7 @@ class BinaryPlotWidget(Base, Form):
         self.info_strings = []
         self.listWidget.clear()
         self.btnClear.setEnabled(False)
+        self.actionLegend.setChecked(False)
 
     def get_selected_plots(self):
         items = self.listWidget.selectedItems()
@@ -64,4 +67,6 @@ class BinaryPlotWidget(Base, Form):
             self.btnRemove.setEnabled(False)
 
     def get_actions(self):
-        return self.toolbar.actions()
+        actions = [self.actionLegend]
+        actions.extend(self.toolbar.actions())
+        return actions
