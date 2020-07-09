@@ -77,9 +77,6 @@ class MeasuresWidget(Base, Form):
         info_strings = {}
         all_values = {}
         sub_measures = []
-        group_1 = self.comboBoxGroup1.currentIndex()
-        region_1 = self.comboBoxRegion.currentText()
-        region_2 = self.comboBoxRegion2.currentText()
         for i in selected:
             if self.btnMeasure.isChecked():
                 index = self.measurement_index_mapping[i]
@@ -107,12 +104,25 @@ class MeasuresWidget(Base, Form):
                 value = float(self.tableWidget.item(row, value_column).text())
                 if sub_measure not in all_values.keys():
                     all_values[sub_measure] = []
-                    info_string = sub_measure + ' - ' + self.analysis.cohort.groups[group_1].name + ' - ' + region_1
+                    info_string = self.get_info_string(sub_measure)
                     info_strings[sub_measure] = info_string
                 all_values[sub_measure].append([binary_value, value])
 
         for sub_measure, values in all_values.items():
             self.binaryPlotWidget.add_plot(info_strings[sub_measure], np.array(values))
+
+    def get_info_string(self, sub_measure):
+        group_1 = self.analysis.cohort.groups[self.comboBoxGroup1.currentIndex()].name
+        group_2 = self.analysis.cohort.groups[self.comboBoxGroup2.currentIndex()].name
+        subject = self.analysis.cohort.subjects[self.comboBoxSubject.currentIndex()].id
+        region_1 = self.comboBoxRegion.currentText()
+        region_2 = self.comboBoxRegion2.currentText()
+        info_string = [sub_measure, group_1, group_2, subject, region_1, region_2]
+        is_subject = self.analysis.cohort.subject_class == SubjectfMRI and not self.btnGroup.isChecked()
+        mask = [True, True, self.comboBoxGroup2.isEnabled(), is_subject, self.measure_type != Measure.GLOBAL, self.measure_type == Measure.BINODAL]
+        info_string = np.array(info_string)[np.where(mask)[0]].tolist()
+        info_string = ' - '.join(info_string)
+        return info_string
 
     def remove(self):
         selected = self.get_selected()

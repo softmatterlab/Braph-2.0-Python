@@ -45,7 +45,7 @@ class BinaryPlotSettingsWidget(Base, Form):
         line_styles = ['-', '--', '-.', ':']
         for line_style in line_styles:
             self.comboBoxLines.addItem(line_style)
-        marker_styles = ['.', 'o', '^', 's', '*', 'P', 'D']
+        marker_styles = ['o', '.', '^', 's', '*', 'P', 'D']
         for marker_style in marker_styles:
             self.comboBoxMarkers.addItem(marker_style)
         self.comboBoxLines.currentTextChanged.connect(self.update_function)

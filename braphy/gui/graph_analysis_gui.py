@@ -150,6 +150,20 @@ class GraphAnalysis(ExitDialog, Ui_MainWindow):
         for action in self.correlationMatrixWidget.get_actions():
             action.setVisible(state)
 
+    def init_binary_plot_actions(self):
+        for action in self.globalMeasuresWidget.binaryPlotWidget.get_actions():
+            self.toolBar.addAction(action)
+        for action in self.nodalMeasuresWidget.binaryPlotWidget.get_actions():
+            self.toolBar.addAction(action)
+        for action in self.binodalMeasuresWidget.binaryPlotWidget.get_actions():
+            self.toolBar.addAction(action)
+        self.set_binary_plot_actions_visible([self.globalMeasuresWidget, self.nodalMeasuresWidget, self.binodalMeasuresWidget], False)
+
+    def set_binary_plot_actions_visible(self, widgets, state):
+        for widget in widgets:
+            for action in widget.binaryPlotWidget.get_actions():
+                action.setVisible(state)
+
     def init_comboboxes(self):
         graphs = ['weighted undirected', 'weighted directed', 'binary undirected', 'binary directed']
         correlations = ['pearson', 'spearman', 'kendall', 'partial pearson', 'partial spearman']
@@ -175,21 +189,29 @@ class GraphAnalysis(ExitDialog, Ui_MainWindow):
         if self.tabWidget.currentIndex() == 0:
             self.set_brain_view_actions_visible(False)
             self.set_correlation_actions_visible(True)
+            self.set_binary_plot_actions_visible([self.globalMeasuresWidget, self.nodalMeasuresWidget, self.binodalMeasuresWidget], False)
         elif self.tabWidget.currentIndex() == 1:
             self.globalMeasuresWidget.update_table()
             self.set_brain_view_actions_visible(False)
             self.set_correlation_actions_visible(False)
+            self.set_binary_plot_actions_visible([self.nodalMeasuresWidget, self.binodalMeasuresWidget], False)
+            self.set_binary_plot_actions_visible([self.globalMeasuresWidget], True)
         elif self.tabWidget.currentIndex() == 2:
             self.nodalMeasuresWidget.update_table()
             self.set_brain_view_actions_visible(False)
             self.set_correlation_actions_visible(False)
+            self.set_binary_plot_actions_visible([self.globalMeasuresWidget, self.binodalMeasuresWidget], False)
+            self.set_binary_plot_actions_visible([self.nodalMeasuresWidget], True)
         elif self.tabWidget.currentIndex() == 3:
             self.binodalMeasuresWidget.update_table()
             self.set_brain_view_actions_visible(False)
             self.set_correlation_actions_visible(False)
+            self.set_binary_plot_actions_visible([self.globalMeasuresWidget, self.nodalMeasuresWidget], False)
+            self.set_binary_plot_actions_visible([self.binodalMeasuresWidget], True)
         elif self.tabWidget.currentIndex() == 4:
             self.set_brain_view_actions_visible(True)
             self.set_correlation_actions_visible(False)
+            self.set_binary_plot_actions_visible([self.globalMeasuresWidget, self.nodalMeasuresWidget, self.binodalMeasuresWidget], False)
             self.brain_view_options_widget.update_move()
 
     def set_analysis_name(self, name):
@@ -228,6 +250,7 @@ class GraphAnalysis(ExitDialog, Ui_MainWindow):
         self.correlationMatrixWidget.init(self.analysis)
         self.set_cohort_labels()
         self.init_correlation_matrix_actions()
+        self.init_binary_plot_actions()
         self.init_brain_view_actions()
         self.update_community_number()
 

@@ -1,6 +1,8 @@
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore, QtGui, uic, QtWidgets, Qt
 from braphy.utility.helper_functions import abs_path_from_relative
+from matplotlib.backends.backend_qt5agg import (
+            NavigationToolbar2QT as NavigationToolbar)
 
 ui_file = abs_path_from_relative(__file__, "../ui_files/binary_plot_widget.ui")
 Form, Base = uic.loadUiType(ui_file)
@@ -13,34 +15,18 @@ class BinaryPlotWidget(Base, Form):
         self.plot_dict = {}
         self.info_strings = []
 
-        self.init_check_boxes()
-        self.init_spin_boxes()
         self.init_buttons()
         self.listWidget.itemSelectionChanged.connect(self.selection_changed)
+
+        self.toolbar = NavigationToolbar(self.binaryPlot, self)
+        self.toolbar.hide()
 
     def init(self, analysis):
         self.analysis = analysis
 
-    def init_check_boxes(self):
-        self.checkBoxXLim.stateChanged.connect(self.set_x_lim)
-        self.checkBoxYLim.stateChanged.connect(self.set_y_lim)
-
-    def init_spin_boxes(self):
-        pass
-
     def init_buttons(self):
         self.btnRemove.clicked.connect(self.remove_plot)
         self.btnClear.clicked.connect(self.clear_plot)
-
-    def set_x_lim(self, checked):
-        items = [self.labelXMin, self.spinBoxXMin, self.labelXMax, self.spinBoxXMax]
-        for item in items:
-            item.setEnabled(checked)
-
-    def set_y_lim(self, checked):
-        items = [self.labelYMin, self.spinBoxYMin, self.labelYMax, self.spinBoxYMax]
-        for item in items:
-            item.setEnabled(checked)
 
     def add_plot(self, info_string, values):
         if info_string in self.info_strings:
@@ -59,7 +45,7 @@ class BinaryPlotWidget(Base, Form):
             self.info_strings.remove(info_string)
 
     def clear_plot(self):
-        #clear plot
+        self.binaryPlot.clear_plot()
         self.plot_dict = {}
         self.info_strings = []
         self.listWidget.clear()
@@ -76,3 +62,6 @@ class BinaryPlotWidget(Base, Form):
             self.btnRemove.setEnabled(True)
         else:
             self.btnRemove.setEnabled(False)
+
+    def get_actions(self):
+        return self.toolbar.actions()
