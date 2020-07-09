@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>662</width>
-    <height>197</height>
+    <width>674</width>
+    <height>193</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -74,9 +74,18 @@
            </widget>
           </item>
           <item row="0" column="4">
-           <widget class="QSlider" name="sliderSymbols">
+           <widget class="QSlider" name="sliderMarkers">
+            <property name="minimum">
+             <number>0</number>
+            </property>
+            <property name="maximum">
+             <number>8</number>
+            </property>
+            <property name="pageStep">
+             <number>2</number>
+            </property>
             <property name="value">
-             <number>30</number>
+             <number>2</number>
             </property>
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
@@ -84,9 +93,9 @@
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QCheckBox" name="checkBoxSymbols">
+           <widget class="QCheckBox" name="checkBoxMarkers">
             <property name="text">
-             <string>Show symbols</string>
+             <string>Show markers</string>
             </property>
             <property name="checked">
              <bool>true</bool>
@@ -95,8 +104,17 @@
           </item>
           <item row="3" column="4">
            <widget class="QSlider" name="sliderLines">
+            <property name="minimum">
+             <number>0</number>
+            </property>
+            <property name="maximum">
+             <number>20</number>
+            </property>
+            <property name="pageStep">
+             <number>2</number>
+            </property>
             <property name="value">
-             <number>30</number>
+             <number>8</number>
             </property>
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
@@ -104,7 +122,7 @@
            </widget>
           </item>
           <item row="0" column="3">
-           <widget class="QPushButton" name="btnSymbolsColor">
+           <widget class="QPushButton" name="btnMarkersColor">
             <property name="text">
              <string/>
             </property>
@@ -148,7 +166,7 @@
            </widget>
           </item>
           <item row="0" column="5">
-           <widget class="QComboBox" name="comboBoxSymbols"/>
+           <widget class="QComboBox" name="comboBoxMarkers"/>
           </item>
           <item row="3" column="5">
            <widget class="QComboBox" name="comboBoxLines"/>

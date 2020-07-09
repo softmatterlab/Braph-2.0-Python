@@ -1,7 +1,6 @@
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore, QtGui, uic, QtWidgets, Qt
 from braphy.utility.helper_functions import abs_path_from_relative
-from braphy.gui.widgets.binary_plot_settings_widget import BinaryPlotSettingsWidget
 
 ui_file = abs_path_from_relative(__file__, "../ui_files/binary_plot_widget.ui")
 Form, Base = uic.loadUiType(ui_file)
@@ -18,10 +17,6 @@ class BinaryPlotWidget(Base, Form):
         self.init_spin_boxes()
         self.init_buttons()
         self.listWidget.itemSelectionChanged.connect(self.selection_changed)
-
-        self.binary_plot_settings_widget = BinaryPlotSettingsWidget(parent=self.binaryPlot)
-        self.binary_plot_settings_widget.raise_()
-        self.binary_plot_settings_widget.show()
 
     def init(self, analysis):
         self.analysis = analysis
@@ -81,6 +76,3 @@ class BinaryPlotWidget(Base, Form):
             self.btnRemove.setEnabled(True)
         else:
             self.btnRemove.setEnabled(False)
-
-    def resizeEvent(self, event):
-        self.binary_plot_settings_widget.update_move()

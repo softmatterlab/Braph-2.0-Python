@@ -6,39 +6,50 @@ ui_file = abs_path_from_relative(__file__, "../ui_files/binary_plot_settings.ui"
 Form, Base = uic.loadUiType(ui_file)
 
 class BinaryPlotSettingsWidget(Base, Form):
-    def __init__(self, parent = None):
+    def __init__(self, parent = None, update_function = None):
         super(BinaryPlotSettingsWidget, self).__init__(parent)
         self.setupUi(self)
 
+        self.set_update_function(update_function)
+
         self.blue = [0.3, 0.3, 1.0, 1.0]
+        self.line_color = QColor_from_list(self.blue)
+        self.marker_color = QColor_from_list(self.blue)
+        self.ci_color = QColor_from_list(self.blue)
+
         self.init_color_buttons()
         self.init_check_boxes()
         self.init_sliders()
         self.init_combo_boxes()
         self.init_settings_window()
 
-    def init(self):
-        pass
-
     def init_check_boxes(self):
-        self.checkBoxSymbols.stateChanged.connect(self.show_symbols)
+        self.checkBoxMarkers.stateChanged.connect(self.show_markers)
         self.checkBoxLines.stateChanged.connect(self.show_lines)
         self.checkBoxCI.stateChanged.connect(self.show_ci)
 
     def init_color_buttons(self):
         style_sheet = 'background-color: {};'.format(QColor_from_list(self.blue).name())
-        self.btnSymbolsColor.setStyleSheet(style_sheet)
-        self.btnSymbolsColor.clicked.connect(self.pick_symbols_color)
+        self.btnMarkersColor.setStyleSheet(style_sheet)
+        self.btnMarkersColor.clicked.connect(self.pick_markers_color)
         self.btnLinesColor.setStyleSheet(style_sheet)
         self.btnLinesColor.clicked.connect(self.pick_lines_color)
         self.btnCIColor.setStyleSheet(style_sheet)
         self.btnCIColor.clicked.connect(self.pick_CI_color)
 
     def init_sliders(self):
-        pass
+        self.sliderMarkers.valueChanged.connect(self.update_function)
+        self.sliderLines.valueChanged.connect(self.update_function)
 
     def init_combo_boxes(self):
-        pass
+        line_styles = ['-', '--', '-.', ':']
+        for line_style in line_styles:
+            self.comboBoxLines.addItem(line_style)
+        marker_styles = ['.', 'o', '^', 's', '*', 'P', 'D']
+        for marker_style in marker_styles:
+            self.comboBoxMarkers.addItem(marker_style)
+        self.comboBoxLines.currentTextChanged.connect(self.update_function)
+        self.comboBoxMarkers.currentTextChanged.connect(self.update_function)
 
     def init_settings_window(self):
         self.icon_up = QtGui.QIcon()
@@ -55,43 +66,52 @@ class BinaryPlotSettingsWidget(Base, Form):
         self.visible = False
         self.update_visible()
 
-    def show_symbols(self, state):
-        items = [self.btnSymbolsColor, self.sliderSymbols, self.comboBoxSymbols]
+    def show_markers(self, state):
+        items = [self.btnMarkersColor, self.sliderMarkers, self.comboBoxMarkers]
         for item in items:
             item.setEnabled(state)
+        self.update_function()
 
     def show_lines(self, state):
         items = [self.btnLinesColor, self.sliderLines, self.comboBoxLines]
         for item in items:
             item.setEnabled(state)
+        self.update_function()
 
     def show_ci(self, state):
         items = [self.btnCIColor, self.sliderCI]
         for item in items:
             item.setEnabled(state)
+        self.update_function()
 
     def pick_color(self):
         options = QtWidgets.QColorDialog.ColorDialogOptions()
         options |= QtWidgets.QColorDialog.DontUseNativeDialog
         return QtWidgets.QColorDialog.getColor(options = options)
 
-    def pick_symbols_color(self):
+    def pick_markers_color(self):
         color = self.pick_color()
         if color.isValid():
             style_sheet = 'background-color: {};'.format(color.name())
-            self.btnSymbolsColor.setStyleSheet(style_sheet)
+            self.btnMarkersColor.setStyleSheet(style_sheet)
+            self.marker_color = color
+            self.update_function()
 
     def pick_lines_color(self):
         color = self.pick_color()
         if color.isValid():
             style_sheet = 'background-color: {};'.format(color.name())
             self.btnLinesColor.setStyleSheet(style_sheet)
+            self.line_color = color
+            self.update_function()
 
     def pick_CI_color(self):
         color = self.pick_color()
         if color.isValid():
             style_sheet = 'background-color: {};'.format(color.name())
             self.btnCIColor.setStyleSheet(style_sheet)
+            self.ci_color = color
+            self.update_function()
 
     def update_move(self):
         self.move(9, self.parent().height()-self.height() - 9)
@@ -108,4 +128,38 @@ class BinaryPlotSettingsWidget(Base, Form):
             self.resize(100, 50)
             self.visible = True
         self.update_move()
+
+    def set_update_function(self, function):
+        self.update_function = function
+
+    def get_plot_settings(self):
+        settings = {}
+        settings['show_markers'] = self.checkBoxMarkers.isChecked()
+        settings['show_lines'] = self.checkBoxLines.isChecked()
+        settings['line_color'] = self.get_line_color()
+        settings['marker_color'] = self.get_marker_color()
+        settings['line_style'] = self.get_line_style()
+        settings['marker_style'] =  self.get_marker_style()
+        settings['line_width'] = self.get_line_width()
+        settings['marker_size'] = self.get_marker_size()
+        return settings
+
+    def get_line_color(self):
+        return self.line_color.name()
+
+    def get_marker_color(self):
+        return self.marker_color.name()
+
+    def get_line_style(self):
+        return self.comboBoxLines.currentText()
+
+    def get_marker_style(self):
+        return self.comboBoxMarkers.currentText()
+
+    def get_line_width(self):
+        return self.sliderLines.value()
+
+    def get_marker_size(self):
+        return self.sliderMarkers.value()
+
 
