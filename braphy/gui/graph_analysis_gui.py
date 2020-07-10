@@ -160,6 +160,8 @@ class GraphAnalysis(ExitDialog, Ui_MainWindow):
         self.set_binary_plot_actions_visible([self.globalMeasuresWidget, self.nodalMeasuresWidget, self.binodalMeasuresWidget], False)
 
     def set_binary_plot_actions_visible(self, widgets, state):
+        if self.analysis.graph_settings.weighted and state:
+            return
         for widget in widgets:
             for action in widget.binaryPlotWidget.get_actions():
                 action.setVisible(state)
