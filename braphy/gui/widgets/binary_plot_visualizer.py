@@ -7,12 +7,22 @@ import matplotlib.pyplot as plt
 import numpy as np
 import math
 import random
+from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT
+
+class NavigationToolbar(NavigationToolbar2QT):
+    def edit_parameters(self):
+        super(NavigationToolbar, self).edit_parameters()
+        self.callback_function()
+
+    def set_callback_function(self, callback_function):
+        self.callback_function = callback_function
 
 class BinaryPlotVisualizer(FigureCanvas):
     def __init__(self, parent = None, width = 8, height = 6, dpi = 100):
         fig = Figure(figsize=(width, height), dpi=dpi)
         self.ax = fig.add_subplot(111)
         self.ax.set_ylabel('Value')
+        self.ax.set_title(' ')
         FigureCanvas.__init__(self, fig)
         self.setParent(parent)
         FigureCanvas.setSizePolicy(self,
@@ -24,8 +34,17 @@ class BinaryPlotVisualizer(FigureCanvas):
         self.binary_plot_settings_widget.show()
         self.plots = {}
 
+        self.toolbar = NavigationToolbar(self, self)
+        self.toolbar.set_callback_function(self.settings_callback)
+        self.toolbar.hide()
+
+    def settings_callback(self):
+        self.show_legend(self.ax.get_legend())
+        self.draw()
+
     def add_plot(self, info_string, values):
         settings = self.binary_plot_settings_widget.get_plot_settings()
+        
         plot = self.ax.plot(values[:, 0], values[:, 1], color = settings['line_color'],
                             linestyle = settings['line_style'], marker = settings['marker_style'],
                             markerfacecolor = settings['marker_color'], linewidth = settings['line_width'],
@@ -72,6 +91,9 @@ class BinaryPlotVisualizer(FigureCanvas):
     def show_legend(self, show):
         if show:
             self.ax.legend()
+            self.parent().actionLegend.blockSignals(True)
+            self.parent().actionLegend.setChecked(True)
+            self.parent().actionLegend.blockSignals(False)
         else:
             legend = self.ax.get_legend()
             if legend:
@@ -80,6 +102,10 @@ class BinaryPlotVisualizer(FigureCanvas):
 
     def set_x_label(self, label):
         self.ax.set_xlabel(label)
+
+    def get_actions(self):
+        actions = self.toolbar.actions()
+        return actions
 
 
 

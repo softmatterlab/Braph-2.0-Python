@@ -1,8 +1,7 @@
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore, QtGui, uic, QtWidgets, Qt
 from braphy.utility.helper_functions import abs_path_from_relative
-from matplotlib.backends.backend_qt5agg import (
-            NavigationToolbar2QT as NavigationToolbar)
+
 
 ui_file = abs_path_from_relative(__file__, "../ui_files/binary_plot_widget.ui")
 Form, Base = uic.loadUiType(ui_file)
@@ -18,8 +17,7 @@ class BinaryPlotWidget(Base, Form):
         self.init_buttons()
         self.listWidget.itemSelectionChanged.connect(self.selection_changed)
 
-        self.toolbar = NavigationToolbar(self.binaryPlot, self)
-        self.toolbar.hide()
+        
 
         self.actionLegend.triggered.connect(self.binaryPlot.show_legend)
 
@@ -69,5 +67,5 @@ class BinaryPlotWidget(Base, Form):
 
     def get_actions(self):
         actions = [self.actionLegend]
-        actions.extend(self.toolbar.actions())
+        actions.extend(self.binaryPlot.get_actions())
         return actions
