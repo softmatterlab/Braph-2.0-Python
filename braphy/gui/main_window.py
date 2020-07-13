@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import sys
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from PyQt5.QtCore import QFileInfo
@@ -29,7 +31,7 @@ class MainWindow(ExitDialog, Ui_MainWindow):
 
         root = QFileInfo(__file__).absolutePath()
         self.setWindowIcon(QtGui.QIcon(root+'/icons/application_icon.png'))
-        self.show() 
+        self.show()
 
     def in_focus(self):
         if self.isActiveWindow():
@@ -98,6 +100,7 @@ class MainWindow(ExitDialog, Ui_MainWindow):
 
 def braphy_run_gui():
     app = QtWidgets.QApplication(sys.argv)
+    app.setApplicationName('braphy')
     window = MainWindow()
     window.show()
     sys.exit(app.exec_())
