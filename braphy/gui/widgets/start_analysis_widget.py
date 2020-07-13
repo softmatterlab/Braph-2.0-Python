@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 import numpy as np
+import copy
 from braphy.utility.helper_functions import abs_path_from_relative, FloatDelegate, float_to_string
 from braphy.workflows.MRI.subject_MRI import SubjectMRI
 from braphy.workflows.fMRI.subject_fMRI import SubjectfMRI
@@ -21,7 +22,7 @@ class StartAnalysisWidget(Base, Form):
 
     def init(self, graph_analysis_gui):
         self.analysis_gui = graph_analysis_gui
-        self.analysis = self.analysis_gui.analysis
+        self.analysis = copy.deepcopy(self.analysis_gui.analysis)
         self.graph_type = self.analysis.graph_settings.graph_class()
         self.init_buttons()
         self.init_graph_measures_widget(self.graph_type)
@@ -38,24 +39,26 @@ class StartAnalysisWidget(Base, Form):
         self.graphMeasuresWidget.init(graph_type)
 
     def view_community(self):
-        self.community_structure = CommunityStructure(self.analysis, self.analysis_gui.brain_mesh_data, self.analysis_gui.__class__)
+        self.community_structure = CommunityStructure(self.analysis_gui.analysis, self.analysis_gui.brain_mesh_data, self.analysis_gui.__class__)
         self.community_structure.set_locked(True)
         self.community_structure.show()
 
     def new_analysis(self):
-        self.graph_analysis_gui = self.analysis_gui.__class__()
+        self.graph_analysis_gui = self.analysis_gui.__class__(subject_class = self.analysis_gui.subject_class,
+                                                              analysis = self.analysis,
+                                                              brain_mesh_data = self.analysis_gui.brain_mesh_data)
         self.graph_analysis_gui.show()
 
     def calculate_group_measures(self):
-        self.calculate_group_measures_gui = CalculateGroupMeasures(self, self.analysis, self.graph_type, self.table_update_callbacks())
+        self.calculate_group_measures_gui = CalculateGroupMeasures(self, self.analysis_gui.analysis, self.graph_type, self.table_update_callbacks())
         self.calculate_group_measures_gui.show()
 
     def compare_group_measures(self):
-        self.compare_group_measures_gui = CompareGroupMeasures(self, self.analysis, self.graph_type, self.table_update_callbacks())
+        self.compare_group_measures_gui = CompareGroupMeasures(self, self.analysis_gui.analysis, self.graph_type, self.table_update_callbacks())
         self.compare_group_measures_gui.show()
 
     def compare_with_random_graph(self):
-        self.compare_with_random_graph_gui = CompareWithRandomGraph(self, self.analysis, self.graph_type, self.table_update_callbacks())
+        self.compare_with_random_graph_gui = CompareWithRandomGraph(self, self.analysis_gui.analysis, self.graph_type, self.table_update_callbacks())
         self.compare_with_random_graph_gui.show()
 
     def table_update_callbacks(self):
