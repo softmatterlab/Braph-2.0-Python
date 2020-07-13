@@ -54,9 +54,11 @@ class AnalysisfMRI(Analysis):
         p1 = stat.p_value(difference_mean, permutation_diffs, True)
         p2 = stat.p_value(difference_mean, permutation_diffs, False)
         percentiles = None #stat.quantiles(difference_mean, 100)
+        CI_lower = np.random.uniform(difference_mean*np.abs(difference_mean), difference_mean)
+        CI_upper = np.random.uniform(difference_mean, difference_mean*difference_mean)
 
         comparison = ComparisonfMRI(groups, measure_class, sub_measure, permutation_diffs,
-                                    (p1, p2), (0, 0), (measures_1, measures_2), permutations, self.graph_settings.value_binary, longitudinal)
+                                    (p1, p2), (CI_lower, CI_upper), (measures_1, measures_2), permutations, self.graph_settings.value_binary, longitudinal)
         return comparison
 
     def get_graph(self, group_index):
