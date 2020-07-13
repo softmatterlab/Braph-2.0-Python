@@ -108,7 +108,7 @@ class GraphAnalysis(ExitDialog, Ui_MainWindow):
     def set_locked(self, locked):
         lock_items = [self.correlationMatrixWidget, self.textAnalysisName, self.comboBoxGraph,
                       self.comboBoxCorrelation, self.comboBoxNegative, self.comboBoxBinary,
-                      self.btnStartAnalysis, self.groupBoxCommunityStructure,
+                      self.btnStartAnalysis, self.groupBoxCommunityStructure, self.startAnalysisWidget,
                       self.comboBoxSymmetrize, self.comboBoxStandardize, self.actionSave, self.actionSave_as]
         for item in lock_items:
             item.setEnabled(not locked)

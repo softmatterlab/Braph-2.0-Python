@@ -49,8 +49,10 @@ class GraphMeasuresWidget(Base, Form):
                 self.tableWidget.setRowCount(row + 1)
                 item = QTableWidgetItem(sub_measure)
                 item.setToolTip(measure_descriptions[sub_measure])
+                item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
                 self.tableWidget.setItem(row, 0, item)
                 item = QTableWidgetItem(Measure.dimensions_str(self.measures_dimensions[sub_measure]))
+                item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
                 self.tableWidget.setItem(row, 1, item)
                 row += 1
 
