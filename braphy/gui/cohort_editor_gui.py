@@ -4,12 +4,7 @@ from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from PyQt5.QtWidgets import *
 from braphy.utility.helper_functions import abs_path_from_relative, load_nv
 from braphy.atlas.brain_atlas import BrainAtlas
-from braphy.gui.widgets.brain_atlas_widget import BrainAtlasWidget
 from braphy.gui.brain_atlas_gui import BrainAtlasGui
-from braphy.atlas.brain_region import BrainRegion
-import braphy.gui.icons_rc
-from functools import partial
-import xml.etree.ElementTree as ET
 import numpy as np
 from braphy.gui.exit_dialog import ExitDialog
 

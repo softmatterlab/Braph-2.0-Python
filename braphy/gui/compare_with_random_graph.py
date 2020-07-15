@@ -1,5 +1,4 @@
 import sys
-import json
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from PyQt5.QtWidgets import *
 from braphy.utility.helper_functions import abs_path_from_relative

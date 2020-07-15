@@ -3,8 +3,6 @@ from PyQt5 import QtCore, QtGui, uic, QtWidgets
 import numpy as np
 import copy
 from braphy.utility.helper_functions import abs_path_from_relative, FloatDelegate, float_to_string
-from braphy.workflows.MRI.subject_MRI import SubjectMRI
-from braphy.workflows.fMRI.subject_fMRI import SubjectfMRI
 from braphy.graph.measures.measure_parser import MeasureParser
 from braphy.graph.measures.measure import Measure
 from braphy.gui.community_structure_gui import CommunityStructure

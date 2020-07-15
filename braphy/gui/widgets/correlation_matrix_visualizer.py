@@ -4,8 +4,6 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 import numpy as np
-import math
-import random
 
 class CorrelationMatrixVisualizer(FigureCanvas):
     def __init__(self, parent=None, width=8, height=6, dpi=100):

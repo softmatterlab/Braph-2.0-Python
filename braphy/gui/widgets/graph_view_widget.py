@@ -4,8 +4,6 @@ from pyqtgraph import ColorMap as cm
 import numpy as np
 from braphy.utility.helper_functions import abs_path_from_relative, QColor_to_list, QColor_from_list
 from braphy.graph.graphs.graph import Graph
-from braphy.workflows.MRI.subject_MRI import SubjectMRI
-from braphy.workflows.fMRI.subject_fMRI import SubjectfMRI
 
 ui_file = abs_path_from_relative(__file__, "../ui_files/graph_view_widget.ui")
 Form, Base = uic.loadUiType(ui_file)

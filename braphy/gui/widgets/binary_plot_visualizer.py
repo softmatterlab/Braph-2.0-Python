@@ -4,9 +4,6 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from braphy.gui.widgets.binary_plot_settings_widget import BinaryPlotSettingsWidget
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
-import numpy as np
-import math
-import random
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT
 
 class NavigationToolbar(NavigationToolbar2QT):
@@ -44,7 +41,7 @@ class BinaryPlotVisualizer(FigureCanvas):
 
     def add_plot(self, info_string, values):
         settings = self.binary_plot_settings_widget.get_plot_settings()
-        
+
         plot = self.ax.plot(values[:, 0], values[:, 1], color = settings['line_color'],
                             linestyle = settings['line_style'], marker = settings['marker_style'],
                             markerfacecolor = settings['marker_color'], linewidth = settings['line_width'],

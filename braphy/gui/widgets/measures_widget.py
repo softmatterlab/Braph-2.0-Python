@@ -4,8 +4,6 @@ import numpy as np
 import pandas as pd
 from braphy.utility.helper_functions import abs_path_from_relative, FloatDelegate, float_to_string
 from braphy.graph.measures.measure import Measure
-from braphy.workflows.MRI.subject_MRI import SubjectMRI
-from braphy.workflows.fMRI.subject_fMRI import SubjectfMRI
 
 ui_file = abs_path_from_relative(__file__, "../ui_files/measures_widget.ui")
 Form, Base = uic.loadUiType(ui_file)

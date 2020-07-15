@@ -3,8 +3,6 @@ from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QRadioButton, QTableWidgetItem, QButtonGroup, QAbstractItemView
 from braphy.utility.helper_functions import abs_path_from_relative
 from braphy.gui.widgets.brain_view_options_widget import BrainViewOptionsWidget
-from braphy.workflows.MRI.subject_MRI import SubjectMRI
-from braphy.workflows.fMRI.subject_fMRI import SubjectfMRI
 import numpy as np
 
 qtCreatorFile = abs_path_from_relative(__file__, "ui_files/community_structure.ui")

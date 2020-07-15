@@ -1,11 +1,9 @@
 import sys
-import json
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from PyQt5.QtWidgets import *
 from braphy.utility.helper_functions import abs_path_from_relative, float_to_string, wait_cursor
 import numpy as np
 import time
-import threading
 
 qtCreatorFile = abs_path_from_relative(__file__, "ui_files/calculation_window.ui")
 
