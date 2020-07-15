@@ -1,10 +1,6 @@
-import inspect
 import importlib
-import os
-from glob import glob
 from braphy.graph.measures.measure import Measure
 import re
-#from braphy.graph.measures import *
 
 class MeasureParser():
 

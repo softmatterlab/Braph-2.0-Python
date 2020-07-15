@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import sys
+import os
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from PyQt5.QtCore import QFileInfo
 from braphy.atlas.brain_region import BrainRegion
@@ -44,13 +45,22 @@ class MainWindow(ExitDialog, Ui_MainWindow):
         self.btnCohort.clicked.connect(self.cohort)
         self.btnGraphAnalysis.clicked.connect(self.graph_analysis)
 
-        self.btnMRI.clicked.connect(self.set_MRI_btn_options)
-        self.btnFMRI.clicked.connect(self.set_fMRI_btn_options)
-        self.btnPET.clicked.connect(self.set_PET_btn_options)
-        self.btnEEG.clicked.connect(self.set_EEG_btn_options)
+        button_group = QtWidgets.QButtonGroup(self)
+        for data_type in self.list_data_types():
+            btn = QtWidgets.QRadioButton()
+            btn.setText(data_type)
+            btn.clicked.connect(self.data_type_changed)
+            button_group.addButton(btn)
+            self.layoutDataTypes.addWidget(btn)
 
-        self.btnMRI.setChecked(True)
-        self.set_MRI_btn_options()
+    def list_data_types(self):
+        data_types = []
+        workflow_dir = abs_path_from_relative(__file__, '../workflows')
+        files = os.listdir(workflow_dir)
+        for f in files:
+            if os.path.isdir(os.path.join(workflow_dir, f)) and not f.startswith('_'):
+                data_types.append(f)
+        return data_types
 
     def brain_atlas(self):
         self.brain_atlas_gui = BrainAtlasGui(self)
@@ -70,33 +80,14 @@ class MainWindow(ExitDialog, Ui_MainWindow):
         self.graph_analysis_gui = GraphAnalysis(self, self.subject_class)
         self.graph_analysis_gui.show()
 
-    def set_MRI_btn_options(self):
-        self.set_btn_options("MRI")
+    def data_type_changed(self, state):
+        btn = self.sender()
+        data_type = btn.text()
 
-    def set_fMRI_btn_options(self):
-        self.set_btn_options("fMRI")
-
-    def set_PET_btn_options(self):
-        self.set_btn_options("PET")
-
-    def set_EEG_btn_options(self):
-        self.set_btn_options("EEG")
-
-    def set_btn_options(self, data_type):
-        self.btnCohort.setText(data_type + " Cohort")
-        self.btnGraphAnalysis.setText(data_type + " Graph Analysis")
-        if data_type == "MRI":
-            self.subject_class = SubjectMRI
-            self.subtitle.setText("Structural MRI Analysis Workflow")
-        elif data_type == "fMRI":
-            self.subject_class = SubjectfMRI
-            self.subtitle.setText("Functional MRI Analysis Workflow")
-        elif data_type == "PET":
-            self.subject_class = SubjectPET
-            self.subtitle.setText("PET Analysis Workflow")
-        else:
-            self.subject_class = SubjectEEG
-            self.subtitle.setText("EEG Analysis Workflow")
+        self.btnCohort.setText("{} Cohort".format(data_type))
+        self.btnGraphAnalysis.setText("{} Graph Analysis".format(data_type))
+        self.subtitle.setText("{} Analysis Workflow".format(data_type))
+        self.subject_class = eval("Subject{}".format(data_type))
 
 def braphy_run_gui():
     app = QtWidgets.QApplication(sys.argv)
