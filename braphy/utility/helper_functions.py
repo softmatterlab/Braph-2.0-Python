@@ -91,6 +91,9 @@ def float_to_string(f):
         s += '0'
     return s
 
+def same_class(c1, c2):
+    return c1.__name__ == c2.__name__
+
 @contextmanager
 def wait_cursor():
     try:

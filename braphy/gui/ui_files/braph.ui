@@ -140,7 +140,7 @@
          <enum>Qt::LeftToRight</enum>
         </property>
         <property name="text">
-         <string>Structural MRI Analysis Workflow</string>
+         <string>Analysis Workflow</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -207,7 +207,7 @@
          </font>
         </property>
         <property name="text">
-         <string>2. Import subject MRI data</string>
+         <string>2. Import subject data</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignBottom|Qt::AlignHCenter</set>
@@ -236,7 +236,7 @@
            </font>
           </property>
           <property name="text">
-           <string>MRI Cohort</string>
+           <string>Cohort</string>
           </property>
          </widget>
         </item>
@@ -279,7 +279,7 @@
            </font>
           </property>
           <property name="text">
-           <string>MRI Graph Analysis</string>
+           <string>Graph Analysis</string>
           </property>
          </widget>
         </item>

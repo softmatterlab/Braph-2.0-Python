@@ -15,7 +15,7 @@ from braphy.gui.cohort_editor_gui import CohortEditor
 from braphy.analysis.analysis import Analysis
 from braphy.gui.community_structure_gui import CommunityStructure
 from braphy.gui.widgets.brain_view_options_widget import BrainViewOptionsWidget
-from braphy.utility.helper_functions import abs_path_from_relative
+from braphy.utility.helper_functions import abs_path_from_relative, same_class
 from braphy.gui.exit_dialog import ExitDialog
 
 qtCreatorFile = abs_path_from_relative(__file__, "ui_files/graph_analysis.ui")
@@ -47,12 +47,12 @@ class GraphAnalysis(ExitDialog, Ui_MainWindow):
         else:
             self.analysis = None
             self.subject_class = subject_class
-        if self.subject_class == SubjectMRI:
+        if same_class(self.subject_class, SubjectMRI):
             self.correlationMatrixWidget.set_structural_view()
             self.repetitionLabel.hide()
             self.setWindowTitle('MRI Graph Analysis')
             self.analysis_class = AnalysisMRI
-        elif self.subject_class == SubjectfMRI:
+        elif same_class(self.subject_class, SubjectfMRI):
             self.setWindowTitle('fMRI Graph Analysis')
             self.analysis_class = AnalysisfMRI
 
@@ -233,7 +233,7 @@ class GraphAnalysis(ExitDialog, Ui_MainWindow):
                 faces = np.asarray(cohort_dict['brain_mesh_data']['faces'])
                 brain_mesh_data = {'vertices': vertices, 'faces': faces}
                 self.brain_mesh_data = brain_mesh_data
-                if cohort.subject_class != self.subject_class:
+                if not same_class(cohort.subject_class, self.subject_class):
                     self.import_error('Wrong data type. Load a cohort with subjects of type {} instead.'.format(self.subject_class.__name__))
                     return
                 if len(cohort.groups) == 0 or len(cohort.subjects) == 0:
