@@ -52,6 +52,7 @@ class MainWindow(ExitDialog, Ui_MainWindow):
             btn.clicked.connect(self.data_type_changed)
             button_group.addButton(btn)
             self.layoutDataTypes.addWidget(btn)
+        button_group.buttons()[0].setChecked(True)
 
     def list_data_types(self):
         data_types = []
