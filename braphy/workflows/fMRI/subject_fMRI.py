@@ -94,3 +94,8 @@ class SubjectfMRI(Subject):
             correlations.append(StatFunctions.correlation(data, correlation_type))
         return np.array(correlations)
 
+    def functional():
+        return True
+
+    def structural():
+        return False

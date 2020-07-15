@@ -100,3 +100,9 @@ class SubjectMRI(Subject):
         data = np.array([subject.data_dict['data'].value for subject in subjects])
         data = data.T
         return StatFunctions.correlation(data, correlation_type)
+
+    def functional():
+        return False
+
+    def structural():
+        return True

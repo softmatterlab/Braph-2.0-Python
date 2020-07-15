@@ -2,7 +2,7 @@ import sys
 import json
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from PyQt5.QtWidgets import *
-from braphy.utility.helper_functions import abs_path_from_relative, load_nv, same_class
+from braphy.utility.helper_functions import abs_path_from_relative, load_nv
 from braphy.atlas.brain_atlas import BrainAtlas
 from braphy.gui.widgets.brain_atlas_widget import BrainAtlasWidget
 from braphy.gui.brain_atlas_gui import BrainAtlasGui
@@ -32,9 +32,9 @@ class CohortEditor(ExitDialog, Ui_MainWindow):
         QtWidgets.QMainWindow.__init__(self, parent = None)
         self.setupUi(self)
 
-        if same_class(subject_class, SubjectMRI):
+        if subject_class.structural():
             self.setWindowTitle('MRI Cohort Editor')
-        elif same_class(subject_class, SubjectfMRI):
+        elif subject_class.functional():
             self.setWindowTitle('fMRI Cohort Editor')
 
         self.brain_view_options_widget = BrainViewOptionsWidget(parent=self.tabBrain)
@@ -59,7 +59,7 @@ class CohortEditor(ExitDialog, Ui_MainWindow):
         else:
             self.set_locked(True)
 
-        if same_class(subject_class, SubjectfMRI):
+        if subject_class.functional():
             self.tabWidget.removeTab(3)
             self.tabWidget.removeTab(2)
             self.menuBrain_View.menuAction().setVisible(False)
@@ -199,7 +199,7 @@ class CohortEditor(ExitDialog, Ui_MainWindow):
         self.subjectDataWidget.set_read_only()
 
     def update_group_averages_widget(self):
-        if same_class(self.cohort.subject_class, SubjectMRI):
+        if self.cohort.subject_class.structural():
             self.groupAveragesWidget.update_tables()
 
     def group_table_widget_updated(self):

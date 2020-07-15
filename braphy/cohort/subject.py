@@ -52,6 +52,14 @@ class Subject:
     def correlation(subjects):
         pass
 
+    @abstractmethod
+    def structural():
+        pass
+
+    @abstractmethod
+    def functional():
+        pass
+
     def get_subgraph_subject(self, selected_nodes):
         new_data_dict = {}
         for key, data in self.data_dict.items():

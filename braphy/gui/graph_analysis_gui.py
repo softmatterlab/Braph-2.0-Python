@@ -47,12 +47,12 @@ class GraphAnalysis(ExitDialog, Ui_MainWindow):
         else:
             self.analysis = None
             self.subject_class = subject_class
-        if same_class(self.subject_class, SubjectMRI):
+        if self.subject_class.structural():
             self.correlationMatrixWidget.set_structural_view()
             self.repetitionLabel.hide()
             self.setWindowTitle('MRI Graph Analysis')
             self.analysis_class = AnalysisMRI
-        elif same_class(self.subject_class, SubjectfMRI):
+        elif self.subject_class.functional():
             self.setWindowTitle('fMRI Graph Analysis')
             self.analysis_class = AnalysisfMRI
 
