@@ -23,10 +23,10 @@ class SubjectDataWidget(Base, Form):
             self.initialized = True
 
     def init_table(self):
-        if self.cohort.subject_class == SubjectfMRI:
+        if self.cohort.subject_class.functional():
             self.listSubjects.currentRowChanged.connect(self.subject_list_row_changed)
             self.selected_subject = None
-        else: #MRI
+        else:
             self.listSubjects.hide()
             self.labelSubjects.hide()
             self.btnAddRow.hide()
@@ -44,12 +44,12 @@ class SubjectDataWidget(Base, Form):
     def save_subjects(self, file_type, save_to_function):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
-        if self.cohort.subject_class == SubjectMRI:
+        if self.cohort.subject_class.structural():
             file_name, name = QFileDialog.getSaveFileName(self, "Save subjects",
                                                           "subjects.{}".format(file_type),
                                                           "{} files (*.{})".format(file_type, file_type),
                                                           options = options)
-        elif self.cohort.subject_class == SubjectfMRI:
+        elif self.cohort.subject_class.functional():
             file_name = QFileDialog.getExistingDirectory(self, "Open directory", " ", options = options)
         if file_name:
             save_to_function(file_name)
@@ -64,14 +64,14 @@ class SubjectDataWidget(Base, Form):
 
     def cell_changed_in_table(self, row, column):
         new_value = float(self.tableWidget.item(row, column).text())
-        if self.cohort.subject_class == SubjectMRI:
+        if self.cohort.subject_class.structural():
             self.cohort.subjects[row].data_dict['data'].value[column] = new_value
         else:
             self.selected_subject.data_dict['data'].value[row, column] = new_value
         self.update()
 
     def update_table(self):
-        if self.cohort.subject_class == SubjectMRI:
+        if self.cohort.subject_class.structural():
             self.update_table_structural()
         else:
             self.update_subject_list()

@@ -41,11 +41,11 @@ class Analysis():
         comparisons = [Comparison.from_dict(comparison) for comparison in d['comparisons']]
         return cls(cohort, graph_settings, name, measurements, random_comparisons, comparisons)
 
-    def is_MRI(self):
-        return self.cohort.subject_class == SubjectMRI
+    def structural(self):
+        return self.cohort.subject_class.structural()
 
-    def is_fMRI(self):
-        return self.cohort.subject_class == SubjectfMRI
+    def functional(self):
+        return self.cohort.subject_class.functional()
 
     def is_weighted(self):
         return self.graph_settings.weighted

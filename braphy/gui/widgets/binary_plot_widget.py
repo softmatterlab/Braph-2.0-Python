@@ -17,8 +17,6 @@ class BinaryPlotWidget(Base, Form):
         self.init_buttons()
         self.listWidget.itemSelectionChanged.connect(self.selection_changed)
 
-        
-
         self.actionLegend.triggered.connect(self.binaryPlot.show_legend)
 
     def init(self, analysis):

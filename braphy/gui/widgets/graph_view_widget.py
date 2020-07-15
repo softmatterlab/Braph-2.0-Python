@@ -29,7 +29,7 @@ class GraphViewWidget(Base, Form):
 
     def set_analysis(self, analysis):
         self.analysis = analysis
-        if analysis.cohort.subject_class == SubjectMRI:
+        if analysis.cohort.subject_class.structural():
             self.comboBoxSubject.hide()
             self.btnGroup.hide()
             self.btnSubject.hide()

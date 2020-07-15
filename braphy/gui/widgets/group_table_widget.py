@@ -19,7 +19,7 @@ class GroupTableWidget(Base, Form):
 
     def init(self, cohort):
         self.cohort = cohort
-        if self.cohort.subject_class == SubjectMRI:
+        if self.cohort.subject_class.structural():
             self.btnLoadFolder.hide()
 
     def init_table(self):

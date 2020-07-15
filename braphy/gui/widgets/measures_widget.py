@@ -27,7 +27,7 @@ class MeasuresWidget(Base, Form):
             self.labelRegion.hide()
         elif measure_type == Measure.NODAL:
             self.comboBoxRegion2.hide()
-        if analysis.cohort.subject_class == SubjectMRI:
+        if analysis.cohort.subject_class.structural():
             self.btnGroup.hide()
             self.btnSubject.hide()
             self.comboBoxSubject.hide()
@@ -118,7 +118,7 @@ class MeasuresWidget(Base, Form):
         region_1 = self.comboBoxRegion.currentText()
         region_2 = self.comboBoxRegion2.currentText()
         info_string = [sub_measure, group_1, group_2, subject, region_1, region_2]
-        is_subject = self.analysis.cohort.subject_class == SubjectfMRI and not self.btnGroup.isChecked()
+        is_subject = self.analysis.cohort.subject_class.functional() and not self.btnGroup.isChecked()
         mask = [True, True, self.comboBoxGroup2.isEnabled(), is_subject, self.measure_type != Measure.GLOBAL, self.measure_type == Measure.BINODAL]
         info_string = np.array(info_string)[np.where(mask)[0]].tolist()
         info_string = ' - '.join(info_string)
@@ -226,7 +226,7 @@ class MeasuresWidget(Base, Form):
         self.tableWidget.setHorizontalHeaderLabels(['Comp value', 'p (1-tailed)', 'p (2-tailed)', 'Real value', 'CI lower', 'CI upper', 'Notes', 'Measure', 'Group', 'Param'])
 
     def measurement_mask(self):
-        subject = self.analysis.cohort.subject_class == SubjectfMRI and not self.btnGroup.isChecked()
+        subject = self.analysis.functional() and not self.btnGroup.isChecked()
         binary = self.analysis.is_binary()
         nodal = self.measure_type == Measure.NODAL
         binodal = self.measure_type == Measure.BINODAL
@@ -243,7 +243,7 @@ class MeasuresWidget(Base, Form):
         return labels
 
     def measurement_contents(self, measurement):
-        if self.analysis.cohort.subject_class == SubjectfMRI:
+        if self.analysis.functional():
             if self.btnGroup.isChecked():
                 value = np.mean(measurement.value, axis = 0)
             else:
@@ -274,7 +274,7 @@ class MeasuresWidget(Base, Form):
         return content
 
     def comparison_mask(self):
-        subject = self.analysis.cohort.subject_class == SubjectfMRI and not self.btnGroup.isChecked()
+        subject = self.analysis.functional() and not self.btnGroup.isChecked()
         binary = self.analysis.is_binary()
         nodal = self.measure_type == Measure.NODAL
         binodal = self.measure_type == Measure.BINODAL
@@ -292,7 +292,7 @@ class MeasuresWidget(Base, Form):
         return labels
 
     def comparison_contents(self, comparison):
-        if self.analysis.cohort.subject_class == SubjectfMRI:
+        if self.analysis.functional():
             value_1 = np.mean(comparison.measures[0], axis = 0)
             value_2 = np.mean(comparison.measures[1], axis = 0)
         else:
