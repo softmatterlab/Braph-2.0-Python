@@ -12,7 +12,7 @@ class TestPathLength(TestUtility):
                       [1, 0, 1, 1, 1],
                       [0, 0, 0, 0, 0],
                       [0, 1, 1, 0, 1]])
-        settings = GraphSettings.get_bd()
+        settings = GraphSettings(weighted = False, directed = True)
         graph = GraphFactory.get_graph(A, settings)
         path_length = [1.458333, 1.5833, 1.1250, np.nan, 1.2500]
         in_path_length = [1.6667, 1.6667, 1.0, 1.5, 1.0]
@@ -30,7 +30,7 @@ class TestPathLength(TestUtility):
                       [1, 0, 1, 1, 1],
                       [0, 0, 0, 0, 0],
                       [0, 1, 1, 0, 1]])
-        settings = GraphSettings.get_bu()
+        settings = GraphSettings(weighted = False, directed = False)
         graph = GraphFactory.get_graph(A, settings)
         true_path_length = [1.25, 1.5, 1.0, 1.5, 1.25]
         self.assertSequenceEqual(graph.get_measure(MeasurePathLength, 'path_length').tolist(),
@@ -42,7 +42,7 @@ class TestPathLength(TestUtility):
                       [13, 0.0, 1.2, 5.7, 0.01],
                       [5.5, 8.2, 0.3, 0.0005, 0.5],
                       [1, 0.0, 345, 8.7, 2]])
-        settings = GraphSettings.get_wd()
+        settings = GraphSettings(weighted = True, directed = True)
         graph = GraphFactory.get_graph(A, settings)
         path_length = [80.3610, 52.8584, 58.3262, 62.2139, 52.8584]
         in_path_length = [37.2357, 84.0684, 42.4364, 74.6411, 68.2363]
@@ -60,7 +60,7 @@ class TestPathLength(TestUtility):
                       [13, 0.0, 1.2, 5.7, 0.01],
                       [5.5, 8.2, 0.3, 0.0005, 0.5],
                       [1, 0.0, 345, 8.7, 2]])
-        settings = GraphSettings.get_wu()
+        settings = GraphSettings(weighted = True, directed = False)
         graph = GraphFactory.get_graph(A, settings)
         path_length = [37.2357, 21.1029, 18.4484, 46.2777, 18.1984]
         self.assertSequenceAlmostEqual(graph.get_measure(MeasurePathLength, 'path_length'),

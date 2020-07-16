@@ -14,7 +14,7 @@ class TestCluster(TestUtility):
                       [0,0,0,0,0,0,0,1],
                       [0,0,0,0,0,0,0,1],
                       [0,0,0,0,0,0,0,0]])
-        settings = GraphSettings.get_bd()
+        settings = GraphSettings(weighted = False, directed = True)
         graph = GraphFactory.get_graph(A, settings)
         self.assertSequenceAlmostEqual(graph.get_measure(MeasureCluster, 'cluster').tolist(),
                                        [1.0000, 0.5000, 0.5000, 0.5000, 0, 0, 0, 0], places=4)
@@ -28,7 +28,7 @@ class TestCluster(TestUtility):
                       [0,0,0,0,0,0,0,1],
                       [0,0,0,0,0,0,0,1],
                       [0,0,0,0,0,0,0,0]])
-        settings = GraphSettings.get_bu()
+        settings = GraphSettings(weighted = False, directed = False)
         graph = GraphFactory.get_graph(A, settings)
         self.assertSequenceAlmostEqual(graph.get_measure(MeasureCluster, 'cluster').tolist(),
                                        [0.6667, 0.6667, 0.6667, 0.6667, 0.2000, 0, 0, 0], places=4)
@@ -42,7 +42,7 @@ class TestCluster(TestUtility):
                       [0,0,0,0,0,0,0,0.2],
                       [0,0,0,0,0,0,0,0.8],
                       [0,0,0,0,0,0,0,0]])
-        settings = GraphSettings.get_wd()
+        settings = GraphSettings(weighted = True, directed = True)
         graph = GraphFactory.get_graph(A, settings)
         self.assertSequenceAlmostEqual(graph.get_measure(MeasureCluster, 'cluster').tolist(),
                                        [0.1347, 0.0673, 0.0673, 0.0673, 0, 0, 0, 0], places=4)
@@ -56,7 +56,7 @@ class TestCluster(TestUtility):
                       [0,0,0,0,0,0,0,0.2],
                       [0,0,0,0,0,0,0,0.8],
                       [0,0,0,0,0,0,0,0]])
-        settings = GraphSettings.get_wu()
+        settings = GraphSettings(weighted = True, directed = False)
         graph = GraphFactory.get_graph(A, settings)
         self.assertSequenceAlmostEqual(graph.get_measure(MeasureCluster, 'cluster').tolist(),
                                        [0.1795, 0.1795, 0.1795, 0.1795, 0.0539, 0, 0, 0], places=4)

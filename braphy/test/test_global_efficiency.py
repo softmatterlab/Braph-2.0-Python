@@ -10,7 +10,7 @@ class TestGlobalEfficiency(TestUtility):
                       [1, 0, 1, 1],
                       [1, 0, 1, 1],
                       [0, 0, 0, 0]])
-        settings = GraphSettings.get_bd()
+        settings = GraphSettings(weighted = False, directed = True)
         graph = GraphFactory.get_graph(A, settings)
         global_efficiency = [0.75, 0.75, 0.6667, 0.5]
         in_global_efficiency = [0.6667, 0.5, 0.5, 1.0]
@@ -27,7 +27,7 @@ class TestGlobalEfficiency(TestUtility):
                       [1, 0, 1, 1],
                       [1, 0, 1, 1],
                       [0, 0, 0, 0]])
-        settings = GraphSettings.get_bu()
+        settings = GraphSettings(weighted = False, directed = False)
         graph = GraphFactory.get_graph(A, settings)
         global_efficiency = [1, 1, 1, 1]
         self.assertSequenceAlmostEqual(graph.get_measure(MeasureGlobalEfficiency,
@@ -39,7 +39,7 @@ class TestGlobalEfficiency(TestUtility):
                       [0.3922,    0.2769,    0.3171,    0.7655,    0.6463],
                       [0.6555,    0.0462,    0.9502,    0.7952,    0.7094],
                       [0.1712,    0.0971,    0.0344,    0.1869,    0.7547]])
-        settings = GraphSettings.get_wd()
+        settings = GraphSettings(weighted = True, directed = True)
         graph = GraphFactory.get_graph(A, settings)
         global_efficiency = [0.5815, 0.4901, 0.6190, 0.5825, 0.3872]
         in_global_efficiency = [0.5162, 0.3843, 0.6906, 0.4664, 0.6028]
@@ -57,7 +57,7 @@ class TestGlobalEfficiency(TestUtility):
                       [0.3922,    0.2769,    0.3171,    0.7655,    0.6463],
                       [0.6555,    0.0462,    0.9502,    0.7952,    0.7094],
                       [0.1712,    0.0971,    0.0344,    0.1869,    0.7547]])
-        settings = GraphSettings.get_wu()
+        settings = GraphSettings(weighted = True, directed = False)
         graph = GraphFactory.get_graph(A, settings)
         global_efficiency = [0.7135, 0.6011, 0.8195, 0.7147, 0.6028]
         self.assertSequenceAlmostEqual(graph.get_measure(MeasureGlobalEfficiency,

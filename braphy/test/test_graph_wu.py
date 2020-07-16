@@ -5,19 +5,19 @@ import numpy as np
 class TestGraphWU(unittest.TestCase):
     def test_binary(self):
         A = np.array([[0, 1, 1, 0], [1, 0, 0, 0], [1, 0, 0, 0], [0, 0, 0, 0]])
-        settings = GraphSettings.get_wu()
+        settings = GraphSettings(weighted = True, directed = False)
         graph = GraphFactory.get_graph(A, settings)
         self.assertFalse(graph.is_binary())
 
     def test_directed(self):
         A = np.array([[0, 1, 1, 0], [1, 0, 0, 0], [1, 0, 0, 0], [0, 0, 0, 0]])
-        settings = GraphSettings.get_wu()
+        settings = GraphSettings(weighted = True, directed = False)
         graph = GraphFactory.get_graph(A, settings)
         self.assertFalse(graph.is_directed())
 
     def test_remove_diagonal(self):
         A = np.array([[1, 1, 1, 1], [1, 1, 1, 0], [1, 1, 0, 0], [0, 0, 0, 0]])
-        settings = GraphSettings.get_wu()
+        settings = GraphSettings(weighted = True, directed = False)
         graph = GraphFactory.get_graph(A, settings)
         for (i, j), value in np.ndenumerate(graph.A):
             if(i == j):
@@ -25,14 +25,14 @@ class TestGraphWU(unittest.TestCase):
 
     def test_semipositivize(self):
         A = np.array([[1, -1, 1, -1], [1, -1, 1, 0], [-1, 1, 0, 0], [0, 0, 0, 0]])
-        settings = GraphSettings.get_wu()
+        settings = GraphSettings(weighted = True, directed = False)
         graph = GraphFactory.get_graph(A, settings)
         for (i, j), value in np.ndenumerate(graph.A):
             self.assertTrue(value >= 0)
 
     def test_symmetrize(self):
         A = np.array([[1, 1, 1, 1], [0, 1, 1, 1], [0, 0, 1, 1], [0, 0, 0, 1]])
-        settings = GraphSettings.get_wu()
+        settings = GraphSettings(weighted = True, directed = False)
         graph = GraphFactory.get_graph(A, settings)
         for (i, j), value in np.ndenumerate(graph.A):
             if(i != j):
@@ -44,7 +44,7 @@ class TestGraphWU(unittest.TestCase):
                       [13, 0.0, 1.2, 5.7, 0.01],
                       [5.5, 8.2, 0.3, 0.0005, 0.5],
                       [1, 0.0, 345, 8.7, 2]])
-        settings = GraphSettings.get_wu()
+        settings = GraphSettings(weighted = True, directed = False)
         graph = GraphFactory.get_graph(A, settings)
         self.assertTrue(np.min(graph.A) >= 0)
         self.assertTrue(np.max(graph.A) <= 1)
@@ -55,7 +55,7 @@ class TestGraphWU(unittest.TestCase):
                       [13, 0.0, 1.2, 5.7, 0.01],
                       [5.5, 8.2, 0.3, 0.0005, 0.5],
                       [1, 0.0, 345, 8.7, 2]])
-        settings = GraphSettings.get_wu()
+        settings = GraphSettings(weighted = True, directed = False)
         graph = GraphFactory.get_graph(A, settings)
         self.assertTrue(np.min(graph.A) >= 0)
         self.assertTrue(np.max(graph.A) <= 1)

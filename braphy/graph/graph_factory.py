@@ -3,6 +3,8 @@ from braphy.graph.measures import *
 from braphy.graph.measures.measure_parser import MeasureParser
 
 class GraphSettings():
+    WEIGHTED_DEFAULT = True
+    DIRECTED_DEFAULT = True
     GAMMA_DEFAULT = 1
     COMMUNITY_ALGORITHM_DEFAULT = 'Louvain'
     NEGATIVE_DEFAULT = 'zero'
@@ -12,8 +14,11 @@ class GraphSettings():
     BINARY_VALUE_DEFAULT = 0
     CORRELATION_TYPE_DEFAULT = 'pearson'
 
-    def __init__(self, weighted, directed, gamma, community_algorithm, rule_negative,
-                 rule_symmetrize, rule_standardize, rule_binary, value_binary, correlation_type):
+    def __init__(self, weighted = WEIGHTED_DEFAULT, directed = DIRECTED_DEFAULT,
+                 gamma = GAMMA_DEFAULT, community_algorithm = COMMUNITY_ALGORITHM_DEFAULT,
+                 rule_negative = NEGATIVE_DEFAULT, rule_symmetrize = SYMMETRIZE_DEFAULT,
+                 rule_standardize = STANDARDIZE_DEFAULT, rule_binary = BINARY_DEFAULT,
+                 value_binary = BINARY_VALUE_DEFAULT, correlation_type = CORRELATION_TYPE_DEFAULT):
         self.weighted = weighted
         self.directed = directed
         self.measure_list = MeasureParser.list_measures()[self.graph_class()]
@@ -62,70 +67,6 @@ class GraphSettings():
                              rule_negative, rule_symmetrize, rule_standardize, rule_binary,
                              value_binary, correlation_type)
 
-    def get_bd(gamma = GAMMA_DEFAULT,
-               community_algorithm = COMMUNITY_ALGORITHM_DEFAULT,
-               rule_negative = NEGATIVE_DEFAULT, rule_symmetrize = SYMMETRIZE_DEFAULT,
-               rule_standardize = STANDARDIZE_DEFAULT, rule_binary = BINARY_DEFAULT,
-               value_binary = BINARY_VALUE_DEFAULT, correlation_type = CORRELATION_TYPE_DEFAULT):
-        return GraphSettings(weighted = False,
-                             directed = True,
-                             gamma = gamma,
-                             community_algorithm = community_algorithm,
-                             rule_negative = rule_negative,
-                             rule_symmetrize = rule_symmetrize,
-                             rule_standardize = rule_standardize,
-                             rule_binary = rule_binary,
-                             value_binary = value_binary,
-                             correlation_type = correlation_type)
-
-    def get_bu(gamma = GAMMA_DEFAULT,
-               community_algorithm = COMMUNITY_ALGORITHM_DEFAULT,
-               rule_negative = NEGATIVE_DEFAULT, rule_symmetrize = SYMMETRIZE_DEFAULT,
-               rule_standardize = STANDARDIZE_DEFAULT, rule_binary = BINARY_DEFAULT,
-               value_binary = BINARY_VALUE_DEFAULT, correlation_type = CORRELATION_TYPE_DEFAULT):
-        return GraphSettings(weighted = False,
-                             directed = False,
-                             gamma = gamma,
-                             community_algorithm = community_algorithm,
-                             rule_negative = rule_negative,
-                             rule_symmetrize = rule_symmetrize,
-                             rule_standardize = rule_standardize,
-                             rule_binary = rule_binary,
-                             value_binary = value_binary,
-                             correlation_type = correlation_type)
-
-    def get_wd(gamma = GAMMA_DEFAULT,
-               community_algorithm = COMMUNITY_ALGORITHM_DEFAULT,
-               rule_negative = NEGATIVE_DEFAULT, rule_symmetrize = SYMMETRIZE_DEFAULT,
-               rule_standardize = STANDARDIZE_DEFAULT, rule_binary = BINARY_DEFAULT,
-               value_binary = BINARY_VALUE_DEFAULT, correlation_type = CORRELATION_TYPE_DEFAULT):
-        return GraphSettings(weighted = True,
-                             directed = True,
-                             gamma = gamma,
-                             community_algorithm = community_algorithm,
-                             rule_negative = rule_negative,
-                             rule_symmetrize = rule_symmetrize,
-                             rule_standardize = rule_standardize,
-                             rule_binary = rule_binary,
-                             value_binary = value_binary,
-                             correlation_type = correlation_type)
-
-    def get_wu(gamma = GAMMA_DEFAULT,
-               community_algorithm = COMMUNITY_ALGORITHM_DEFAULT,
-               rule_negative = NEGATIVE_DEFAULT, rule_symmetrize = SYMMETRIZE_DEFAULT,
-               rule_standardize = STANDARDIZE_DEFAULT, rule_binary = BINARY_DEFAULT,
-               value_binary = BINARY_VALUE_DEFAULT, correlation_type = CORRELATION_TYPE_DEFAULT):
-        return GraphSettings(weighted = True,
-                             directed = False,
-                             gamma = gamma,
-                             community_algorithm = community_algorithm,
-                             rule_negative = rule_negative,
-                             rule_symmetrize = rule_symmetrize,
-                             rule_standardize = rule_standardize,
-                             rule_binary = rule_binary,
-                             value_binary = value_binary,
-                             correlation_type = correlation_type)
-
     def graph_class(self):
         cls = None
         if(self.weighted and self.directed):
@@ -142,15 +83,3 @@ class GraphSettings():
 class GraphFactory:
     def get_graph(A, settings):
         return settings.graph_class()(A, settings)
-
-    def graph_cls_from_str(s):
-        graph_type = None
-        if s == 'binary undirected':
-            graph_type = GraphBU
-        elif s == 'binary directed':
-            graph_type = GraphBD
-        elif s == 'weighted undirected':
-            graph_type = GraphWU
-        elif s == 'weighted directed':
-            graph_type = GraphWD
-        return graph_type

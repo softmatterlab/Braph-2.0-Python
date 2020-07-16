@@ -6,7 +6,7 @@ import numpy as np
 class TestRandomGraph(unittest.TestCase):
     def test_bu(self):
         A = np.array([[0,1,1,0],[1,0,0,1],[0,1,0,1],[0,1,0,0]])
-        settings = GraphSettings.get_bu()
+        settings = GraphSettings(weighted = False, directed = False)
         graph = GraphFactory.get_graph(A, settings)
         random = graph.get_random_graph()
         self.assertTrue(np.array_equal(random.A, np.array([[0,1,1,0],
@@ -16,7 +16,7 @@ class TestRandomGraph(unittest.TestCase):
 
     def test_bd(self):
         A = np.array([[0,1,1,0,0],[1,0,0,1,0],[0,1,0,1,1],[0,1,0,0,1],[1,0,1,0,1]])
-        settings = GraphSettings.get_bd()
+        settings = GraphSettings(weighted = False, directed = True)
         graph = GraphFactory.get_graph(A, settings)
         random = graph.get_random_graph()
         self.assertTrue(random.A.shape == A.shape)
@@ -33,7 +33,7 @@ class TestRandomGraph(unittest.TestCase):
                       [0.,1.,0.,1.,1.],
                       [0.,1.,0.,0.,1.],
                       [1.,0.,1.,0.5,1.]])
-        settings = GraphSettings.get_wd()
+        settings = GraphSettings(weighted = True, directed = True)
         graph = GraphFactory.get_graph(A, settings)
         random = graph.get_random_graph()
         self.assertTrue(random.A.shape == A.shape)
@@ -46,7 +46,7 @@ class TestRandomGraph(unittest.TestCase):
                       [0.,1.,0.,-1.,1.],
                       [0.,1.,0.,0.,1.],
                       [1.,0.,1.,0.5,1.]])
-        settings = GraphSettings.get_wd()
+        settings = GraphSettings(weighted = True, directed = True)
         graph = GraphFactory.get_graph(A, settings)
         random = graph.get_random_graph()
         self.assertTrue(random.A.shape == A.shape)
@@ -55,7 +55,7 @@ class TestRandomGraph(unittest.TestCase):
 
     def test_wu(self):
         A = np.array([[0,1,1,0],[1,0,0,1],[0,1,0,1],[0,1,0,0]])
-        settings = GraphSettings.get_wu()
+        settings = GraphSettings(weighted = True, directed = False)
         graph = GraphFactory.get_graph(A, settings)
         random = graph.get_random_graph()
         self.assertTrue(np.array_equal(random.A, np.array([[0,1,1,0],

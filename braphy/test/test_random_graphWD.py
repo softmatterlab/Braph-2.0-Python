@@ -13,7 +13,7 @@ import random as rnd
 class TestRandomGraphWD(unittest.TestCase):
     def test_graph(self):
         A = np.array([[0.,0.5,0.,0.3],[0.7,0.,0.1,0.],[0.,0.,0.,0.1],[0.,0.,0.,0.]])
-        settings = GraphSettings.get_wd()
+        settings = GraphSettings(weighted = True, directed = True)
         settings.rule_standardize = 'do_not_standardize'
         graph = GraphFactory.get_graph(A, settings)
         random = graph.get_random_graph()
@@ -40,7 +40,7 @@ class TestRandomGraphWD(unittest.TestCase):
                       [0., 0., 0., 0., 0., 0.2,0.2,0., 0., 0. ],
                       [0., 0., 0., 0., 0., 0., 0., 0., 0., 0. ],
                       [0., 0., 0., 0., 0.5,0., 0., 0., 0., 0. ]])
-        settings = GraphSettings.get_wd()
+        settings = GraphSettings(weighted = True, directed = True)
         settings.rule_standardize = 'do_not_standardize'
         graph = GraphFactory.get_graph(A, settings)
 
@@ -109,7 +109,7 @@ class TestRandomGraphWD(unittest.TestCase):
                       [0., 0., 0., 0.3,0., 0., 0., 0.8,0.8,0., 0., 0.3,0., 0., 0., 0., 0., 0., 0., 0.],
                       [0., 0., 0., 0., 0., 0., 0., 0.3,0.2,0.6,0.2,0., 0., 0., 0., 0., 0., 0., 0., 0.]])
 
-        settings = GraphSettings.get_wd()
+        settings = GraphSettings(weighted = True, directed = True)
         settings.rule_standardize = 'do_not_standardize'
         graph = GraphFactory.get_graph(A, settings)
 
@@ -178,7 +178,7 @@ class TestRandomGraphWD(unittest.TestCase):
                       [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 1. ],
                       [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.4,0., 0., 0. ]])
 
-        settings = GraphSettings.get_wd()
+        settings = GraphSettings(weighted = True, directed = True)
         settings.rule_standardize = 'do_not_standardize'
         graph = GraphFactory.get_graph(A, settings)
 
@@ -267,7 +267,7 @@ class TestRandomGraphWD(unittest.TestCase):
                       [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.7,0., 0.1],
                       [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.1,0., 0., 0., 0., 0. ]])
 
-        settings = GraphSettings.get_wd()
+        settings = GraphSettings(weighted = True, directed = True)
         settings.rule_standardize = 'do_not_standardize'
         graph = GraphFactory.get_graph(A, settings)
 
@@ -361,7 +361,7 @@ class TestRandomGraphWD(unittest.TestCase):
         #    for j in range(0,len(A)):
         #        if A[i,j]==1.:
         #            A[i,j]=round(rnd.uniform(0, 1),1)
-        settings = GraphSettings.get_wd()
+        settings = GraphSettings(weighted = True, directed = True)
         settings.rule_standardize = 'do_not_standardize'
         graph = GraphFactory.get_graph(A, settings)
 

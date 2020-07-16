@@ -7,7 +7,7 @@ import numpy as np
 class TestCommunity(TestUtility):
     def test_bd(self):
         A = np.array([[0, 1, 1, 0], [1, 0, 0, 0], [1, 0, 0, 0], [0, 0, 0, 0]])
-        settings = GraphSettings.get_bd()
+        settings = GraphSettings(weighted = False, directed = True)
         graph = GraphFactory.get_graph(A, settings)
         community = graph.get_measure(MeasureCommunityStructure, 'community_structure')
         self.assertCategorizationEqual(community, [0, 0, 0, 1])
@@ -20,7 +20,7 @@ class TestCommunity(TestUtility):
                       [0, 0, 0, 0, 0, 0],
                       [1, 1, 0, 1, 1, 0],
                       [0, 0, 1, 1, 0, 0]])
-        settings = GraphSettings.get_bu()
+        settings = GraphSettings(weighted = False, directed = False)
         graph = GraphFactory.get_graph(A, settings)
         community = graph.get_measure(MeasureCommunityStructure, 'community_structure')
         self.assertCategorizationEqual(community, [0,0,1,1,0,1])
@@ -35,7 +35,7 @@ class TestCommunity(TestUtility):
                       [0, 0, 0, 0, 0, 0, 0, 0.2],
                       [0, 0, 0, 0, 0, 0, 0, 0.8],
                       [0, 0, 0, 0, 0, 0, 0, 0]])
-        settings = GraphSettings.get_wd()
+        settings = GraphSettings(weighted = True, directed = True)
         graph = GraphFactory.get_graph(A, settings)
         community = graph.get_measure(MeasureCommunityStructure, 'community_structure')
         self.assertCategorizationEqual(community, [0,0,0,0,1,1,1,1])
@@ -50,7 +50,7 @@ class TestCommunity(TestUtility):
                       [0, 0, 0, 0, 0, 0, 0, 0.2],
                       [0, 0, 0, 0, 0, 0, 0, 0.8],
                       [0, 0, 0, 0, 0, 0, 0, 0]])
-        settings = GraphSettings.get_wu()
+        settings = GraphSettings(weighted = True, directed = False)
         graph = GraphFactory.get_graph(A, settings)
         community = graph.get_measure(MeasureCommunityStructure, 'community_structure')
         self.assertCategorizationEqual(community, [0,0,0,0,1,1,1,1])

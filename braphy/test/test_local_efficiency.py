@@ -14,7 +14,7 @@ class TestLocalEfficiency(TestUtility):
                       [0, 0, 0, 0, 0, 0, 0, 1],
                       [0, 0, 0, 0, 0, 0, 0, 1],
                       [0, 0, 0, 0, 0, 0, 0, 0]])
-        settings = GraphSettings.get_bd()
+        settings = GraphSettings(weighted = False, directed = True)
         graph = GraphFactory.get_graph(A, settings)
         local_efficiency = [0.3333, 0.3333, 0.3750, 0.3333, 0.1000, 0, 0, 0]
         self.assertSequenceAlmostEqual(graph.get_measure(MeasureLocalEfficiency,
@@ -29,7 +29,7 @@ class TestLocalEfficiency(TestUtility):
                       [0, 0, 0, 0, 0, 0, 0, 1],
                       [0, 0, 0, 0, 0, 0, 0, 1],
                       [0, 0, 0, 0, 0, 0, 0, 0]])
-        settings = GraphSettings.get_bu()
+        settings = GraphSettings(weighted = False, directed = False)
         graph = GraphFactory.get_graph(A, settings)
         local_efficiency = [0.8333, 0.8333, 0.8333, 0.8333, 0.2500, 0, 0, 0]
         self.assertSequenceAlmostEqual(graph.get_measure(MeasureLocalEfficiency,
@@ -44,7 +44,7 @@ class TestLocalEfficiency(TestUtility):
                       [0, 0, 0, 0, 0, 0, 0, 0.2],
                       [0, 0, 0, 0, 0, 0, 0, 0.8],
                       [0, 0, 0, 0, 0, 0, 0, 0]])
-        settings = GraphSettings.get_wd()
+        settings = GraphSettings(weighted = True, directed = True)
         graph = GraphFactory.get_graph(A, settings)
         local_efficiency = [0, 0, 0.0117, 0, 0.0156, 0, 0, 0]
         self.assertSequenceAlmostEqual(graph.get_measure(MeasureLocalEfficiency,
@@ -59,7 +59,7 @@ class TestLocalEfficiency(TestUtility):
                       [0, 0, 0, 0, 0, 0, 0, 0.2],
                       [0, 0, 0, 0, 0, 0, 0, 0.8],
                       [0, 0, 0, 0, 0, 0, 0, 0]])
-        settings = GraphSettings.get_wu()
+        settings = GraphSettings(weighted = True, directed = False)
         graph = GraphFactory.get_graph(A, settings)
         local_efficiency = [0.1595, 0.1353, 0.0992, 0.1353, 0.1105, 0, 0, 0]
         self.assertSequenceAlmostEqual(graph.get_measure(MeasureLocalEfficiency,

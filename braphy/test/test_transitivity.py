@@ -9,7 +9,7 @@ class TestTransitivity(unittest.TestCase):
                       [1, 0, 1, 0],
                       [1, 1, 0, 1],
                       [0, 0, 1, 0]])
-        settings = GraphSettings.get_bd()
+        settings = GraphSettings(weighted = False, directed = True)
         graph = GraphFactory.get_graph(A, settings)
         self.assertAlmostEqual(graph.get_measure(MeasureTransitivity, 'transitivity'), 0.45)
 
@@ -18,7 +18,7 @@ class TestTransitivity(unittest.TestCase):
                       [1, 0, 1, 0],
                       [1, 1, 0, 1],
                       [0, 0, 1, 0]])
-        settings = GraphSettings.get_bu()
+        settings = GraphSettings(weighted = False, directed = False)
         graph = GraphFactory.get_graph(A, settings)
         self.assertAlmostEqual(graph.get_measure(MeasureTransitivity, 'transitivity'), 0.6)
 
@@ -27,7 +27,7 @@ class TestTransitivity(unittest.TestCase):
                       [1, 0, 1, 0],
                       [1, 1, 0, 1],
                       [0, 0, 1, 0]])
-        settings = GraphSettings.get_wd()
+        settings = GraphSettings(weighted = True, directed = True)
         graph = GraphFactory.get_graph(A, settings)
         self.assertAlmostEqual(graph.get_measure(MeasureTransitivity, 'transitivity'), 0.225)
 
@@ -36,7 +36,7 @@ class TestTransitivity(unittest.TestCase):
                       [1, 0, 1, 0],
                       [1, 1, 0, 1],
                       [0, 0, 1, 0]])
-        settings = GraphSettings.get_wu()
+        settings = GraphSettings(weighted = True, directed = False)
         graph = GraphFactory.get_graph(A, settings)
         self.assertAlmostEqual(graph.get_measure(MeasureTransitivity, 'transitivity'), 0.9)
 

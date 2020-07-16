@@ -11,7 +11,7 @@ from matplotlib import pyplot as plt
 class TestRandomGraphBD(unittest.TestCase):
     def test_graph1(self):
         A = np.array([[0., 1., 0., 1.], [0., 0., 1., 0.], [0., 0., 0., 0.], [0., 1., 1., 0.]])
-        settings = GraphSettings.get_bd()
+        settings = GraphSettings(weighted = False, directed = True)
         graph = GraphFactory.get_graph(A, settings)
         random = graph.get_random_graph()
         random = GraphBD(random, graph.settings)
@@ -34,7 +34,7 @@ class TestRandomGraphBD(unittest.TestCase):
                       [0., 0., 0., 0., 0., 1., 1., 0., 0., 0.],
                       [0., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
                       [0., 0., 0., 0., 1., 0., 0., 0., 0., 0.]])
-        settings = GraphSettings.get_bd()
+        settings = GraphSettings(weighted = False, directed = True)
         graph = GraphFactory.get_graph(A, settings)
 
         char_path_length = graph.get_measure(MeasurePathLength, 'char_path_length')
@@ -101,7 +101,7 @@ class TestRandomGraphBD(unittest.TestCase):
                       [0., 0., 0., 0., 0., 0., 0., 1., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 1.],
                       [0., 0., 0., 1., 0., 0., 0., 1., 1., 0., 0., 1., 0., 0., 0., 0., 0., 0., 0., 0.],
                       [0., 0., 0., 0., 0., 0., 0., 1., 1., 1., 1., 0., 0., 0., 0., 0., 0., 0., 0., 0.]])
-        settings = GraphSettings.get_bd()
+        settings = GraphSettings(weighted = False, directed = True)
         graph = GraphFactory.get_graph(A, settings)
 
         char_path_length = graph.get_measure(MeasurePathLength, 'char_path_length')
@@ -167,7 +167,7 @@ class TestRandomGraphBD(unittest.TestCase):
                       [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 1., 0., 0., 0., 0.],
                       [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 1.],
                       [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 1., 0., 0., 0.]])
-        settings = GraphSettings.get_bd()
+        settings = GraphSettings(weighted = False, directed = True)
         graph = GraphFactory.get_graph(A, settings)
 
         char_path_length = graph.get_measure(MeasurePathLength, 'char_path_length')
@@ -253,7 +253,7 @@ class TestRandomGraphBD(unittest.TestCase):
                       [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0],
                       [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,1],
                       [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0]])
-        settings = GraphSettings.get_bd()
+        settings = GraphSettings(weighted = False, directed = True)
         graph = GraphFactory.get_graph(A, settings)
 
         char_path_length = graph.get_measure(MeasurePathLength, 'char_path_length')
@@ -339,7 +339,7 @@ class TestRandomGraphBD(unittest.TestCase):
                       [0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0],
                       [0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,1],
                       [0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0]])
-        settings = GraphSettings.get_bd()
+        settings = GraphSettings(weighted = False, directed = True)
         graph = GraphFactory.get_graph(A, settings)
 
         char_path_length = graph.get_measure(MeasurePathLength, 'char_path_length')

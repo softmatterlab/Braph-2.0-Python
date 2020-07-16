@@ -10,7 +10,7 @@ class TestTriangles(TestUtility):
                       [1,0,0,1],
                       [0,1,0,1],
                       [0,0,0,0]])
-        settings = GraphSettings.get_bd()
+        settings = GraphSettings(weighted = False, directed = True)
         graph = GraphFactory.get_graph(A, settings)
         self.assertSequenceEqual(graph.get_measure(MeasureTriangles, 'triangles').tolist(),
                                  [1, 1, 1, 0])
@@ -21,7 +21,7 @@ class TestTriangles(TestUtility):
                       [0,1,0,1,0],
                       [0,0,0,0,1],
                       [0,0,0,1,0]])
-        settings = GraphSettings.get_bu()
+        settings = GraphSettings(weighted = False, directed = False)
         graph = GraphFactory.get_graph(A, settings)
         self.assertSequenceEqual(graph.get_measure(MeasureTriangles, 'triangles').tolist(),
                                  [1, 2, 2, 1, 0])
@@ -31,7 +31,7 @@ class TestTriangles(TestUtility):
                       [0.5,0,0,0.2],
                       [0,0.1,0,0.4],
                       [0,0,0,0]])
-        settings = GraphSettings.get_wd()
+        settings = GraphSettings(weighted = True, directed = True)
         graph = GraphFactory.get_graph(A, settings)
         self.assertSequenceAlmostEqual(graph.get_measure(MeasureTriangles, 'triangles').tolist(),
                                        [0.1069, 0.1069, 0.1069, 0], places=4)
@@ -41,7 +41,7 @@ class TestTriangles(TestUtility):
                       [0.5,0,0.1,0.2],
                       [0.1,0.1,0,0.4],
                       [0.8,0.2,0.4,0]])
-        settings = GraphSettings.get_wu()
+        settings = GraphSettings(weighted = True, directed = False)
         graph = GraphFactory.get_graph(A, settings)
         self.assertSequenceAlmostEqual(graph.get_measure(MeasureTriangles, 'triangles').tolist(),
                                        [1.1492, 1.0024, 0.8606, 1.1855], places=4)

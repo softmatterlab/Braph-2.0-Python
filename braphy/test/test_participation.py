@@ -14,7 +14,7 @@ class TestParticipation(TestUtility):
                       [0, 0, 0, 0, 0, 0, 0, 1],
                       [0, 0, 0, 0, 0, 0, 0, 1],
                       [0, 0, 0, 0, 0, 0, 0, 0]])
-        settings = GraphSettings.get_bd()
+        settings = GraphSettings(weighted = False, directed = True)
         graph = GraphFactory.get_graph(A, settings)
         participation = [0, 0.5, 0.5, 0.5, 0, 0, 0, 0]
         self.assertSequenceAlmostEqual(graph.get_measure(MeasureParticipation, 'participation'),
@@ -24,7 +24,7 @@ class TestParticipation(TestUtility):
         A = np.array([[0, 1, 0],
                       [1, 0, 1],
                       [1, 1, 0]])
-        settings = GraphSettings.get_bd()
+        settings = GraphSettings(weighted = False, directed = True)
         graph = GraphFactory.get_graph(A, settings)
         participation = [0, 0, 0]
         self.assertSequenceAlmostEqual(graph.get_measure(MeasureParticipation, 'participation'),
@@ -39,7 +39,7 @@ class TestParticipation(TestUtility):
                       [0, 0, 0, 0, 0, 0, 0, 1],
                       [0, 0, 0, 0, 0, 0, 0, 1],
                       [0, 0, 0, 0, 0, 0, 0, 0]])
-        settings = GraphSettings.get_bu()
+        settings = GraphSettings(weighted = False, directed = False)
         graph = GraphFactory.get_graph(A, settings)
         participation = [0, 0.4444, 0.3750, 0.4444, 0.4800, 0, 0, 0]
         self.assertSequenceAlmostEqual(graph.get_measure(MeasureParticipation, 'participation'),
@@ -54,7 +54,7 @@ class TestParticipation(TestUtility):
                       [0, 0, 0, 0, 0, 0, 0, 0.2],
                       [0, 0, 0, 0, 0, 0, 0, 0.8],
                       [0, 0, 0, 0, 0, 0, 0, 0]])
-        settings = GraphSettings.get_wu()
+        settings = GraphSettings(weighted = True, directed = False)
         graph = GraphFactory.get_graph(A, settings)
         participation = [0, 0.2449, 0.2449, 0.2449, 0.48, 0, 0, 0]
         self.assertSequenceAlmostEqual(graph.get_measure(MeasureParticipation, 'participation'),
@@ -69,7 +69,7 @@ class TestParticipation(TestUtility):
                       [0, 0, 0, 0, 0, 0, 0, 0.2],
                       [0, 0, 0, 0, 0, 0, 0, 0.8],
                       [0, 0, 0, 0, 0, 0, 0, 0]])
-        settings = GraphSettings.get_wd()
+        settings = GraphSettings(weighted = True, directed = True)
         graph = GraphFactory.get_graph(A, settings)
         participation = [0, 0.2778, 0, 0.2778, 0, 0, 0, 0]
         self.assertSequenceAlmostEqual(graph.get_measure(MeasureParticipation, 'participation'),

@@ -10,7 +10,7 @@ class TestDegree(unittest.TestCase):
                       [1, 1, 0, 0, 1, 1, 0, 1, 1, 1], [1, 0, 1, 1, 1, 0, 0, 0, 0, 0],
                       [1, 1, 0, 0, 1, 1, 0, 1, 1, 1], [0, 1, 0, 1, 1, 1, 0, 1, 1, 0],
                       [0, 1, 1, 0, 1, 1, 1, 0, 1, 0], [1, 0, 1, 0, 1, 1, 0, 1, 1, 0]])
-        settings = GraphSettings.get_bd()
+        settings = GraphSettings(weighted = False, directed = True)
         graph = GraphFactory.get_graph(A, settings)
         self.assertSequenceEqual(graph.get_measure(MeasureDegree, 'degree').tolist(),
                                  [10, 7, 8, 10, 12, 11, 9, 10, 12, 9])
@@ -28,7 +28,7 @@ class TestDegree(unittest.TestCase):
                       [1, 1, 0, 0, 1, 1, 0, 1, 1, 1], [1, 0, 1, 1, 1, 0, 0, 0, 0, 0],
                       [1, 1, 0, 0, 1, 1, 0, 1, 1, 1], [0, 1, 0, 1, 1, 1, 0, 1, 1, 0],
                       [0, 1, 1, 0, 1, 1, 1, 0, 1, 0], [1, 0, 1, 0, 1, 1, 0, 1, 1, 0]])
-        settings = GraphSettings.get_bu()
+        settings = GraphSettings(weighted = False, directed = False)
         graph = GraphFactory.get_graph(A, settings)
         self.assertSequenceEqual(graph.get_measure(MeasureDegree, 'degree').tolist(),
                                  [7, 6, 6, 7, 8, 9, 8, 8, 8, 7])
@@ -58,7 +58,7 @@ class TestDegree(unittest.TestCase):
                       [13, 0.0, 1.2, 5.7, -0.01],
                       [5.5, 8.2, 0.3, 0.0005, -0.5],
                       [1, 0.0, 345, 8.7, -2]])
-        settings = GraphSettings.get_wu()
+        settings = GraphSettings(weighted = True, directed = False)
         graph = GraphFactory.get_graph(A, settings)
         self.assertSequenceEqual(graph.get_measure(MeasureDegree, 'degree').tolist(),
                                  [4, 3, 4, 4, 3])

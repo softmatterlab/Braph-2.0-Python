@@ -6,7 +6,7 @@ import numpy as np
 class TestAssortativity(unittest.TestCase):
     def test_bd(self):
         A = np.array([[0, 1, 1], [1, 0, 0], [1, 0, 0]])
-        settings = GraphSettings.get_bd()
+        settings = GraphSettings(weighted = False, directed = True)
         graph = GraphFactory.get_graph(A, settings)
         self.assertEqual(graph.get_measure(MeasureAssortativity, 'assortativity_out_in'), -1)
         self.assertEqual(graph.get_measure(MeasureAssortativity, 'assortativity_in_out'), -1)
@@ -24,7 +24,7 @@ class TestAssortativity(unittest.TestCase):
                       [0, 1, 0, 1, 1, 1, 0, 1, 1, 0],
                       [0, 1, 1, 0, 1, 1, 1, 0, 1, 0],
                       [1, 0, 1, 0, 1, 1, 0, 1, 1, 0]])
-        settings = GraphSettings.get_bd()
+        settings = GraphSettings(weighted = False, directed = True)
         graph = GraphFactory.get_graph(A, settings)
         self.assertAlmostEqual(graph.get_measure(MeasureAssortativity, 'assortativity_out_in'), -0.0840, places = 4)
         self.assertAlmostEqual(graph.get_measure(MeasureAssortativity, 'assortativity_in_out'), -0.0420, places = 4)
@@ -42,7 +42,7 @@ class TestAssortativity(unittest.TestCase):
                       [0, 1, 0, 1, 1, 1, 0, 1, 1, 0],
                       [0, 1, 1, 0, 1, 1, 1, 0, 1, 0],
                       [1, 0, 1, 0, 1, 1, 0, 1, 1, 0]])
-        settings = GraphSettings.get_bu()
+        settings = GraphSettings(weighted = False, directed = False)
         graph = GraphFactory.get_graph(A, settings) #max
         self.assertAlmostEqual(graph.get_measure(MeasureAssortativity, 'assortativity'), -0.1903485)
 
@@ -52,7 +52,7 @@ class TestAssortativity(unittest.TestCase):
                       [13, 0.0, 1.2, 5.7, -0.01],
                       [5.5, 8.2, 0.3, 0.0005, -0.5],
                       [1, 0.0, 345, 8.7, -2]])
-        settings = GraphSettings.get_wd()
+        settings = GraphSettings(weighted = True, directed = True)
         graph = GraphFactory.get_graph(A, settings)
         self.assertAlmostEqual(graph.get_measure(MeasureAssortativity, 'assortativity_out_in'), 0.0451, places = 4)
         self.assertAlmostEqual(graph.get_measure(MeasureAssortativity, 'assortativity_in_out'), -0.0973, places = 4)
@@ -65,7 +65,7 @@ class TestAssortativity(unittest.TestCase):
                       [13, 0.0, 1.2, 5.7, -0.01],
                       [5.5, 8.2, 0.3, 0.0005, -0.5],
                       [1, 0.0, 345, 8.7, -2]])
-        settings = GraphSettings.get_wu()
+        settings = GraphSettings(weighted = True, directed = False)
         graph = GraphFactory.get_graph(A, settings)
         self.assertAlmostEqual(graph.get_measure(MeasureAssortativity, 'assortativity'), -0.166126077)
 

@@ -7,7 +7,7 @@ class TestSmallWorldness(unittest.TestCase):
     
     def test_graphBD(self):
         A=np.array([[0,1,1,0,1],[1,0,1,0,1],[0,1,1,0,1],[0,1,0,1,0],[1,0,1,0,0]])
-        settings = GraphSettings.get_bd()
+        settings = GraphSettings(weighted = False, directed = True)
         graph = GraphFactory.get_graph(A, settings)
         #print(graph.get_measure(MeasureSmallWorldness, 'small_worldness'))
         self.assertTrue(1,1)
@@ -16,7 +16,7 @@ class TestSmallWorldness(unittest.TestCase):
     def test_graphBU(self):
         #A=np.array([[0,1,1,0,1],[1,0,1,0,1],[0,1,1,0,1],[0,1,0,1,0],[1,0,1,0,0]])
         A = np.random.randint(2, size=(10,10))
-        settings = GraphSettings.get_bu()
+        settings = GraphSettings(weighted = False, directed = False)
         graph = GraphFactory.get_graph(A, settings)
         #print(graph.get_measure(MeasureSmallWorldness, 'small_worldness'))
         self.assertTrue(1,1)
