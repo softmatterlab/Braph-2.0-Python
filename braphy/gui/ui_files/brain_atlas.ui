@@ -338,10 +338,6 @@ p, li { white-space: pre-wrap; }
     <property name="title">
      <string>Subject Cohorts</string>
     </property>
-    <addaction name="actionNew_MRI_Cohort"/>
-    <addaction name="actionNew_fMRI_Cohort"/>
-    <addaction name="actionNew_EEG_Cohort"/>
-    <addaction name="actionNew_PET_Cohort"/>
    </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="title">

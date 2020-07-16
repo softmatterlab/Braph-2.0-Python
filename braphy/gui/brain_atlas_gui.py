@@ -4,8 +4,9 @@ import json
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from PyQt5.QtWidgets import *
 from braphy.atlas.brain_atlas import BrainAtlas
-from braphy.utility.helper_functions import abs_path_from_relative, load_nv, \
-                                            FloatDelegate, float_to_string, get_subject_class
+from braphy.utility.helper_functions import (abs_path_from_relative, load_nv,
+                                            FloatDelegate, float_to_string,
+                                            list_data_types, get_subject_class)
 import numpy as np
 from braphy.gui.exit_dialog import ExitDialog
 
@@ -40,12 +41,6 @@ class BrainAtlasGui(ExitDialog, Ui_MainWindow):
         self.loaded_mesh_data = None
         self.brainWidget.add_selected_observer(self.set_selected)
         self.update_table()
-
-        if not AppWindow:
-            self.actionNew_MRI_Cohort.setEnabled(False)
-            self.actionNew_fMRI_Cohort.setEnabled(False)
-            self.actionNew_EEG_Cohort.setEnabled(False)
-            self.actionNew_PET_Cohort.setEnabled(False)
 
     def to_file(self, atlas_file):
         with open(atlas_file, 'w') as f:
@@ -224,12 +219,16 @@ class BrainAtlasGui(ExitDialog, Ui_MainWindow):
         self.actionGenerate_figure.triggered.connect(self.brainWidget.generate_figure)
         self.actionBrainViewOpen.triggered.connect(self.brain_view_open)
 
-        self.actionNew_MRI_Cohort.triggered.connect(self.new_mri_cohort)
-        self.actionNew_fMRI_Cohort.triggered.connect(self.new_fmri_cohort)
-        self.actionNew_EEG_Cohort.triggered.connect(self.new_eeg_cohort)
-        self.actionNew_PET_Cohort.triggered.connect(self.new_pet_cohort)
-
         self.actionAbout.triggered.connect(self.about)
+
+        self.init_cohort_actions()
+
+    def init_cohort_actions(self):
+        for data_type in list_data_types():
+            action = self.menuSubject_Cohorts.addAction('New {} Cohort ...'.format(data_type))
+            action.triggered.connect(lambda state, x = data_type: self.new_cohort(x))
+            if not self.AppWindow:
+                action.setEnabled(False)
 
     def init_table(self):
         self.tableWidget.cellChanged.connect(self.change_cell)
@@ -407,17 +406,9 @@ class BrainAtlasGui(ExitDialog, Ui_MainWindow):
     def brain_view_open(self):
         self.comboBoxMeshFile.setCurrentText('Open...')
 
-    def new_mri_cohort(self):
-        self.AppWindow.cohort(atlas = self.atlas, brain_mesh_data = self.brain_mesh_data, subject_class = get_subject_class('SubjectMRI'))
-
-    def new_fmri_cohort(self):
-        self.AppWindow.cohort(atlas = self.atlas, brain_mesh_data = self.brain_mesh_data, subject_class = get_subject_class('SubjectfMRI'))
-
-    def new_eeg_cohort(self):
-        pass
-
-    def new_pet_cohort(self):
-        pass
+    def new_cohort(self, data_type):
+        subject_type = 'Subject{}'.format(data_type)
+        self.AppWindow.cohort(atlas = self.atlas, brain_mesh_data = self.brain_mesh_data, subject_class = get_subject_class(subject_type))
 
     def about(self):
         QMessageBox.about(self, 'About', 'Brain Atlas Editor')
