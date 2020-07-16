@@ -225,15 +225,15 @@ class CorrelationMatrixWidget(Base, Form):
 
     def set_cursor(self, file_name):
         cursor_file = abs_path_from_relative(__file__, file_name)
-        pm = QtGui.QPixmap(cursor_file)
+        pm = QtGui.QPixmap(cursor_file).scaled(15,15, QtCore.Qt.KeepAspectRatio)
         cursor = QtGui.QCursor(pm)
-        self.setCursor(cursor)
+        QtGui.QApplication.setOverrideCursor(cursor)
 
     def inspect(self, checked):
         if checked:
-            self.set_cursor('../icons/cursor.png')
+            self.set_cursor('../icons/icon_inspect.png')
         else:
-            self.unsetCursor()
+            QtGui.QApplication.restoreOverrideCursor()
             self.correlationMatrix.clear_text()
             self.correlationMatrix.draw()
         self.correlationMatrix.mouse_mode_inspect = checked
