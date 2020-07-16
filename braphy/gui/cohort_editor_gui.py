@@ -25,10 +25,7 @@ class CohortEditor(ExitDialog, Ui_MainWindow):
         QtWidgets.QMainWindow.__init__(self, parent = None)
         self.setupUi(self)
 
-        if subject_class.structural():
-            self.setWindowTitle('MRI Cohort Editor')
-        elif subject_class.functional():
-            self.setWindowTitle('fMRI Cohort Editor')
+        self.setWindowTitle('{} Cohort Editor'.format(self.subject_class.data_type()))
 
         self.brain_view_options_widget = BrainViewOptionsWidget(parent=self.tabBrain)
         self.brain_view_options_widget.raise_()

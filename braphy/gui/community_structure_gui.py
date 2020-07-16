@@ -324,10 +324,11 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
                                                                       brain_mesh_data = self.brain_mesh_data)
         group = self.comboBoxGroup.currentText()
         subject = self.comboBoxSubject.currentText()
+        data_type = self.analysis.cohort.subject_class.data_type():
         if self.analysis.is_structural():
-            self.subgraph_analysis_gui.setWindowTitle('MRI Subgraph Analysis: Group {}, Community {}'.format(group, column))
+            self.subgraph_analysis_gui.setWindowTitle('{} Subgraph Analysis: Group {}, Community {}'.format(data_type, group, column))
         else:
-            self.subgraph_analysis_gui.setWindowTitle('fMRI Subgraph Analysis: Group {}, Subject {}, Community {}'.format(group, subject, column))
+            self.subgraph_analysis_gui.setWindowTitle('{} Subgraph Analysis: Group {}, Subject {}, Community {}'.format(data_type, group, subject, column))
         self.subgraph_analysis_gui.show()
 
     def resize_brain(self, event):
