@@ -66,8 +66,12 @@ class MainWindow(ExitDialog, Ui_MainWindow):
             self.cohort_editor_gui = CohortEditor(subject_class = subject_class, AppWindow = self)
         self.cohort_editor_gui.show()
 
-    def graph_analysis(self):
-        self.graph_analysis_gui = GraphAnalysis(subject_class = self.subject_class, AppWindow = self)
+    def graph_analysis(self, cohort = None, brain_mesh_data = None):
+        if not cohort:
+            subject_class = self.subject_class
+        else:
+            subject_class = cohort.subject_class
+        self.graph_analysis_gui = GraphAnalysis(subject_class = subject_class, AppWindow = self, cohort = cohort, brain_mesh_data = brain_mesh_data)
         self.graph_analysis_gui.show()
 
     def data_type_changed(self):

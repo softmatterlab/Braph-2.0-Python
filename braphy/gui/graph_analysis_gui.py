@@ -19,7 +19,7 @@ qtCreatorFile = abs_path_from_relative(__file__, "ui_files/graph_analysis.ui")
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 
 class GraphAnalysis(ExitDialog, Ui_MainWindow):
-    def __init__(self, subject_class, AppWindow = None, analysis = None, brain_mesh_data = None):
+    def __init__(self, subject_class, AppWindow = None, cohort = None, analysis = None, brain_mesh_data = None):
         if AppWindow:
             self.AppWindow = AppWindow
         QtWidgets.QMainWindow.__init__(self, parent = None)
@@ -58,6 +58,12 @@ class GraphAnalysis(ExitDialog, Ui_MainWindow):
         if analysis:
             self.analysis = analysis
             self.init_analysis()
+        if cohort:
+            assert same_class(cohort.subject_class, self.subject_class), \
+                   'Cohort subject class {} does not match graph analysis subject class: {}'.format(cohort.subject_class, self.subject_class)
+            self.set_cohort(cohort)
+        if brain_mesh_data:
+            self.brain_mesh_data = brain_mesh_data
 
     def to_dict(self):
         d = {}
@@ -233,11 +239,14 @@ class GraphAnalysis(ExitDialog, Ui_MainWindow):
                 if len(cohort.groups) == 0 or len(cohort.subjects) == 0:
                     self.import_error('Can only perform an analysis on a cohort with groups and subjects.')
                     return
-            graph_settings = self.get_graph_settings()
-            analysis = self.analysis_class(cohort, graph_settings)
-            self.analysis = analysis
-            self.init_analysis()
-            self.set_graph_type(self.comboBoxGraph.currentText())
+                self.set_cohort(cohort)
+
+    def set_cohort(self, cohort):
+        graph_settings = self.get_graph_settings()
+        analysis = self.analysis_class(cohort, graph_settings)
+        self.analysis = analysis
+        self.init_analysis()
+        self.set_graph_type(self.comboBoxGraph.currentText())
 
     def init_analysis(self):
         self.textAnalysisName.setText(self.analysis.name)

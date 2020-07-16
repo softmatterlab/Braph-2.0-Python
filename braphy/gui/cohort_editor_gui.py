@@ -247,7 +247,7 @@ class CohortEditor(ExitDialog, Ui_MainWindow):
             self.save_as()
 
     def new_graph_analysis(self):
-        self.AppWindow.graph_analysis()
+        self.AppWindow.graph_analysis(cohort = self.cohort, brain_mesh_data = self.brain_mesh_data)
 
     def about(self):
         QMessageBox.about(self, 'About', 'Cohort Editor')
