@@ -101,16 +101,16 @@ def list_data_types():
     files = os.listdir(workflow_dir)
     for f in files:
         if os.path.isdir(os.path.join(workflow_dir, f)) and not f.startswith('_'):
-            data_types.append(f)
+            data_types.append(f.capitalize())
     return data_types
 
 def get_subject_class(subject_class_string):
-    data_type = subject_class_string.split("Subject")[1]
+    data_type = subject_class_string.split("Subject")[1].lower()
     s = 'braphy.workflows.{}.subject_{}'.format(data_type, data_type)
     return getattr(importlib.import_module(s), subject_class_string)
 
 def get_analysis_class(analysis_class_string):
-    data_type = analysis_class_string.split("Analysis")[1]
+    data_type = analysis_class_string.split("Analysis")[1].lower()
     s = 'braphy.workflows.{}.analysis_{}'.format(data_type, data_type)
     return getattr(importlib.import_module(s), analysis_class_string)
 

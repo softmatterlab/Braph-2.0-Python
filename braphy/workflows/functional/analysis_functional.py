@@ -1,13 +1,13 @@
 from braphy.analysis.analysis import Analysis
-from braphy.workflows.fMRI.measurement_fMRI import MeasurementfMRI
-from braphy.workflows.fMRI.comparison_fMRI import ComparisonfMRI
+from braphy.workflows.functional.measurement_functional import MeasurementFunctional
+from braphy.workflows.functional.comparison_functional import ComparisonFunctional
 from braphy.graph.measures.measure_community_structure import MeasureCommunityStructure
 from braphy.utility.permutation import Permutation
 from braphy.utility.stat_functions import StatFunctions as stat
 from braphy.graph.graph_factory import GraphFactory
 import numpy as np
 
-class AnalysisfMRI(Analysis):
+class AnalysisFunctional(Analysis):
     def __init__(self, cohort, graph_settings, name = 'analysis', measurements = None, random_comparisons = None, comparisons = None):
         super().__init__(cohort, graph_settings, name, measurements, random_comparisons, comparisons)
 
@@ -29,7 +29,7 @@ class AnalysisfMRI(Analysis):
         values = []
         for graph in graphs:
             values.append(graph.get_measure(measure_class, sub_measure, save = False))
-        measurement = MeasurementfMRI(group_index, measure_class, sub_measure, values, self.graph_settings.value_binary)
+        measurement = MeasurementFunctional(group_index, measure_class, sub_measure, values, self.graph_settings.value_binary)
         return measurement
 
     def calculate_random_comparison(self, measure_class, sub_measure, group):
@@ -57,7 +57,7 @@ class AnalysisfMRI(Analysis):
         CI_lower = np.random.uniform(difference_mean*np.abs(difference_mean), difference_mean)
         CI_upper = np.random.uniform(difference_mean, difference_mean*difference_mean)
 
-        comparison = ComparisonfMRI(groups, measure_class, sub_measure, permutation_diffs,
+        comparison = ComparisonFunctional(groups, measure_class, sub_measure, permutation_diffs,
                                     (p1, p2), (CI_lower, CI_upper), (measures_1, measures_2), permutations, self.graph_settings.value_binary, longitudinal)
         return comparison
 

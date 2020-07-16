@@ -7,7 +7,7 @@ import xml.etree.ElementTree as ET
 import pandas as pd
 import numpy as np
 
-class SubjectfMRI(Subject):
+class SubjectFunctional(Subject):
     def __init__(self, id = 'sub_id', size = 0):
         super().__init__(id = id, size = size)
 
@@ -24,18 +24,20 @@ class SubjectfMRI(Subject):
         return s
 
     def from_txt(file_txt, data_length):
-        raise Exception("Loading fMRI from txt not yet implemented")
+        raise Exception("Loading functional subject from txt not yet implemented")
 
     def from_xml(file_xml, data_length):
         subjects = []
         with open(file_xml, 'r') as f:
             tree = ET.parse(f)
             root = tree.getroot()
-            assert root.find('fMRICohort/fMRISubject') != None, "Invalid file"
-            for item in root.findall('fMRICohort/fMRISubject'):
+            functional = 'FunctionalCohort/FunctionalSubject'
+            fmri = 'fMRICohort/fMRISubject'
+            assert root.find(functional) or root.find(fmri), "Invalid file"
+            for item in root.findall(functional).extend(root.findall(fmri)):
                 item = item.attrib
                 subject_id = item['code']
-                subject = SubjectfMRI(id = subject_id)
+                subject = SubjectFunctional(id = subject_id)
                 fmri_data = []
                 data = item['data'].strip('[]')
                 for v in data.split(";"):
@@ -53,7 +55,7 @@ class SubjectfMRI(Subject):
             files_xlsx = [files_xlsx]
         for file_xlsx in files_xlsx:
             subject_id = file_xlsx.split('/')[-1].split('.')[0]
-            subject = SubjectfMRI(id = subject_id)
+            subject = SubjectFunctional(id = subject_id)
             data = pd.read_excel(file_xlsx)
             first_row = np.array(data.columns)
             data = np.vstack([first_row, np.array(data)])

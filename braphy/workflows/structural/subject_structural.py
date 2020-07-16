@@ -7,7 +7,7 @@ import pandas as pd
 import numpy as np
 from scipy import stats, linalg
 
-class SubjectMRI(Subject):
+class SubjectStructural(Subject):
     def __init__(self, id = 'sub_id', size = 0):
         super().__init__(id = id, size = size)
 
@@ -30,7 +30,7 @@ class SubjectMRI(Subject):
                     continue
                 assert len(line) == data_length + 1, "Data does not match the brain atlas"
                 subject_id = line[0]
-                subject = SubjectMRI(id = subject_id)
+                subject = SubjectStructural(id = subject_id)
                 mri_data = np.array(line[1:]).astype(float)
                 subject.data_dict['data'].set_value(mri_data)
                 subjects.append(subject)
@@ -41,13 +41,15 @@ class SubjectMRI(Subject):
         with open(file_xml, 'r') as f:
             tree = ET.parse(f)
             root = tree.getroot()
-            assert root.find('MRICohort/MRISubject') != None, "Invalid file"
-            for item in root.findall('MRICohort/MRISubject'):
+            structural = 'StructuralCohort/StructuralSubject'
+            mri = 'MRICohort/MRISubject'
+            assert root.find(structural) or root.find(mri), "Invalid file"
+            for item in root.findall(structural).extend(root.findall(mri)):
                 item = item.attrib
                 for key in ['code', 'data', 'age']:
                     assert key in item.keys(), "{} missing from subject".format(key)
                 subject_id = item['code']
-                subject = SubjectMRI(id = subject_id)
+                subject = SubjectStructural(id = subject_id)
                 mri_data = np.array(item['data'].split()).astype(float)
                 assert len(mri_data) == data_length, "Data does not match the brain atlas"
                 subject.data_dict['age'].set_value(int(item['age']))
@@ -60,7 +62,7 @@ class SubjectMRI(Subject):
         data = np.array(pd.read_excel(file_xlsx))
         for item in data:
             subject_id = item[0]
-            subject = SubjectMRI(id = subject_id)
+            subject = SubjectStructural(id = subject_id)
             try:
                 mri_data = item[1:].astype(float)
             except:

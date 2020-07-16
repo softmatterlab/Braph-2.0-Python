@@ -1,12 +1,13 @@
 from braphy.analysis.analysis import Analysis
-from braphy.workflows.MRI.measurement_MRI import MeasurementMRI
-from braphy.workflows.MRI.comparison_MRI import ComparisonMRI
+from braphy.workflows.structural.measurement_structural import MeasurementStructural
+from braphy.workflows.structural.comparison_structural import ComparisonStructural
 from braphy.graph.measures.measure_community_structure import MeasureCommunityStructure
 from braphy.utility.permutation import Permutation
 from braphy.utility.stat_functions import StatFunctions as stat
 from braphy.graph.graph_factory import GraphFactory
 import numpy as np
-class AnalysisMRI(Analysis):
+
+class AnalysisStructural(Analysis):
     def __init__(self, cohort, graph_settings, name = 'analysis', measurements = None, random_comparisons = None, comparisons = None):
         super().__init__(cohort, graph_settings, name, measurements, random_comparisons, comparisons)
 
@@ -23,7 +24,7 @@ class AnalysisMRI(Analysis):
         graph = self.get_graph(group_index)
         value = graph.get_measure(measure_class, sub_measure, save = False)
 
-        measurement = MeasurementMRI(group_index, measure_class, sub_measure, value, self.graph_settings.value_binary)
+        measurement = MeasurementStructural(group_index, measure_class, sub_measure, value, self.graph_settings.value_binary)
         return measurement
 
     def calculate_random_comparison(self, measure_class, sub_measure, group):
@@ -56,7 +57,7 @@ class AnalysisMRI(Analysis):
         CI_lower = np.random.uniform(difference_mean*np.abs(difference_mean), difference_mean)
         CI_upper = np.random.uniform(difference_mean, difference_mean*difference_mean)
 
-        comparison = ComparisonMRI(groups, measure_class, sub_measure, permutation_diffs,
+        comparison = ComparisonStructural(groups, measure_class, sub_measure, permutation_diffs,
                                    (p1, p2), (CI_lower, CI_upper), (measure_1, measure_2), permutations,self.graph_settings.value_binary, longitudinal)
         return comparison
 

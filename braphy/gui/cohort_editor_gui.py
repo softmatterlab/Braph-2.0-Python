@@ -25,11 +25,11 @@ class CohortEditor(ExitDialog, Ui_MainWindow):
         QtWidgets.QMainWindow.__init__(self, parent = None)
         self.setupUi(self)
 
-        self.setWindowTitle('{} Cohort Editor'.format(self.subject_class.data_type()))
 
         self.brain_view_options_widget = BrainViewOptionsWidget(parent=self.tabBrain)
         self.brain_view_options_widget.raise_()
         self.subject_class = subject_class
+        self.setWindowTitle('{} Cohort Editor'.format(self.subject_class.data_type()))
         if cohort:
             self.cohort = cohort
             self.brain_mesh_data = brain_mesh_data
