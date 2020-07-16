@@ -6,7 +6,7 @@ from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from PyQt5.QtCore import QFileInfo
 from braphy.atlas.brain_region import BrainRegion
 from braphy.gui.brain_atlas_gui import BrainAtlasGui
-from braphy.utility.helper_functions import abs_path_from_relative, load_nv
+from braphy.utility.helper_functions import abs_path_from_relative, load_nv, list_data_types
 from braphy.gui.cohort_editor_gui import CohortEditor
 from braphy.gui.graph_analysis_gui import GraphAnalysis
 from braphy.gui.exit_dialog import ExitDialog
@@ -16,15 +16,6 @@ from PyQt5.QtCore import Qt
 
 qtCreatorFile = abs_path_from_relative(__file__, "ui_files/braph.ui")
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
-
-def list_data_types():
-    data_types = []
-    workflow_dir = abs_path_from_relative(__file__, '../workflows')
-    files = os.listdir(workflow_dir)
-    for f in files:
-        if os.path.isdir(os.path.join(workflow_dir, f)) and not f.startswith('_'):
-            data_types.append(f)
-    return data_types
 
 class MainWindow(ExitDialog, Ui_MainWindow):
     def __init__(self):
@@ -60,7 +51,6 @@ class MainWindow(ExitDialog, Ui_MainWindow):
             button_group.addButton(btn)
             self.layoutDataTypes.addWidget(btn)
         button_group.buttons()[0].click()
-
 
     def brain_atlas(self):
         self.brain_atlas_gui = BrainAtlasGui(self)

@@ -1,9 +1,8 @@
 import numpy as np
 from braphy.utility.stat_functions import StatFunctions as stat
+from braphy.utility.helper_functions import get_subject_class
 from braphy.utility.permutation import Permutation
 import statistics
-from braphy.workflows.MRI.subject_MRI import SubjectMRI
-from braphy.workflows.fMRI.subject_fMRI import SubjectfMRI
 
 class Group:
     def __init__(self, subject_class, subjects = None, name = 'Group', description = '-'):
@@ -25,7 +24,7 @@ class Group:
         return d
 
     def from_dict(d, subjects):
-        subject_class = eval(d['subject_class'])
+        subject_class = get_subject_class(d['subject_class'])
         subjects_in_group = []
         for subject in subjects:
             for group_subject in [subject_class.from_dict(sub) for sub in d['subjects']]:

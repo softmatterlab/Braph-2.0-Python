@@ -1,5 +1,3 @@
-from braphy.workflows.MRI.subject_MRI import SubjectMRI
-from braphy.workflows.fMRI.subject_fMRI import SubjectfMRI
 from braphy.graph.measures import *
 
 class Measurement():

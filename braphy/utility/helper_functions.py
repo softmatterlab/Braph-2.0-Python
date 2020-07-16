@@ -1,5 +1,6 @@
 import numpy as np
 import os
+import importlib
 import subprocess
 from PyQt5.QtGui import QColor
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -93,6 +94,20 @@ def float_to_string(f):
 
 def same_class(c1, c2):
     return c1.__name__ == c2.__name__
+
+def list_data_types():
+    data_types = []
+    workflow_dir = abs_path_from_relative(__file__, '../workflows')
+    files = os.listdir(workflow_dir)
+    for f in files:
+        if os.path.isdir(os.path.join(workflow_dir, f)) and not f.startswith('_'):
+            data_types.append(f)
+    return data_types
+
+def get_subject_class(subject_class_string):
+    data_type = subject_class_string.split("Subject")[1]
+    s = 'braphy.workflows.{}.subject_{}'.format(data_type, data_type)
+    return getattr(importlib.import_module(s), subject_class_string)
 
 @contextmanager
 def wait_cursor():

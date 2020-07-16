@@ -4,8 +4,6 @@ from braphy.cohort.cohort import Cohort
 from braphy.analysis.measurement import Measurement
 from braphy.analysis.comparison import Comparison
 from braphy.analysis.random_comparison import RandomComparison
-from braphy.workflows.MRI.subject_MRI import SubjectMRI
-from braphy.workflows.fMRI.subject_fMRI import SubjectfMRI
 import numpy as np
 from abc import ABC, abstractmethod
 

@@ -3,9 +3,8 @@ import os
 from braphy.cohort.group import Group
 from braphy.atlas.brain_atlas import BrainAtlas
 from braphy.utility.helper_functions import ListManager as lm
+from braphy.utility.helper_functions import get_subject_class
 from braphy.utility.get_version import get_version
-from braphy.workflows.MRI.subject_MRI import SubjectMRI
-from braphy.workflows.fMRI.subject_fMRI import SubjectfMRI
 import numpy as np
 import copy
 
@@ -51,7 +50,7 @@ class Cohort:
 
     def from_dict(d):
         subjects = []
-        subject_class = eval(d['subject_class'])
+        subject_class = get_subject_class(d['subject_class'])
         for subject_dict in d['subjects']:
             subjects.append(subject_class.from_dict(subject_dict))
         groups = []
