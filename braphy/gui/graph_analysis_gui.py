@@ -28,7 +28,7 @@ class GraphAnalysis(ExitDialog, Ui_MainWindow):
         self.init_buttons()
         self.init_actions()
         self.init_comboboxes()
-        self.startAnalysisWidget.init_graph_measures_widget(GraphAnalysis.graph_cls_from_str(self.comboBoxGraph.currentText()))
+        self.startAnalysisWidget.init_graph_measures_widget(self.get_graph_settings().graph_class())
         self.startAnalysisWidget.hide_buttons()
         self.tabWidget.tabBar().hide()
         self.tabWidget.currentChanged.connect(self.tab_changed)
@@ -106,7 +106,7 @@ class GraphAnalysis(ExitDialog, Ui_MainWindow):
         self.brain_view_options_widget.show()
 
     def set_locked(self, locked):
-        lock_items = [self.correlationMatrixWidget, self.textAnalysisName, self.comboBoxGraph,
+        lock_items = [self.correlationMatrixWidget, self.textAnalysisName, self.comboBoxWeighted, self.comboBoxDirected,
                       self.comboBoxCorrelation, self.comboBoxNegative, self.comboBoxBinary,
                       self.btnStartAnalysis, self.groupBoxCommunityStructure, self.startAnalysisWidget,
                       self.comboBoxSymmetrize, self.comboBoxStandardize, self.actionSave, self.actionSave_as]
@@ -167,20 +167,21 @@ class GraphAnalysis(ExitDialog, Ui_MainWindow):
                 action.setVisible(state)
 
     def init_comboboxes(self):
-        graphs = ['weighted undirected', 'weighted directed', 'binary undirected', 'binary directed']
         correlations = ['pearson', 'spearman', 'kendall', 'partial pearson', 'partial spearman']
         negative = ['zero', 'none', 'abs']
         binary = ['threshold', 'density']
         symmetrize = ['sum', 'average', 'min', 'max']
         standardize = ['range', 'threshold']
-        self.comboBoxGraph.addItems(graphs)
+        self.comboBoxWeighted.addItems(['True', 'False'])
+        self.comboBoxDirected.addItems(['True', 'False'])
         self.comboBoxCorrelation.addItems(correlations)
         self.comboBoxNegative.addItems(negative)
         self.comboBoxBinary.addItems(binary)
         self.comboBoxSymmetrize.addItems(symmetrize)
         self.comboBoxStandardize.addItems(standardize)
 
-        self.comboBoxGraph.currentTextChanged.connect(self.set_graph_type)
+        self.comboBoxWeighted.currentTextChanged.connect(lambda signal: self.set_weighted(eval(signal)))
+        self.comboBoxDirected.currentTextChanged.connect(lambda signal: self.set_directed(eval(signal)))
         self.comboBoxCorrelation.currentTextChanged.connect(self.set_correlation)
         self.comboBoxNegative.currentTextChanged.connect(self.set_negative_rule)
         self.comboBoxBinary.currentTextChanged.connect(self.set_binary_rule)
@@ -246,12 +247,14 @@ class GraphAnalysis(ExitDialog, Ui_MainWindow):
         analysis = self.analysis_class(cohort, graph_settings)
         self.analysis = analysis
         self.init_analysis()
-        self.set_graph_type(self.comboBoxGraph.currentText())
+        self.set_graph_type()
 
     def init_analysis(self):
         self.textAnalysisName.setText(self.analysis.name)
         self.btnViewCohort.setEnabled(True)
         self.set_locked(False)
+        self.set_weighted(eval(self.comboBoxWeighted.currentText()))
+        self.set_directed(eval(self.comboBoxDirected.currentText()))
         self.correlationMatrixWidget.init(self.analysis)
         self.set_cohort_labels()
         self.init_correlation_matrix_actions()
@@ -260,10 +263,8 @@ class GraphAnalysis(ExitDialog, Ui_MainWindow):
         self.update_community_number()
 
     def get_graph_settings(self):
-        graph_class = GraphAnalysis.graph_cls_from_str(self.comboBoxGraph.currentText())
-        weighted = graph_class.weighted
-        directed = graph_class.directed
-        measure_list = MeasureParser.list_measures()[graph_class]
+        weighted = eval(self.comboBoxWeighted.currentText())
+        directed = eval(self.comboBoxDirected.currentText())
         gamma = 1
         community_algorithm = 'Louvain'
         rule_negative = self.comboBoxNegative.currentText()
@@ -272,7 +273,7 @@ class GraphAnalysis(ExitDialog, Ui_MainWindow):
         rule_binary = self.comboBoxBinary.currentText()
         value_binary = 0
         rule_correlation = self.comboBoxCorrelation.currentText()
-        graph_settings = GraphSettings(weighted, directed, measure_list, gamma, community_algorithm,
+        graph_settings = GraphSettings(weighted, directed, gamma, community_algorithm,
                                         rule_negative, rule_symmetrize, rule_standardize, rule_binary,
                                         value_binary, rule_correlation)
         return graph_settings
@@ -299,7 +300,8 @@ class GraphAnalysis(ExitDialog, Ui_MainWindow):
         self.btnStartAnalysis.hide()
 
         self.comboBoxCorrelation.setEnabled(False)
-        self.comboBoxGraph.setEnabled(False)
+        self.comboBoxWeighted.setEnabled(False)
+        self.comboBoxDirected.setEnabled(False)
         self.comboBoxNegative.setEnabled(False)
         self.comboBoxBinary.setEnabled(False)
         self.comboBoxSymmetrize.setEnabled(False)
@@ -349,26 +351,22 @@ class GraphAnalysis(ExitDialog, Ui_MainWindow):
     def about(self):
         QMessageBox.about(self, 'About', 'Graph analysis editor')
 
-    def set_graph_type(self, graph_type):
-        self.graph_type = GraphAnalysis.graph_cls_from_str(graph_type)
+    def set_weighted(self, weighted):
+        self.labelBinary.setEnabled(not weighted)
+        self.comboBoxBinary.setEnabled(not weighted)
+        self.labelStandardize.setEnabled(weighted)
+        self.comboBoxStandardize.setEnabled(weighted)
+        self.set_graph_type()
+
+    def set_directed(self, directed):
+        self.labelSymmetrize.setEnabled(not directed)
+        self.comboBoxSymmetrize.setEnabled(not directed)
+        self.set_graph_type()
+
+    def set_graph_type(self):
+        self.graph_type = self.get_graph_settings().graph_class()
         self.analysis.set_graph_type(self.graph_type)
         self.startAnalysisWidget.init_graph_measures_widget(self.graph_type)
-        if self.graph_type.weighted:
-            self.labelBinary.setEnabled(False)
-            self.comboBoxBinary.setEnabled(False)
-            self.labelStandardize.setEnabled(True)
-            self.comboBoxStandardize.setEnabled(True)
-        else:
-            self.labelBinary.setEnabled(True)
-            self.comboBoxBinary.setEnabled(True)
-            self.labelStandardize.setEnabled(False)
-            self.comboBoxStandardize.setEnabled(False)
-        if self.graph_type.directed:
-            self.labelSymmetrize.setEnabled(False)
-            self.comboBoxSymmetrize.setEnabled(False)
-        else:
-            self.labelSymmetrize.setEnabled(True)
-            self.comboBoxSymmetrize.setEnabled(True)
 
     def set_correlation(self, correlation_type):
         self.analysis.set_correlation(correlation_type)
@@ -398,18 +396,6 @@ class GraphAnalysis(ExitDialog, Ui_MainWindow):
         msg_box.setText(msg)
         msg_box.setWindowTitle("Import error")
         msg_box.exec_()
-
-    def graph_cls_from_str(s):
-        graph_type = None
-        if s == 'binary undirected':
-            graph_type = GraphBU
-        elif s == 'binary directed':
-            graph_type = GraphBD
-        elif s == 'weighted undirected':
-            graph_type = GraphWU
-        elif s == 'weighted directed':
-            graph_type = GraphWD
-        return graph_type
 
     def table_update_callbacks(self):
         return [widget.update_table for widget in [self.globalMeasuresWidget, self.nodalMeasuresWidget, self.binodalMeasuresWidget]]
