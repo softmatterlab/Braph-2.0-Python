@@ -109,6 +109,11 @@ def get_subject_class(subject_class_string):
     s = 'braphy.workflows.{}.subject_{}'.format(data_type, data_type)
     return getattr(importlib.import_module(s), subject_class_string)
 
+def get_analysis_class(analysis_class_string):
+    data_type = analysis_class_string.split("Analysis")[1]
+    s = 'braphy.workflows.{}.analysis_{}'.format(data_type, data_type)
+    return getattr(importlib.import_module(s), analysis_class_string)
+
 @contextmanager
 def wait_cursor():
     try:

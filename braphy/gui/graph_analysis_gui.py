@@ -6,14 +6,12 @@ from braphy.graph.graphs import *
 from braphy.graph.measures.measure import Measure
 from braphy.graph.measures.measure_parser import MeasureParser
 from braphy.graph.graph_factory import GraphSettings
-from braphy.workflows.MRI.analysis_MRI import AnalysisMRI
-from braphy.workflows.fMRI.analysis_fMRI import AnalysisfMRI
 from braphy.cohort.cohort import Cohort
 from braphy.gui.cohort_editor_gui import CohortEditor
 from braphy.analysis.analysis import Analysis
 from braphy.gui.community_structure_gui import CommunityStructure
 from braphy.gui.widgets.brain_view_options_widget import BrainViewOptionsWidget
-from braphy.utility.helper_functions import abs_path_from_relative, same_class
+from braphy.utility.helper_functions import abs_path_from_relative, same_class, get_analysis_class
 from braphy.gui.exit_dialog import ExitDialog
 
 qtCreatorFile = abs_path_from_relative(__file__, "ui_files/graph_analysis.ui")
@@ -42,17 +40,15 @@ class GraphAnalysis(ExitDialog, Ui_MainWindow):
             self.subject_class = analysis.cohort.subject_class
             if brain_mesh_data:
                 self.brain_mesh_data = brain_mesh_data
+            self.analysis_class = analysis.__class__
         else:
             self.analysis = None
             self.subject_class = subject_class
+            self.analysis_class = get_analysis_class('Analysis{}'.format(self.subject_class.data_type()))
         if self.subject_class.structural():
             self.correlationMatrixWidget.set_structural_view()
             self.repetitionLabel.hide()
-            self.setWindowTitle('MRI Graph Analysis')
-            self.analysis_class = AnalysisMRI
-        elif self.subject_class.functional():
-            self.setWindowTitle('fMRI Graph Analysis')
-            self.analysis_class = AnalysisfMRI
+        self.setWindowTitle('{} Graph Analysis'.format(self.subject_class.data_type()))
 
         self.btnViewCohort.setEnabled(False)
         self.file_name = None

@@ -32,6 +32,10 @@ class Subject:
             subject.data_dict[key].from_dict(value)
         return subject
 
+    @classmethod
+    def data_type(cls):
+        return cls.__name__.split('Subject')[1]
+
     @abstractmethod
     def to_txt(subjects, file_name, labels):
         pass
