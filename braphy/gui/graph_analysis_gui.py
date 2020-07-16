@@ -356,16 +356,17 @@ class GraphAnalysis(ExitDialog, Ui_MainWindow):
         self.comboBoxBinary.setEnabled(not weighted)
         self.labelStandardize.setEnabled(weighted)
         self.comboBoxStandardize.setEnabled(weighted)
+        self.analysis.set_weighted(weighted)
         self.set_graph_type()
 
     def set_directed(self, directed):
         self.labelSymmetrize.setEnabled(not directed)
         self.comboBoxSymmetrize.setEnabled(not directed)
+        self.analysis.set_directed(directed)
         self.set_graph_type()
 
     def set_graph_type(self):
         self.graph_type = self.get_graph_settings().graph_class()
-        self.analysis.set_graph_type(self.graph_type)
         self.startAnalysisWidget.init_graph_measures_widget(self.graph_type)
 
     def set_correlation(self, correlation_type):

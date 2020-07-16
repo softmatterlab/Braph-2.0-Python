@@ -56,7 +56,7 @@ class MeasureStrength(Measure):
         graph_type_measures[GraphWU] = ['strength', 'avg_strength']
 
         for graph_type in graph_type_measures.keys():
-            if graph_type.directed:
+            if graph_type.get_setting('directed'):
                 graph_type_measures[graph_type].extend(['in_strength', 'out_strength',
                                                         'avg_in_strength', 'avg_out_strength'])
         return graph_type_measures

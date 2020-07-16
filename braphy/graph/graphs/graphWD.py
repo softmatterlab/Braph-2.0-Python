@@ -1,25 +1,17 @@
-from braphy.graph.graphs.graph import Graph
-from braphy.graph.graphs.graphBD import GraphBD
+from braphy.graph.graphs import *
 import numpy as np
 import random
 from braphy.utility.helper_functions import *
+
 class GraphWD(Graph):
-    weighted = True
-    directed = True
-    def __init__(self,A, settings):
+    def __init__(self, A, settings):
         A = Graph.remove_diagonal(A)
         A = Graph.semipositivize(A, settings.rule_negative)
         A = Graph.standardize(A, settings.rule_standardize)
         super().__init__(A, settings)
 
-    def is_undirected(self):
-        return False
-
-    def is_selfconnected(self):
-        return False
-
-    def is_nonnegative(self):
-        return True
+    def match_settings():
+        return {'weighted': True, 'directed': True}
 
     def get_name(self):
         return "Weighted Directed Graph"

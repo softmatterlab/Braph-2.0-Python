@@ -1,4 +1,4 @@
-from braphy.graph.graphs import *
+from braphy.graph.graphs.graph import Graph
 from braphy.graph.measures import *
 from braphy.graph.measures.measure_parser import MeasureParser
 
@@ -69,15 +69,14 @@ class GraphSettings():
 
     def graph_class(self):
         cls = None
-        if(self.weighted and self.directed):
-            cls = GraphWD
-        elif(not self.weighted and self.directed):
-            cls = GraphBD
-        elif(not self.weighted and not self.directed):
-            cls = GraphBU
-        elif(self.weighted and not self.directed):
-            cls = GraphWU
-
+        for graph in Graph.__subclasses__():
+            match = True
+            for key, value in graph.match_settings().items():
+                if(eval('self.{}'.format(key)) != value):
+                    match = False
+            if match:
+                cls = graph
+                break
         return cls
 
 class GraphFactory:

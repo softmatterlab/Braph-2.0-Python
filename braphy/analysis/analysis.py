@@ -82,9 +82,13 @@ class Analysis():
         assert value >= 0 and value <= 1
         self.graph_settings.value_binary = value
 
-    def set_graph_type(self, graph_type):
-        self.graph_settings.weighted = graph_type.weighted
-        self.graph_settings.directed = graph_type.directed
+    def set_weighted(self, weighted):
+        assert isinstance(weighted, bool)
+        self.graph_settings.weighted = weighted
+
+    def set_directed(self, directed):
+        assert isinstance(directed, bool)
+        self.graph_settings.directed = directed
 
     def get_measurement(self, measure_class, sub_measure, group):
         measurement = None

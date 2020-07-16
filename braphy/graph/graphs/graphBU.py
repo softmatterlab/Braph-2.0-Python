@@ -1,22 +1,17 @@
 from braphy.graph.graphs.graph import Graph
 import numpy as np
-import random 
+import random
 
 class GraphBU(Graph):
-    weighted = False
-    directed = False
-    def __init__(self,A, settings):
+    def __init__(self, A, settings):
         A = Graph.symmetrize(A, settings.rule_symmetrize)
         A = Graph.remove_diagonal(A)
         A = Graph.semipositivize(A, settings.rule_negative)
         A = Graph.binarize(A, settings.rule_binary, settings.value_binary)
         super().__init__(A, settings)
 
-    def is_selfconnected(self):
-        return False
-
-    def is_nonnegative(self):
-        return True
+    def match_settings():
+        return {'weighted': False, 'directed': False}
 
     def get_name(self):
         return "Binary Undirected Graph"

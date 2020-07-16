@@ -24,16 +24,16 @@ class Graph(ABC):
         return self.community_structure[i] == self.community_structure[j]
 
     def is_weighted(self):
-        return type(self).weighted
+        return self.graph_settings.weighted
 
     def is_binary(self):
-        return not type(self).weighted
+        return not self.is_weighted()
 
     def is_directed(self):
-        return type(self).directed
+        return self.graph_settings.directed
 
     def is_undirected(self):
-        return not type(self).directed
+        return not self.is_directed()
 
     def get_measure(self, measure_class, measure = None, save = True):
         if len(self.measure_dict[measure_class]) == 0:
@@ -47,6 +47,14 @@ class Graph(ABC):
             return return_value
         else:
             return return_value[measure]
+
+    @classmethod
+    def get_setting(cls, setting):
+        return cls.match_settings()[setting]
+
+    @abstractmethod
+    def match_settings():
+        return {}
 
     @abstractmethod
     def is_selfconnected(self):

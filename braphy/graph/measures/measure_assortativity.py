@@ -85,7 +85,7 @@ class MeasureAssortativity(Measure):
         graph_type_measures[GraphWU] = []
 
         for graph_type in graph_type_measures.keys():
-            if graph_type.directed:
+            if graph_type.get_setting('directed'):
                 graph_type_measures[graph_type].extend(['assortativity_out_in',
                                                         'assortativity_in_out',
                                                         'assortativity_out_out',

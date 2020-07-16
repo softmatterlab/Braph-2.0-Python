@@ -85,7 +85,7 @@ class MeasurePathLength(Measure):
         graph_type_measures[GraphWU] = ['path_length', 'char_path_length']
 
         for graph_type in graph_type_measures.keys():
-            if graph_type.directed:
+            if graph_type.get_setting('directed'):
                 graph_type_measures[graph_type].extend(['in_path_length', 'char_in_path_length',
                                                         'out_path_length', 'char_out_path_length'])
             else:

@@ -70,7 +70,7 @@ class MeasureEccentricity(Measure):
         graph_type_measures[GraphWU] = ['eccentricity', 'avg_eccentricity', 'radius', 'diameter']
 
         for graph_type in graph_type_measures.keys():
-            if graph_type.directed:
+            if graph_type.get_setting('directed'):
                 graph_type_measures[graph_type].extend(['in_eccentricity', 'avg_in_eccentricity',
                                                         'out_eccentricity', 'avg_out_eccentricity'])
 

@@ -67,7 +67,7 @@ class MeasureGlobalEfficiency(Measure):
         graph_type_measures[GraphWU] = ['global_efficiency', 'avg_global_efficiency']
 
         for graph_type in graph_type_measures.keys():
-            if graph_type.directed:
+            if graph_type.get_setting('directed'):
                 graph_type_measures[graph_type].extend(['in_global_efficiency',
                                                         'avg_in_global_efficiency',
                                                         'out_global_efficiency',

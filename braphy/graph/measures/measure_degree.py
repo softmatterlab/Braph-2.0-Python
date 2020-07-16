@@ -78,7 +78,7 @@ class MeasureDegree(Measure):
         graph_type_measures[GraphWU] = ['degree', 'avg_degree']
 
         for graph_type in graph_type_measures.keys():
-            if graph_type.directed:
+            if graph_type.get_setting('directed'):
                 graph_type_measures[graph_type].extend(['in_degree', 'out_degree', 'avg_in_degree', 'avg_out_degree'])
 
         return graph_type_measures
