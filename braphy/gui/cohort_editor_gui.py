@@ -9,8 +9,6 @@ import numpy as np
 from braphy.gui.exit_dialog import ExitDialog
 
 from braphy.cohort.cohort import Cohort
-from braphy.workflows.MRI.subject_MRI import SubjectMRI
-from braphy.workflows.fMRI.subject_fMRI import SubjectfMRI
 
 from braphy.gui.widgets.brain_view_options_widget import BrainViewOptionsWidget
 
@@ -21,7 +19,7 @@ brain_mesh_file_default = abs_path_from_relative(__file__, brain_mesh_file_name_
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 
 class CohortEditor(ExitDialog, Ui_MainWindow):
-    def __init__(self, AppWindow = None, subject_class = SubjectMRI, cohort = None, atlas = None, brain_mesh_data = None):
+    def __init__(self, subject_class, AppWindow = None, cohort = None, atlas = None, brain_mesh_data = None):
         if AppWindow:
             self.AppWindow = AppWindow
         QtWidgets.QMainWindow.__init__(self, parent = None)

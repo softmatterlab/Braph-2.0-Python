@@ -6,8 +6,6 @@ from braphy.graph.graphs import *
 from braphy.graph.measures.measure import Measure
 from braphy.graph.measures.measure_parser import MeasureParser
 from braphy.graph.graph_factory import GraphSettings
-from braphy.workflows.MRI.subject_MRI import SubjectMRI
-from braphy.workflows.fMRI.subject_fMRI import SubjectfMRI
 from braphy.workflows.MRI.analysis_MRI import AnalysisMRI
 from braphy.workflows.fMRI.analysis_fMRI import AnalysisfMRI
 from braphy.cohort.cohort import Cohort
@@ -23,7 +21,7 @@ qtCreatorFile = abs_path_from_relative(__file__, "ui_files/graph_analysis.ui")
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 
 class GraphAnalysis(ExitDialog, Ui_MainWindow):
-    def __init__(self, AppWindow = None, subject_class = SubjectMRI, analysis = None, brain_mesh_data = None):
+    def __init__(self, subject_class, AppWindow = None, analysis = None, brain_mesh_data = None):
         if AppWindow:
             self.AppWindow = AppWindow
         QtWidgets.QMainWindow.__init__(self, parent = None)
@@ -279,7 +277,7 @@ class GraphAnalysis(ExitDialog, Ui_MainWindow):
         self.groupLabel.setText('Number of groups = {}'.format(len(self.analysis.cohort.groups)))
 
     def view_cohort(self):
-        self.cohort_editor_gui = CohortEditor(self, self.subject_class, self.analysis.cohort, brain_mesh_data = self.brain_mesh_data)
+        self.cohort_editor_gui = CohortEditor(self.subject_class, self, self.analysis.cohort, brain_mesh_data = self.brain_mesh_data)
         self.cohort_editor_gui.set_read_only()
         self.cohort_editor_gui.show()
 

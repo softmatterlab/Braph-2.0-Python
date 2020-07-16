@@ -4,10 +4,9 @@ import json
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from PyQt5.QtWidgets import *
 from braphy.atlas.brain_atlas import BrainAtlas
-from braphy.utility.helper_functions import abs_path_from_relative, load_nv, FloatDelegate, float_to_string
+from braphy.utility.helper_functions import abs_path_from_relative, load_nv, \
+                                            FloatDelegate, float_to_string, get_subject_class
 import numpy as np
-from braphy.workflows.MRI.subject_MRI import SubjectMRI
-from braphy.workflows.fMRI.subject_fMRI import SubjectfMRI
 from braphy.gui.exit_dialog import ExitDialog
 
 qtCreatorFile = abs_path_from_relative(__file__, "ui_files/brain_atlas.ui")
@@ -409,10 +408,10 @@ class BrainAtlasGui(ExitDialog, Ui_MainWindow):
         self.comboBoxMeshFile.setCurrentText('Open...')
 
     def new_mri_cohort(self):
-        self.AppWindow.cohort(atlas = self.atlas, brain_mesh_data = self.brain_mesh_data, subject_class = SubjectMRI)
+        self.AppWindow.cohort(atlas = self.atlas, brain_mesh_data = self.brain_mesh_data, subject_class = get_subject_class('SubjectMRI'))
 
     def new_fmri_cohort(self):
-        self.AppWindow.cohort(atlas = self.atlas, brain_mesh_data = self.brain_mesh_data, subject_class = SubjectfMRI)
+        self.AppWindow.cohort(atlas = self.atlas, brain_mesh_data = self.brain_mesh_data, subject_class = get_subject_class('SubjectfMRI'))
 
     def new_eeg_cohort(self):
         pass

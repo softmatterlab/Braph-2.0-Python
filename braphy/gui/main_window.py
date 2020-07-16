@@ -60,14 +60,14 @@ class MainWindow(ExitDialog, Ui_MainWindow):
         if not subject_class:
             subject_class = self.subject_class
         if atlas:
-            self.cohort_editor_gui = CohortEditor(self, subject_class = subject_class,
+            self.cohort_editor_gui = CohortEditor(subject_class = subject_class, AppWindow = self,
                                                   atlas = atlas, brain_mesh_data = brain_mesh_data)
         else:
-            self.cohort_editor_gui = CohortEditor(self, subject_class = subject_class)
+            self.cohort_editor_gui = CohortEditor(subject_class = subject_class, AppWindow = self)
         self.cohort_editor_gui.show()
 
     def graph_analysis(self):
-        self.graph_analysis_gui = GraphAnalysis(self, self.subject_class)
+        self.graph_analysis_gui = GraphAnalysis(subject_class = self.subject_class, AppWindow = self)
         self.graph_analysis_gui.show()
 
     def data_type_changed(self):
