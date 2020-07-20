@@ -24,13 +24,13 @@ class Graph(ABC):
         return self.community_structure[i] == self.community_structure[j]
 
     def is_weighted(self):
-        return self.graph_settings.weighted
+        return self.settings.weighted
 
     def is_binary(self):
         return not self.is_weighted()
 
     def is_directed(self):
-        return self.graph_settings.directed
+        return self.settings.directed
 
     def is_undirected(self):
         return not self.is_directed()
@@ -55,14 +55,6 @@ class Graph(ABC):
     @abstractmethod
     def match_settings():
         return {}
-
-    @abstractmethod
-    def is_selfconnected(self):
-        pass
-
-    @abstractmethod
-    def is_nonnegative(self):
-        pass
 
     @abstractmethod
     def get_name(self):
