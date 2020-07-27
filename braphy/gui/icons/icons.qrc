@@ -29,6 +29,6 @@
     <file>icon_colorbar.png</file>
     <file>playpause.png</file>
     <file>application_icon.png</file>
-    <file>icon_figure_label.png</file>
+    <file>icon_figure_legend.png</file>
   </qresource>
 </RCC>
