@@ -12,10 +12,18 @@
 \usepackage{pdfpages}
 \usepackage{titlepic}
 
+\usepackage{fancyhdr, graphicx}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[L]{}
+\fancyhead[R]{
+\includegraphics[scale=1.2]{Syntronic}
+}
+\pagestyle{fancy}
+
 \title{%
 	Braphy \\
 	\large The python version of Braph 2.0}
-\author{Alice Neimantaite \\ Lisa Sjöblom \\ Daniel Westerlund}
+\author{Alice Neimantaite \\ Lisa Sjöblom \\ Daniel Westerlund\\Syntronic R$\&$D, Gothenburg office}
 \date{June 2020}
 \titlepic{
 \begin{figure}[h]
@@ -26,9 +34,11 @@
 \end{figure}
 }
 
+
 \begin{document}
 
 \maketitle
+\thispagestyle{fancy}
 \clearpage
 
 \section{Introduction}
