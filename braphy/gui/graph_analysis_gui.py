@@ -172,16 +172,18 @@ class GraphAnalysis(ExitDialog, Ui_MainWindow):
         binary = ['threshold', 'density']
         symmetrize = ['sum', 'average', 'min', 'max']
         standardize = ['range', 'threshold']
-        self.comboBoxWeighted.addItems(['True', 'False'])
-        self.comboBoxDirected.addItems(['True', 'False'])
+        self.comboBoxWeighted.addItems(['no', 'yes'])
+        self.comboBoxDirected.addItems(['no', 'yes'])
+        self.comboBoxWeighted.setCurrentIndex(1)
+        self.comboBoxDirected.setCurrentIndex(1)
         self.comboBoxCorrelation.addItems(correlations)
         self.comboBoxNegative.addItems(negative)
         self.comboBoxBinary.addItems(binary)
         self.comboBoxSymmetrize.addItems(symmetrize)
         self.comboBoxStandardize.addItems(standardize)
 
-        self.comboBoxWeighted.currentTextChanged.connect(lambda signal: self.set_weighted(eval(signal)))
-        self.comboBoxDirected.currentTextChanged.connect(lambda signal: self.set_directed(eval(signal)))
+        self.comboBoxWeighted.currentIndexChanged.connect(lambda signal: self.set_weighted(bool(signal)))
+        self.comboBoxDirected.currentIndexChanged.connect(lambda signal: self.set_directed(bool(signal)))
         self.comboBoxCorrelation.currentTextChanged.connect(self.set_correlation)
         self.comboBoxNegative.currentTextChanged.connect(self.set_negative_rule)
         self.comboBoxBinary.currentTextChanged.connect(self.set_binary_rule)
@@ -253,8 +255,8 @@ class GraphAnalysis(ExitDialog, Ui_MainWindow):
         self.textAnalysisName.setText(self.analysis.name)
         self.btnViewCohort.setEnabled(True)
         self.set_locked(False)
-        self.set_weighted(eval(self.comboBoxWeighted.currentText()))
-        self.set_directed(eval(self.comboBoxDirected.currentText()))
+        self.set_weighted(bool(self.comboBoxWeighted.currentIndex()))
+        self.set_directed(bool(self.comboBoxDirected.currentIndex()))
         self.correlationMatrixWidget.init(self.analysis)
         self.set_cohort_labels()
         self.init_correlation_matrix_actions()
@@ -263,8 +265,8 @@ class GraphAnalysis(ExitDialog, Ui_MainWindow):
         self.update_community_number()
 
     def get_graph_settings(self):
-        weighted = eval(self.comboBoxWeighted.currentText())
-        directed = eval(self.comboBoxDirected.currentText())
+        weighted = bool(self.comboBoxWeighted.currentIndex())
+        directed = bool(self.comboBoxDirected.currentIndex())
         gamma = 1
         community_algorithm = 'Louvain'
         rule_negative = self.comboBoxNegative.currentText()
