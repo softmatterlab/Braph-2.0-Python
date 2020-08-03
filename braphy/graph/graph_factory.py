@@ -35,10 +35,6 @@ class GraphSettings():
         d = {}
         d['weighted'] = self.weighted
         d['directed'] = self.directed
-        measure_dict = {}
-        for measure_class, sub_measure_list in self.measure_list.items():
-            measure_dict[measure_class.__name__] = sub_measure_list
-        d['measure_list'] = measure_dict
         d['gamma'] = self.gamma
         d['community_algorithm'] = self.community_algorithm
         d['rule_negative'] = self.rule_negative
@@ -52,9 +48,6 @@ class GraphSettings():
     def from_dict(d):
         weighted = d['weighted']
         directed = d['directed']
-        measure_list = {}
-        for measure_class_str, sub_measure_list in d['measure_list'].items():
-            measure_list[eval(measure_class_str)] = sub_measure_list
         gamma = d['gamma']
         community_algorithm = d['community_algorithm']
         rule_negative = d['rule_negative']
@@ -63,7 +56,7 @@ class GraphSettings():
         rule_binary = d['rule_negative']
         value_binary = d['value_binary']
         correlation_type = d['correlation_type']
-        return GraphSettings(weighted, directed, measure_list, gamma, community_algorithm,
+        return GraphSettings(weighted, directed, gamma, community_algorithm,
                              rule_negative, rule_symmetrize, rule_standardize, rule_binary,
                              value_binary, correlation_type)
 
