@@ -15,6 +15,8 @@ class MeasuresWidget(Base, Form):
         self.init_buttons()
         self.tableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.table_flags = (QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
+        self.tableWidget.itemSelectionChanged.connect(self.enable_add_plot)
+        self.btnAdd.setEnabled(False)
 
     def init(self, measure_type, analysis):
         self.analysis = analysis
@@ -108,6 +110,10 @@ class MeasuresWidget(Base, Form):
 
         for sub_measure, values in all_values.items():
             self.binaryPlotWidget.add_plot(info_strings[sub_measure], np.array(values))
+
+    def enable_add_plot(self):
+        selected = self.get_selected()
+        self.btnAdd.setEnabled(bool(selected))
 
     def get_info_string(self, sub_measure):
         group_1 = self.analysis.cohort.groups[self.comboBoxGroup1.currentIndex()].name
