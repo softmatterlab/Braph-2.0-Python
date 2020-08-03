@@ -2,7 +2,8 @@ from PyQt5.QtWidgets import *
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 import numpy as np
 import pandas as pd
-from braphy.utility.helper_functions import abs_path_from_relative, FloatDelegate, float_to_string
+from braphy.utility.helper_functions import abs_path_from_relative, FloatDelegate, float_to_string, \
+                                            float_to_string_fix_decimals
 from braphy.graph.measures.measure import Measure
 
 ui_file = abs_path_from_relative(__file__, "../ui_files/measures_widget.ui")
@@ -263,7 +264,7 @@ class MeasuresWidget(Base, Form):
         subject = self.comboBoxSubject.currentText()
         measure = measurement.sub_measure
         param = '-'
-        binary_value = measurement.binary_value
+        binary_value = float_to_string_fix_decimals(measurement.binary_value)
         region = self.comboBoxRegion.currentText()
         region_2 = self.comboBoxRegion2.currentText()
         if self.measure_type == Measure.BINODAL:

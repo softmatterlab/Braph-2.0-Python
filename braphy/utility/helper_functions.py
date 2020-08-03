@@ -93,6 +93,11 @@ def float_to_string(f):
         s += '0'
     return s
 
+def float_to_string_fix_decimals(f, number_of_decimals = 2):
+    f = round(f, number_of_decimals)
+    s = format(f, '.' + str(number_of_decimals) + 'f')
+    return s
+
 def same_class(c1, c2):
     return c1.__name__ == c2.__name__
 
