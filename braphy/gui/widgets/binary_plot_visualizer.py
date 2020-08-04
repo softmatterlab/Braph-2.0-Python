@@ -5,6 +5,7 @@ from braphy.gui.widgets.binary_plot_settings_widget import BinaryPlotSettingsWid
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT
+import numpy as np
 
 class NavigationToolbar(NavigationToolbar2QT):
     def edit_parameters(self):
@@ -41,6 +42,8 @@ class BinaryPlotVisualizer(FigureCanvas):
 
     def add_plot(self, info_string, values):
         settings = self.binary_plot_settings_widget.get_plot_settings()
+
+        values = values[np.argsort(values[:,0])]
 
         plot = self.ax.plot(values[:, 0], values[:, 1], color = settings['line_color'],
                             linestyle = settings['line_style'], marker = settings['marker_style'],
