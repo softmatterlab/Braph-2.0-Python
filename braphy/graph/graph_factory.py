@@ -7,18 +7,18 @@ class GraphSettings():
     DIRECTED_DEFAULT = True
     GAMMA_DEFAULT = 1
     COMMUNITY_ALGORITHM_DEFAULT = 'Louvain'
-    NEGATIVE_DEFAULT = 'zero'
-    STANDARDIZE_DEFAULT = 'range'
-    SYMMETRIZE_DEFAULT = 'max'
-    BINARY_DEFAULT = 'threshold'
+    NEGATIVE = ['zero', 'none', 'abs']
+    STANDARDIZE = ['range', 'threshold']
+    SYMMETRIZE = ['max', 'min', 'sum', 'average']
+    BINARY = ['threshold', 'density']
     BINARY_VALUE_DEFAULT = 0
-    CORRELATION_TYPE_DEFAULT = 'pearson'
+    CORRELATION_TYPE = ['pearson', 'spearman', 'kendall', 'partial pearson', 'partial spearman']
 
     def __init__(self, weighted = WEIGHTED_DEFAULT, directed = DIRECTED_DEFAULT,
                  gamma = GAMMA_DEFAULT, community_algorithm = COMMUNITY_ALGORITHM_DEFAULT,
-                 rule_negative = NEGATIVE_DEFAULT, rule_symmetrize = SYMMETRIZE_DEFAULT,
-                 rule_standardize = STANDARDIZE_DEFAULT, rule_binary = BINARY_DEFAULT,
-                 value_binary = BINARY_VALUE_DEFAULT, correlation_type = CORRELATION_TYPE_DEFAULT):
+                 rule_negative = NEGATIVE[0], rule_symmetrize = SYMMETRIZE[0],
+                 rule_standardize = STANDARDIZE[0], rule_binary = BINARY[0],
+                 value_binary = BINARY_VALUE_DEFAULT, correlation_type = CORRELATION_TYPE[0]):
         self.weighted = weighted
         self.directed = directed
         self.measure_list = MeasureParser.list_measures()[self.graph_class()]

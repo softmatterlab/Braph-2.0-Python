@@ -27,7 +27,8 @@ class GraphAnalysis(ExitDialog, Ui_MainWindow):
 
         self.init_buttons()
         self.init_actions()
-        self.init_comboboxes()
+        settings = None if analysis is None else analysis.graph_settings
+        self.init_comboboxes(settings)
         self.startAnalysisWidget.init_graph_measures_widget(self.get_graph_settings().graph_class())
         self.startAnalysisWidget.hide_buttons()
         self.tabWidget.tabBar().hide()
@@ -166,14 +167,16 @@ class GraphAnalysis(ExitDialog, Ui_MainWindow):
             for action in widget.binaryPlotWidget.get_actions():
                 action.setVisible(state)
 
-    def init_comboboxes(self):
-        correlations = ['pearson', 'spearman', 'kendall', 'partial pearson', 'partial spearman']
-        negative = ['zero', 'none', 'abs']
-        binary = ['threshold', 'density']
-        symmetrize = ['sum', 'average', 'min', 'max']
-        standardize = ['range', 'threshold']
-        self.comboBoxWeighted.addItems(['no', 'yes'])
-        self.comboBoxDirected.addItems(['no', 'yes'])
+    def init_comboboxes(self, settings = None):
+        weighted = ['no', 'yes']
+        directed = ['no', 'yes']
+        correlations = GraphSettings.CORRELATION_TYPE
+        negative = GraphSettings.NEGATIVE
+        binary = GraphSettings.BINARY
+        symmetrize = GraphSettings.SYMMETRIZE
+        standardize = GraphSettings.STANDARDIZE
+        self.comboBoxWeighted.addItems(weighted)
+        self.comboBoxDirected.addItems(directed)
         self.comboBoxWeighted.setCurrentIndex(1)
         self.comboBoxDirected.setCurrentIndex(1)
         self.comboBoxCorrelation.addItems(correlations)
@@ -182,6 +185,9 @@ class GraphAnalysis(ExitDialog, Ui_MainWindow):
         self.comboBoxSymmetrize.addItems(symmetrize)
         self.comboBoxStandardize.addItems(standardize)
 
+        if settings:
+            self.update_comboboxes(settings)
+
         self.comboBoxWeighted.currentIndexChanged.connect(lambda signal: self.set_weighted(bool(signal)))
         self.comboBoxDirected.currentIndexChanged.connect(lambda signal: self.set_directed(bool(signal)))
         self.comboBoxCorrelation.currentTextChanged.connect(self.set_correlation)
@@ -189,6 +195,15 @@ class GraphAnalysis(ExitDialog, Ui_MainWindow):
         self.comboBoxBinary.currentTextChanged.connect(self.set_binary_rule)
         self.comboBoxSymmetrize.currentTextChanged.connect(self.set_symmetrize_rule)
         self.comboBoxStandardize.currentTextChanged.connect(self.set_standardize_rule)
+
+    def update_comboboxes(self, settings):
+        self.comboBoxWeighted.setCurrentIndex(int(settings.weighted))
+        self.comboBoxDirected.setCurrentIndex(int(settings.directed))
+        self.comboBoxCorrelation.setCurrentText(settings.correlation_type)
+        self.comboBoxNegative.setCurrentText(settings.rule_negative)
+        self.comboBoxBinary.setCurrentText(settings.rule_binary)
+        self.comboBoxSymmetrize.setCurrentText(settings.rule_symmetrize)
+        self.comboBoxStandardize.setCurrentText(settings.rule_standardize)
 
     def tab_changed(self):
         if self.tabWidget.currentIndex() == 0:
@@ -255,6 +270,7 @@ class GraphAnalysis(ExitDialog, Ui_MainWindow):
         self.textAnalysisName.setText(self.analysis.name)
         self.btnViewCohort.setEnabled(True)
         self.set_locked(False)
+        self.update_comboboxes(self.analysis.graph_settings)
         self.set_weighted(bool(self.comboBoxWeighted.currentIndex()))
         self.set_directed(bool(self.comboBoxDirected.currentIndex()))
         self.correlationMatrixWidget.init(self.analysis)
@@ -267,13 +283,13 @@ class GraphAnalysis(ExitDialog, Ui_MainWindow):
     def get_graph_settings(self):
         weighted = bool(self.comboBoxWeighted.currentIndex())
         directed = bool(self.comboBoxDirected.currentIndex())
-        gamma = 1
-        community_algorithm = 'Louvain'
+        gamma = GraphSettings.GAMMA_DEFAULT
+        community_algorithm = GraphSettings.COMMUNITY_ALGORITHM_DEFAULT
         rule_negative = self.comboBoxNegative.currentText()
         rule_symmetrize = self.comboBoxSymmetrize.currentText()
         rule_standardize = self.comboBoxStandardize.currentText()
         rule_binary = self.comboBoxBinary.currentText()
-        value_binary = 0
+        value_binary = GraphSettings.BINARY_VALUE_DEFAULT
         rule_correlation = self.comboBoxCorrelation.currentText()
         graph_settings = GraphSettings(weighted, directed, gamma, community_algorithm,
                                         rule_negative, rule_symmetrize, rule_standardize, rule_binary,
