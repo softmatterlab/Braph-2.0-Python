@@ -93,6 +93,10 @@
    <property name="checkable">
     <bool>true</bool>
    </property>
+   <property name="icon">
+    <iconset resource="../icons/icons.qrc">
+     <normaloff>:/buttons/icon_figure_legend.png</normaloff>:/buttons/icon_figure_legend.png</iconset>
+   </property>
    <property name="text">
     <string>Legend</string>
    </property>
@@ -108,6 +112,8 @@
    <header>braphy.gui.widgets.binary_plot_visualizer</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../icons/icons.qrc"/>
+ </resources>
  <connections/>
 </ui>
