@@ -23,6 +23,15 @@ You can also install the project by running the file install.sh, placed in the f
 This will install the project's dependencies and place a shortcut to the program in your applications
 directory. Note that this replaces only the manual installation, not the first step.
 
+#### Shortcuts
+
+Running the installation script automatically creates two desktop files and places them in the applications directory,
+one for starting the application and one for killing it. If you want to create your own see
+
+https://specifications.freedesktop.org/desktop-entry-spec/latest/index.html
+
+You can then right click the icons for the .desktop files and add them to favourites for easy access in the dock.
+
 ### Windows
 
 Install Qt for python by typing the following command in PowerShell:
