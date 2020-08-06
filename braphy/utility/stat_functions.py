@@ -18,34 +18,49 @@ class StatFunctions():
             r = 0
         return r
 
-    # TODO - check with numpy.quantile
     def quantiles(values, P = 100):
-        N = np.size(values, 1)
-        M = np.size(values, 0)
+        assert len(values) > 0, 'No elements in values'
+        if len(values.shape) == 1:
+            return StatFunctions.quantiles_1d(values, P)
+        elif len(values.shape) == 2:
+            return StatFunctions.quantiles_2d(values, P)
+        elif len(values.shape) == 3:
+            return StatFunctions.quantiles_3d(values, P)
 
-        q = np.zeros([P+1, N])
 
-        C = 10*P;
-        for n in range(N):
-            counts, binscenters = np.histogram(values[:,n], C)
-            binscenters = binscenters[:-1] + np.diff(binscenters)/2
+    def quantiles_1d(values, P = 100):
+        # NOTE the implementation of percentile in python might differ from quantile in matlab
+        percentiles = []
+        for k in range(P):
+            percentiles.append(np.percentile(values, k*100/(P-1)))
+        Q = np.array(percentiles)
+        return Q
 
-            scounts = P*np.cumsum(counts, 0)/np.sum(counts)
+    def quantiles_2d(values, P = 100):
+        Q = []
+        for i in range(values.shape[0]):
+            current_values = values[i].copy()
+            # NOTE the implementation of percentile in python might differ from quantile in matlab
+            percentiles = []
+            for k in range(P):
+                percentiles.append(np.percentile(current_values, k*100/(P-1)))
+            Q.append(percentiles)
+        Q = np.array(Q)
+        return Q
 
-            dbinscenters = (binscenters[1] - binscenters[0])/2
-            binscenters = binscenters+dbinscenters
-            binscenters = np.insert(binscenters, 0, binscenters[0]-2*dbinscenters)
-            scounts = np.insert(scounts, 0, 0)
+    def quantiles_3d(values, P = 100):
+        Q = np.zeros([values.shape[0], values.shape[1],P])
+        for i in range(values.shape[0]):
+            for j in range(values.shape[1]):
+                current_values = values[i,j,:].copy()
+                # NOTE the implementation of percentile in python might differ from quantile in matlab
+                percentiles = []
+                for k in range(P):
+                    percentiles.append(np.percentile(current_values, k*100/(P-1)))
+                Q[i,j,:] = np.array(percentiles)
+        Q = np.squeeze(Q)
+        return Q
 
-            for i in range(P+1):
-                indices_low = np.where(scounts <= i)[0]
-                indices_high = np.where(scounts >= i)[0]
-
-                if len(indices_low) != 0 and len(indices_high) != 0:
-                    q[i, n] = (binscenters[indices_low[-1]] + binscenters[indices_high[0]])/2
-                else:
-                    q[i, n] = np.nan
-        return q
 
     def p_value(observed_difference, random_differences, single = True):
         assert len(np.shape(observed_difference)) == len(np.shape(random_differences)) - 1

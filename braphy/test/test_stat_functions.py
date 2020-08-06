@@ -16,19 +16,39 @@ class TestStatFunctions(TestUtility):
         q = 0.6
         self.assertEqual(StatFunctions.false_discovery_rate(p_values, q), 0.0673)
 
-    def test_quantiles(self):
-        values = np.array([[-1.0546, -1.1122, 0.14],
-                           [-0.3560, -0.8799, 0.0976],
-                           [-1.2410, 1.3363, 1.7498]])
-        P = 5
-        answer = np.array([[-1.2410, -1.1122, 0.0976],
-                           [-1.2322, -1.0877, 0.1141],
-                           [-1.0552, -0.8918, 0.1472],
-                           [-1.0552, -0.8918, 0.1472],
-                           [-0.3648, 1.3118, 1.7333],
-                           [-0.3560, 1.3363, 1.7498]])
+    def test_quantiles_1d(self):
+        values = np.array([-1., 0, 1])
+        P = 6
         q = StatFunctions.quantiles(values, P)
+        # NOTE these answers are not from matlab--TODO
+        answer = [-1., -0.6, -0.2, 0.2, 0.6, 1.]
+        self.assertSequenceAlmostEqual(q.tolist(), answer, 4)
+
+    def test_quantiles_2d(self):
+        values = np.array([[-1.0546, -1.1122, 0.14],
+                           [-0.3560, -0.8799, 0.0976]])
+        P = 6
+        q = StatFunctions.quantiles(values, P)
+        answer = np.array([[-1.1122, -1.08916, -1.06612, -0.81568, -0.33784, 0.14],
+                           [-0.8799, -0.67034, -0.46078, -0.26528, -0.08384, 0.0976]])
         self.assertMatrixAlmostEqual(q, answer, 4)
+
+    def test_quantiles_3d(self):
+        values = np.array([[[-1.0546, -1.1122, 0.14],
+                           [-0.3560, -0.8799, 0.0976],
+                           [-1.2410, 1.3363, 1.7498]],
+                           [[-1.0546, -1.1122, 0.14],
+                           [-0.3560, -0.8799, 0.0976],
+                           [-1.2410, 1.3363, 1.7498]]])
+        P = 6
+        q = StatFunctions.quantiles(values, P)
+        answer = np.array([[[-1.1122, -1.08916, -1.06612, -0.81568, -0.33784,  0.14],
+                            [-0.8799, -0.67034, -0.46078, -0.26528, -0.08384, 0.0976],
+                            [-1.241,  -0.21008, 0.82084, 1.419,   1.5844,  1.7498]],
+                            [[-1.1122,  -1.08916, -1.06612, -0.81568, -0.33784, 0.14],
+                            [-0.8799,  -0.67034, -0.46078, -0.26528, -0.08384, 0.0976],
+                            [-1.241,  -0.21008, 0.82084, 1.419,   1.5844,  1.7498]]])
+        self.assert3dMatrixAlmostEqual(q, answer, 4)
 
     def test_p_value_single(self):
         res = np.array([-0.8844, -0.0515, 1.4034])
