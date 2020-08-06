@@ -38,7 +38,7 @@ class StatFunctions():
     def quantiles_2d(values, P = 100):
         Q = []
         for i in range(values.shape[1]):
-            current_values = values[i].copy()
+            current_values = values[:,i].copy()
             # NOTE the implementation of percentile in python might differ from quantile in matlab
             percentiles = []
             for k in range(P):
