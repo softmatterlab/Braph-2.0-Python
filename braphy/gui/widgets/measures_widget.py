@@ -326,11 +326,15 @@ class MeasuresWidget(Base, Form):
             value_2 = value_2[region_1_index][region_2_index]
             p_value_2 = p_value_2[region_1_index][region_2_index]
             p_value_1 = p_value_1[region_1_index][region_2_index]
+            CI_1 = CI_1[region_1_index][region_2_index]
+            CI_2 = CI_2[region_1_index][region_2_index]
         elif self.measure_type == Measure.NODAL:
             value_1 = value_1[region_1_index]
             value_2 = value_2[region_1_index]
             p_value_2 = p_value_2[region_1_index]
             p_value_1 = p_value_1[region_1_index]
+            CI_1 = CI_1[region_1_index]
+            CI_2 = CI_2[region_1_index]
         difference = float_to_string(value_2 - value_1)
         p_value_1 = float_to_string(p_value_1)
         p_value_2 = float_to_string(p_value_2)

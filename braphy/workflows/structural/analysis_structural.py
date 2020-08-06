@@ -53,9 +53,9 @@ class AnalysisStructural(Analysis):
         difference_mean = measure_2 - measure_1
         p1 = stat.p_value(difference_mean, permutation_diffs, True)
         p2 = stat.p_value(difference_mean, permutation_diffs, False)
-        percentiles = None #stat.quantiles(difference_mean, 100)
-        CI_lower = np.random.uniform(difference_mean*np.abs(difference_mean), difference_mean)
-        CI_upper = np.random.uniform(difference_mean, difference_mean*difference_mean)
+        percentiles = stat.quantiles(permutation_diffs, 20)
+        CI_lower = percentiles[1]
+        CI_upper = percentiles[18]
 
         comparison = ComparisonStructural(groups, measure_class, sub_measure, permutation_diffs,
                                    (p1, p2), (CI_lower, CI_upper), (measure_1, measure_2), permutations,self.graph_settings.value_binary, longitudinal)

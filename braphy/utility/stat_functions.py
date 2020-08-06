@@ -27,7 +27,6 @@ class StatFunctions():
         elif len(values.shape) == 3:
             return StatFunctions.quantiles_3d(values, P)
 
-
     def quantiles_1d(values, P = 100):
         # NOTE the implementation of percentile in python might differ from quantile in matlab
         percentiles = []
@@ -38,29 +37,28 @@ class StatFunctions():
 
     def quantiles_2d(values, P = 100):
         Q = []
-        for i in range(values.shape[0]):
+        for i in range(values.shape[1]):
             current_values = values[i].copy()
             # NOTE the implementation of percentile in python might differ from quantile in matlab
             percentiles = []
             for k in range(P):
                 percentiles.append(np.percentile(current_values, k*100/(P-1)))
             Q.append(percentiles)
-        Q = np.array(Q)
+        Q = np.array(Q).T
         return Q
 
     def quantiles_3d(values, P = 100):
-        Q = np.zeros([values.shape[0], values.shape[1],P])
-        for i in range(values.shape[0]):
-            for j in range(values.shape[1]):
-                current_values = values[i,j,:].copy()
+        Q = np.zeros([P, values.shape[1], values.shape[2]])
+        for i in range(values.shape[1]):
+            for j in range(values.shape[2]):
+                current_values = values[:,i,j].copy().T
                 # NOTE the implementation of percentile in python might differ from quantile in matlab
                 percentiles = []
                 for k in range(P):
                     percentiles.append(np.percentile(current_values, k*100/(P-1)))
-                Q[i,j,:] = np.array(percentiles)
+                Q[:,i,j] = np.array(percentiles)
         Q = np.squeeze(Q)
         return Q
-
 
     def p_value(observed_difference, random_differences, single = True):
         assert len(np.shape(observed_difference)) == len(np.shape(random_differences)) - 1
