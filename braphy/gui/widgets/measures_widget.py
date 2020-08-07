@@ -313,7 +313,7 @@ class MeasuresWidget(Base, Form):
         subject = self.comboBoxSubject.currentText()
         measure = comparison.sub_measure
         param = '-'
-        binary_value = comparison.binary_value
+        binary_value = float_to_string_fix_decimals(comparison.binary_value)
         region = self.comboBoxRegion.currentText()
         region_2 = self.comboBoxRegion2.currentText()
         longitudinal = str(comparison.longitudinal)
