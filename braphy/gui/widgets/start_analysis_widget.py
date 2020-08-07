@@ -20,7 +20,7 @@ class StartAnalysisWidget(Base, Form):
 
     def init(self, graph_analysis_gui):
         self.analysis_gui = graph_analysis_gui
-        self.analysis = copy.deepcopy(self.analysis_gui.analysis)
+        self.analysis = self.analysis_gui.analysis
         self.graph_type = self.analysis.graph_settings.graph_class()
         self.init_buttons()
         self.init_graph_measures_widget(self.graph_type)
