@@ -50,7 +50,6 @@ class AnalysisStructural(Analysis):
             permutation_diffs.append(measure_permutated_2 - measure_permutated_1)
 
         permutation_diffs = np.array(permutation_diffs)
-        print(permutation_diffs.shape)
         difference_mean = measure_2 - measure_1
         p1 = stat.p_value(difference_mean, permutation_diffs, True)
         p2 = stat.p_value(difference_mean, permutation_diffs, False)

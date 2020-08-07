@@ -80,11 +80,10 @@ class MeasuresWidget(Base, Form):
         all_values = {}
         sub_measures = []
         for i in selected:
+            sub_measure = None
             if self.btnMeasure.isChecked():
                 index = self.measurement_index_mapping[i]
                 sub_measure = self.analysis.measurements[index].sub_measure
-                if sub_measure not in sub_measures:
-                    sub_measures.append(sub_measure)
 
             elif self.btnComparison.isChecked():
                 index = self.comparison_index_mapping[i]
@@ -95,10 +94,18 @@ class MeasuresWidget(Base, Form):
                 index = self.random_comparison_index_mapping[i]
                 sub_measure = self.analysis.random_comparisons[index].sub_measure
 
-        headers = self.measurement_labels()
+            if sub_measure and sub_measure not in sub_measures:
+                sub_measures.append(sub_measure)
+
+        if self.btnMeasure.isChecked():
+            headers = self.measurement_labels()
+            value_column = headers.index('Value')
+        elif self.btnComparison.isChecked():
+            headers = self.comparison_labels()
+            value_column = headers.index('Difference')
         measure_column = headers.index('Measure')
         binary_column = headers.index(self.analysis.graph_settings.rule_binary)
-        value_column = headers.index('Value')
+
         for row in range(self.tableWidget.rowCount()):
             sub_measure = self.tableWidget.item(row, measure_column).text()
             if sub_measure in sub_measures:
