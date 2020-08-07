@@ -5,9 +5,9 @@ from braphy.graph.graphs.random_graph import RandomGraph
 
 class Graph(ABC):
     def __init__(self, A, settings):
-        self.A = A
         self.settings = settings
         self.init_measure_dict()
+        self.A = Graph.remove_diagonal(A)
 
     def init_measure_dict(self):
         measure_dict = {}

@@ -13,10 +13,11 @@ from braphy.utility.helper_functions import *
 class TestRandomGraphSmallBU(unittest.TestCase):
     def test_graph1(self):
         A = small_world_graph(6,2,0.5)
+        '''
         print(A)
-        '''np.set_printoptions(threshold=sys.maxsize)
+        np.set_printoptions(threshold=sys.maxsize)
         print(A)
-        settings = GraphSettings.get_bu()
+        settings = GraphSettings(weighted = False, binary = False)
         settings.value_binary = 1
         graph = GraphFactory.get_graph(A, settings)
 
@@ -67,7 +68,7 @@ class TestRandomGraphSmallBU(unittest.TestCase):
         A = small_world_graph(20,6,1)
         np.set_printoptions(threshold=sys.maxsize)
         print(A)
-        settings = GraphSettings.get_bu()
+        settings = GraphSettings(weighted = False, binary = False)
         settings.value_binary = 1
         graph = GraphFactory.get_graph(A, settings)
 

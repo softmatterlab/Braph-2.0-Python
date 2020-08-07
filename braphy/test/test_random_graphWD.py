@@ -23,11 +23,13 @@ class TestRandomGraphWD(unittest.TestCase):
         char_path_length = graph.get_measure(MeasurePathLength, 'char_path_length')
         transitivity = graph.get_measure(MeasureTransitivity, 'transitivity')
         avg_cluster = graph.get_measure(MeasureCluster, 'avg_cluster')
+        '''
         print('')
         print('Case 1, with WD of size: ', A.shape)
         print('Char. path length: ', char_path_length)
         print('Transitivity: ', transitivity)
         print('Avg. cluster: ', avg_cluster)
+        '''
 
     def test_graph2(self):
         A = np.array([[0., 0., 0., 0.1,0., 0., 0., 0., 0., 0. ],
@@ -47,12 +49,14 @@ class TestRandomGraphWD(unittest.TestCase):
         char_path_length = graph.get_measure(MeasurePathLength, 'char_path_length')
         transitivity = graph.get_measure(MeasureTransitivity, 'transitivity')
         avg_cluster = graph.get_measure(MeasureCluster, 'avg_cluster')
+        '''
         print('')
         print('Case 2, with WD of size: ', A.shape)
         print('Char. path length: ', char_path_length)
         print('Transitivity: ', transitivity)
         print('Avg. cluster: ', avg_cluster)
-        
+        '''
+
         random = graph.get_random_graph()
         random = GraphWD(random, graph.settings)
         self.assertTrue(random.A.shape == A.shape)
@@ -71,7 +75,7 @@ class TestRandomGraphWD(unittest.TestCase):
 
             avg_cluster_random = random.get_measure(MeasureCluster, 'avg_cluster')
             case_2_random_measures[2,i] = avg_cluster_random
-
+        '''
         fig, axs = plt.subplots(3)
         fig.suptitle('Test case 2: input WD graph dim=' + str(A.shape))
         axs[0].hist(case_2_random_measures[0,:], bins='auto')
@@ -85,7 +89,8 @@ class TestRandomGraphWD(unittest.TestCase):
         axs[2].set_xlabel('Avg. cluster of random graphs')
         fig.tight_layout(pad=3.0)
         plt.show(block=False)
-        
+        '''
+
     def test_graph3(self): #as in BD test
                            #randomly added weights from a uniform distr
         A = np.array([[0., 0., 0., 0., 0., 0., 0., 0., 0.3,0., 0., 0., 0.4,0., 0., 0., 0., 0., 0., 0. ],
@@ -116,12 +121,14 @@ class TestRandomGraphWD(unittest.TestCase):
         char_path_length = graph.get_measure(MeasurePathLength, 'char_path_length')
         transitivity = graph.get_measure(MeasureTransitivity, 'transitivity')
         avg_cluster = graph.get_measure(MeasureCluster, 'avg_cluster')
+        '''
         print('')
         print('Case 3, with WD of size: ', A.shape)
         print('Char. path length: ', char_path_length)
         print('Transitivity: ', transitivity)
         print('Avg. cluster: ', avg_cluster)
-        
+        '''
+
         random = graph.get_random_graph()
         random = GraphWD(random, graph.settings)
         self.assertTrue(random.A.shape == A.shape)
@@ -140,7 +147,7 @@ class TestRandomGraphWD(unittest.TestCase):
 
             avg_cluster_random = random.get_measure(MeasureCluster, 'avg_cluster')
             case_3_random_measures[2,i] = avg_cluster_random
-
+        '''
         fig, axs = plt.subplots(3)
         fig.suptitle('Test case 3: input WD graph dim=' + str(A.shape))
         axs[0].hist(case_3_random_measures[0,:], bins='auto')
@@ -154,7 +161,8 @@ class TestRandomGraphWD(unittest.TestCase):
         axs[2].set_xlabel('Avg. cluster of random graphs')
         fig.tight_layout(pad=3.0)
         plt.show(block=False)
-    
+        '''
+
     def test_graph4(self):#as in BD test
                            #randomly added weights from a uniform distr
         A = np.array([[0., 0., 0.8,0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0. ],
@@ -185,12 +193,14 @@ class TestRandomGraphWD(unittest.TestCase):
         char_path_length = graph.get_measure(MeasurePathLength, 'char_path_length')
         transitivity = graph.get_measure(MeasureTransitivity, 'transitivity')
         avg_cluster = graph.get_measure(MeasureCluster, 'avg_cluster')
+        '''
         print('')
         print('Case 4, with WD of size: ', A.shape)
         print('Char. path length: ', char_path_length)
         print('Transitivity: ', transitivity)
         print('Avg. cluster: ', avg_cluster)
-        
+        '''
+
         random = graph.get_random_graph()
         random = GraphWD(random, graph.settings)
         self.assertTrue(random.A.shape == A.shape)
@@ -210,6 +220,7 @@ class TestRandomGraphWD(unittest.TestCase):
             avg_cluster_random = random.get_measure(MeasureCluster, 'avg_cluster')
             case_4_random_measures[2,i] = avg_cluster_random
 
+        '''
         fig, axs = plt.subplots(3)
         fig.suptitle('Test case 4: input WD graph dim=' + str(A.shape))
         axs[0].hist(case_4_random_measures[0,:], bins='auto')
@@ -223,6 +234,7 @@ class TestRandomGraphWD(unittest.TestCase):
         axs[2].set_xlabel('Avg. cluster of random graphs')
         fig.tight_layout(pad=3.0)
         plt.show(block=False)
+        '''
 
     def test_graph5(self):#as in BD test
                            #randomly added weights from a uniform distr
@@ -274,12 +286,14 @@ class TestRandomGraphWD(unittest.TestCase):
         char_path_length = graph.get_measure(MeasurePathLength, 'char_path_length')
         transitivity = graph.get_measure(MeasureTransitivity, 'transitivity')
         avg_cluster = graph.get_measure(MeasureCluster, 'avg_cluster')
+        '''
         print('')
         print('Case 5, with WD of size: ', A.shape)
         print('Char. path length: ', char_path_length)
         print('Transitivity: ', transitivity)
         print('Avg. cluster: ', avg_cluster)
-        
+        '''
+
         random = graph.get_random_graph()
         random = GraphWD(random, graph.settings)
         self.assertTrue(random.A.shape == A.shape)
@@ -299,6 +313,7 @@ class TestRandomGraphWD(unittest.TestCase):
             avg_cluster_random = random.get_measure(MeasureCluster, 'avg_cluster')
             case_5_random_measures[2,i] = avg_cluster_random
 
+        '''
         fig, axs = plt.subplots(3)
         fig.suptitle('Test case 5: input WD graph dim=' + str(A.shape))
         axs[0].hist(case_5_random_measures[0,:], bins='auto')
@@ -312,6 +327,7 @@ class TestRandomGraphWD(unittest.TestCase):
         axs[2].set_xlabel('Avg. cluster of random graphs')
         fig.tight_layout(pad=3.0)
         plt.show(block=False)
+        '''
 
     def test_graph6(self):#as in BD test
                            #randomly added weights from a uniform distr
@@ -368,12 +384,14 @@ class TestRandomGraphWD(unittest.TestCase):
         char_path_length = graph.get_measure(MeasurePathLength, 'char_path_length')
         transitivity = graph.get_measure(MeasureTransitivity, 'transitivity')
         avg_cluster = graph.get_measure(MeasureCluster, 'avg_cluster')
+        '''
         print('')
         print('Case 6, with WD of size: ', A.shape)
         print('Char. path length: ', char_path_length)
         print('Transitivity: ', transitivity)
         print('Avg. cluster: ', avg_cluster)
-        
+        '''
+
         random = graph.get_random_graph()
         random = GraphWD(random, graph.settings)
         self.assertTrue(random.A.shape == A.shape)
@@ -393,6 +411,7 @@ class TestRandomGraphWD(unittest.TestCase):
             avg_cluster_random = random.get_measure(MeasureCluster, 'avg_cluster')
             case_6_random_measures[2,i] = avg_cluster_random
 
+        '''
         fig, axs = plt.subplots(3)
         fig.suptitle('Test case 6: input WD graph dim=' + str(A.shape))
         axs[0].hist(case_6_random_measures[0,:], bins='auto')
@@ -406,6 +425,7 @@ class TestRandomGraphWD(unittest.TestCase):
         axs[2].set_xlabel('Avg. cluster of random graphs')
         fig.tight_layout(pad=3.0)
         plt.show()
+        '''
 
 if __name__ == '__main__':
     unittest.main()

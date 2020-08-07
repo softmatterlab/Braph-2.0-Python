@@ -33,8 +33,10 @@ class SubjectFunctional(Subject):
             root = tree.getroot()
             functional = 'FunctionalCohort/FunctionalSubject'
             fmri = 'fMRICohort/fMRISubject'
-            assert root.find(functional) or root.find(fmri), "Invalid file"
-            for item in root.findall(functional).extend(root.findall(fmri)):
+            functional_found = root.find(functional)
+            fmri_found = root.find(fmri)
+            assert (functional_found or fmri_found) is not None, "Invalid file"
+            for item in (root.findall(functional) + root.findall(fmri)):
                 item = item.attrib
                 subject_id = item['code']
                 subject = SubjectFunctional(id = subject_id)

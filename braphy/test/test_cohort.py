@@ -11,7 +11,7 @@ class TestCohort(TestUtility):
     def test_read_mri(self):
         atlas = BrainAtlas()
         atlas.brain_regions = [' ']*68
-        cohort = Cohort('mri', SubjectMRI, atlas)
+        cohort = Cohort('mri', SubjectStructural, atlas)
         f = abs_path_from_relative(__file__, '../cohort/gr1_MRI.txt')
         cohort.load_from_txt(f)
         f = abs_path_from_relative(__file__, '../cohort/gr1_MRI.xml')
@@ -22,7 +22,7 @@ class TestCohort(TestUtility):
     def test_read_fmri(self):
         atlas = BrainAtlas()
         atlas.brain_regions = [' ']*160
-        cohort = Cohort('fmri', SubjectfMRI, atlas)
+        cohort = Cohort('fmri', SubjectFunctional, atlas)
         f = abs_path_from_relative(__file__, '../cohort/gr1_fMRI.xml')
         cohort.load_from_xml(f)
 

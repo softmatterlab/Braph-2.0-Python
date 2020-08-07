@@ -27,7 +27,7 @@ class TestEdgeBetweennessCentrality(TestUtility):
                       [0., 0.5, 0.0, 0.2, 0.],
                       [0., 0., 0., 0., 0.],
                       [1.0, 0.1, 0.1, 0.5, 0.,]])
-        settings = GraphSettings.get_wd(rule_standardize = None)
+        settings = GraphSettings(weighted = True, directed = True, rule_standardize = None)
         graph = GraphFactory.get_graph(A, settings)
         edge_betweenness_centrality = np.array([[0., 1, 1, 2, 4],
                                                 [7, 0., 0., 0., 0.],

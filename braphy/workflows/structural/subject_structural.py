@@ -43,8 +43,11 @@ class SubjectStructural(Subject):
             root = tree.getroot()
             structural = 'StructuralCohort/StructuralSubject'
             mri = 'MRICohort/MRISubject'
-            assert root.find(structural) or root.find(mri), "Invalid file"
-            for item in root.findall(structural).extend(root.findall(mri)):
+            structural_found = root.find(structural)
+            mri_found = root.find(mri)
+
+            assert (structural_found or mri_found) is not None, "Invalid file"
+            for item in (root.findall(structural) + root.findall(mri)):
                 item = item.attrib
                 for key in ['code', 'data', 'age']:
                     assert key in item.keys(), "{} missing from subject".format(key)

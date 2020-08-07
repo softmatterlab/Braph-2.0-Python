@@ -19,9 +19,11 @@ class TestRandomGraphBD(unittest.TestCase):
         self.assertEqual(np.sum(random.A), np.sum(A))
         char_path_length = graph.get_measure(MeasurePathLength, 'char_path_length')
         char_path_length_random = random.get_measure(MeasurePathLength, 'char_path_length')
+        '''
         print('Case 1, with BD of size: ', A.shape)
         print('Char. path length: ', char_path_length)
         print('Char. path length random: ', char_path_length_random)
+        '''
 
     def test_graph2(self):
         A = np.array([[0., 0., 0., 1., 0., 0., 0., 0., 0., 0.],
@@ -40,11 +42,13 @@ class TestRandomGraphBD(unittest.TestCase):
         char_path_length = graph.get_measure(MeasurePathLength, 'char_path_length')
         transitivity = graph.get_measure(MeasureTransitivity, 'transitivity')
         avg_cluster = graph.get_measure(MeasureCluster, 'avg_cluster')
+        '''
         print('')
         print('Case 2, with BD of size: ', A.shape)
         print('Char. path length: ', char_path_length)
         print('Transitivity: ', transitivity)
         print('Avg. cluster: ', avg_cluster)
+        '''
 
         random = graph.get_random_graph()
         random = GraphBD(random, graph.settings)
@@ -64,7 +68,7 @@ class TestRandomGraphBD(unittest.TestCase):
 
             avg_cluster_random = random.get_measure(MeasureCluster, 'avg_cluster')
             case_2_random_measures[2,i] = avg_cluster_random
-
+        '''
         fig, axs = plt.subplots(3)
         fig.suptitle('Test case 2: input BD graph dim=' + str(A.shape))
         axs[0].hist(case_2_random_measures[0,:], bins='auto')
@@ -78,7 +82,7 @@ class TestRandomGraphBD(unittest.TestCase):
         axs[2].set_xlabel('Avg. cluster of random graphs')
         fig.tight_layout(pad=3.0)
         plt.show(block=False)
-
+        '''
 
     def test_graph3(self):
         A = np.array([[0., 0., 0., 0., 0., 0., 0., 0., 1., 0., 0., 0., 1., 0., 0., 0., 0., 0., 1., 0.],
@@ -107,11 +111,13 @@ class TestRandomGraphBD(unittest.TestCase):
         char_path_length = graph.get_measure(MeasurePathLength, 'char_path_length')
         transitivity = graph.get_measure(MeasureTransitivity, 'transitivity')
         avg_cluster = graph.get_measure(MeasureCluster, 'avg_cluster')
+        '''
         print('')
         print('Case 3, with BD of size: ', A.shape)
         print('Char. path length: ', char_path_length)
         print('Transitivity: ', transitivity)
         print('Avg. cluster: ', avg_cluster)
+        '''
 
         random = graph.get_random_graph()
         random = GraphBD(random, graph.settings)
@@ -132,6 +138,7 @@ class TestRandomGraphBD(unittest.TestCase):
             avg_cluster_random = random.get_measure(MeasureCluster, 'avg_cluster')
             case_3_random_measures[2,i] = avg_cluster_random
 
+        '''
         fig, axs = plt.subplots(3)
         fig.suptitle('Test case 3: input BD graph dim=' + str(A.shape))
         axs[0].hist(case_3_random_measures[0,:], bins='auto')
@@ -145,6 +152,7 @@ class TestRandomGraphBD(unittest.TestCase):
         axs[2].set_xlabel('Avg. cluster of random graphs')
         fig.tight_layout(pad=3.0)
         plt.show(block=False)
+        '''
 
     def test_graph4(self): #high in clusters, not much random connections
         A = np.array([[0., 0., 1., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
@@ -173,11 +181,13 @@ class TestRandomGraphBD(unittest.TestCase):
         char_path_length = graph.get_measure(MeasurePathLength, 'char_path_length')
         transitivity = graph.get_measure(MeasureTransitivity, 'transitivity')
         avg_cluster = graph.get_measure(MeasureCluster, 'avg_cluster')
+        '''
         print('')
         print('Case 4, with BD of size: ', A.shape)
         print('Char. path length: ', char_path_length)
         print('Transitivity: ', transitivity)
         print('Avg. cluster: ', avg_cluster)
+        '''
 
         random = graph.get_random_graph()
         random = GraphBD(random, graph.settings)
@@ -197,7 +207,7 @@ class TestRandomGraphBD(unittest.TestCase):
 
             avg_cluster_random = random.get_measure(MeasureCluster, 'avg_cluster')
             case_4_random_measures[2,i] = avg_cluster_random
-
+        '''
         fig, axs = plt.subplots(3)
         fig.suptitle('Test case 4: input BD graph dim=' + str(A.shape))
         axs[0].hist(case_4_random_measures[0,:], bins='auto')
@@ -211,6 +221,7 @@ class TestRandomGraphBD(unittest.TestCase):
         axs[2].set_xlabel('Avg. cluster of random graphs')
         fig.tight_layout(pad=3.0)
         plt.show(block=False)
+        '''
 
     def test_graph5(self): #high in clusters
         A = np.array([[0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
@@ -259,11 +270,13 @@ class TestRandomGraphBD(unittest.TestCase):
         char_path_length = graph.get_measure(MeasurePathLength, 'char_path_length')
         transitivity = graph.get_measure(MeasureTransitivity, 'transitivity')
         avg_cluster = graph.get_measure(MeasureCluster, 'avg_cluster')
+        '''
         print('')
         print('Case 5, with BD of size: ', A.shape)
         print('Char. path length: ', char_path_length)
         print('Transitivity: ', transitivity)
         print('Avg. cluster: ', avg_cluster)
+        '''
 
         random = graph.get_random_graph()
         random = GraphBD(random, graph.settings)
@@ -284,6 +297,7 @@ class TestRandomGraphBD(unittest.TestCase):
             avg_cluster_random = random.get_measure(MeasureCluster, 'avg_cluster')
             case_5_random_measures[2,i] = avg_cluster_random
 
+        '''
         fig, axs = plt.subplots(3)
         fig.suptitle('Test case 5: input BD graph dim=' + str(A.shape))
         axs[0].hist(case_5_random_measures[0,:], bins='auto')
@@ -297,6 +311,7 @@ class TestRandomGraphBD(unittest.TestCase):
         axs[2].set_xlabel('Avg. cluster of random graphs')
         fig.tight_layout(pad=3.0)
         plt.show(block=False)
+        '''
 
     def test_graph6(self): #as above but with more random connections
         A = np.array([[0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0],
@@ -345,12 +360,14 @@ class TestRandomGraphBD(unittest.TestCase):
         char_path_length = graph.get_measure(MeasurePathLength, 'char_path_length')
         transitivity = graph.get_measure(MeasureTransitivity, 'transitivity')
         avg_cluster = graph.get_measure(MeasureCluster, 'avg_cluster')
+        '''
         print('')
         print('Case 6, with BD of size: ', A.shape)
         print('Char. path length: ', char_path_length)
         print('Transitivity: ', transitivity)
         print('Avg. cluster: ', avg_cluster)
 
+        '''
         random = graph.get_random_graph()
         random = GraphBD(random, graph.settings)
         self.assertTrue(random.A.shape == A.shape)
@@ -369,7 +386,7 @@ class TestRandomGraphBD(unittest.TestCase):
 
             avg_cluster_random = random.get_measure(MeasureCluster, 'avg_cluster')
             case_6_random_measures[2,i] = avg_cluster_random
-
+        '''
         fig, axs = plt.subplots(3)
         fig.suptitle('Test case 6: input BD graph dim=' + str(A.shape))
         axs[0].hist(case_6_random_measures[0,:], bins='auto')
@@ -383,6 +400,7 @@ class TestRandomGraphBD(unittest.TestCase):
         axs[2].set_xlabel('Avg. cluster of random graphs')
         fig.tight_layout(pad=3.0)
         plt.show()
+        '''
 
 if __name__ == '__main__':
     unittest.main()
