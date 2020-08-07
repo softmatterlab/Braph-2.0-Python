@@ -43,7 +43,7 @@ class StartAnalysisWidget(Base, Form):
 
     def new_analysis(self):
         self.graph_analysis_gui = self.analysis_gui.__class__(subject_class = self.analysis_gui.subject_class,
-                                                              analysis = self.analysis,
+                                                              cohort = self.analysis.cohort,
                                                               brain_mesh_data = self.analysis_gui.brain_mesh_data)
         self.graph_analysis_gui.show()
 
