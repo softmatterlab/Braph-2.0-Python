@@ -321,11 +321,12 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
             return
         subgraph_analysis = self.analysis.get_subgraph_analysis(selected_nodes)
         self.subgraph_analysis_gui = self.start_analysis_gui_function(analysis = subgraph_analysis,
+                                                                      subject_class = self.analysis.cohort.subject_class,
                                                                       brain_mesh_data = self.brain_mesh_data)
         group = self.comboBoxGroup.currentText()
         subject = self.comboBoxSubject.currentText()
         data_type = self.analysis.cohort.subject_class.data_type()
-        if self.analysis.is_structural():
+        if self.analysis.structural():
             self.subgraph_analysis_gui.setWindowTitle('{} Subgraph Analysis: Group {}, Community {}'.format(data_type, group, column))
         else:
             self.subgraph_analysis_gui.setWindowTitle('{} Subgraph Analysis: Group {}, Subject {}, Community {}'.format(data_type, group, subject, column))
