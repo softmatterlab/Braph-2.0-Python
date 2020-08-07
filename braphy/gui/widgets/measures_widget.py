@@ -78,6 +78,7 @@ class MeasuresWidget(Base, Form):
         selected = self.get_selected()
         info_strings = {}
         all_values = {}
+        confidence_intervals = None
         sub_measures = []
         for i in selected:
             sub_measure = None
@@ -89,6 +90,7 @@ class MeasuresWidget(Base, Form):
                 index = self.comparison_index_mapping[i]
                 sub_measure = self.analysis.comparisons[index].sub_measure
                 group_2 = self.comboBoxGroup2.currentIndex()
+                confidence_intervals = {}
 
             elif self.btnRandomComparison.isChecked():
                 index = self.random_comparison_index_mapping[i]
@@ -103,6 +105,8 @@ class MeasuresWidget(Base, Form):
         elif self.btnComparison.isChecked():
             headers = self.comparison_labels()
             value_column = headers.index('Difference')
+            CI_lower_column = headers.index('CI lower')
+            CI_upper_column = headers.index('CI upper')
         measure_column = headers.index('Measure')
         binary_column = headers.index(self.analysis.graph_settings.rule_binary)
 
@@ -116,9 +120,16 @@ class MeasuresWidget(Base, Form):
                     info_string = self.get_info_string(sub_measure)
                     info_strings[sub_measure] = info_string
                 all_values[sub_measure].append([binary_value, value])
+                if confidence_intervals is not None:
+                    CI_lower = float(self.tableWidget.item(row, CI_lower_column).text())
+                    CI_upper = float(self.tableWidget.item(row, CI_upper_column).text())
+                    if sub_measure not in confidence_intervals.keys():
+                        confidence_intervals[sub_measure] = [[],[]]
+                    confidence_intervals[sub_measure][0].append(CI_lower)
+                    confidence_intervals[sub_measure][1].append(CI_upper)
 
         for sub_measure, values in all_values.items():
-            self.binaryPlotWidget.add_plot(info_strings[sub_measure], np.array(values))
+            self.binaryPlotWidget.add_plot(info_strings[sub_measure], np.array(values), np.array(confidence_intervals[sub_measure]))
 
     def enable_add_plot(self):
         selected = self.get_selected()
