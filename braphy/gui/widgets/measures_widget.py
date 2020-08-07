@@ -129,7 +129,8 @@ class MeasuresWidget(Base, Form):
                     confidence_intervals[sub_measure][1].append(CI_upper)
 
         for sub_measure, values in all_values.items():
-            self.binaryPlotWidget.add_plot(info_strings[sub_measure], np.array(values), np.array(confidence_intervals[sub_measure]))
+            ci = None if confidence_intervals is None else np.array(confidence_intervals[sub_measure])
+            self.binaryPlotWidget.add_plot(info_strings[sub_measure], np.array(values), ci)
 
     def enable_add_plot(self):
         selected = self.get_selected()
