@@ -25,12 +25,12 @@ class BinaryPlotWidget(Base, Form):
         self.btnRemove.clicked.connect(self.remove_plot)
         self.btnClear.clicked.connect(self.clear_plot)
 
-    def add_plot(self, info_string, values):
+    def add_plot(self, info_string, values, confidence_interval):
         if info_string in self.info_strings:
             return
         self.info_strings.append(info_string)
         self.listWidget.addItem(info_string)
-        self.binaryPlot.add_plot(info_string, values)
+        self.binaryPlot.add_plot(info_string, values, confidence_interval)
         self.btnClear.setEnabled(True)
 
     def remove_plot(self):

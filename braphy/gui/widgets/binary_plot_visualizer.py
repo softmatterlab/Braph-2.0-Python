@@ -31,6 +31,7 @@ class BinaryPlotVisualizer(FigureCanvas):
         self.binary_plot_settings_widget.raise_()
         self.binary_plot_settings_widget.show()
         self.plots = {}
+        self.confidence_intervals = {}
 
         self.toolbar = NavigationToolbar(self, self)
         self.toolbar.set_callback_function(self.settings_callback)
@@ -40,11 +41,16 @@ class BinaryPlotVisualizer(FigureCanvas):
         self.show_legend(self.ax.get_legend())
         self.draw()
 
-    def add_plot(self, info_string, values):
+    def add_plot(self, info_string, values, confidence_interval = None):
         settings = self.binary_plot_settings_widget.get_plot_settings()
 
         values = values[np.argsort(values[:,0])]
 
+        if confidence_interval is not None:
+            CI = self.ax.fill_between(values[:, 0], confidence_interval[0], confidence_interval[1],
+                                      facecolor = settings['ci_color'],
+                                      alpha = settings['ci_alpha'])
+            self.confidence_intervals[info_string] = CI
         plot = self.ax.plot(values[:, 0], values[:, 1], color = settings['line_color'],
                             linestyle = settings['line_style'], marker = settings['marker_style'],
                             markerfacecolor = settings['marker_color'], linewidth = settings['line_width'],
@@ -62,6 +68,9 @@ class BinaryPlotVisualizer(FigureCanvas):
     def remove_plot(self, info_string):
         self.plots[info_string][0].remove()
         del self.plots[info_string]
+        if info_string in self.confidence_intervals.keys():
+            self.confidence_intervals[info_string].remove()
+            del self.confidence_intervals[info_string]
         self.ax.relim()
         self.ax.autoscale_view()
         self.show_legend(self.ax.get_legend())
@@ -80,6 +89,9 @@ class BinaryPlotVisualizer(FigureCanvas):
             plot[0].set_markerfacecolor(settings['marker_color'])
             plot[0].set_markersize(settings['marker_size'])
             plot[0].set_linewidth(settings['line_width'])
+        for ci in self.confidence_intervals.values():
+            ci.set_facecolor(settings['ci_color'])
+            ci.set_alpha(settings['ci_alpha'])
         self.show_legend(self.ax.get_legend())
         self.draw()
 

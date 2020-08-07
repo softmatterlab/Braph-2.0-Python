@@ -13,9 +13,10 @@ class BinaryPlotSettingsWidget(Base, Form):
         self.set_update_function(update_function)
 
         self.blue = [0.3, 0.3, 1.0, 1.0]
+        self.yellow = [1.0, 1.0, 0.3, 1.0]
         self.line_color = QColor_from_list(self.blue)
         self.marker_color = QColor_from_list(self.blue)
-        self.ci_color = QColor_from_list(self.blue)
+        self.ci_color = QColor_from_list(self.yellow)
 
         self.init_color_buttons()
         self.init_sliders()
@@ -23,17 +24,20 @@ class BinaryPlotSettingsWidget(Base, Form):
         self.init_settings_window()
 
     def init_color_buttons(self):
-        style_sheet = 'background-color: {};'.format(QColor_from_list(self.blue).name())
+        style_sheet = 'background-color: {};'.format(self.marker_color.name())
         self.btnMarkersColor.setStyleSheet(style_sheet)
         self.btnMarkersColor.clicked.connect(self.pick_markers_color)
+        style_sheet = 'background-color: {};'.format(self.line_color.name())
         self.btnLinesColor.setStyleSheet(style_sheet)
         self.btnLinesColor.clicked.connect(self.pick_lines_color)
+        style_sheet = 'background-color: {};'.format(self.ci_color.name())
         self.btnCIColor.setStyleSheet(style_sheet)
         self.btnCIColor.clicked.connect(self.pick_CI_color)
 
     def init_sliders(self):
         self.sliderMarkers.valueChanged.connect(self.update_function)
         self.sliderLines.valueChanged.connect(self.update_function)
+        self.sliderCI.valueChanged.connect(self.update_function)
 
     def init_combo_boxes(self):
         line_styles = ['-', '--', '-.', ':']
@@ -134,6 +138,8 @@ class BinaryPlotSettingsWidget(Base, Form):
         settings['marker_style'] =  self.get_marker_style()
         settings['line_width'] = self.get_line_width()
         settings['marker_size'] = self.get_marker_size()
+        settings['ci_color'] = self.get_ci_color()
+        settings['ci_alpha'] = self.get_ci_alpha()
         return settings
 
     def get_line_color(self):
@@ -154,4 +160,8 @@ class BinaryPlotSettingsWidget(Base, Form):
     def get_marker_size(self):
         return self.sliderMarkers.value()
 
+    def get_ci_color(self):
+        return self.ci_color.name()
 
+    def get_ci_alpha(self):
+        return self.sliderCI.value()/100.0
