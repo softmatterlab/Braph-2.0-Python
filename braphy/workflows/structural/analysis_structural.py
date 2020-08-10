@@ -27,8 +27,38 @@ class AnalysisStructural(Analysis):
         measurement = MeasurementStructural(group_index, measure_class, sub_measure, value, self.graph_settings.value_binary)
         return measurement
 
-    def calculate_random_comparison(self, measure_class, sub_measure, group):
-        pass
+    def calculate_random_comparison(self, measure_class, sub_measure, group_index,
+                                    randomization_number, numer_of_weights, attempts_per_edge):
+        graph = self.get_graph(group_index)
+        measure = graph.get_measure(measure_class, sub_measure, save = False)
+
+        differences = []
+        mean_random_measures = 0
+
+        for _ in range(randomization_number):
+            random_A = graph.get_random_graph(number_of_weights, attempts_per_edge)
+            random_graph = GraphFactory.get_graph(random_A, self.graph_settings)
+            random_measure = random_graph.get_measure(measure_class, sub_measure, save = False)
+
+            differences.append(measure - random_measure)
+            mean_random_measures += random_measure
+
+        mean_random_measures = mean_random_values / randomization_number
+        difference = measure - mean_random_measures
+
+        p1 = stat.p_value(difference, differences, True)
+        p2 = stat.p_value(difference, differences, False)
+
+        quantiles = stat.quantiles(permutation_diffs, 41)
+        CI_lower = percentiles[1]
+        CI_upper = percentiles[39]
+
+        random_comparison = RandomComparisonStructural(group_index, measure_class, sub_measure,
+                                                       attempts_per_edge, number_of_weights,
+                                                       randomization_number, measure, mean_random_measures,
+                                                       difference, differences, (p1, p2),
+                                                       (CI_lower, CI_upper), self.graph_settings.value_binary)
+
 
     def calculate_comparison(self, measure_class, sub_measure, groups, permutations = 1000, longitudinal = False):
         group_1 = self.cohort.groups[groups[0]]
@@ -53,12 +83,13 @@ class AnalysisStructural(Analysis):
         difference_mean = measure_2 - measure_1
         p1 = stat.p_value(difference_mean, permutation_diffs, True)
         p2 = stat.p_value(difference_mean, permutation_diffs, False)
-        percentiles = stat.quantiles(permutation_diffs, 20)
-        CI_lower = percentiles[1]
-        CI_upper = percentiles[18]
+        quantiles = stat.quantiles(permutation_diffs, 41)
+        CI_lower = quantiles[1]
+        CI_upper = quantiles[39]
 
         comparison = ComparisonStructural(groups, measure_class, sub_measure, permutation_diffs,
-                                   (p1, p2), (CI_lower, CI_upper), (measure_1, measure_2), permutations,self.graph_settings.value_binary, longitudinal)
+                                          (p1, p2), (CI_lower, CI_upper), (measure_1, measure_2),
+                                          permutations,self.graph_settings.value_binary, longitudinal)
         return comparison
 
     def get_graph(self, group_index):
