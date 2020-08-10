@@ -77,7 +77,10 @@ class BinaryPlotVisualizer(FigureCanvas):
         self.draw()
 
     def resizeEvent(self, event):
-        super().resizeEvent(event)
+        try:
+            super().resizeEvent(event)
+        except:
+            pass
         self.binary_plot_settings_widget.update_move()
 
     def update_visualization(self):
