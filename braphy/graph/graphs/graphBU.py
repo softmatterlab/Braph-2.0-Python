@@ -24,7 +24,7 @@ class GraphBU(Graph):
                       'The connectivity matrix is symmetric.'
         return description
 
-    def get_random_graph(self, attempts_per_edge = 5):
+    def get_random_graph(self, attempts_per_edge = 5, number_of_weights = None):
         J_edges = np.where(np.triu(self.A).T)[0]
         I_edges = np.where(np.triu(self.A).T)[1]
         E = len(I_edges)

@@ -28,7 +28,7 @@ class GraphWU(Graph):
 
         return description
 
-    def get_random_graph(self, number_of_weights = 1, attempts_per_edge = 5):
+    def get_random_graph(self, attempts_per_edge = 5, number_of_weights = 1):
         W = self.A.copy()
         graphBU = GraphBU(W,self.settings)
         graphBU_random_A = graphBU.get_random_graph()

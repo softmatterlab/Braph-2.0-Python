@@ -17,10 +17,12 @@ class CompareGroupMeasures(QtWidgets.QMainWindow, Ui_MainWindow):
         self.btnCalculate.setText('Compare groups')
         self.setWindowTitle('Compare group measures')
 
-        self.labelMatrix.hide()
-        self.labelSwaps.hide()
-        self.lineEditMatrix.hide()
-        self.lineEditSwaps.hide()
+        self.labelAttempts.hide()
+        self.labelWeights.hide()
+        self.labelRandomization.hide()
+        self.spinBoxAttempts.hide()
+        self.spinBoxWeights.hide()
+        self.spinBoxRandomization.hide()
 
         if analysis.is_weighted():
             self.labelBinary.hide()
@@ -60,7 +62,7 @@ class CompareGroupMeasures(QtWidgets.QMainWindow, Ui_MainWindow):
             text_box_string = ' '
             self.textBrowser.setPlainText(text_box_string)
             QtGui.QApplication.processEvents()
-            permutations = int(self.lineEditPermutation.text())
+            permutations = self.spinBoxPermutation.value()
             sub_measures = self.graphMeasuresWidget.get_selected_measures()
             group_index_1 = self.comboBoxGroup1.currentIndex()
             group_index_2 = self.comboBoxGroup2.currentIndex()
@@ -106,7 +108,6 @@ class CompareGroupMeasures(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def update_step(self):
         self.spinBoxStep.setMaximum(self.spinBoxMax.value() - self.spinBoxMin.value())
-
 
 def run():
     app = QtWidgets.QApplication(sys.argv)

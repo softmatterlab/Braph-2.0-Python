@@ -113,5 +113,5 @@ class Graph(ABC):
         return new_A
 
     @abstractmethod
-    def get_random_graph(self, attempts_per_edge):
+    def get_random_graph(self, attempts_per_edge, number_of_weights = None):
         pass

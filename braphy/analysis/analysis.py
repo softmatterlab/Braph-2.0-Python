@@ -102,18 +102,19 @@ class Analysis():
             self.measurements.append(measurement)
         return measurement
 
-    def get_random_comparison(self, measure_class, sub_measure, group):
-        measurement = None
-        for m in self.measurements:
-            if (m.measure_class == measure_class and
-                m.sub_measure == sub_measure and
-                m.group == group):
-                measurement = m
+    def get_random_comparison(self, measure_class, sub_measure, group, attempts_per_edge, number_of_weights, randomization_number):
+        random_comparison = None
+        check_random_comparison = RandomComparison(measure_class, sub_measure, group, attempts_per_edge,
+                                                   number_of_weights, randomization_number, 0, 0, 0, [],
+                                                   (0,0), (0,0), self.graph_settings.value_binary)
+        for c in self.random_comparisons:
+            if (c.equal(check_random_comparison)):
+                random_comparison = c
                 break
-        if not measurement:
-            measurement = self.calculate_measurement(measure_class, sub_measure, group)
-            self.measurements.append(measurement)
-        return measurement
+        if not random_comparison:
+            random_comparison = self.calculate_random_comparison(measure_class, sub_measure, group, randomization_number, number_of_weights, attempts_per_edge)
+            self.random_comparisons.append(random_comparison)
+        return random_comparison
 
     def get_comparison(self, measure_class, sub_measure, groups, permutations, longitudinal):
         comparison = None

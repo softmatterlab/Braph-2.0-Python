@@ -52,52 +52,57 @@
           <property name="rightMargin">
            <number>0</number>
           </property>
-          <item row="1" column="1">
-           <widget class="QLineEdit" name="lineEditPermutation">
-            <property name="text">
-             <string>1000</string>
+          <item row="3" column="2">
+           <widget class="QSpinBox" name="spinBoxAttempts">
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>1000</number>
+            </property>
+            <property name="value">
+             <number>5</number>
             </property>
            </widget>
           </item>
-          <item row="4" column="1">
+          <item row="2" column="2">
+           <widget class="QSpinBox" name="spinBoxWeights">
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>1000</number>
+            </property>
+            <property name="value">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="2">
            <widget class="QCheckBox" name="checkBoxLongitudinal">
             <property name="text">
              <string>longitudinal</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="1">
-           <widget class="QLineEdit" name="lineEditMatrix">
-            <property name="text">
-             <string>1000</string>
-            </property>
-           </widget>
-          </item>
           <item row="1" column="0">
            <widget class="QLabel" name="labelPermutation">
             <property name="text">
-             <string>permutation number</string>
+             <string>Permutation number</string>
             </property>
            </widget>
           </item>
           <item row="3" column="0">
-           <widget class="QLabel" name="labelSwaps">
+           <widget class="QLabel" name="labelAttempts">
             <property name="text">
-             <string>random swaps no.</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="1">
-           <widget class="QLineEdit" name="lineEditSwaps">
-            <property name="text">
-             <string>10</string>
+             <string>Attempts per edge</string>
             </property>
            </widget>
           </item>
           <item row="2" column="0">
-           <widget class="QLabel" name="labelMatrix">
+           <widget class="QLabel" name="labelWeights">
             <property name="text">
-             <string>random matrix no.</string>
+             <string>Number of weights</string>
             </property>
            </widget>
           </item>
@@ -108,7 +113,7 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="1">
+          <item row="0" column="2">
            <layout class="QGridLayout" name="gridLayout">
             <item row="0" column="0">
              <widget class="QLabel" name="labelMin">
@@ -168,6 +173,39 @@
              </widget>
             </item>
            </layout>
+          </item>
+          <item row="1" column="2">
+           <widget class="QSpinBox" name="spinBoxPermutation">
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>10000</number>
+            </property>
+            <property name="value">
+             <number>10</number>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="labelRandomization">
+            <property name="text">
+             <string>Randomization number</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="2">
+           <widget class="QSpinBox" name="spinBoxRandomization">
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>10000</number>
+            </property>
+            <property name="value">
+             <number>10</number>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>

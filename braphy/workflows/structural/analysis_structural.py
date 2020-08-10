@@ -1,6 +1,7 @@
 from braphy.analysis.analysis import Analysis
 from braphy.workflows.structural.measurement_structural import MeasurementStructural
 from braphy.workflows.structural.comparison_structural import ComparisonStructural
+from braphy.workflows.structural.random_comparison_structural import RandomComparisonStructural
 from braphy.graph.measures.measure_community_structure import MeasureCommunityStructure
 from braphy.utility.permutation import Permutation
 from braphy.utility.stat_functions import StatFunctions as stat
@@ -28,7 +29,7 @@ class AnalysisStructural(Analysis):
         return measurement
 
     def calculate_random_comparison(self, measure_class, sub_measure, group_index,
-                                    randomization_number, numer_of_weights, attempts_per_edge):
+                                    randomization_number, number_of_weights, attempts_per_edge):
         graph = self.get_graph(group_index)
         measure = graph.get_measure(measure_class, sub_measure, save = False)
 
@@ -36,29 +37,30 @@ class AnalysisStructural(Analysis):
         mean_random_measures = 0
 
         for _ in range(randomization_number):
-            random_A = graph.get_random_graph(number_of_weights, attempts_per_edge)
+            random_A = graph.get_random_graph(attempts_per_edge, number_of_weights)
             random_graph = GraphFactory.get_graph(random_A, self.graph_settings)
             random_measure = random_graph.get_measure(measure_class, sub_measure, save = False)
 
             differences.append(measure - random_measure)
             mean_random_measures += random_measure
 
-        mean_random_measures = mean_random_values / randomization_number
+        mean_random_measures = mean_random_measures / randomization_number
         difference = measure - mean_random_measures
+        differences = np.array(differences)
 
         p1 = stat.p_value(difference, differences, True)
         p2 = stat.p_value(difference, differences, False)
 
-        quantiles = stat.quantiles(permutation_diffs, 41)
-        CI_lower = percentiles[1]
-        CI_upper = percentiles[39]
+        quantiles = stat.quantiles(differences, 41)
+        CI_lower = quantiles[1]
+        CI_upper = quantiles[39]
 
         random_comparison = RandomComparisonStructural(group_index, measure_class, sub_measure,
                                                        attempts_per_edge, number_of_weights,
                                                        randomization_number, measure, mean_random_measures,
                                                        difference, differences, (p1, p2),
                                                        (CI_lower, CI_upper), self.graph_settings.value_binary)
-
+        return random_comparison
 
     def calculate_comparison(self, measure_class, sub_measure, groups, permutations = 1000, longitudinal = False):
         group_1 = self.cohort.groups[groups[0]]

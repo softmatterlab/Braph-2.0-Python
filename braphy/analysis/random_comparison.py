@@ -18,7 +18,7 @@ class RandomComparison():
         self.confidence_intervals = confidence_intervals
         self.binary_value = binary_value
 
-    def equals(self, other):
+    def equal(self, other):
         if not isinstance(other, RandomComparison):
             return False
         eq = (self.group_index == other.group_index and

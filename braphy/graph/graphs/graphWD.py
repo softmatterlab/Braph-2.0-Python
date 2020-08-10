@@ -26,7 +26,7 @@ class GraphWD(Graph):
 
         return description
 
-    def get_random_graph(self, number_of_weights = 1, attempts_per_edge = 5): 
+    def get_random_graph(self, attempts_per_edge = 5, number_of_weights = 1):
         W = self.A.copy()
         graphBD = GraphBD(W,self.settings)
         graphBD_random_A = graphBD.get_random_graph()

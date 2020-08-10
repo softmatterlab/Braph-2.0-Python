@@ -62,6 +62,8 @@ class StatFunctions():
 
     def p_value(observed_difference, random_differences, single = True):
         assert len(np.shape(observed_difference)) == len(np.shape(random_differences)) - 1
+        if isinstance(random_differences, list):
+            random_differences = np.array(random_differences)
         M = random_differences.size
         if len(np.shape(observed_difference)) == 0:
             return StatFunctions.p_value_scalar(observed_difference, random_differences, single)
