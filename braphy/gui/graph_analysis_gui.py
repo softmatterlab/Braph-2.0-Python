@@ -25,6 +25,8 @@ class GraphAnalysis(ExitDialog, Ui_MainWindow):
         QtWidgets.QMainWindow.__init__(self, parent = None)
         self.setupUi(self)
 
+        self.menuFigure.menuAction().setVisible(False)
+
         self.init_buttons()
         self.init_actions()
         settings = None if analysis is None else analysis.graph_settings
@@ -105,6 +107,7 @@ class GraphAnalysis(ExitDialog, Ui_MainWindow):
         self.brain_view_options_widget.settingsWidget.change_transparency()
         self.brain_view_options_widget.set_graph_analysis_mode(self.analysis)
         self.brain_view_options_widget.show()
+        self.actionGenerate_figure.triggered.connect(self.brainWidget.generate_figure)
 
     def set_locked(self, locked):
         lock_items = [self.correlationMatrixWidget, self.textAnalysisName, self.comboBoxWeighted, self.comboBoxDirected,
@@ -210,29 +213,34 @@ class GraphAnalysis(ExitDialog, Ui_MainWindow):
             self.set_brain_view_actions_visible(False)
             self.set_correlation_actions_visible(True)
             self.set_binary_plot_actions_visible([self.globalMeasuresWidget, self.nodalMeasuresWidget, self.binodalMeasuresWidget], False)
+            self.menuFigure.menuAction().setVisible(False)
         elif self.tabWidget.currentIndex() == 1:
             self.globalMeasuresWidget.update_table()
             self.set_brain_view_actions_visible(False)
             self.set_correlation_actions_visible(False)
             self.set_binary_plot_actions_visible([self.nodalMeasuresWidget, self.binodalMeasuresWidget], False)
             self.set_binary_plot_actions_visible([self.globalMeasuresWidget], True)
+            self.menuFigure.menuAction().setVisible(False)
         elif self.tabWidget.currentIndex() == 2:
             self.nodalMeasuresWidget.update_table()
             self.set_brain_view_actions_visible(False)
             self.set_correlation_actions_visible(False)
             self.set_binary_plot_actions_visible([self.globalMeasuresWidget, self.binodalMeasuresWidget], False)
             self.set_binary_plot_actions_visible([self.nodalMeasuresWidget], True)
+            self.menuFigure.menuAction().setVisible(False)
         elif self.tabWidget.currentIndex() == 3:
             self.binodalMeasuresWidget.update_table()
             self.set_brain_view_actions_visible(False)
             self.set_correlation_actions_visible(False)
             self.set_binary_plot_actions_visible([self.globalMeasuresWidget, self.nodalMeasuresWidget], False)
             self.set_binary_plot_actions_visible([self.binodalMeasuresWidget], True)
+            self.menuFigure.menuAction().setVisible(False)
         elif self.tabWidget.currentIndex() == 4:
             self.set_brain_view_actions_visible(True)
             self.set_correlation_actions_visible(False)
             self.set_binary_plot_actions_visible([self.globalMeasuresWidget, self.nodalMeasuresWidget, self.binodalMeasuresWidget], False)
             self.brain_view_options_widget.update_move()
+            self.menuFigure.menuAction().setVisible(True)
 
     def set_analysis_name(self, name):
         if self.analysis:
