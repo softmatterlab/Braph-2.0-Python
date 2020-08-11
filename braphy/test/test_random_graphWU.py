@@ -65,6 +65,7 @@ class TestRandomGraphWU(unittest.TestCase):
         self.assertTrue(random.A.shape == A.shape)
         #self.assertEqual(np.sum(random.A), np.sum(A))
 
+        '''
         case_2_random_measures = np.zeros((3, 1000))
         for i in range(0,1000):
             random = graph.get_random_graph()
@@ -78,7 +79,6 @@ class TestRandomGraphWU(unittest.TestCase):
 
             avg_cluster_random = random.get_measure(MeasureCluster, 'avg_cluster')
             case_2_random_measures[2,i] = avg_cluster_random
-        '''
         fig, axs = plt.subplots(3)
         fig.suptitle('Test case 2: input WU graph dim=' + str(A.shape))
         axs[0].hist(case_2_random_measures[0,:], bins='auto')
@@ -138,6 +138,7 @@ class TestRandomGraphWU(unittest.TestCase):
         self.assertTrue(random.A.shape == A.shape)
         #self.assertEqual(np.sum(random.A), np.sum(A))
 
+        '''
         case_3_random_measures = np.zeros((3, 1000))
         for i in range(0,1000):
             random = graph.get_random_graph()
@@ -151,7 +152,6 @@ class TestRandomGraphWU(unittest.TestCase):
 
             avg_cluster_random = random.get_measure(MeasureCluster, 'avg_cluster')
             case_3_random_measures[2,i] = avg_cluster_random
-        '''
         fig, axs = plt.subplots(3)
         fig.suptitle('Test case 3: input WU graph dim=' + str(A.shape))
         axs[0].hist(case_3_random_measures[0,:], bins='auto')
@@ -210,6 +210,7 @@ class TestRandomGraphWU(unittest.TestCase):
         self.assertTrue(random.A.shape == A.shape)
         #self.assertEqual(np.sum(random.A), np.sum(A))
 
+        '''
         case_4_random_measures = np.zeros((3, 1000))
         for i in range(0,1000):
             random = graph.get_random_graph()
@@ -223,7 +224,6 @@ class TestRandomGraphWU(unittest.TestCase):
 
             avg_cluster_random = random.get_measure(MeasureCluster, 'avg_cluster')
             case_4_random_measures[2,i] = avg_cluster_random
-        '''
         fig, axs = plt.subplots(3)
         fig.suptitle('Test case 4: input WU graph dim=' + str(A.shape))
         axs[0].hist(case_4_random_measures[0,:], bins='auto')
@@ -302,6 +302,7 @@ class TestRandomGraphWU(unittest.TestCase):
         self.assertTrue(random.A.shape == A.shape)
         #self.assertEqual(np.sum(random.A), np.sum(A))
 
+        '''
         case_5_random_measures = np.zeros((3, 1000))
         for i in range(0,1000):
             random = graph.get_random_graph()
@@ -315,7 +316,6 @@ class TestRandomGraphWU(unittest.TestCase):
 
             avg_cluster_random = random.get_measure(MeasureCluster, 'avg_cluster')
             case_5_random_measures[2,i] = avg_cluster_random
-        '''
         fig, axs = plt.subplots(3)
         fig.suptitle('Test case 5: input WU graph dim=' + str(A.shape))
         axs[0].hist(case_5_random_measures[0,:], bins='auto')
@@ -398,6 +398,7 @@ class TestRandomGraphWU(unittest.TestCase):
         self.assertTrue(random.A.shape == A.shape)
         #self.assertEqual(np.sum(random.A), np.sum(A))
 
+        '''
         case_6_random_measures = np.zeros((3, 1000))
         for i in range(0,1000):
             random = graph.get_random_graph()
@@ -411,7 +412,6 @@ class TestRandomGraphWU(unittest.TestCase):
 
             avg_cluster_random = random.get_measure(MeasureCluster, 'avg_cluster')
             case_6_random_measures[2,i] = avg_cluster_random
-        '''
         fig, axs = plt.subplots(3)
         fig.suptitle('Test case 6: input WU graph dim=' + str(A.shape))
         axs[0].hist(case_6_random_measures[0,:], bins='auto')
