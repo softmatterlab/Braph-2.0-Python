@@ -11,7 +11,7 @@ class GraphSettings():
     STANDARDIZE = ['range', 'threshold']
     SYMMETRIZE = ['max', 'min', 'sum', 'average']
     BINARY = ['threshold', 'density']
-    BINARY_VALUE_DEFAULT = 0.005
+    BINARY_VALUE_DEFAULT = 0
     CORRELATION_TYPE = ['pearson', 'spearman', 'kendall', 'partial pearson', 'partial spearman']
 
     def __init__(self, weighted = WEIGHTED_DEFAULT, directed = DIRECTED_DEFAULT,

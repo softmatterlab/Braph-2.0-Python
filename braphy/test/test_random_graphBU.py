@@ -13,7 +13,6 @@ class TestRandomGraphBU(unittest.TestCase):
     def test_graph1(self):
         A = np.array([[0., 1., 0., 1.], [1., 0., 1., 1.], [0., 1., 0., 1.], [1., 1., 1., 0.]])
         settings = GraphSettings(weighted = False, directed = False)
-        settings.value_binary = 1
         graph = GraphFactory.get_graph(A, settings)
         random = graph.get_random_graph()
         random = GraphBU(random, graph.settings)
@@ -47,7 +46,6 @@ class TestRandomGraphBU(unittest.TestCase):
                       [0., 0., 0., 0., 1., 0., 0., 1., 0., 0.],
                       [0., 0., 0., 0., 1., 1., 0., 0., 0., 0.]])
         settings = GraphSettings(weighted = False, directed = False)
-        settings.value_binary = 1
         graph = GraphFactory.get_graph(A, settings)
         random = graph.get_random_graph()
         random = GraphFactory.get_graph(random, settings)
@@ -124,7 +122,6 @@ class TestRandomGraphBU(unittest.TestCase):
                       [1., 0., 0., 1., 0., 0., 0., 1., 1., 1., 0., 1., 0., 0., 0., 1., 0., 0., 0., 0.],
                       [0., 0., 1., 1., 0., 0., 0., 1., 1., 1., 1., 0., 0., 0., 0., 1., 0., 1., 0., 0.]])
         settings = GraphSettings(weighted = False, directed = False)
-        settings.value_binary = 1
         graph = GraphFactory.get_graph(A, settings)
 
         char_path_length = graph.get_measure(MeasurePathLength, 'char_path_length')
@@ -194,7 +191,6 @@ class TestRandomGraphBU(unittest.TestCase):
                       [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 1., 0., 0., 1.],
                       [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 1., 0., 1., 0., 1., 0.]])
         settings = GraphSettings(weighted = False, directed = False)
-        settings.value_binary = 1
         graph = GraphFactory.get_graph(A, settings)
 
         char_path_length = graph.get_measure(MeasurePathLength, 'char_path_length')
@@ -285,7 +281,6 @@ class TestRandomGraphBU(unittest.TestCase):
                       [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,1,0]])
 
         settings = GraphSettings(weighted = False, directed = False)
-        settings.value_binary = 1
         graph = GraphFactory.get_graph(A, settings)
 
         char_path_length = graph.get_measure(MeasurePathLength, 'char_path_length')
@@ -376,7 +371,6 @@ class TestRandomGraphBU(unittest.TestCase):
                       [0,0,0,0,1,1,0,1,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,1],
                       [0,1,1,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,1,1,0,0,1,0]])
         settings = GraphSettings(weighted = False, directed = False)
-        settings.value_binary = 1
         graph = GraphFactory.get_graph(A, settings)
 
         char_path_length = graph.get_measure(MeasurePathLength, 'char_path_length')

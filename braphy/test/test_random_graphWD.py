@@ -115,7 +115,6 @@ class TestRandomGraphWD(unittest.TestCase):
                       [0., 0., 0., 0., 0., 0., 0., 0.3,0.2,0.6,0.2,0., 0., 0., 0., 0., 0., 0., 0., 0.]])
 
         settings = GraphSettings(weighted = True, directed = True)
-        settings.rule_standardize = 'do_not_standardize'
         graph = GraphFactory.get_graph(A, settings)
 
         char_path_length = graph.get_measure(MeasurePathLength, 'char_path_length')
