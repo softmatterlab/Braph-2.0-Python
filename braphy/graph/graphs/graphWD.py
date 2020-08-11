@@ -2,6 +2,7 @@ from braphy.graph.graphs import *
 import numpy as np
 import random
 from braphy.utility.helper_functions import *
+import copy
 
 class GraphWD(Graph):
     def __init__(self, A, settings):
@@ -28,8 +29,10 @@ class GraphWD(Graph):
 
     def get_random_graph(self, attempts_per_edge = 5, number_of_weights = 1):
         W = self.A.copy()
-        graphBD = GraphBD(W,self.settings)
-        graphBD_random_A = graphBD.get_random_graph()
+        bd_settings = copy.deepcopy(self.settings)
+        bd_settings.weighted = False
+        graphBD = GraphBD(W, bd_settings)
+        graphBD_random_A = graphBD.A
         W_bin = W>0
         N = np.size(graphBD_random_A,0) # number of nodes
         randomized_graph = np.zeros([N,N]) # initialize null model matrix
