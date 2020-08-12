@@ -62,7 +62,7 @@ class MeasuresWidget(Base, Form):
     def init_combo_boxes(self):
         self.comboBoxRegion.currentIndexChanged.connect(self.update_table)
         self.comboBoxRegion2.currentIndexChanged.connect(self.update_table)
-        self.comboBoxGroup1.currentIndexChanged.connect(self.update_table)
+        self.comboBoxGroup1.currentIndexChanged.connect(self.group_changed)
         self.comboBoxGroup2.currentIndexChanged.connect(self.update_table)
         self.comboBoxSubject.currentIndexChanged.connect(self.update_table)
 
@@ -178,7 +178,8 @@ class MeasuresWidget(Base, Form):
 
     def measure(self):
         self.comboBoxGroup2.setEnabled(False)
-        self.comboBoxSubject.setEnabled(True)
+        if not self.btnGroup.isChecked():
+            self.comboBoxSubject.setEnabled(True)
         self.btnSubject.setEnabled(True)
         self.labelGroup.setText('Choose group:')
         self.update_table()
@@ -201,13 +202,21 @@ class MeasuresWidget(Base, Form):
 
     def random_comparison(self):
         self.comboBoxGroup2.setEnabled(False)
-        self.comboBoxSubject.setEnabled(True)
-        self.btnSubject.setEnabled(True)
+        self.comboBoxSubject.setEnabled(False)
+        self.btnSubject.setEnabled(False)
         self.labelGroup.setText('Choose group:')
+        self.btnGroup.blockSignals(True)
+        self.btnGroup.setChecked(True)
+        self.btnGroup.blockSignals(False)
         self.update_table()
 
     def is_random_comparison(self):
         return self.btnRandomComparison.isChecked()
+
+    def group_changed(self):
+        if self.btnSubject.isChecked():
+            self.subject()
+        self.update_table()
 
     def group_average(self):
         self.comboBoxSubject.setEnabled(False)
@@ -333,17 +342,16 @@ class MeasuresWidget(Base, Form):
         return content
 
     def comparison_mask(self):
-        subject = self.analysis.functional() and not self.btnGroup.isChecked()
         binary = self.analysis.is_binary()
         nodal = self.measure_type == Measure.NODAL
         binodal = self.measure_type == Measure.BINODAL
-        mask = [True, True, subject, True, True, binary, nodal, binodal, binodal] + [True]*8
+        mask = [True, True, True, True, binary, nodal, binodal, binodal] + [True]*8
 
         return mask
 
     def comparison_labels(self):
         rule_binary = self.analysis.graph_settings.rule_binary
-        labels = ['Group 1', 'Group 2', 'Subject', 'Measure', 'Param', rule_binary, 'Region', 'Region 1', 'Region 2',
+        labels = ['Group 1', 'Group 2', 'Measure', 'Param', rule_binary, 'Region', 'Region 1', 'Region 2',
                   'Longitudinal', 'p (1-tailed)', 'p (2-tailed)', 'CI lower', 'CI upper', 'Value 1', 'Value 2', 'Difference']
 
         mask = self.comparison_mask()
@@ -363,7 +371,6 @@ class MeasuresWidget(Base, Form):
 
         group_1 = self.analysis.cohort.groups[comparison.groups[0]].name
         group_2 = self.analysis.cohort.groups[comparison.groups[1]].name
-        subject = self.comboBoxSubject.currentText()
         measure = comparison.sub_measure
         param = '-'
         binary_value = float_to_string_fix_decimals(comparison.binary_value)
@@ -396,7 +403,7 @@ class MeasuresWidget(Base, Form):
         value_1 = float_to_string(value_1)
         value_2 = float_to_string(value_2)
 
-        content = [group_1, group_2, subject, measure, param, binary_value, region, region, region_2,
+        content = [group_1, group_2, measure, param, binary_value, region, region, region_2,
                     longitudinal, p_value_1, p_value_2, CI_1, CI_2, value_1, value_2, difference]
 
         mask = self.comparison_mask()
@@ -404,16 +411,15 @@ class MeasuresWidget(Base, Form):
         return content
 
     def random_comparison_mask(self):
-        subject = self.analysis.functional() and not self.btnGroup.isChecked()
         binary = self.analysis.is_binary()
         nodal = self.measure_type == Measure.NODAL
         binodal = self.measure_type == Measure.BINODAL
-        mask = [True, subject, True, True, binary, nodal, binodal, binodal] + [True]*10
+        mask = [True, True, True, binary, nodal, binodal, binodal] + [True]*10
         return mask
 
     def random_comparison_labels(self):
         rule_binary = self.analysis.graph_settings.rule_binary
-        labels = ['Group', 'Subject', 'Measure', 'Param', rule_binary, 'Region', 'Region 1', 'Region 2',
+        labels = ['Group', 'Measure', 'Param', rule_binary, 'Region', 'Region 1', 'Region 2',
                   'Attempts per edge', 'Number of weights', 'Randomization number',
                   'p (1-tailed)', 'p (2-tailed)', 'CI lower', 'CI upper', 'Measure', 'Random mean', 'Difference']
 
@@ -422,18 +428,13 @@ class MeasuresWidget(Base, Form):
         return labels
 
     def random_comparison_contents(self, random_comparison):
-        if self.analysis.functional():
-            measure_value = np.mean(random_comparison.measure, axis = 0)
-            random_mean = np.mean(random_comparison.mean_random_measures, axis = 0)
-        else:
-            measure_value = random_comparison.measure
-            random_mean = random_comparison.mean_random_measures
+        measure_value = random_comparison.measure
+        random_mean = random_comparison.mean_random_measures
 
         region_1_index = self.comboBoxRegion.currentIndex()
         region_2_index = self.comboBoxRegion2.currentIndex()
 
         group = self.analysis.cohort.groups[random_comparison.group_index].name
-        subject = self.comboBoxSubject.currentText()
         measure = random_comparison.sub_measure
         param = '-'
         binary_value = float_to_string_fix_decimals(random_comparison.binary_value)
@@ -468,7 +469,7 @@ class MeasuresWidget(Base, Form):
         measure_value = float_to_string(measure_value)
         random_mean = float_to_string(random_mean)
 
-        content = [group, subject, measure, param, binary_value, region, region, region_2,
+        content = [group, measure, param, binary_value, region, region, region_2,
                    attempts_per_edge, number_of_weights, randomization_number,
                    p_value_1, p_value_2, CI_1, CI_2, measure_value, random_mean, difference]
 

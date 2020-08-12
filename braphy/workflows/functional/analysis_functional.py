@@ -84,10 +84,9 @@ class AnalysisFunctional(Analysis):
         difference_mean = np.mean(measures_2, axis = 0) - np.mean(measures_1, axis = 0)
         p1 = stat.p_value(difference_mean, permutation_diffs, True)
         p2 = stat.p_value(difference_mean, permutation_diffs, False)
-        percentiles = None #stat.quantiles(difference_mean, 100)
-        CI_lower = np.random.uniform(difference_mean*np.abs(difference_mean), difference_mean)
-        CI_upper = np.random.uniform(difference_mean, difference_mean*difference_mean)
-
+        quantiles = stat.quantiles(permutation_diffs, 41)
+        CI_lower = quantiles[1]
+        CI_upper = quantiles[39]
         comparison = ComparisonFunctional(groups, measure_class, sub_measure, permutation_diffs,
                                     (p1, p2), (CI_lower, CI_upper), (measures_1, measures_2), permutations, self.graph_settings.value_binary, longitudinal)
         return comparison
