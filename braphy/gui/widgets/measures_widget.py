@@ -95,6 +95,7 @@ class MeasuresWidget(Base, Form):
             elif self.is_random_comparison():
                 index = self.random_comparison_index_mapping[i]
                 sub_measure = self.analysis.random_comparisons[index].sub_measure
+                confidence_intervals = {}
 
             if sub_measure and sub_measure not in sub_measures:
                 sub_measures.append(sub_measure)
@@ -109,6 +110,9 @@ class MeasuresWidget(Base, Form):
             CI_upper_column = headers.index('CI upper')
         elif self.is_random_comparison():
             headers = self.random_comparison_labels()
+            value_column = headers.index('Difference')
+            CI_lower_column = headers.index('CI lower')
+            CI_upper_column = headers.index('CI upper')
         measure_column = headers.index('Measure')
         binary_column = headers.index(self.analysis.graph_settings.rule_binary)
 
