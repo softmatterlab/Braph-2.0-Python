@@ -82,28 +82,34 @@ class MeasuresWidget(Base, Form):
         sub_measures = []
         for i in selected:
             sub_measure = None
-            if self.btnMeasure.isChecked():
+            if self.is_measure():
                 index = self.measurement_index_mapping[i]
                 sub_measure = self.analysis.measurements[index].sub_measure
 
-            elif self.btnComparison.isChecked():
+            elif self.is_comparison():
                 index = self.comparison_index_mapping[i]
                 sub_measure = self.analysis.comparisons[index].sub_measure
                 group_2 = self.comboBoxGroup2.currentIndex()
                 confidence_intervals = {}
 
-            elif self.btnRandomComparison.isChecked():
+            elif self.is_random_comparison():
                 index = self.random_comparison_index_mapping[i]
                 sub_measure = self.analysis.random_comparisons[index].sub_measure
+                confidence_intervals = {}
 
             if sub_measure and sub_measure not in sub_measures:
                 sub_measures.append(sub_measure)
 
-        if self.btnMeasure.isChecked():
+        if self.is_measure():
             headers = self.measurement_labels()
             value_column = headers.index('Value')
-        elif self.btnComparison.isChecked():
+        elif self.is_comparison():
             headers = self.comparison_labels()
+            value_column = headers.index('Difference')
+            CI_lower_column = headers.index('CI lower')
+            CI_upper_column = headers.index('CI upper')
+        elif self.is_random_comparison():
+            headers = self.random_comparison_labels()
             value_column = headers.index('Difference')
             CI_lower_column = headers.index('CI lower')
             CI_upper_column = headers.index('CI upper')
@@ -137,14 +143,21 @@ class MeasuresWidget(Base, Form):
         self.btnAdd.setEnabled(bool(selected))
 
     def get_info_string(self, sub_measure):
+        info_string = []
+        if self.is_measure():
+            info_string.append('Measure')
+        elif self.is_comparison():
+            info_string.append('Comparison')
+        elif self.is_random_comparison():
+            info_string.append('Random comparison')
         group_1 = self.analysis.cohort.groups[self.comboBoxGroup1.currentIndex()].name
         group_2 = self.analysis.cohort.groups[self.comboBoxGroup2.currentIndex()].name
         subject = self.analysis.cohort.subjects[self.comboBoxSubject.currentIndex()].id
         region_1 = self.comboBoxRegion.currentText()
         region_2 = self.comboBoxRegion2.currentText()
-        info_string = [sub_measure, group_1, group_2, subject, region_1, region_2]
+        info_string.extend([sub_measure, group_1, group_2, subject, region_1, region_2])
         is_subject = self.analysis.cohort.subject_class.functional() and not self.btnGroup.isChecked()
-        mask = [True, True, self.comboBoxGroup2.isEnabled(), is_subject, self.measure_type != Measure.GLOBAL, self.measure_type == Measure.BINODAL]
+        mask = [True, True, True, self.comboBoxGroup2.isEnabled(), is_subject, self.measure_type != Measure.GLOBAL, self.measure_type == Measure.BINODAL]
         info_string = np.array(info_string)[np.where(mask)[0]].tolist()
         info_string = ' - '.join(info_string)
         return info_string
@@ -152,13 +165,13 @@ class MeasuresWidget(Base, Form):
     def remove(self):
         selected = self.get_selected()
         for i in range(len(selected) - 1, -1, -1):
-            if self.btnMeasure.isChecked():
+            if self.is_measure():
                 index_to_remove = self.measurement_index_mapping[selected[i]]
                 del self.analysis.measurements[index_to_remove]
-            elif self.btnComparison.isChecked():
+            elif self.is_comparison():
                 index_to_remove = self.comparison_index_mapping[selected[i]]
                 del self.analysis.comparisons[index_to_remove]
-            elif self.btnRandomComparison.isChecked():
+            elif self.is_random_comparison():
                 index_to_remove = self.random_comparison_index_mapping[selected[i]]
                 del self.analysis.random_comparisons[index_to_remove]
         self.update_table()
@@ -170,6 +183,9 @@ class MeasuresWidget(Base, Form):
         self.labelGroup.setText('Choose group:')
         self.update_table()
 
+    def is_measure(self):
+        return self.btnMeasure.isChecked()
+
     def comparison(self):
         self.comboBoxGroup2.setEnabled(True)
         self.comboBoxSubject.setEnabled(False)
@@ -180,12 +196,18 @@ class MeasuresWidget(Base, Form):
         self.btnGroup.blockSignals(False)
         self.update_table()
 
+    def is_comparison(self):
+        return self.btnComparison.isChecked()
+
     def random_comparison(self):
         self.comboBoxGroup2.setEnabled(False)
         self.comboBoxSubject.setEnabled(True)
         self.btnSubject.setEnabled(True)
         self.labelGroup.setText('Choose group:')
         self.update_table()
+
+    def is_random_comparison(self):
+        return self.btnRandomComparison.isChecked()
 
     def group_average(self):
         self.comboBoxSubject.setEnabled(False)
@@ -207,11 +229,11 @@ class MeasuresWidget(Base, Form):
         current_group_1 = self.comboBoxGroup1.currentIndex()
         current_group_2 = self.comboBoxGroup2.currentIndex()
         current_region_index = self.comboBoxRegion.currentIndex()
-        if self.btnMeasure.isChecked():
+        if self.is_measure():
             self.update_measurements_table(current_group_1, current_region_index)
-        elif self.btnComparison.isChecked():
+        elif self.is_comparison():
             self.update_comparison_table(current_group_1, current_group_2, current_region_index)
-        elif self.btnRandomComparison.isChecked():
+        elif self.is_random_comparison():
             self.update_random_comparison_table(current_group_1, current_region_index)
 
     def update_measurements_table(self, current_group, current_region_index):
@@ -247,8 +269,20 @@ class MeasuresWidget(Base, Form):
                     self.tableWidget.setItem(row, j, item)
 
     def update_random_comparison_table(self, current_group, current_region_index):
-        self.tableWidget.setColumnCount(10)
-        self.tableWidget.setHorizontalHeaderLabels(['Comp value', 'p (1-tailed)', 'p (2-tailed)', 'Real value', 'CI lower', 'CI upper', 'Notes', 'Measure', 'Group', 'Param'])
+        labels = self.random_comparison_labels()
+        self.tableWidget.setColumnCount(len(labels))
+        self.tableWidget.setHorizontalHeaderLabels(labels)
+        self.random_comparison_index_mapping = {}
+        for i, random_comparison in enumerate(self.analysis.random_comparisons):
+            if random_comparison.dimension() == self.measure_type and current_group == random_comparison.group_index:
+                row = self.tableWidget.rowCount()
+                self.random_comparison_index_mapping[row] = i
+                self.tableWidget.setRowCount(row + 1)
+                contents = self.random_comparison_contents(random_comparison)
+                for j, content in enumerate(contents):
+                    item = QTableWidgetItem(content)
+                    item.setFlags(self.table_flags)
+                    self.tableWidget.setItem(row, j, item)
 
     def measurement_mask(self):
         subject = self.analysis.functional() and not self.btnGroup.isChecked()
@@ -366,6 +400,79 @@ class MeasuresWidget(Base, Form):
                     longitudinal, p_value_1, p_value_2, CI_1, CI_2, value_1, value_2, difference]
 
         mask = self.comparison_mask()
+        content = np.array(content)[np.where(mask)[0]].tolist()
+        return content
+
+    def random_comparison_mask(self):
+        subject = self.analysis.functional() and not self.btnGroup.isChecked()
+        binary = self.analysis.is_binary()
+        nodal = self.measure_type == Measure.NODAL
+        binodal = self.measure_type == Measure.BINODAL
+        mask = [True, subject, True, True, binary, nodal, binodal, binodal] + [True]*10
+        return mask
+
+    def random_comparison_labels(self):
+        rule_binary = self.analysis.graph_settings.rule_binary
+        labels = ['Group', 'Subject', 'Measure', 'Param', rule_binary, 'Region', 'Region 1', 'Region 2',
+                  'Attempts per edge', 'Number of weights', 'Randomization number',
+                  'p (1-tailed)', 'p (2-tailed)', 'CI lower', 'CI upper', 'Measure', 'Random mean', 'Difference']
+
+        mask = self.random_comparison_mask()
+        labels = np.array(labels)[np.where(mask)[0]].tolist()
+        return labels
+
+    def random_comparison_contents(self, random_comparison):
+        if self.analysis.functional():
+            measure_value = np.mean(random_comparison.measure, axis = 0)
+            random_mean = np.mean(random_comparison.mean_random_measures, axis = 0)
+        else:
+            measure_value = random_comparison.measure
+            random_mean = random_comparison.mean_random_measures
+
+        region_1_index = self.comboBoxRegion.currentIndex()
+        region_2_index = self.comboBoxRegion2.currentIndex()
+
+        group = self.analysis.cohort.groups[random_comparison.group_index].name
+        subject = self.comboBoxSubject.currentText()
+        measure = random_comparison.sub_measure
+        param = '-'
+        binary_value = float_to_string_fix_decimals(random_comparison.binary_value)
+        region = self.comboBoxRegion.currentText()
+        region_2 = self.comboBoxRegion2.currentText()
+        attempts_per_edge = random_comparison.attempts_per_edge
+        number_of_weights = random_comparison.number_of_weights
+        randomization_number = random_comparison.randomization_number
+        p_value_1 = random_comparison.p_values[0]
+        p_value_2 = random_comparison.p_values[1]
+        CI_1 = random_comparison.confidence_intervals[0]
+        CI_2 = random_comparison.confidence_intervals[1]
+        if self.measure_type == Measure.BINODAL:
+            measure_value = measure_value[region_1_index][region_2_index]
+            random_mean = random_mean[region_1_index][region_2_index]
+            p_value_2 = p_value_2[region_1_index][region_2_index]
+            p_value_1 = p_value_1[region_1_index][region_2_index]
+            CI_1 = CI_1[region_1_index][region_2_index]
+            CI_2 = CI_2[region_1_index][region_2_index]
+        elif self.measure_type == Measure.NODAL:
+            measure_value = measure_value[region_1_index]
+            random_mean = random_mean[region_1_index]
+            p_value_2 = p_value_2[region_1_index]
+            p_value_1 = p_value_1[region_1_index]
+            CI_1 = CI_1[region_1_index]
+            CI_2 = CI_2[region_1_index]
+        difference = float_to_string(measure_value-random_mean)
+        p_value_1 = float_to_string(p_value_1)
+        p_value_2 = float_to_string(p_value_2)
+        CI_1 = float_to_string(CI_1)
+        CI_2 = float_to_string(CI_2)
+        measure_value = float_to_string(measure_value)
+        random_mean = float_to_string(random_mean)
+
+        content = [group, subject, measure, param, binary_value, region, region, region_2,
+                   attempts_per_edge, number_of_weights, randomization_number,
+                   p_value_1, p_value_2, CI_1, CI_2, measure_value, random_mean, difference]
+
+        mask = self.random_comparison_mask()
         content = np.array(content)[np.where(mask)[0]].tolist()
         return content
 

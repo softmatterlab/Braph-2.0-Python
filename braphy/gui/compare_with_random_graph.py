@@ -83,10 +83,10 @@ class CompareWithRandomGraph(QtWidgets.QMainWindow, Ui_MainWindow):
                     pass
                 duration = time.time() - start_time
                 total_time = total_time + duration
-                text_box_string = text_box_string + '\n{} {} s.'.format(sub_measure, float_to_string(duration))
+                text_box_string = text_box_string + '\n{} {} s.'.format(sub_measure, float_to_string(duration, 3))
                 self.textBrowser.setPlainText(text_box_string)
                 QtGui.QApplication.processEvents()
-            text_box_string = 'DONE \nTotal time: {} s.\n'.format(float_to_string(total_time)) + text_box_string
+            text_box_string = 'DONE \nTotal time: {} s.\n'.format(float_to_string(total_time, 3)) + text_box_string
             self.textBrowser.setPlainText(text_box_string)
             QtGui.QApplication.processEvents()
         self.call_update()

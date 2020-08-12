@@ -83,12 +83,12 @@ def QColor_from_list(color):
     color = [int(round(v*255)) for v in color]
     return QColor(color[0], color[1], color[2], color[3])
 
-def float_to_string(f):
+def float_to_string(f, number_of_decimals = 6):
     try:
         f = float(f)
     except:
         raise ValueError('Input to the function float_to_string must be a single float value. Current input is {} of type {}.'.format(f, type(f)))
-    s = format(f, '.6f').rstrip('0')
+    s = format(f, '.{}f'.format(number_of_decimals)).rstrip('0')
     if s[-1] == '.':
         s += '0'
     return s
