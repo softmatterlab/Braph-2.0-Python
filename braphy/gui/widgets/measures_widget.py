@@ -82,27 +82,27 @@ class MeasuresWidget(Base, Form):
         sub_measures = []
         for i in selected:
             sub_measure = None
-            if self.btnMeasure.isChecked():
+            if self.is_measure():
                 index = self.measurement_index_mapping[i]
                 sub_measure = self.analysis.measurements[index].sub_measure
 
-            elif self.btnComparison.isChecked():
+            elif self.is_comparison():
                 index = self.comparison_index_mapping[i]
                 sub_measure = self.analysis.comparisons[index].sub_measure
                 group_2 = self.comboBoxGroup2.currentIndex()
                 confidence_intervals = {}
 
-            elif self.btnRandomComparison.isChecked():
+            elif self.is_random_comparison():
                 index = self.random_comparison_index_mapping[i]
                 sub_measure = self.analysis.random_comparisons[index].sub_measure
 
             if sub_measure and sub_measure not in sub_measures:
                 sub_measures.append(sub_measure)
 
-        if self.btnMeasure.isChecked():
+        if self.is_measure():
             headers = self.measurement_labels()
             value_column = headers.index('Value')
-        elif self.btnComparison.isChecked():
+        elif self.is_comparison():
             headers = self.comparison_labels()
             value_column = headers.index('Difference')
             CI_lower_column = headers.index('CI lower')
@@ -137,14 +137,21 @@ class MeasuresWidget(Base, Form):
         self.btnAdd.setEnabled(bool(selected))
 
     def get_info_string(self, sub_measure):
+        info_string = []
+        if self.is_measure():
+            info_string.append('Measure')
+        elif self.is_comparison():
+            info_string.append('Comparison')
+        elif self.is_random_comparison():
+            info_string.append('Random comparison')
         group_1 = self.analysis.cohort.groups[self.comboBoxGroup1.currentIndex()].name
         group_2 = self.analysis.cohort.groups[self.comboBoxGroup2.currentIndex()].name
         subject = self.analysis.cohort.subjects[self.comboBoxSubject.currentIndex()].id
         region_1 = self.comboBoxRegion.currentText()
         region_2 = self.comboBoxRegion2.currentText()
-        info_string = [sub_measure, group_1, group_2, subject, region_1, region_2]
+        info_string.extend([sub_measure, group_1, group_2, subject, region_1, region_2])
         is_subject = self.analysis.cohort.subject_class.functional() and not self.btnGroup.isChecked()
-        mask = [True, True, self.comboBoxGroup2.isEnabled(), is_subject, self.measure_type != Measure.GLOBAL, self.measure_type == Measure.BINODAL]
+        mask = [True, True, True, self.comboBoxGroup2.isEnabled(), is_subject, self.measure_type != Measure.GLOBAL, self.measure_type == Measure.BINODAL]
         info_string = np.array(info_string)[np.where(mask)[0]].tolist()
         info_string = ' - '.join(info_string)
         return info_string
@@ -152,13 +159,13 @@ class MeasuresWidget(Base, Form):
     def remove(self):
         selected = self.get_selected()
         for i in range(len(selected) - 1, -1, -1):
-            if self.btnMeasure.isChecked():
+            if self.is_measure():
                 index_to_remove = self.measurement_index_mapping[selected[i]]
                 del self.analysis.measurements[index_to_remove]
-            elif self.btnComparison.isChecked():
+            elif self.is_comparison():
                 index_to_remove = self.comparison_index_mapping[selected[i]]
                 del self.analysis.comparisons[index_to_remove]
-            elif self.btnRandomComparison.isChecked():
+            elif self.is_random_comparison():
                 index_to_remove = self.random_comparison_index_mapping[selected[i]]
                 del self.analysis.random_comparisons[index_to_remove]
         self.update_table()
@@ -170,6 +177,9 @@ class MeasuresWidget(Base, Form):
         self.labelGroup.setText('Choose group:')
         self.update_table()
 
+    def is_measure(self):
+        return self.btnMeasure.isChecked()
+
     def comparison(self):
         self.comboBoxGroup2.setEnabled(True)
         self.comboBoxSubject.setEnabled(False)
@@ -180,12 +190,18 @@ class MeasuresWidget(Base, Form):
         self.btnGroup.blockSignals(False)
         self.update_table()
 
+    def is_comparison(self):
+        return self.btnComparison.isChecked()
+
     def random_comparison(self):
         self.comboBoxGroup2.setEnabled(False)
         self.comboBoxSubject.setEnabled(True)
         self.btnSubject.setEnabled(True)
         self.labelGroup.setText('Choose group:')
         self.update_table()
+
+    def is_random_comparison(self):
+        return self.btnRandomComparison.isChecked()
 
     def group_average(self):
         self.comboBoxSubject.setEnabled(False)
@@ -207,11 +223,11 @@ class MeasuresWidget(Base, Form):
         current_group_1 = self.comboBoxGroup1.currentIndex()
         current_group_2 = self.comboBoxGroup2.currentIndex()
         current_region_index = self.comboBoxRegion.currentIndex()
-        if self.btnMeasure.isChecked():
+        if self.is_measure():
             self.update_measurements_table(current_group_1, current_region_index)
-        elif self.btnComparison.isChecked():
+        elif self.is_comparison():
             self.update_comparison_table(current_group_1, current_group_2, current_region_index)
-        elif self.btnRandomComparison.isChecked():
+        elif self.is_random_comparison():
             self.update_random_comparison_table(current_group_1, current_region_index)
 
     def update_measurements_table(self, current_group, current_region_index):
