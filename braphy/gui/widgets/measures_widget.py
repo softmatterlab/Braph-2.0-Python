@@ -107,6 +107,8 @@ class MeasuresWidget(Base, Form):
             value_column = headers.index('Difference')
             CI_lower_column = headers.index('CI lower')
             CI_upper_column = headers.index('CI upper')
+        elif self.is_random_comparison():
+            headers = self.random_comparison_labels()
         measure_column = headers.index('Measure')
         binary_column = headers.index(self.analysis.graph_settings.rule_binary)
 
@@ -263,8 +265,20 @@ class MeasuresWidget(Base, Form):
                     self.tableWidget.setItem(row, j, item)
 
     def update_random_comparison_table(self, current_group, current_region_index):
-        self.tableWidget.setColumnCount(10)
-        self.tableWidget.setHorizontalHeaderLabels(['Comp value', 'p (1-tailed)', 'p (2-tailed)', 'Real value', 'CI lower', 'CI upper', 'Notes', 'Measure', 'Group', 'Param'])
+        labels = self.random_comparison_labels()
+        self.tableWidget.setColumnCount(len(labels))
+        self.tableWidget.setHorizontalHeaderLabels(labels)
+        self.random_comparison_index_mapping = {}
+        for i, random_comparison in enumerate(self.analysis.random_comparisons):
+            if random_comparison.dimension() == self.measure_type and current_group == random_comparison.group_index:
+                row = self.tableWidget.rowCount()
+                self.random_comparison_index_mapping[row] = i
+                self.tableWidget.setRowCount(row + 1)
+                contents = self.random_comparison_contents(random_comparison)
+                for j, content in enumerate(contents):
+                    item = QTableWidgetItem(content)
+                    item.setFlags(self.table_flags)
+                    self.tableWidget.setItem(row, j, item)
 
     def measurement_mask(self):
         subject = self.analysis.functional() and not self.btnGroup.isChecked()
@@ -382,6 +396,79 @@ class MeasuresWidget(Base, Form):
                     longitudinal, p_value_1, p_value_2, CI_1, CI_2, value_1, value_2, difference]
 
         mask = self.comparison_mask()
+        content = np.array(content)[np.where(mask)[0]].tolist()
+        return content
+
+    def random_comparison_mask(self):
+        subject = self.analysis.functional() and not self.btnGroup.isChecked()
+        binary = self.analysis.is_binary()
+        nodal = self.measure_type == Measure.NODAL
+        binodal = self.measure_type == Measure.BINODAL
+        mask = [True, subject, True, True, binary, nodal, binodal, binodal] + [True]*10
+        return mask
+
+    def random_comparison_labels(self):
+        rule_binary = self.analysis.graph_settings.rule_binary
+        labels = ['Group', 'Subject', 'Measure', 'Param', rule_binary, 'Region', 'Region 1', 'Region 2',
+                  'Attempts per edge', 'Number of weights', 'Randomization number',
+                  'p (1-tailed)', 'p (2-tailed)', 'CI lower', 'CI upper', 'Measure', 'Random mean', 'Difference']
+
+        mask = self.random_comparison_mask()
+        labels = np.array(labels)[np.where(mask)[0]].tolist()
+        return labels
+
+    def random_comparison_contents(self, random_comparison):
+        if self.analysis.functional():
+            measure_value = np.mean(random_comparison.measure, axis = 0)
+            random_mean = np.mean(random_comparison.mean_random_measures, axis = 0)
+        else:
+            measure_value = random_comparison.measure
+            random_mean = random_comparison.mean_random_measures
+
+        region_1_index = self.comboBoxRegion.currentIndex()
+        region_2_index = self.comboBoxRegion2.currentIndex()
+
+        group = self.analysis.cohort.groups[random_comparison.group_index].name
+        subject = self.comboBoxSubject.currentText()
+        measure = random_comparison.sub_measure
+        param = '-'
+        binary_value = float_to_string_fix_decimals(random_comparison.binary_value)
+        region = self.comboBoxRegion.currentText()
+        region_2 = self.comboBoxRegion2.currentText()
+        attempts_per_edge = random_comparison.attempts_per_edge
+        number_of_weights = random_comparison.number_of_weights
+        randomization_number = random_comparison.randomization_number
+        p_value_1 = random_comparison.p_values[0]
+        p_value_2 = random_comparison.p_values[1]
+        CI_1 = random_comparison.confidence_intervals[0]
+        CI_2 = random_comparison.confidence_intervals[1]
+        if self.measure_type == Measure.BINODAL:
+            measure_value = measure_value[region_1_index][region_2_index]
+            random_mean = random_mean[region_1_index][region_2_index]
+            p_value_2 = p_value_2[region_1_index][region_2_index]
+            p_value_1 = p_value_1[region_1_index][region_2_index]
+            CI_1 = CI_1[region_1_index][region_2_index]
+            CI_2 = CI_2[region_1_index][region_2_index]
+        elif self.measure_type == Measure.NODAL:
+            measure_value = measure_value[region_1_index]
+            random_mean = random_mean[region_1_index]
+            p_value_2 = p_value_2[region_1_index]
+            p_value_1 = p_value_1[region_1_index]
+            CI_1 = CI_1[region_1_index]
+            CI_2 = CI_2[region_1_index]
+        difference = float_to_string(measure_value-random_mean)
+        p_value_1 = float_to_string(p_value_1)
+        p_value_2 = float_to_string(p_value_2)
+        CI_1 = float_to_string(CI_1)
+        CI_2 = float_to_string(CI_2)
+        measure_value = float_to_string(measure_value)
+        random_mean = float_to_string(random_mean)
+
+        content = [group, subject, measure, param, binary_value, region, region, region_2,
+                   attempts_per_edge, number_of_weights, randomization_number,
+                   p_value_1, p_value_2, CI_1, CI_2, measure_value, random_mean, difference]
+
+        mask = self.random_comparison_mask()
         content = np.array(content)[np.where(mask)[0]].tolist()
         return content
 
