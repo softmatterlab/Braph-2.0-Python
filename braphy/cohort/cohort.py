@@ -90,6 +90,7 @@ class Cohort:
         self.groups.remove(i)
 
     def remove_groups(self, selected):
+        selected.sort()
         new_selected = list(selected)
         for i in range(len(selected) - 1, -1, -1):
             del self.groups[selected[i]]
