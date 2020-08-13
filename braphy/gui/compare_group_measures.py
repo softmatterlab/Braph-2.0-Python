@@ -46,7 +46,6 @@ class CompareGroupMeasures(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def init_buttons(self):
         self.btnCalculate.clicked.connect(self.compare)
-        self.btnResume.clicked.connect(self.resume)
 
     def init_combo_box(self):
         for group in self.analysis.cohort.groups:
@@ -94,9 +93,6 @@ class CompareGroupMeasures(QtWidgets.QMainWindow, Ui_MainWindow):
     def call_update(self):
         for func in self.update_callbacks:
             func()
-
-    def resume(self):
-        pass
 
     def min_changed(self, value):
         self.spinBoxMax.setMinimum(value)
