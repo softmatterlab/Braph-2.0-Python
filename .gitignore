@@ -139,4 +139,3 @@ dmypy.json
 *.log
 *.out
 *.run.xml
-*.gz
