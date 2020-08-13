@@ -65,7 +65,6 @@ class StartAnalysisWidget(Base, Form):
     def show_buttons(self):
         for btn in [self.btnViewCommunity, self.btnNewAnalysis, self.btnCalculate, self.btnCompare, self.btnRandom]:
             btn.show()
-        self.graphMeasuresWidget.show_buttons()
 
     def hide_buttons(self):
         for btn in [self.btnViewCommunity, self.btnNewAnalysis, self.btnCalculate, self.btnCompare, self.btnRandom]:
