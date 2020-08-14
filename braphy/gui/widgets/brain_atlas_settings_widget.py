@@ -60,7 +60,7 @@ class BrainAtlasSettingsWidget(Base, Form):
         self.checkBoxShowGrid.stateChanged.connect(self.show_grid)
         self.checkBoxShowGrid.setChecked(True)
         self.checkBoxShowLabels.stateChanged.connect(self.show_labels)
-        self.checkBoxShowLabels.setChecked(True)
+        self.checkBoxShowLabels.setChecked(False)
         self.checkBoxShowOnlySelected.stateChanged.connect(self.show_only_selected)
         self.checkBoxShowOnlySelected.setChecked(False)
 
@@ -82,7 +82,7 @@ class BrainAtlasSettingsWidget(Base, Form):
         self.actionShow_brain_regions.triggered.connect(self.show_brain_regions)
         self.actionShow_brain_regions.setChecked(True)
         self.actionShow_labels.triggered.connect(self.show_labels)
-        self.actionShow_labels.setChecked(True)
+        self.actionShow_labels.setChecked(False)
         self.actionShow_only_selected.triggered.connect(self.show_only_selected)
         self.actionShow_only_selected.setChecked(False)
 
