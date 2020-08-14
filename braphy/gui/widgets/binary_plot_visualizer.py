@@ -99,8 +99,12 @@ class BinaryPlotVisualizer(FigureCanvas):
         self.draw()
 
     def clear_plot(self):
-        self.ax.cla()
+        for plot in self.plots.values():
+            plot[0].remove()
+        for confidence_interval in self.confidence_intervals.values():
+            confidence_interval.remove()
         self.plots = {}
+        self.confidence_intervals = {}
         self.draw()
 
     def show_legend(self, show):

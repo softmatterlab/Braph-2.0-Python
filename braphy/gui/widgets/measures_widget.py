@@ -443,11 +443,13 @@ class MeasuresWidget(Base, Form):
         attempts_per_edge = random_comparison.attempts_per_edge
         number_of_weights = random_comparison.number_of_weights
         randomization_number = random_comparison.randomization_number
+        difference = random_comparison.difference
         p_value_1 = random_comparison.p_values[0]
         p_value_2 = random_comparison.p_values[1]
         CI_1 = random_comparison.confidence_intervals[0]
         CI_2 = random_comparison.confidence_intervals[1]
         if self.measure_type == Measure.BINODAL:
+            difference = difference[region_1_index][region_2_index]
             measure_value = measure_value[region_1_index][region_2_index]
             random_mean = random_mean[region_1_index][region_2_index]
             p_value_2 = p_value_2[region_1_index][region_2_index]
@@ -455,13 +457,14 @@ class MeasuresWidget(Base, Form):
             CI_1 = CI_1[region_1_index][region_2_index]
             CI_2 = CI_2[region_1_index][region_2_index]
         elif self.measure_type == Measure.NODAL:
+            difference = difference[region_1_index]
             measure_value = measure_value[region_1_index]
             random_mean = random_mean[region_1_index]
             p_value_2 = p_value_2[region_1_index]
             p_value_1 = p_value_1[region_1_index]
             CI_1 = CI_1[region_1_index]
             CI_2 = CI_2[region_1_index]
-        difference = float_to_string(measure_value-random_mean)
+        difference = float_to_string(difference)
         p_value_1 = float_to_string(p_value_1)
         p_value_2 = float_to_string(p_value_2)
         CI_1 = float_to_string(CI_1)

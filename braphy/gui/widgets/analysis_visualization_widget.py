@@ -412,3 +412,191 @@ class MeasureComparisonVisualizationWidget(AnalysisVisualizationWidget):
             values = comparison.p_values[1]
         values = self.normalize(values)
         return values
+
+
+class MeasureRandomComparisonVisualizationWidget(AnalysisVisualizationWidget):
+    def __init__(self, parent = None):
+        super(MeasureRandomComparisonVisualizationWidget, self).__init__(parent)
+        self.visualization_options = ['Color', 'Size']
+        self.label.hide()
+        self.comboBoxType.hide()
+        self.comboBoxGroup2.hide()
+        self.init_check_boxes()
+
+    def init(self, settings_widget, random_comparisons, groups, binary_type):
+        self.random_comparisons = random_comparisons
+        super().init(settings_widget, groups, binary_type)
+
+    def init_check_boxes(self):
+        self.checkBoxDiff.stateChanged.connect(self.visualize_difference)
+        self.checkBoxSingle.stateChanged.connect(self.visualize_single)
+        self.checkBoxDouble.stateChanged.connect(self.visualize_double)
+        self.checkBoxDiff.setEnabled(False)
+        self.checkBoxSingle.setEnabled(False)
+        self.checkBoxDouble.setEnabled(False)
+
+    def init_combo_boxes(self, groups):
+        super().init_combo_boxes(groups)
+        combo_boxes = [self.comboBoxDiff, self.comboBoxSingle, self.comboBoxDouble]
+        for combo_box in combo_boxes:
+            combo_box.addItems(self.visualization_options)
+            combo_box.currentIndexChanged.connect(lambda index, combo_box = combo_box: self.set_combo_box_visualization(index, combo_box))
+            combo_box.setEnabled(False)
+            combo_box.blockSignals(True)
+            combo_box.setCurrentIndex(-1)
+            combo_box.blockSignals(False)
+
+    def disable_check_boxes(self):
+        check_boxes = [self.checkBoxDiff, self.checkBoxSingle, self.checkBoxDouble]
+        number_of_checked_boxes = sum([box.isChecked() for box in check_boxes])
+        for box in check_boxes:
+            box.setEnabled(True)
+            if number_of_checked_boxes >= 2:
+                if not box.isChecked():
+                    box.setEnabled(False)
+        self.visualization_type_changed()
+
+    def set_combo_box_visualization(self, index, combo_box):
+        combo_boxes = [self.comboBoxDiff, self.comboBoxSingle, self.comboBoxDouble]
+        for box in combo_boxes:
+            if box == combo_box:
+                continue
+            if box.currentIndex() == index:
+                box.blockSignals(True)
+                box.setCurrentIndex(-1)
+                box.blockSignals(False)
+        self.visualization_type_changed()
+
+    def visualize_difference(self, state):
+        self.comboBoxDiff.setEnabled(state)
+        self.disable_check_boxes()
+
+    def visualize_single(self, state):
+        self.comboBoxSingle.setEnabled(state)
+        self.disable_check_boxes()
+
+    def visualize_double(self, state):
+        self.comboBoxDouble.setEnabled(state)
+        self.disable_check_boxes()
+
+    def update_list(self):
+        group_index_0 = self.comboBoxGroup.currentIndex()
+        self.listWidget.clear()
+        self.listWidget.blockSignals(True)
+        self.random_comparison_mapping = {}
+        for i, random_comparison in enumerate(self.random_comparisons):
+            is_nodal = random_comparison.measure_class.is_nodal(random_comparison.sub_measure)
+            items = self.listWidget.findItems(random_comparison.sub_measure, Qt.Qt.MatchExactly)
+            items_text = [item.text() for item in items]
+            if (random_comparison.group_index == group_index_0 and
+                is_nodal and
+                random_comparison.sub_measure not in items_text):
+                self.listWidget.addItem(random_comparison.sub_measure)
+                self.random_comparison_mapping[random_comparison.sub_measure] = i
+        self.listWidget.blockSignals(False)
+
+    def list_item_changed(self, index):
+        enabled = True if index > -1 else False
+        if enabled:
+            self.disable_check_boxes()
+            self.comboBoxBinary.setEnabled(True)
+        else:
+            self.comboBoxBinary.setEnabled(False)
+            self.update_binary_values()
+            check_boxes = [self.checkBoxDiff, self.checkBoxSingle, self.checkBoxDouble]
+            for check_box in check_boxes:
+                check_box.blockSignals(True)
+                check_box.setChecked(False)
+                check_box.setEnabled(False)
+                check_box.blockSignals(False)
+            combo_boxes = [self.comboBoxDiff, self.comboBoxSingle, self.comboBoxDouble]
+            for combo_box in combo_boxes:
+                combo_box.setEnabled(False)
+            self.comboBoxColormap.setEnabled(False)
+            self.spinBoxMin.setEnabled(False)
+            self.spinBoxMax.setEnabled(False)
+            self.labelMin.setEnabled(False)
+            self.labelMax.setEnabled(False)
+        if self.binary_type:
+            self.update_binary_values()
+        self.update_visualization()
+
+    def update_binary_values(self):
+        self.comboBoxBinary.blockSignals(True)
+        self.comboBoxBinary.clear()
+        if self.listWidget.currentRow() == -1:
+            self.comboBoxBinary.blockSignals(False)
+            return
+        group_index = self.comboBoxGroup.currentIndex()
+        self.comboBoxBinary.clear()
+        self.binary_mapping = []
+        current_list_item = self.listWidget.currentItem().text()
+        for i, random_comparison in enumerate(self.random_comparisons):
+            if (random_comparison.sub_measure == current_list_item and
+                random_comparison.group_index == group_index):
+                self.binary_mapping.append(i)
+                self.comboBoxBinary.addItem(float_to_string(random_comparison.binary_value))
+        self.comboBoxBinary.blockSignals(False)
+
+    def visualization_type_changed(self, index = 0):
+        self.spinBoxMin.setEnabled(False)
+        self.spinBoxMax.setEnabled(False)
+        self.labelMin.setEnabled(False)
+        self.labelMax.setEnabled(False)
+        self.comboBoxColormap.setEnabled(False)
+        combo_boxes = [self.comboBoxDiff, self.comboBoxSingle, self.comboBoxDouble]
+        for combo_box in combo_boxes:
+            if combo_box.isEnabled():
+                current_index = combo_box.currentIndex()
+                if current_index == 0: # color
+                    self.comboBoxColormap.setEnabled(True)
+                elif current_index == 1: # size
+                    self.spinBoxMin.setEnabled(True)
+                    self.spinBoxMax.setEnabled(True)
+                    self.labelMin.setEnabled(True)
+                    self.labelMax.setEnabled(True)
+        self.update_visualization()
+
+    def update_visualization(self):
+        self.brain_widget.reset_brain_region_colors()
+        self.settings_widget.change_brain_region_size()
+        if self.listWidget.currentRow() == -1:
+            return
+        if self.binary_type and self.comboBoxBinary.currentIndex == -1:
+            return
+        for i, region in enumerate(self.brain_widget.gui_brain_regions):
+            if self.checkBoxDiff.isChecked():
+                values = self.get_visualization_values('diff')
+                if self.comboBoxDiff.currentIndex() == 0:
+                    region.set_color(self.get_color(values[i]))
+                elif self.comboBoxDiff.currentIndex() == 1:
+                    region.set_size(values[i] * self.spinBoxMax.value() + self.spinBoxMin.value())
+            if self.checkBoxSingle.isChecked():
+                values = self.get_visualization_values('single')
+                if self.comboBoxSingle.currentIndex() == 0:
+                    region.set_color(self.get_color(values[i]))
+                elif self.comboBoxSingle.currentIndex() == 1:
+                    region.set_size(values[i] * self.spinBoxMax.value() + self.spinBoxMin.value())
+            if self.checkBoxDouble.isChecked():
+                values = self.get_visualization_values('double')
+                if self.comboBoxDouble.currentIndex() == 0:
+                    region.set_color(self.get_color(values[i]))
+                elif self.comboBoxDouble.currentIndex() == 1:
+                    region.set_size(values[i] * self.spinBoxMax.value() + self.spinBoxMin.value())
+
+    def get_visualization_values(self, type):
+        if self.binary_type:
+            binary_index = self.comboBoxBinary.currentIndex()
+            random_comparison_index = self.binary_mapping[binary_index]
+        else:
+            current_list_item = self.listWidget.currentItem().text()
+            random_comparison_index = self.random_comparison_mapping[current_list_item]
+        random_comparison = self.random_comparisons[random_comparison_index]
+        if type == 'diff':
+            values = random_comparison.difference
+        elif type == 'single':
+            values = random_comparison.p_values[0]
+        elif type == 'double':
+            values = random_comparison.p_values[1]
+        values = self.normalize(values)
+        return values

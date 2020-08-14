@@ -31,7 +31,7 @@ class AnalysisStructural(Analysis):
     def calculate_random_comparison(self, measure_class, sub_measure, group_index,
                                     randomization_number, number_of_weights, attempts_per_edge):
         graph = self.get_graph(group_index)
-        measure = graph.get_measure(measure_class, sub_measure, save = False)
+        measure = self.get_measurement(measure_class, sub_measure, group_index).get_value()
 
         differences = []
         mean_random_measures = 0
