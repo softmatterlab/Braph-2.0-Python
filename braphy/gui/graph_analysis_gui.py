@@ -212,7 +212,8 @@ class GraphAnalysis(ExitDialog, Ui_MainWindow):
         if self.tabWidget.currentIndex() == 0:
             self.set_brain_view_actions_visible(False)
             self.set_correlation_actions_visible(True)
-            self.set_binary_plot_actions_visible([self.globalMeasuresWidget, self.nodalMeasuresWidget, self.binodalMeasuresWidget], False)
+            self.set_binary_plot_actions_visible([self.globalMeasuresWidget, self.nodalMeasuresWidget,
+                                                 self.binodalMeasuresWidget], False)
             self.menuFigure.menuAction().setVisible(False)
         elif self.tabWidget.currentIndex() == 1:
             self.globalMeasuresWidget.update_table()
@@ -238,7 +239,8 @@ class GraphAnalysis(ExitDialog, Ui_MainWindow):
         elif self.tabWidget.currentIndex() == 4:
             self.set_brain_view_actions_visible(True)
             self.set_correlation_actions_visible(False)
-            self.set_binary_plot_actions_visible([self.globalMeasuresWidget, self.nodalMeasuresWidget, self.binodalMeasuresWidget], False)
+            self.set_binary_plot_actions_visible([self.globalMeasuresWidget, self.nodalMeasuresWidget,
+                                                 self.binodalMeasuresWidget], False)
             self.brain_view_options_widget.update_move()
             self.menuFigure.menuAction().setVisible(True)
 
@@ -425,7 +427,12 @@ class GraphAnalysis(ExitDialog, Ui_MainWindow):
         msg_box.exec_()
 
     def table_update_callbacks(self):
-        return [widget.update_table for widget in [self.globalMeasuresWidget, self.nodalMeasuresWidget, self.binodalMeasuresWidget]]
+        widgets = [self.globalMeasuresWidget, self.nodalMeasuresWidget, self.binodalMeasuresWidget]
+        return [widget.update_table for widget in widgets]
+
+    def visualization_update_callbacks(self):
+        widgets = self.brain_view_options_widget.get_graph_analysis_widgets()
+        return [widget.update_list for widget in widgets]
 
 def run():
     app = QtWidgets.QApplication(sys.argv)

@@ -89,6 +89,10 @@ class BrainViewOptionsWidget(Base, Form):
         self.add_visualize_measure_comparison_tab(analysis.comparisons, analysis.cohort.groups, analysis.binary_type())
         self.add_visualize_measure_random_comparison_tab(analysis.random_comparisons, analysis.cohort.groups, analysis.binary_type())
 
+    def get_graph_analysis_widgets(self):
+        return [self.measure_visualization_widget, self.measure_comparison_visualization_widget,
+                self.measure_random_comparison_visualization_widget]
+
     def add_custom_colormap_callbacks(self):
         callback_subject = self.subject_visualization_widget.comboBoxColormap.add_colormap
         callback_group = self.group_visualization_widget.comboBoxColormap.add_colormap

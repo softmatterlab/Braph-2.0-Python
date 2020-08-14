@@ -48,19 +48,19 @@ class StartAnalysisWidget(Base, Form):
         self.graph_analysis_gui.show()
 
     def calculate_group_measures(self):
-        self.calculate_group_measures_gui = CalculateGroupMeasures(self, self.analysis_gui.analysis, self.graph_type, self.table_update_callbacks())
+        self.calculate_group_measures_gui = CalculateGroupMeasures(self, self.analysis_gui.analysis, self.graph_type, self.update_callbacks())
         self.calculate_group_measures_gui.show()
 
     def compare_group_measures(self):
-        self.compare_group_measures_gui = CompareGroupMeasures(self, self.analysis_gui.analysis, self.graph_type, self.table_update_callbacks())
+        self.compare_group_measures_gui = CompareGroupMeasures(self, self.analysis_gui.analysis, self.graph_type, self.update_callbacks())
         self.compare_group_measures_gui.show()
 
     def compare_with_random_graph(self):
-        self.compare_with_random_graph_gui = CompareWithRandomGraph(self, self.analysis_gui.analysis, self.graph_type, self.table_update_callbacks())
+        self.compare_with_random_graph_gui = CompareWithRandomGraph(self, self.analysis_gui.analysis, self.graph_type, self.update_callbacks())
         self.compare_with_random_graph_gui.show()
 
-    def table_update_callbacks(self):
-        return self.analysis_gui.table_update_callbacks()
+    def update_callbacks(self):
+        return self.analysis_gui.table_update_callbacks() + self.analysis_gui.visualization_update_callbacks()
 
     def show_buttons(self):
         for btn in [self.btnViewCommunity, self.btnNewAnalysis, self.btnCalculate, self.btnCompare, self.btnRandom]:

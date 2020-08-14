@@ -480,7 +480,7 @@ class MeasureRandomComparisonVisualizationWidget(AnalysisVisualizationWidget):
         self.disable_check_boxes()
 
     def update_list(self):
-        group_index_0 = self.comboBoxGroup.currentIndex()
+        group_index = self.comboBoxGroup.currentIndex()
         self.listWidget.clear()
         self.listWidget.blockSignals(True)
         self.random_comparison_mapping = {}
@@ -488,7 +488,7 @@ class MeasureRandomComparisonVisualizationWidget(AnalysisVisualizationWidget):
             is_nodal = random_comparison.measure_class.is_nodal(random_comparison.sub_measure)
             items = self.listWidget.findItems(random_comparison.sub_measure, Qt.Qt.MatchExactly)
             items_text = [item.text() for item in items]
-            if (random_comparison.group_index == group_index_0 and
+            if (random_comparison.group_index == group_index and
                 is_nodal and
                 random_comparison.sub_measure not in items_text):
                 self.listWidget.addItem(random_comparison.sub_measure)
