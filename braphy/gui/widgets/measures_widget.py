@@ -19,7 +19,7 @@ class MeasuresWidget(Base, Form):
         self.tableWidget.itemSelectionChanged.connect(self.enable_add_plot)
         self.btnAdd.setEnabled(False)
 
-    def init(self, measure_type, analysis):
+    def init(self, measure_type, analysis, update_functions = None):
         self.analysis = analysis
         self.measure_type = measure_type
         if measure_type == Measure.GLOBAL:
@@ -40,6 +40,7 @@ class MeasuresWidget(Base, Form):
         self.init_combo_boxes()
         self.btnMeasure.setChecked(True)
         self.measure()
+        self.update_functions = update_functions
 
     def init_buttons(self):
         self.btnSelectAll.clicked.connect(self.tableWidget.selectAll)
@@ -73,6 +74,10 @@ class MeasuresWidget(Base, Form):
         for label in self.analysis.cohort.atlas.get_brain_region_labels():
             self.comboBoxRegion.addItem(label)
             self.comboBoxRegion2.addItem(label)
+
+    def run_update_functions(self):
+        for function in self.update_functions:
+            function()
 
     def add_plot(self):
         selected = self.get_selected()
@@ -174,6 +179,8 @@ class MeasuresWidget(Base, Form):
             elif self.is_random_comparison():
                 index_to_remove = self.random_comparison_index_mapping[selected[i]]
                 del self.analysis.random_comparisons[index_to_remove]
+        if self.measure_type == Measure.NODAL:
+            self.run_update_functions()
         self.update_table()
 
     def measure(self):

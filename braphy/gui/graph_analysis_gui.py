@@ -338,7 +338,7 @@ class GraphAnalysis(ExitDialog, Ui_MainWindow):
         self.tabWidget.tabBar().show()
         self.startAnalysisWidget.init(self)
         self.globalMeasuresWidget.init(Measure.GLOBAL, self.analysis)
-        self.nodalMeasuresWidget.init(Measure.NODAL, self.analysis)
+        self.nodalMeasuresWidget.init(Measure.NODAL, self.analysis, self.visualization_update_callbacks())
         self.binodalMeasuresWidget.init(Measure.BINODAL, self.analysis)
 
         self.init_brain_widget()
