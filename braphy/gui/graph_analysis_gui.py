@@ -302,8 +302,8 @@ class GraphAnalysis(ExitDialog, Ui_MainWindow):
         value_binary = GraphSettings.BINARY_VALUE_DEFAULT
         rule_correlation = self.comboBoxCorrelation.currentText()
         graph_settings = GraphSettings(weighted, directed, gamma, community_algorithm,
-                                        rule_negative, rule_symmetrize, rule_standardize, rule_binary,
-                                        value_binary, rule_correlation)
+                                       rule_negative, rule_symmetrize, rule_standardize, rule_binary,
+                                       value_binary, rule_correlation)
         return graph_settings
 
     def set_cohort_labels(self):

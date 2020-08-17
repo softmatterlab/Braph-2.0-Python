@@ -44,7 +44,11 @@ class Comparison():
         else:
             measures = [self.measures[0], self.measures[1]]
         d['measures'] = measures
-        d['confidence_interval'] = ''
+        if isinstance(self.confidence_interval[0], np.ndarray):
+            confidence_interval = [self.confidence_interval[0].tolist(), self.confidence_interval[1].tolist()]
+        else:
+            confidence_interval = [self.confidence_interval[0], self.confidence_interval[1]]
+        d['confidence_interval'] = confidence_interval
         d['permutations'] = self.permutations
         d['binary_value'] = self.binary_value
         d['longitudinal'] = self.longitudinal
