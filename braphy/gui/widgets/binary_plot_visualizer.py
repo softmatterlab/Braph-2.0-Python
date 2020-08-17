@@ -105,6 +105,7 @@ class BinaryPlotVisualizer(FigureCanvas):
             confidence_interval.remove()
         self.plots = {}
         self.confidence_intervals = {}
+        self.show_legend(False)
         self.draw()
 
     def show_legend(self, show):
