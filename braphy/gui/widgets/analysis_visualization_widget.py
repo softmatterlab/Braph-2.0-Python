@@ -76,6 +76,8 @@ class AnalysisVisualizationWidget(Base, Form):
     def normalize(self, array):
         array_min = np.min(array)
         array_max = np.max(array)
+        if array_min == array_max:
+            return np.array(array.shape[0]*[0.5])
         normalized_array = (array - array_min)/(array_max - array_min)
         return normalized_array
 
@@ -211,6 +213,7 @@ class MeasureVisualizationWidget(AnalysisVisualizationWidget):
         if isinstance(values[0], np.ndarray): # fmri: compute average
             values = np.mean(values, axis = 0)
         values = self.normalize(values)
+        print(values)
         return values
 
 class MeasureComparisonVisualizationWidget(AnalysisVisualizationWidget):
