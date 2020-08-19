@@ -1,6 +1,5 @@
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
-from pyqtgraph import ColorMap as cm
 import numpy as np
 from braphy.utility.helper_functions import abs_path_from_relative
 from braphy.gui.widgets.graph_view_widget import GraphViewWidget

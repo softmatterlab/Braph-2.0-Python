@@ -1,13 +1,14 @@
 from PyQt5 import QtWidgets, QtCore, QtGui, uic
 from braphy.utility.helper_functions import abs_path_from_relative, QColor_to_list, QColor_from_list
 from pyqtgraph import ColorMap
+import numpy as np
 
 class ColorBar(QtWidgets.QLabel):
     def __init__(self, parent = None, colormap = None):
         super().__init__(parent)
         self.setFixedSize(200, 15)
         if not colormap:
-            colormap = ColorMap([0., 1.], [[0., 0., 0., 1.], [1., 1., 1., 1.]])
+            colormap = ColorMap([0., 1.], [[0, 0, 0, 255], [255, 255, 255, 255]])
         self.set_colormap(colormap)
 
     def set_colormap(self, colormap):
@@ -18,9 +19,8 @@ class ColorBar(QtWidgets.QLabel):
         m = QtGui.QPixmap(self.width(), self.height())
         p = QtGui.QPainter(m)
         h = self.height()
-        for i in range(self.width()):
-            color = self.colormap.map(i/self.width(), mode='float')
-            color = QColor_from_list(color)
+        colors = self.colormap.map(np.linspace(0, 1, self.width()).tolist(), mode = 'qcolor')
+        for i, color in enumerate(colors):
             p.setPen(color)
             p.drawLine(i, 0, i, h)
         p.end()
@@ -126,5 +126,5 @@ class ColorMapCreator(Base, Form):
         btn.setStyleSheet(style_sheet)
 
     def update_color_bar(self):
-        colormap = ColorMap([0., 1.], [QColor_to_list(self.colorStart), QColor_to_list(self.colorEnd)])
+        colormap = ColorMap([0., 1.], [self.colorStart.getRgb(), self.colorEnd.getRgb()])
         self.colorBar.set_colormap(colormap)

@@ -1,8 +1,7 @@
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
-from pyqtgraph import ColorMap as cm
 import numpy as np
-from braphy.utility.helper_functions import abs_path_from_relative
+from braphy.utility.helper_functions import abs_path_from_relative, get_colormaps
 from braphy.gui.color_bar_combo_box import ColorBar
 
 ui_file = abs_path_from_relative(__file__, "../ui_files/visualization_widget.ui")
@@ -13,7 +12,7 @@ class VisualizationWidget(Base, Form):
         super(VisualizationWidget, self).__init__(parent)
         self.setupUi(self)
         self.visualization_options = ['Color', 'Size']
-        self.colormaps = self.get_colormaps()
+        self.colormaps = get_colormaps()
         self.combo_boxes = [self.comboBoxAverage, self.comboBoxStd, self.comboBoxSubject, self.comboBoxPvalueSingle,
                             self.comboBoxPvalueDouble]
 
@@ -171,14 +170,6 @@ class VisualizationWidget(Base, Form):
                 region.set_color(self.get_color(values[i]))
             if visualization_type == 'Size':
                 region.set_size(values[i] * self.spinBoxMax.value() + self.spinBoxMin.value())
-
-    def get_colormaps(self):
-        colormaps = {}
-        colormaps['spring'] = cm([0.0, 1.0], [[1.0, 0.28, 0.85, 1.0], [1.0, 0.94, 0.28, 1.0]])
-        colormaps['cool'] = cm([0.0, 1.0], [[0.298, 0.964, 0.956, 1.0], [1.0, 0.28, 0.85, 1.0]])
-        colormaps['hot'] = cm([0.0, 0.33, 0.67, 1.0], [[0.0, 0.0, 0.0, 1.0], [1.0, 0.0, 0.0, 1.0], [1.0, 1.0, 0.0, 1.0], [1.0, 1.0, 1.0, 1.0]])
-        colormaps['parula'] = cm([0.0, 0.5, 1.0], [[0.317, 0.223, 0.937, 1.0], [0.333, 0.666, 0.5, 1.0], [1.0, 0.94, 0.28, 1.0]])
-        return colormaps
 
     def get_color(self, value):
         colormap = self.comboBoxColormap.colormap()

@@ -6,6 +6,7 @@ from PyQt5.QtGui import QColor
 from PyQt5 import QtCore, QtGui, QtWidgets
 from contextlib import contextmanager
 import random as rnd
+from pyqtgraph import ColorMap
 
 def divide_without_warning(a, b):
     b = np.array(b) # in case b is a scalar
@@ -82,6 +83,14 @@ def QColor_to_list(color):
 def QColor_from_list(color):
     color = [int(round(v*255)) for v in color]
     return QColor(color[0], color[1], color[2], color[3])
+
+def get_colormaps():
+    colormaps = {}
+    colormaps['spring'] = ColorMap([0.0, 1.0], [[255, 71, 217, 255], [255, 240, 71, 255]])
+    colormaps['cool'] = ColorMap([0.0, 1.0], [[71, 245, 245, 255], [255, 71, 217, 255]])
+    colormaps['hot'] = ColorMap([0.0, 0.33, 0.67, 1.0], [[0, 0, 0, 255], [255, 0, 0, 255], [255, 255, 0, 255], [255, 255, 255, 255]])
+    colormaps['parula'] = ColorMap([0.0, 0.5, 1.0], [[80, 57, 240, 255], [85, 170, 128, 255], [255, 240, 71, 255]])
+    return colormaps
 
 def float_to_string(f, number_of_decimals = 6):
     try:

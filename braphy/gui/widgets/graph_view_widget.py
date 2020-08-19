@@ -1,8 +1,7 @@
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
-from pyqtgraph import ColorMap as cm
 import numpy as np
-from braphy.utility.helper_functions import abs_path_from_relative, QColor_to_list, QColor_from_list
+from braphy.utility.helper_functions import abs_path_from_relative, QColor_to_list, QColor_from_list, get_colormaps
 from braphy.graph.graphs.graph import Graph
 
 ui_file = abs_path_from_relative(__file__, "../ui_files/graph_view_widget.ui")
@@ -19,7 +18,7 @@ class GraphViewWidget(Base, Form):
         self.init_sliders()
         self.correlation = None
         self.btnColor.color = self.edge_color
-        self.colormaps = self.get_colormaps()
+        self.colormaps = get_colormaps()
 
     def init(self, brain_widget, analysis):
         self.brain_widget = brain_widget
@@ -201,16 +200,6 @@ class GraphViewWidget(Base, Form):
                 edge_matrix[i][j] = (default_radius * value, default_color)
         edge_matrix = np.array(edge_matrix)
         self.brain_widget.set_edges(edge_matrix)
-
-    def get_colormaps(self):
-        colormaps = {}
-        colormaps['spring'] = cm([0.0, 1.0], [[1.0, 0.28, 0.85, 1.0], [1.0, 0.94, 0.28, 1.0]])
-        colormaps['cool'] = cm([0.0, 1.0], [[0.298, 0.964, 0.956, 1.0], [1.0, 0.28, 0.85, 1.0]])
-        colormaps['hot'] = cm([0.0, 0.33, 0.67, 1.0], [[0.0, 0.0, 0.0, 1.0], [1.0, 0.0, 0.0, 1.0], [1.0, 1.0, 0.0, 1.0], [1.0, 1.0, 1.0, 1.0]])
-        colormaps['parula'] = cm([0.0, 0.5, 1.0], [[0.317, 0.223, 0.937, 1.0], [0.333, 0.666, 0.5, 1.0], [1.0, 0.94, 0.28, 1.0]])
-        return colormaps
-
-
 
 
 
