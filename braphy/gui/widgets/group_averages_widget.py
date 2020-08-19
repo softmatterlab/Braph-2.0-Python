@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 import numpy as np
-from braphy.utility.helper_functions import abs_path_from_relative, FloatDelegate, float_to_string
+from braphy.utility.helper_functions import abs_path_from_relative, FloatDelegate, float_to_string, error_msg
 import pandas as pd
 
 ui_file = abs_path_from_relative(__file__, "../ui_files/group_averages_widget.ui")
@@ -196,8 +196,4 @@ class GroupAveragesWidget(Base, Form):
                 df.to_excel(file_name, index = None, columns = None)
 
     def comparison_error(self, msg):
-        msg_box = QMessageBox()
-        msg_box.setIcon(QMessageBox.Critical)
-        msg_box.setText(msg)
-        msg_box.setWindowTitle("Comparison error")
-        msg_box.exec_()
+        error_msg('Comparison error', msg)

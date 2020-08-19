@@ -6,7 +6,8 @@ from PyQt5.QtWidgets import *
 from braphy.atlas.brain_atlas import BrainAtlas
 from braphy.utility.helper_functions import (abs_path_from_relative, load_nv,
                                             FloatDelegate, float_to_string,
-                                            list_data_types, get_subject_class)
+                                            list_data_types, get_subject_class,
+                                            error_msg)
 import numpy as np
 from braphy.gui.exit_dialog import ExitDialog
 
@@ -414,18 +415,10 @@ class BrainAtlasGui(ExitDialog, Ui_MainWindow):
         QMessageBox.about(self, 'About', 'Brain Atlas Editor')
 
     def load_file_error(self, exception):
-        msg_box = QMessageBox()
-        msg_box.setIcon(QMessageBox.Critical)
-        msg_box.setText(str(exception))
-        msg_box.setWindowTitle("Import error")
-        msg_box.exec_()
+        error_msg('Import error', exception)
 
     def load_file_warning(self, string):
-        msg_box = QMessageBox()
-        msg_box.setIcon(QMessageBox.Warning)
-        msg_box.setText(string)
-        msg_box.setWindowTitle("Import warning")
-        msg_box.exec_()
+        error_msg('Import warning', string, QMessageBox.Warning)
 
 def run():
     app = QtWidgets.QApplication(sys.argv)

@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 import numpy as np
-from braphy.utility.helper_functions import abs_path_from_relative, get_colormaps
+from braphy.utility.helper_functions import abs_path_from_relative, get_colormaps, error_msg
 from braphy.gui.color_bar_combo_box import ColorBar
 
 ui_file = abs_path_from_relative(__file__, "../ui_files/visualization_widget.ui")
@@ -164,6 +164,8 @@ class VisualizationWidget(Base, Form):
         values_min = np.min(values)
         values_max = np.max(values)
         values = (values - values_min)/(values_max - values_min)
+        if np.isnan(values).any() or np.isinf(values).any():
+            error_msg('Visualization warning', 'One or more visualization elements is either nan or inf', QMessageBox.Warning)
         visualization_type = combo_box.currentText()
         for i, region in enumerate(self.brain_widget.gui_brain_regions):
             if visualization_type == 'Color':

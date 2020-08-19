@@ -11,7 +11,7 @@ from braphy.gui.cohort_editor_gui import CohortEditor
 from braphy.analysis.analysis import Analysis
 from braphy.gui.community_structure_gui import CommunityStructure
 from braphy.gui.widgets.brain_view_options_widget import BrainViewOptionsWidget
-from braphy.utility.helper_functions import abs_path_from_relative, same_class, get_analysis_class
+from braphy.utility.helper_functions import abs_path_from_relative, same_class, get_analysis_class, error_msg
 from braphy.gui.exit_dialog import ExitDialog
 
 qtCreatorFile = abs_path_from_relative(__file__, "ui_files/graph_analysis.ui")
@@ -420,11 +420,7 @@ class GraphAnalysis(ExitDialog, Ui_MainWindow):
         self.brain_view_options_widget.update_move()
 
     def import_error(self, msg):
-        msg_box = QMessageBox()
-        msg_box.setIcon(QMessageBox.Critical)
-        msg_box.setText(msg)
-        msg_box.setWindowTitle("Import error")
-        msg_box.exec_()
+        error_msg('Import error', msg)
 
     def table_update_callbacks(self):
         widgets = [self.globalMeasuresWidget, self.nodalMeasuresWidget, self.binodalMeasuresWidget]

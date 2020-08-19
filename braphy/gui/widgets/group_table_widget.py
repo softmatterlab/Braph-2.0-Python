@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 import numpy as np
-from braphy.utility.helper_functions import abs_path_from_relative
+from braphy.utility.helper_functions import abs_path_from_relative, error_msg
 
 ui_file = abs_path_from_relative(__file__, "../ui_files/group_table_widget.ui")
 Form, Base = uic.loadUiType(ui_file)
@@ -191,17 +191,9 @@ class GroupTableWidget(Base, Form):
         self.update_table()
 
     def load_file_error(self, exception):
-        msg_box = QMessageBox()
-        msg_box.setIcon(QMessageBox.Critical)
-        msg_box.setText(str(exception))
-        msg_box.setWindowTitle("Import error")
-        msg_box.exec_()
+        error_msg('Import error', exception)
 
     def load_file_warning(self, string):
-        msg_box = QMessageBox()
-        msg_box.setIcon(QMessageBox.Warning)
-        msg_box.setText(string)
-        msg_box.setWindowTitle("Import warning")
-        msg_box.exec_()
+        error_msg('Import warning', string, QMessageBox.Warning)
 
 

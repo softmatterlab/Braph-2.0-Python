@@ -4,6 +4,7 @@ import importlib
 import subprocess
 from PyQt5.QtGui import QColor
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QMessageBox
 from contextlib import contextmanager
 import random as rnd
 from pyqtgraph import ColorMap
@@ -91,6 +92,13 @@ def get_colormaps():
     colormaps['hot'] = ColorMap([0.0, 0.33, 0.67, 1.0], [[0, 0, 0, 255], [255, 0, 0, 255], [255, 255, 0, 255], [255, 255, 255, 255]])
     colormaps['parula'] = ColorMap([0.0, 0.5, 1.0], [[80, 57, 240, 255], [85, 170, 128, 255], [255, 240, 71, 255]])
     return colormaps
+
+def error_msg(title, msg, icon = QMessageBox.Critical):
+    msg_box = QMessageBox()
+    msg_box.setIcon(icon)
+    msg_box.setText(msg)
+    msg_box.setWindowTitle(title)
+    msg_box.exec_()
 
 def float_to_string(f, number_of_decimals = 6):
     try:

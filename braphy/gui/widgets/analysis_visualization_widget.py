@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore, QtGui, uic, QtWidgets, Qt
 import numpy as np
-from braphy.utility.helper_functions import abs_path_from_relative, float_to_string, get_colormaps
+from braphy.utility.helper_functions import abs_path_from_relative, float_to_string, get_colormaps, error_msg
 from braphy.gui.color_bar_combo_box import ColorBar
 
 ui_file = abs_path_from_relative(__file__, "../ui_files/measure_visualization_widget.ui")
@@ -186,14 +186,18 @@ class MeasureVisualizationWidget(AnalysisVisualizationWidget):
             return
         values = self.get_visualization_values()
         visualization_type = self.comboBoxType.currentIndex()
+
+        if np.isnan(values).any() or np.isinf(values).any():
+            error_msg('Visualization warning', 'One or more visualization elements is either nan or inf', QMessageBox.Warning)
         for i, region in enumerate(self.brain_widget.gui_brain_regions):
-            if np.isnan(values[i]) or np.isinf(values[i]):
+            value = values[i]
+            if np.isnan(value) or np.isinf(value):
                 region.set_size(0.1)
                 continue
             if visualization_type == 0 or visualization_type == 2:
-                region.set_color(self.get_color(values[i]))
+                region.set_color(self.get_color(value))
             if visualization_type == 1 or visualization_type == 2:
-                region.set_size(values[i] * self.spinBoxMax.value() + self.spinBoxMin.value())
+                region.set_size(value * self.spinBoxMax.value() + self.spinBoxMin.value())
 
     def get_visualization_values(self):
         if self.binary_type:
