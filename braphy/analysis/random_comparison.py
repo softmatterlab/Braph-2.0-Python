@@ -1,3 +1,6 @@
+from braphy.graph.measures import *
+import numpy as np
+
 class RandomComparison():
     def __init__(self, group_index, measure_class, sub_measure,
                  attempts_per_edge, number_of_weights,
@@ -38,10 +41,9 @@ class RandomComparison():
         d['attempts_per_edge'] = self.attempts_per_edge
         d['number_of_weights'] = self.number_of_weights
         d['randomization_number'] = self.randomization_number
-        d['measure'] = self.measure
-        d['mean_random_measures'] = self.mean_random_measures
-        d['difference'] = self.difference
-        d['differences'] = self.differences.tolist()
+        for key in ['measure', 'mean_random_measures', 'difference', 'differences']:
+            attribute = eval('self.{}'.format(key))
+            d[key] = attribute.tolist() if isinstance(attribute, np.ndarray) else attribute
 
         if isinstance(self.p_values[0], np.ndarray):
             p_values = [self.p_values[0].tolist(), self.p_values[1].tolist()]

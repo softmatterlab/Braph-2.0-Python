@@ -30,6 +30,7 @@ class AnalysisFunctional(Analysis):
         values = []
         for graph in graphs:
             values.append(graph.get_measure(measure_class, sub_measure, save = False))
+        values = np.array(values)
         measurement = MeasurementFunctional(group_index, measure_class, sub_measure, values, self.graph_settings.value_binary)
         return measurement
 
