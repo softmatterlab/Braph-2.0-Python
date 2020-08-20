@@ -5,7 +5,7 @@ from braphy.workflows.structural.subject_structural import SubjectStructural
 from braphy.workflows.structural.analysis_structural import AnalysisStructural
 from braphy.graph.graph_factory import GraphSettings
 from braphy.graph.measures import *
-from braphy.utility.helper_functions import abs_path_from_relative
+from braphy.utility.file_utility import abs_path_from_relative
 import numpy as np
 
 class TestAnalysisStructural(unittest.TestCase):

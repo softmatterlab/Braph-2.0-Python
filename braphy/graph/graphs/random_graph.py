@@ -1,7 +1,8 @@
 import numpy as np
 import copy
 from numpy.linalg import matrix_power, multi_dot
-from braphy.utility.helper_functions import divide_without_warning, multiply_without_warning, accumarray
+from braphy.utility.math_utility import (accumarray, divide_without_warning,
+                                         multiply_without_warning)
 
 class RandomGraph():
 

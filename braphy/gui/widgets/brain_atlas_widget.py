@@ -4,7 +4,7 @@ from pyqtgraph.opengl import GLViewWidget
 import PyQt5.QtGui as QtGui
 from PyQt5.QtGui import QColor
 from PyQt5.QtWidgets import QFileDialog
-from braphy.utility.helper_functions import abs_path_from_relative
+from braphy.utility.file_utility import abs_path_from_relative
 from braphy.gui.gui_brain_region import GUIBrainRegion
 from braphy.gui.gui_brain_edge import GUIBrainEdge
 import pyqtgraph.Vector

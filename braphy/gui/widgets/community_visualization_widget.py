@@ -2,7 +2,8 @@ from PyQt5.QtWidgets import *
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QPushButton, QTableWidgetItem
 from PyQt5.QtGui import QColor
-from braphy.utility.helper_functions import abs_path_from_relative, QColor_to_list, QColor_from_list
+from braphy.utility.file_utility import abs_path_from_relative
+from braphy.utility.qt_utility import QColor_to_list, QColor_from_list
 import numpy as np
 
 ui_file = abs_path_from_relative(__file__, "../ui_files/community_visualization_widget.ui")

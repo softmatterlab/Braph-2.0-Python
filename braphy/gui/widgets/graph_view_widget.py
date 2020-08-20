@@ -1,7 +1,8 @@
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 import numpy as np
-from braphy.utility.helper_functions import abs_path_from_relative, QColor_to_list, QColor_from_list, get_colormaps
+from braphy.utility.file_utility import abs_path_from_relative
+from braphy.utility.qt_utility import QColor_to_list, QColor_from_list, get_colormaps
 from braphy.graph.graphs.graph import Graph
 
 ui_file = abs_path_from_relative(__file__, "../ui_files/graph_view_widget.ui")

@@ -4,10 +4,10 @@ import json
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from PyQt5.QtWidgets import *
 from braphy.atlas.brain_atlas import BrainAtlas
-from braphy.utility.helper_functions import (abs_path_from_relative, load_nv,
-                                            FloatDelegate, float_to_string,
-                                            list_data_types, get_subject_class,
-                                            error_msg)
+from braphy.utility.file_utility import abs_path_from_relative, load_nv, list_data_types
+from braphy.utility.qt_utility import FloatDelegate, error_msg
+from braphy.utility.math_utility import float_to_string
+from braphy.utility.helper_functions import get_subject_class
 import numpy as np
 from braphy.gui.exit_dialog import ExitDialog
 

@@ -3,7 +3,7 @@ import numpy as np
 from braphy.cohort.cohort import Cohort
 from braphy.atlas.brain_atlas import BrainAtlas
 from braphy.workflows import *
-from braphy.utility.helper_functions import abs_path_from_relative
+from braphy.utility.file_utility import abs_path_from_relative
 from braphy.test.test_utility import TestUtility
 
 class TestCohort(TestUtility):

@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 import numpy as np
-from braphy.utility.helper_functions import abs_path_from_relative
+from braphy.utility.file_utility import abs_path_from_relative
 from braphy.gui.widgets.graph_view_widget import GraphViewWidget
 from braphy.gui.widgets.visualization_widget import *
 from braphy.gui.widgets.community_visualization_widget import CommunityVisualizationWidget

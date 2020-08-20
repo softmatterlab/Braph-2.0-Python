@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
-from braphy.utility.helper_functions import abs_path_from_relative, QColor_from_list
+from braphy.utility.file_utility import abs_path_from_relative
+from braphy.utility.qt_utility import QColor_from_list
 
 ui_file = abs_path_from_relative(__file__, "../ui_files/binary_plot_settings.ui")
 Form, Base = uic.loadUiType(ui_file)

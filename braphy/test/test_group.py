@@ -1,7 +1,7 @@
 import unittest
 from braphy.cohort.group import Group
 from braphy.workflows import *
-from braphy.utility.helper_functions import abs_path_from_relative
+from braphy.utility.file_utility import abs_path_from_relative
 from braphy.test.test_utility import TestUtility
 
 class TestGroup(TestUtility):

@@ -6,7 +6,7 @@ from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from PyQt5.QtCore import QFileInfo
 from braphy.atlas.brain_region import BrainRegion
 from braphy.gui.brain_atlas_gui import BrainAtlasGui
-from braphy.utility.helper_functions import abs_path_from_relative, load_nv, list_data_types
+from braphy.utility.file_utility import abs_path_from_relative, load_nv, list_data_types
 from braphy.gui.cohort_editor_gui import CohortEditor
 from braphy.gui.graph_analysis_gui import GraphAnalysis
 from braphy.gui.exit_dialog import ExitDialog

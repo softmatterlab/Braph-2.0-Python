@@ -2,7 +2,7 @@ import sys
 import json
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from PyQt5.QtWidgets import *
-from braphy.utility.helper_functions import abs_path_from_relative, load_nv
+from braphy.utility.file_utility import abs_path_from_relative, load_nv
 from braphy.atlas.brain_atlas import BrainAtlas
 from braphy.gui.brain_atlas_gui import BrainAtlasGui
 import numpy as np

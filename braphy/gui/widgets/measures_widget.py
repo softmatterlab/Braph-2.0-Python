@@ -2,8 +2,9 @@ from PyQt5.QtWidgets import *
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 import numpy as np
 import pandas as pd
-from braphy.utility.helper_functions import abs_path_from_relative, FloatDelegate, float_to_string, \
-                                            float_to_string_fix_decimals
+from braphy.utility.file_utility import abs_path_from_relative
+from braphy.utility.qt_utility import FloatDelegate
+from braphy.utility.math_utility import float_to_string, float_to_string_fix_decimals
 from braphy.graph.measures.measure import Measure
 
 ui_file = abs_path_from_relative(__file__, "../ui_files/measures_widget.ui")

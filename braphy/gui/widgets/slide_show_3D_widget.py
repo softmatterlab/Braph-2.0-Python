@@ -6,7 +6,7 @@ from braphy.gui.widgets.brain_atlas_widget import BrainAtlasWidget
 from braphy.atlas.brain_region import BrainRegion
 from braphy.gui.gui_brain_edge import GUIBrainEdge
 from braphy.gui.gui_brain_region import GUIBrainRegion
-from braphy.utility.helper_functions import abs_path_from_relative, load_nv
+from braphy.utility.file_utility import abs_path_from_relative, load_nv
 
 brain_mesh_file_name = "../meshes/BrainMesh_ICBM152.nv"
 brain_mesh_file = abs_path_from_relative(__file__, brain_mesh_file_name)

@@ -1,7 +1,8 @@
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 import numpy as np
-from braphy.utility.helper_functions import abs_path_from_relative, QColor_to_list, QColor_from_list
+from braphy.utility.file_utility import abs_path_from_relative
+from braphy.utility.qt_utility import QColor_to_list, QColor_from_list
 
 ui_file = abs_path_from_relative(__file__, "../ui_files/brain_atlas_settings_widget.ui")
 Form, Base = uic.loadUiType(ui_file)

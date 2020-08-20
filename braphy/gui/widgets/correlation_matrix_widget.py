@@ -4,7 +4,7 @@ import numpy as np
 from braphy.gui.widgets.correlation_matrix_visualizer import CorrelationMatrixVisualizer
 from matplotlib.backends.backend_qt5agg import (
             NavigationToolbar2QT as NavigationToolbar)
-from braphy.utility.helper_functions import abs_path_from_relative
+from braphy.utility.file_utility import abs_path_from_relative
 from braphy.graph.graphs.graph import Graph
 
 ui_file = abs_path_from_relative(__file__, "../ui_files/correlation_matrix_widget.ui")

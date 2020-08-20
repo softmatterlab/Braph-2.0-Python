@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from braphy.utility.helper_functions import equal_around
+from braphy.utility.math_utility import equal_around
 
 class Data:
     def __init__(self):

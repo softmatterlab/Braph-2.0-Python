@@ -1,7 +1,9 @@
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 import numpy as np
-from braphy.utility.helper_functions import abs_path_from_relative, FloatDelegate, float_to_string, error_msg
+from braphy.utility.file_utility import abs_path_from_relative
+from braphy.utility.math_utility import float_to_string
+from braphy.utility.qt_utility import FloatDelegate, error_msg
 import pandas as pd
 
 ui_file = abs_path_from_relative(__file__, "../ui_files/group_averages_widget.ui")

@@ -11,7 +11,9 @@ from braphy.gui.cohort_editor_gui import CohortEditor
 from braphy.analysis.analysis import Analysis
 from braphy.gui.community_structure_gui import CommunityStructure
 from braphy.gui.widgets.brain_view_options_widget import BrainViewOptionsWidget
-from braphy.utility.helper_functions import abs_path_from_relative, same_class, get_analysis_class, error_msg
+from braphy.utility.file_utility import abs_path_from_relative
+from braphy.utility.qt_utility import error_msg
+from braphy.utility.helper_functions import same_class, get_analysis_class
 from braphy.gui.exit_dialog import ExitDialog
 
 qtCreatorFile = abs_path_from_relative(__file__, "ui_files/graph_analysis.ui")

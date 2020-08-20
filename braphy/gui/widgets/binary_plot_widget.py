@@ -1,5 +1,5 @@
 from PyQt5 import uic, Qt
-from braphy.utility.helper_functions import abs_path_from_relative
+from braphy.utility.file_utility import abs_path_from_relative
 
 ui_file = abs_path_from_relative(__file__, "../ui_files/binary_plot_widget.ui")
 Form, Base = uic.loadUiType(ui_file)

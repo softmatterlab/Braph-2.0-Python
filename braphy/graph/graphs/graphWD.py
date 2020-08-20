@@ -1,7 +1,8 @@
 from braphy.graph.graphs import *
 import numpy as np
 import random
-from braphy.utility.helper_functions import *
+from braphy.utility.math_utility import (accumarray, divide_without_warning,
+                                         multiply_without_warning)
 import copy
 
 class GraphWD(Graph):

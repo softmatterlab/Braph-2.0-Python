@@ -8,7 +8,6 @@ from braphy.graph.graphs.graphBU import GraphBU
 import numpy as np
 from matplotlib import pyplot as plt
 import sys
-from braphy.utility.helper_functions import *
 
 class TestRandomGraphSmallBU(unittest.TestCase):
     def test_graph1(self):

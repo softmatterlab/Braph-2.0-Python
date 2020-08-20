@@ -1,7 +1,7 @@
 from braphy.graph.measures.measure import Measure
 from braphy.graph.measures.measure_degree import MeasureDegree
 from braphy.graph.measures.measure_community_structure import MeasureCommunityStructure
-from braphy.utility.helper_functions import divide_without_warning
+from braphy.utility.math_utility import divide_without_warning
 import numpy as np
 from braphy.graph.graphs import *
 import copy

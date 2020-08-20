@@ -1,5 +1,6 @@
 from PyQt5 import QtWidgets, QtCore, QtGui, uic
-from braphy.utility.helper_functions import abs_path_from_relative, QColor_to_list, QColor_from_list
+from braphy.utility.qt_utility import QColor_from_list
+from braphy.utility.file_utility import abs_path_from_relative, load_nv
 from pyqtgraph import ColorMap
 import numpy as np
 

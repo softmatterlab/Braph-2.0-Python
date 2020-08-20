@@ -1,7 +1,8 @@
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 import numpy as np
-from braphy.utility.helper_functions import abs_path_from_relative, get_colormaps, error_msg
+from braphy.utility.file_utility import abs_path_from_relative
+from braphy.utility.qt_utility import get_colormaps, error_msg
 from braphy.gui.color_bar_combo_box import ColorBar
 
 ui_file = abs_path_from_relative(__file__, "../ui_files/visualization_widget.ui")

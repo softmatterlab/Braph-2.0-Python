@@ -2,7 +2,9 @@ from PyQt5.QtWidgets import *
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 import numpy as np
 import copy
-from braphy.utility.helper_functions import abs_path_from_relative, FloatDelegate, float_to_string
+from braphy.utility.file_utility import abs_path_from_relative
+from braphy.utility.qt_utility import FloatDelegate
+from braphy.utility.math_utility import float_to_string
 from braphy.graph.measures.measure_parser import MeasureParser
 from braphy.graph.measures.measure import Measure
 from braphy.gui.community_structure_gui import CommunityStructure

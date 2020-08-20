@@ -1,6 +1,6 @@
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from braphy.gui.widgets.slide_show_3D_widget import SlideShow3DWidget
-from braphy.utility.helper_functions import abs_path_from_relative
+from braphy.utility.file_utility import abs_path_from_relative
 
 ui_file = abs_path_from_relative(__file__, "../ui_files/slide_show.ui")
 Form, Base = uic.loadUiType(ui_file)

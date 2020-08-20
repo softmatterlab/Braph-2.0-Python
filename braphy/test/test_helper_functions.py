@@ -2,6 +2,9 @@ import unittest
 import numpy as np
 from braphy.test.test_utility import TestUtility
 from braphy.utility.helper_functions import *
+from braphy.utility.file_utility import *
+from braphy.utility.qt_utility import *
+from braphy.utility.math_utility import *
 
 class TestHelperFunctions(TestUtility):
     def test_divide_without_warning_1(self):

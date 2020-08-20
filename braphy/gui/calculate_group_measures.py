@@ -2,7 +2,9 @@ import sys
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import Qt
-from braphy.utility.helper_functions import abs_path_from_relative, float_to_string, wait_cursor
+from braphy.utility.file_utility import abs_path_from_relative
+from braphy.utility.math_utility import float_to_string
+from braphy.utility.qt_utility import wait_cursor
 import numpy as np
 import time
 
