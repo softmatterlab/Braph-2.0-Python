@@ -1,5 +1,5 @@
 from braphy.atlas.brain_region import BrainRegion
-from braphy.utility.helper_functions import ListManager as lm
+from braphy.utility.list_manager import ListManager
 from braphy.utility.get_version import get_version
 import numpy as np
 import pandas as pd
@@ -88,28 +88,28 @@ class BrainAtlas():
         self.brain_regions[i] = br
 
     def invert_brain_regions(self, i, j):
-        lm.swap(self.brain_regions, i, j)
+        ListManager.swap(self.brain_regions, i, j)
 
     def move_to_brain_region(self, i, j):
-        lm.move_to(self.brain_regions, i, j)
+        ListManager.move_to(self.brain_regions, i, j)
 
     def add_above_brain_regions(self, selected):
-        return lm.add_above(self.brain_regions, selected, self.new_brain_region)
+        return ListManager.add_above(self.brain_regions, selected, self.new_brain_region)
 
     def add_below_brain_regions(self, selected):
-        return lm.add_below(self.brain_regions, selected, self.new_brain_region)
+        return ListManager.add_below(self.brain_regions, selected, self.new_brain_region)
 
     def move_up_brain_regions(self, selected):
-        return lm.move_up(self.brain_regions, selected)
+        return ListManager.move_up(self.brain_regions, selected)
 
     def move_down_brain_regions(self, selected):
-        return lm.move_down(self.brain_regions, selected)
+        return ListManager.move_down(self.brain_regions, selected)
 
     def move_to_top_brain_regions(self, selected):
-        return lm.move_to_top(self.brain_regions, selected)
+        return ListManager.move_to_top(self.brain_regions, selected)
 
     def move_to_bottom_brain_regions(self, selected):
-        return lm.move_to_bottom(self.brain_regions, selected)
+        return ListManager.move_to_bottom(self.brain_regions, selected)
 
     def load_from_txt(self, file_path = '', file_name = ''):
         with open(file_path + file_name, 'r') as f:

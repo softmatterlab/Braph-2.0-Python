@@ -2,7 +2,7 @@ import json
 import os
 from braphy.cohort.group import Group
 from braphy.atlas.brain_atlas import BrainAtlas
-from braphy.utility.helper_functions import ListManager as lm
+from braphy.utility.list_manager import ListManager
 from braphy.utility.helper_functions import get_subject_class
 from braphy.utility.get_version import get_version
 import numpy as np
@@ -106,13 +106,13 @@ class Cohort:
                     group.remove_subject(subject)
 
     def swap_groups(self, i, j):
-        lm.swap(self.groups, i, j)
+        ListManager.swap(self.groups, i, j)
 
     def move_up_groups(self, selected):
-        return lm.move_up(self.groups, selected)
+        return ListManager.move_up(self.groups, selected)
 
     def move_down_groups(self, selected):
-        return lm.move_down(self.groups, selected)
+        return ListManager.move_down(self.groups, selected)
 
     def new_group_from_selected(self, subject_indices):
         self.add_group()
@@ -167,28 +167,28 @@ class Cohort:
         self.subjects[i] = subject
 
     def swap_subjects(self, i, j):
-        lm.swap(self.subjects, i, j)
+        ListManager.swap(self.subjects, i, j)
 
     def move_to_subject(self, i, j):
-        lm.move_to(self.subjects, i, j)
+        ListManager.move_to(self.subjects, i, j)
 
     def add_above_subjects(self, selected):
-        return lm.add_above(self.subjects, selected, self.new_subject)
+        return ListManager.add_above(self.subjects, selected, self.new_subject)
 
     def add_below_subjects(self, selected):
-        return lm.add_below(self.subjects, selected, self.new_subject)
+        return ListManager.add_below(self.subjects, selected, self.new_subject)
 
     def move_up_subjects(self, selected):
-        return lm.move_up(self.subjects, selected)
+        return ListManager.move_up(self.subjects, selected)
 
     def move_down_subjects(self, selected):
-        return lm.move_down(self.subjects, selected)
+        return ListManager.move_down(self.subjects, selected)
 
     def move_to_top_subjects(self, selected):
-        return lm.move_to_top(self.subjects, selected)
+        return ListManager.move_to_top(self.subjects, selected)
 
     def move_to_bottom_subjects(self, selected):
-        return lm.move_to_bottom(self.subjects, selected)
+        return ListManager.move_to_bottom(self.subjects, selected)
 
     def invert_group_name(self, group_names):
         invert_name = "("
