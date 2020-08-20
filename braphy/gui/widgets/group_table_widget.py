@@ -55,7 +55,7 @@ class GroupTableWidget(Base, Form):
 
     def update_group_operation_buttons(self):
         if not self.read_only:
-            checked_groups = len(self.tableWidget.get_selected())
+            checked_groups = len(self.get_selected())
             self.btnInvert.setEnabled(checked_groups > 0)
             self.btnMerge.setEnabled(checked_groups > 1)
             self.btnIntersect.setEnabled(checked_groups > 1)
@@ -63,7 +63,7 @@ class GroupTableWidget(Base, Form):
 
     def update_table(self, selected_groups = None):
         if np.any(selected_groups == None):
-            selected_groups = self.tableWidget.get_selected()
+            selected_groups = self.get_selected()
         self.tableWidget.blockSignals(True)
         self.tableWidget.clear_table(len(self.cohort.groups))
 
@@ -88,7 +88,7 @@ class GroupTableWidget(Base, Form):
                 item.setFlags(QtCore.Qt.ItemIsSelectable)
             self.tableWidget.setItem(i, 2, item)
 
-        self.tableWidget.set_selected(selected_groups)
+        self.set_selected(selected_groups)
         self.tableWidget.blockSignals(False)
 
     def cell_changed_in_group_table(self, row, column):
@@ -141,34 +141,40 @@ class GroupTableWidget(Base, Form):
         if len(file_names) > 0:
             self.update()
 
+    def get_selected(self):
+        return self.tableWidget.get_selected()
+
+    def set_selected(self, selected):
+        self.tableWidget.set_selected(selected)
+
     def add_group(self):
         self.cohort.add_group()
-        self.update(self.tableWidget.get_selected())
+        self.update(self.get_selected())
 
     def remove_group(self):
-        selected_groups = self.cohort.remove_groups(self.tableWidget.get_selected())
+        selected_groups = self.cohort.remove_groups(self.get_selected())
         self.update(selected_groups)
         self.update_group_operation_buttons()
 
     def move_group_up(self):
-        selected_groups = self.cohort.move_up_groups(self.tableWidget.get_selected())
+        selected_groups = self.cohort.move_up_groups(self.get_selected())
         self.update(selected_groups)
 
     def move_group_down(self):
-        selected_groups = self.cohort.move_down_groups(self.tableWidget.get_selected())
+        selected_groups = self.cohort.move_down_groups(self.get_selected())
         self.update(selected_groups)
 
     def invert_group(self):
-        self.cohort.invert_groups(self.tableWidget.get_selected())
-        self.update(self.tableWidget.get_selected())
+        self.cohort.invert_groups(self.get_selected())
+        self.update(self.get_selected())
 
     def merge_groups(self):
-        self.cohort.merge_groups(self.tableWidget.get_selected())
-        self.update(self.tableWidget.get_selected())
+        self.cohort.merge_groups(self.get_selected())
+        self.update(self.get_selected())
 
     def intersect_groups(self):
-        self.cohort.intersect_groups(self.tableWidget.get_selected())
-        self.update(self.tableWidget.get_selected())
+        self.cohort.intersect_groups(self.get_selected())
+        self.update(self.get_selected())
 
     def set_read_only(self):
         self.read_only = True

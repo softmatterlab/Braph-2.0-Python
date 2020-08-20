@@ -26,8 +26,8 @@ class GroupsAndDemographicsWidget(Base, Form):
         self.tableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
 
     def init_buttons(self):
-        self.btnSelectAll.clicked.connect(self.tableWidget.selectAll)
-        self.btnClearSelection.clicked.connect(self.tableWidget.clearSelection)
+        self.btnSelectAll.clicked.connect(self.select_all)
+        self.btnClearSelection.clicked.connect(self.clear_selection)
         self.btnAddSubject.clicked.connect(self.add_subject)
         self.btnAddAbove.clicked.connect(self.add_subjects_above)
         self.btnAddBelow.clicked.connect(self.add_subjects_below)
@@ -62,8 +62,7 @@ class GroupsAndDemographicsWidget(Base, Form):
             selected = self.get_selected()
 
         self.tableWidget.blockSignals(True)
-        self.tableWidget.clearContents()
-        self.tableWidget.setRowCount(0)
+        self.tableWidget.clear_table()
         self.subject_in_group_check_boxes = {}
 
         #Update columns:
@@ -127,13 +126,6 @@ class GroupsAndDemographicsWidget(Base, Form):
         self.set_selected(selected)
         self.tableWidget.blockSignals(False)
 
-    def set_selected(self, selected):
-        mode = self.tableWidget.selectionMode()
-        self.tableWidget.setSelectionMode(QtGui.QAbstractItemView.MultiSelection)
-        for row in selected:
-            self.tableWidget.selectRow(row)
-        self.tableWidget.setSelectionMode(mode)
-
     def subject_in_group_check_box_changed(self):
         check_box = self.sender()
         if check_box.isChecked():
@@ -143,8 +135,16 @@ class GroupsAndDemographicsWidget(Base, Form):
         self.update()
 
     def get_selected(self):
-        rows = [item.row() for item in self.tableWidget.selectionModel().selectedRows()]
-        return np.array(rows)
+        return self.tableWidget.get_selected()
+
+    def set_selected(self, selected):
+        self.tableWidget.set_selected(selected)
+
+    def select_all(self):
+        self.tableWidget.selectAll()
+
+    def clear_selection(self):
+        self.tableWidget.clearSelection()
 
     def add_subject(self):
         self.cohort.add_subject()
