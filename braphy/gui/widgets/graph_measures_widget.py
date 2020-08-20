@@ -74,8 +74,7 @@ class GraphMeasuresWidget(Base, Form):
         self.get_selected()
 
     def get_selected(self):
-        selected = [item.row() for item in self.tableWidget.selectionModel().selectedRows()]
-        return selected
+        return self.tableWidget.get_selected()
 
     def get_selected_measures(self):
         selected = self.get_selected()
