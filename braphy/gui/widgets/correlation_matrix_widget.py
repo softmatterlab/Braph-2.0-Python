@@ -22,6 +22,10 @@ class CorrelationMatrixWidget(Base, Form):
         self.btnGroup.setChecked(True)
         self.checkBoxDivide.setEnabled(False)
         self.checkBoxRearrange.setEnabled(False)
+        self.graphics_update = False
+        self.graphics_timer = QtCore.QTimer()
+        self.graphics_timer.timeout.connect(self.check_graphics_update)
+        self.graphics_timer.start(100)
 
     def init(self, analysis):
         self.analysis = analysis
@@ -83,6 +87,14 @@ class CorrelationMatrixWidget(Base, Form):
         self.correlationMatrix.labels = self.analysis.cohort.atlas.get_brain_region_labels()
 
     def update_graphics_view(self):
+        self.graphics_update = True
+
+    def check_graphics_update(self):
+        if self.graphics_update:
+            self._update_graphics_view()
+            self.graphics_update = False
+
+    def _update_graphics_view(self):
         if self.correlation is None:
             return
         A = self.correlation
@@ -243,5 +255,3 @@ class CorrelationMatrixWidget(Base, Form):
 
     def show_colorbar(self, state):
         self.correlationMatrix.show_colorbar(state)
-
-
