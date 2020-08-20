@@ -10,6 +10,61 @@ qtCreatorFile = abs_path_from_relative(__file__, "ui_files/calculation_window.ui
 
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 
+class CalculationData():
+    def __init__(self, measures_dict, sub_measures, group_index, analysis, binary_values):
+        self.measures_dict = measures_dict
+        self.sub_measures = sub_measures
+        self.group_index = group_index
+        self.analysis = analysis
+        self.binary_values = binary_values
+
+class CalculationThread(QtCore.QThread):
+    status = QtCore.pyqtSignal(str)
+
+    def __init__(self, parent = None):
+        QtCore.QThread.__init__(self, parent)
+        self.running = False
+        self.calculation_data = None
+
+    def calculate(self, calculation_data):
+        self.calculation_data = calculation_data
+        self.running = True
+
+    def run(self):
+        while True:
+            if self.calculation_data is None or self.running == False:
+                time.sleep(0.2)
+                continue
+            with wait_cursor():
+                text_box_string = ' '
+                self.status.emit(text_box_string)
+                total_time = 0
+                for sub_measure in self.calculation_data.sub_measures:
+                    if not self.running:
+                        break
+                    start_time = time.time()
+                    self.status.emit('Computing {}...\n'.format(sub_measure) + text_box_string)
+                    measure_class = self.calculation_data.measures_dict[sub_measure]
+                    if self.calculation_data.analysis.is_binary():
+                        for value in self.calculation_data.binary_values:
+                            if not self.running:
+                                break
+                            self.calculation_data.analysis.set_binary_value(value)
+                            self.calculation_data.analysis.get_measurement(measure_class, sub_measure, self.calculation_data.group_index)
+                    else:
+                        self.calculation_data.analysis.get_measurement(measure_class, sub_measure, self.calculation_data.group_index)
+                    duration = time.time() - start_time
+                    total_time = total_time + duration
+                    text_box_string = text_box_string + '\n{} {} s.'.format(sub_measure, float_to_string(duration, 3))
+                    self.status.emit(text_box_string)
+                text_box_string = 'DONE \nTotal time: {} s.\n'.format(float_to_string(total_time, 3)) + text_box_string
+                self.status.emit(text_box_string)
+                self.calculation_data = None
+
+    def stop(self):
+        self.calculation_data = None
+        self.running = False
+
 class CalculateGroupMeasures(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self, AppWindow, analysis, graph_type, update_callbacks = []):
         self.AppWindow = AppWindow
@@ -45,6 +100,13 @@ class CalculateGroupMeasures(QtWidgets.QMainWindow, Ui_MainWindow):
         self.init_spin_boxes()
 
         self.update_callbacks = update_callbacks
+        self.calculation_thread = CalculationThread()
+        self.calculation_thread.status.connect(self.update_status_text)
+        self.calculation_thread.start()
+
+    def closeEvent(self, e):
+        self.calculation_thread.stop()
+        super().closeEvent(e)
 
     def init_buttons(self):
         self.btnCalculate.clicked.connect(self.calculate)
@@ -57,35 +119,20 @@ class CalculateGroupMeasures(QtWidgets.QMainWindow, Ui_MainWindow):
         self.spinBoxMin.valueChanged.connect(self.min_changed)
         self.spinBoxMax.valueChanged.connect(self.max_changed)
 
+    def update_status_text(self, msg):
+        self.textBrowser.setPlainText(msg)
+        if msg[:4] == 'DONE':
+            self.call_update()
+            self.btnCalculate.setEnabled(True)
+
     def calculate(self):
-        with wait_cursor():
-            text_box_string = ' '
-            self.textBrowser.setPlainText(text_box_string)
-            QtGui.QApplication.processEvents()
-            sub_measures = self.graphMeasuresWidget.get_selected_measures()
-            group_index = self.comboBoxGroup1.currentIndex()
-            total_time = 0
-            for sub_measure in sub_measures:
-                start_time = time.time()
-                self.textBrowser.setPlainText('Computing {}...\n'.format(sub_measure) + text_box_string)
-                QtGui.QApplication.processEvents()
-                measure_class = self.graphMeasuresWidget.inverted_measures_dict[sub_measure]
-                if self.analysis.is_binary():
-                    binary_values = np.arange(self.spinBoxMin.value(), self.spinBoxMax.value(), self.spinBoxStep.value())
-                    for value in binary_values:
-                        self.analysis.set_binary_value(value)
-                        self.analysis.get_measurement(measure_class, sub_measure, group_index)
-                else:
-                    self.analysis.get_measurement(measure_class, sub_measure, group_index)
-                duration = time.time() - start_time
-                total_time = total_time + duration
-                text_box_string = text_box_string + '\n{} {} s.'.format(sub_measure, float_to_string(duration, 3))
-                self.textBrowser.setPlainText(text_box_string)
-                QtGui.QApplication.processEvents()
-            text_box_string = 'DONE \nTotal time: {} s.\n'.format(float_to_string(total_time, 3)) + text_box_string
-            self.textBrowser.setPlainText(text_box_string)
-            QtGui.QApplication.processEvents()
-        self.call_update()
+        self.btnCalculate.setEnabled(False)
+        measures_dict = self.graphMeasuresWidget.inverted_measures_dict
+        sub_measures = self.graphMeasuresWidget.get_selected_measures()
+        group_index = self.comboBoxGroup1.currentIndex()
+        binary_values = np.arange(self.spinBoxMin.value(), self.spinBoxMax.value(), self.spinBoxStep.value())
+        calculation_data = CalculationData(measures_dict, sub_measures, group_index,self.analysis,binary_values)
+        self.calculation_thread.calculate(calculation_data)
 
     def call_update(self):
         for func in self.update_callbacks:
