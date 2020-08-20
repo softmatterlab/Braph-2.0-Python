@@ -22,7 +22,7 @@
      <widget class="QWidget" name="layoutWidget">
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
-        <widget class="QTableWidget" name="tableWidget">
+        <widget class="TableManager" name="tableWidget">
          <column>
           <property name="text">
            <string>Value</string>
@@ -342,6 +342,11 @@
  </widget>
  <customwidgets>
   <customwidget>
+   <class>TableManager</class>
+   <extends>QTableWidget</extends>
+   <header>braphy.utility.table_manager</header>
+  </customwidget>
+  <customwidget>
    <class>BinaryPlotWidget</class>
    <extends>QWidget</extends>
    <header>braphy.gui.widgets.binary_plot_widget</header>
@@ -351,7 +356,7 @@
  <resources/>
  <connections/>
  <buttongroups>
-  <buttongroup name="buttonGroup"/>
   <buttongroup name="buttonGroup_2"/>
+  <buttongroup name="buttonGroup"/>
  </buttongroups>
 </ui>

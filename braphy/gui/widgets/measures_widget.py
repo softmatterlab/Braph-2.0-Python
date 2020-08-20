@@ -240,8 +240,7 @@ class MeasuresWidget(Base, Form):
         self.update_table()
 
     def update_table(self):
-        self.tableWidget.clearContents()
-        self.tableWidget.setRowCount(0)
+        self.tableWidget.clear_table()
         current_group_1 = self.comboBoxGroup1.currentIndex()
         current_group_2 = self.comboBoxGroup2.currentIndex()
         current_region_index = self.comboBoxRegion.currentIndex()
@@ -488,8 +487,7 @@ class MeasuresWidget(Base, Form):
         return content
 
     def get_selected(self):
-        selected = [item.row() for item in self.tableWidget.selectionModel().selectedRows()]
-        return selected
+        return self.tableWidget.get_selected()
 
     def export_txt(self, file_name):
         table_string = ''

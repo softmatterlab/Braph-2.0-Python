@@ -69,16 +69,14 @@ class SubjectDataWidget(Base, Form):
         self.update()
 
     def update_table(self):
+        self.tableWidget.blockSignals(True)
+        self.tableWidget.clear_table()
         if self.cohort.subject_class.structural():
             self.update_table_structural()
         else:
             self.update_subject_list()
 
     def update_table_functional(self):
-        self.tableWidget.blockSignals(True)
-        self.tableWidget.clearContents()
-        self.tableWidget.setRowCount(0)
-
         # Update columns:
         self.tableWidget.setColumnCount(len(self.cohort.atlas.get_brain_region_labels()))
         for i, label in enumerate(self.cohort.atlas.get_brain_region_labels()):
@@ -96,10 +94,6 @@ class SubjectDataWidget(Base, Form):
         self.tableWidget.blockSignals(False)
 
     def update_table_structural(self):
-        self.tableWidget.blockSignals(True)
-        self.tableWidget.clearContents()
-        self.tableWidget.setRowCount(0)
-
         #Update columns:
         self.tableWidget.setColumnCount(len(self.cohort.atlas.brain_regions))
         for i, label in enumerate(self.cohort.atlas.get_brain_region_labels()):
