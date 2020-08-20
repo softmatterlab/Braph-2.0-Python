@@ -290,8 +290,7 @@ class BrainAtlasGui(ExitDialog, Ui_MainWindow):
             selected = self.get_selected()
 
         self.tableWidget.blockSignals(True)
-        self.tableWidget.clearContents()
-        self.tableWidget.setRowCount(self.atlas.brain_region_number())
+        self.tableWidget.clear_table(self.atlas.brain_region_number())
 
         for i in range(self.atlas.brain_region_number()):
             widget = QWidget()
