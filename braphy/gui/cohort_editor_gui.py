@@ -142,8 +142,8 @@ class CohortEditor(ExitDialog, Ui_MainWindow):
         self.actionMerge.setEnabled(False)
         self.actionIntersect.setEnabled(False)
 
-        self.actionSelect_all_subjects.triggered.connect(self.groupsAndDemographicsWidget.tableWidget.selectAll)
-        self.actionClear_selection.triggered.connect(self.groupsAndDemographicsWidget.tableWidget.clearSelection)
+        self.actionSelect_all_subjects.triggered.connect(self.groupsAndDemographicsWidget.select_all)
+        self.actionClear_selection.triggered.connect(self.groupsAndDemographicsWidget.clear_selection)
         self.actionAdd_subject.triggered.connect(self.groupsAndDemographicsWidget.add_subject)
         self.actionAdd_subject_above.triggered.connect(self.groupsAndDemographicsWidget.add_subjects_above)
         self.actionAdd_subject_below.triggered.connect(self.groupsAndDemographicsWidget.add_subjects_below)

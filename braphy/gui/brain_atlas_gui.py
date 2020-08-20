@@ -290,8 +290,7 @@ class BrainAtlasGui(ExitDialog, Ui_MainWindow):
             selected = self.get_selected()
 
         self.tableWidget.blockSignals(True)
-        self.tableWidget.clearContents()
-        self.tableWidget.setRowCount(self.atlas.brain_region_number())
+        self.tableWidget.clear_table(self.atlas.brain_region_number())
 
         for i in range(self.atlas.brain_region_number()):
             widget = QWidget()
@@ -337,18 +336,10 @@ class BrainAtlasGui(ExitDialog, Ui_MainWindow):
             self.brainWidget.select_region(index)
 
     def set_selected(self, selected):
-        self.tableWidget.blockSignals(True)
-        self.tableWidget.clearSelection()
-        mode = self.tableWidget.selectionMode()
-        self.tableWidget.setSelectionMode(QtGui.QAbstractItemView.MultiSelection)
-        for row in selected:
-            self.tableWidget.selectRow(row)
-        self.tableWidget.setSelectionMode(mode)
-        self.tableWidget.blockSignals(False)
+        self.tableWidget.set_selected(selected)
 
     def get_selected(self):
-        rows = [item.row() for item in self.tableWidget.selectionModel().selectedRows()]
-        return np.array(rows)
+        return self.tableWidget.get_selected()
 
     def save_as(self):
         options = QFileDialog.Options()
