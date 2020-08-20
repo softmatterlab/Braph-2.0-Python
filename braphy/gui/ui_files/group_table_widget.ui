@@ -68,7 +68,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QTableWidget" name="tableWidget_groups">
+    <widget class="TableManager" name="tableWidget">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
        <horstretch>0</horstretch>
@@ -178,6 +178,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>TableManager</class>
+   <extends>QTableWidget</extends>
+   <header>braphy.utility.table_manager</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

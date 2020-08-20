@@ -193,7 +193,7 @@ class CohortEditor(ExitDialog, Ui_MainWindow):
             self.groupAveragesWidget.update_tables()
 
     def group_table_widget_updated(self):
-        checked_groups = len(self.groupTableWidget.get_selected())
+        checked_groups = len(self.groupTableWidget.tableWidget.get_selected())
         self.actionInvert.setEnabled(checked_groups > 0)
         self.actionMerge.setEnabled(checked_groups > 1)
         self.actionIntersect.setEnabled(checked_groups > 1)
@@ -311,7 +311,7 @@ class CohortEditor(ExitDialog, Ui_MainWindow):
 
     def update_tables(self, selected_groups = None, selected_subjects = None):
         if np.any(selected_groups == None):
-            selected_groups = self.groupTableWidget.get_selected()
+            selected_groups = self.groupTableWidget.tableWidget.get_selected()
         if np.any(selected_subjects == None):
             selected_subjects = self.groupsAndDemographicsWidget.get_selected()
 
