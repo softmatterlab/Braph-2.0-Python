@@ -178,7 +178,7 @@ class SlideShow3DWidget(BrainAtlasWidget):
             self.add_region(c, self.blue, 5)
         edges = [(0,2), (16,18)]
         for edge in edges:
-            self.add_edge([coords[edge[0]], coords[edge[1]]], self.pink, 0.7, label = '0.9')
+            self.add_edge([coords[edge[0]], coords[edge[1]]], self.pink, 0.7)
         edges = [(2,6), (2,7), (2,12), (2,14), (2,10), (3,9), (3,4), (3,5), (3,14), (3,13), 
         (4,10), (4,9), (4,7), (5,6), (5,7), (5,15), (5,11), (5,10), (6,9), (6,10), (6,11), 
         (6,7), (6,13), (7,12), (7,14), (7,13), (9,14), (9,15), (9,13), (10, 13), (10,12), 
@@ -196,7 +196,7 @@ class SlideShow3DWidget(BrainAtlasWidget):
         edges = [(8,11),
                 (24,27)]
         for edge in edges:
-            self.add_edge([coords[edge[0]], coords[edge[1]]], self.blue, 0.7, label = '0.1')
+            self.add_edge([coords[edge[0]], coords[edge[1]]], self.blue, 0.7)
         return description
 
     def set_eccentricity(self): 
