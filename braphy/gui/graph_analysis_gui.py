@@ -86,7 +86,10 @@ class GraphAnalysis(ExitDialog, Ui_MainWindow):
             json.dump(self.to_dict(), f, sort_keys=True, indent=4)
 
     def from_dict(self, d):
-        self.analysis = self.analysis_class.from_dict(d['analysis'])
+        try:
+            self.analysis = self.analysis_class.from_dict(d['analysis'])
+        except AssertionError as e:
+            error_msg('Import error', str(e))
         self.init_brain_mesh(d)
         self.init_analysis()
 

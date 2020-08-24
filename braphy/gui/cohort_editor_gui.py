@@ -3,6 +3,8 @@ import json
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from PyQt5.QtWidgets import *
 from braphy.utility.file_utility import abs_path_from_relative, load_nv
+from braphy.utility.qt_utility import error_msg
+from braphy.utility.helper_functions import same_class
 from braphy.atlas.brain_atlas import BrainAtlas
 from braphy.gui.brain_atlas_gui import BrainAtlasGui
 import numpy as np
@@ -85,7 +87,11 @@ class CohortEditor(ExitDialog, Ui_MainWindow):
         self.file_name = file_name
 
     def from_dict(self, d):
-        self.cohort = Cohort.from_dict(d['cohort'])
+        cohort = Cohort.from_dict(d['cohort'])
+        if not same_class(self.subject_class, cohort.subject_class):
+            error_msg('Import error', 'Wrong data type. Load a cohort with subjects of type {} instead.'.format(self.subject_class.__name__))
+            return
+        self.cohort = cohort
         if 'brain_mesh_data' in d.keys():
             self.init_brain_mesh(d)
         self.init_atlas_dependencies()

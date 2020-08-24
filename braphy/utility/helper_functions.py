@@ -16,6 +16,15 @@ def get_analysis_class(analysis_class_string):
     s = 'braphy.workflows.{}.analysis_{}'.format(data_type, data_type)
     return getattr(importlib.import_module(s), analysis_class_string)
 
+def analysis_subject_match(analysis, subject):
+    if isinstance(analysis, type):
+        analysis = analysis.__name__
+    if isinstance(subject, type):
+        subject = subject.__name__
+    analysis_data_type = analysis.split('Analysis')[1].lower()
+    subject_data_type = subject.split('Subject')[1].lower()
+    return analysis_data_type == subject_data_type
+
 def small_world_graph(N, K = 4, beta = 0.1):
     ''' Watts-Strogatz small world algorithm 
      Returns an undirected graph with N nodes and NK/2 edges, K is the degree 

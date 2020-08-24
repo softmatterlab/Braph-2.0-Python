@@ -4,6 +4,7 @@ from braphy.cohort.cohort import Cohort
 from braphy.analysis.measurement import Measurement
 from braphy.analysis.comparison import Comparison
 from braphy.analysis.random_comparison import RandomComparison
+from braphy.utility.helper_functions import same_class, analysis_subject_match
 import numpy as np
 from abc import ABC, abstractmethod
 
@@ -32,6 +33,8 @@ class Analysis():
     @classmethod
     def from_dict(cls, d):
         cohort = Cohort.from_dict(d['cohort'])
+        assert analysis_subject_match(cls, cohort.subject_class), \
+                'Wrong data type. Subjects in cohort of type {} does not match analysis of type {}'.format(cohort.subject_class.__name__, cls.__name__)
         name = d['name']
         graph_settings = GraphSettings.from_dict(d['graph_settings'])
         measurements = [Measurement.from_dict(measurement) for measurement in d['measurements']]
