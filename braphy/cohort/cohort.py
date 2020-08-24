@@ -38,7 +38,7 @@ class Cohort:
         d['subjects'] = subjects
         groups = []
         for group in self.groups:
-            groups.append(group.to_dict())
+            groups.append(group.to_dict(self.subjects))
         d['groups'] = groups
         d['atlas'] = self.atlas.to_dict()
         return d

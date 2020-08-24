@@ -13,23 +13,25 @@ class Group:
             subjects = []
         self.subjects = subjects
 
-    def to_dict(self):
+    def to_dict(self, subjects):
         d = {}
         d['name'] = self.name
         d['subject_class'] = self.subject_class.__name__
         d['description'] = self.description
         d['subjects'] = []
         for subject in self.subjects:
-            d['subjects'].append(subject.to_dict())
+            match = -1
+            for i, other_subject in enumerate(subjects):
+                if subject.equals(other_subject):
+                    match = i
+                    break
+            assert match >= 0, 'Subject {} in group {} is not matched in subject list.'.format(subject.id, self.name)
+            d['subjects'].append(match)
         return d
 
     def from_dict(d, subjects):
         subject_class = get_subject_class(d['subject_class'])
-        subjects_in_group = []
-        for subject in subjects:
-            for group_subject in [subject_class.from_dict(sub) for sub in d['subjects']]:
-                if subject.equals(group_subject):
-                    subjects_in_group.append(subject)
+        subjects_in_group = [subjects[index] for index in d['subjects']]
         return Group(subject_class, subjects=subjects_in_group, name=d['name'], description=d['description'])
 
     def add_subject(self, subject):
