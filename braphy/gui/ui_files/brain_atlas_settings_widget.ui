@@ -117,36 +117,31 @@
        <property name="spacing">
         <number>6</number>
        </property>
-       <item row="2" column="0">
+       <item row="0" column="0">
+        <widget class="QCheckBox" name="checkBoxChangeBackground">
+         <property name="text">
+          <string>Show background</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QCheckBox" name="checkBoxShowAxis">
+         <property name="text">
+          <string>Show axis</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
         <widget class="QCheckBox" name="checkBoxShowBrainRegions">
          <property name="text">
           <string>Show brain regions</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="1">
-        <widget class="QSlider" name="sliderRegions">
-         <property name="minimum">
-          <number>1</number>
-         </property>
-         <property name="maximum">
-          <number>80</number>
-         </property>
-         <property name="singleStep">
-          <number>1</number>
-         </property>
-         <property name="pageStep">
-          <number>10</number>
-         </property>
-         <property name="value">
-          <number>40</number>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="1">
+       <item row="5" column="1">
         <layout class="QGridLayout" name="gridLayout_7">
          <property name="topMargin">
           <number>0</number>
@@ -170,40 +165,46 @@
          </item>
         </layout>
        </item>
-       <item row="0" column="1">
-        <widget class="QSlider" name="sliderBrain">
+       <item row="5" column="2">
+        <widget class="QCheckBox" name="checkBoxShowOnlySelected">
+         <property name="text">
+          <string>Show only selected</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QSlider" name="sliderRegions">
+         <property name="minimum">
+          <number>1</number>
+         </property>
          <property name="maximum">
-          <number>100</number>
+          <number>80</number>
+         </property>
+         <property name="singleStep">
+          <number>1</number>
+         </property>
+         <property name="pageStep">
+          <number>10</number>
+         </property>
+         <property name="value">
+          <number>40</number>
          </property>
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
         </widget>
        </item>
-       <item row="0" column="0">
-        <widget class="QCheckBox" name="checkBoxShowBrain">
-         <property name="text">
-          <string>Show brain</string>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QComboBox" name="comboBoxMesh"/>
-       </item>
-       <item row="2" column="2">
+       <item row="3" column="2">
         <widget class="QCheckBox" name="checkBoxShowLabels">
          <property name="text">
           <string>Show labels</string>
          </property>
         </widget>
        </item>
-       <item row="4" column="2">
-        <widget class="QCheckBox" name="checkBoxShowOnlySelected">
+       <item row="0" column="1">
+        <widget class="QPushButton" name="btnBackgroud">
          <property name="text">
-          <string>Show only selected</string>
+          <string/>
          </property>
         </widget>
        </item>
@@ -214,10 +215,26 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="2">
-        <widget class="QCheckBox" name="checkBoxShowAxis">
+       <item row="2" column="2">
+        <widget class="QComboBox" name="comboBoxMesh"/>
+       </item>
+       <item row="2" column="1">
+        <widget class="QSlider" name="sliderBrain">
+         <property name="maximum">
+          <number>100</number>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QCheckBox" name="checkBoxShowBrain">
          <property name="text">
-          <string>Show axis</string>
+          <string>Show brain</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
