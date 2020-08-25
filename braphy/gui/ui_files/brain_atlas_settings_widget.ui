@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>858</width>
-    <height>147</height>
+    <height>169</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -118,7 +118,7 @@
         <number>6</number>
        </property>
        <item row="0" column="0">
-        <widget class="QCheckBox" name="checkBoxChangeBackground">
+        <widget class="QCheckBox" name="checkBoxShowBackground">
          <property name="text">
           <string>Show background</string>
          </property>
