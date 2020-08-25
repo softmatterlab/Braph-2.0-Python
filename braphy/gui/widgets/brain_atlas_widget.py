@@ -57,6 +57,11 @@ class BrainAtlasWidget(GLViewWidget):
         self.brainBackgroundColor = rgba
         self.setBackgroundColor(self.brainBackgroundColor)
 
+    def set_background_color(self, color):
+        color = [int(round(v*255)) for v in color]
+        self.brainBackgroundColor = color
+        self.setBackgroundColor(self.brainBackgroundColor)
+
     def get_actions(self):
         return self.tool_bar.get_actions()
 

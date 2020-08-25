@@ -35,6 +35,7 @@ class BrainAtlasSettingsWidget(Base, Form):
     def init_buttons(self):
         self.btnRegions.clicked.connect(self.pick_brain_region_color)
         self.btnRegionsSelected.clicked.connect(self.pick_selected_brain_region_color)
+        self.btnBackground.clicked.connect(self.pick_background_color)
         self.init_brain_region_color()
 
         self.btn3D.clicked.connect(self.brain_widget.show_3D)
@@ -166,7 +167,17 @@ class BrainAtlasSettingsWidget(Base, Form):
         style_sheet = 'background-color: {};'.format(color.name())
         self.btnRegionsSelected.setStyleSheet(style_sheet)
         self.brain_widget.set_selected_brain_region_color(QColor_to_list(color))
+    
+    def pick_background_color(self):
+        color = self.pick_color()
+        if color.isValid():
+            self.set_background_color(color)
 
+    def set_background_color(self, color):
+        style_sheet = 'background-color: {};'.format(color.name())
+        self.btnBackground.setStyleSheet(style_sheet)
+        self.brain_widget.set_background_color(QColor_to_list(color))
+    
     def change_transparency(self):
         alpha = self.sliderBrain.value()/100.0
         self.brain_widget.change_transparency(alpha)
