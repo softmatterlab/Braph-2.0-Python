@@ -38,13 +38,6 @@ class BrainAtlasSettingsWidget(Base, Form):
         self.btnBackground.clicked.connect(self.pick_background_color)
         self.init_brain_region_color()
 
-        self.btn3D.clicked.connect(self.brain_widget.show_3D)
-        self.btnSagittalLeft.clicked.connect(self.brain_widget.sagittal_left)
-        self.btnSagittalRight.clicked.connect(self.brain_widget.sagittal_right)
-        self.btnAxialDorsal.clicked.connect(self.brain_widget.axial_dorsal)
-        self.btnAxialVentral.clicked.connect(self.brain_widget.axial_ventral)
-        self.btnCoronalAnterior.clicked.connect(self.brain_widget.coronal_anterior)
-        self.btnCoronalPosterior.clicked.connect(self.brain_widget.coronal_posterior)
 
     def init_brain_region_color(self):
         style_sheet = 'background-color: {};'.format(QColor_from_list(self.brain_widget.region_color).name())
