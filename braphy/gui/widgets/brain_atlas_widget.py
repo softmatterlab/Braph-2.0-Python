@@ -298,6 +298,11 @@ class BrainAtlasWidget(GLViewWidget):
         self.gui_brain_regions[index].set_selected(False)
         self.update_brain_regions_plot()
 
+    def select_all(self):
+        for region in self.gui_brain_regions:
+            region.set_selected(True)
+        self.update_brain_regions_plot()
+
     def deselect_all(self):
         for region in self.gui_brain_regions:
             region.set_selected(False)
