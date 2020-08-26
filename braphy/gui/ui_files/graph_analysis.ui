@@ -84,13 +84,6 @@
                <item>
                 <layout class="QVBoxLayout" name="verticalLayout_5">
                  <item>
-                  <widget class="QLabel" name="repetitionLabel">
-                   <property name="text">
-                    <string>Repetition time = 1</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
                   <widget class="QLabel" name="subjectLabel">
                    <property name="text">
                     <string>Number of subjects = 0</string>
@@ -101,6 +94,13 @@
                   <widget class="QLabel" name="groupLabel">
                    <property name="text">
                     <string>Number of groups = 0</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="timestepLabel">
+                   <property name="text">
+                    <string>Time steps = 1</string>
                    </property>
                   </widget>
                  </item>
@@ -424,9 +424,6 @@
     <addaction name="separator"/>
     <addaction name="actionSave"/>
     <addaction name="actionSave_as"/>
-    <addaction name="separator"/>
-    <addaction name="actionImport_xml"/>
-    <addaction name="actionExport_xml"/>
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>

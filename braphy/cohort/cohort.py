@@ -312,3 +312,12 @@ class Cohort:
         cohort = Cohort('subgraph cohort', self.subject_class, atlas, subgraph_subjects, subgraph_groups)
         return cohort
 
+    def time_steps(self):
+        if len(self.subjects) == 0:
+            return 0
+        elif self.subject_class.structural():
+            return 1
+        else:
+            return self.subjects[0].data_dict['data'].value.shape[0]
+
+
