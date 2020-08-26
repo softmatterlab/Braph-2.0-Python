@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 import numpy as np
 import copy
-from braphy.graph.graphs.random_graph import RandomGraph
 
 class Graph(ABC):
     def __init__(self, A, settings):
