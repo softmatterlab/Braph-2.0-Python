@@ -8,7 +8,7 @@ class MeasureCommunityStructure(Measure):
     def dimensions():
         d = {}
         d['community_structure'] = Measure.NODAL
-        d['modularity'] = Measure.NODAL
+        d['modularity'] = Measure.GLOBAL
         return d
 
     def get_description():

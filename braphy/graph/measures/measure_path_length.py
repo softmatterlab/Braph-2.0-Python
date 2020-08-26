@@ -9,9 +9,9 @@ class MeasurePathLength(Measure):
         d = {}
         d['path_length'] = Measure.NODAL
         d['char_path_length'] = Measure.GLOBAL
-        d['in_path_length'] = Measure.GLOBAL
+        d['in_path_length'] = Measure.NODAL
         d['char_in_path_length'] = Measure.GLOBAL
-        d['out_path_length'] = Measure.GLOBAL
+        d['out_path_length'] = Measure.NODAL
         d['char_out_path_length'] = Measure.GLOBAL
         d['char_path_length_wsg'] = Measure.GLOBAL
         return d
