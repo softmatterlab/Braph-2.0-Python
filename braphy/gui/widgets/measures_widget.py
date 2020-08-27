@@ -200,7 +200,7 @@ class MeasuresWidget(Base, Form):
 
     def enable_add_plot(self):
         selected = self.get_selected()
-        self.btnAdd.setEnabled(bool(selected))
+        self.btnAdd.setEnabled(len(selected)>0)
 
     def get_info_string(self, sub_measure):
         info_string = []
