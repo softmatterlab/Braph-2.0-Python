@@ -11,6 +11,7 @@ from braphy.gui.community_structure_gui import CommunityStructure
 from braphy.gui.calculate_group_measures import CalculateGroupMeasures
 from braphy.gui.compare_group_measures import CompareGroupMeasures
 from braphy.gui.compare_with_random_graph import CompareWithRandomGraph
+from braphy.gui.calculation_window import CalculationWindow
 
 ui_file = abs_path_from_relative(__file__, "../ui_files/start_analysis_widget.ui")
 Form, Base = uic.loadUiType(ui_file)
@@ -31,9 +32,9 @@ class StartAnalysisWidget(Base, Form):
         self.btnViewCommunity.clicked.connect(self.view_community)
         self.btnNewAnalysis.clicked.connect(self.new_analysis)
 
-        self.btnCalculate.clicked.connect(self.calculate_group_measures)
-        self.btnCompare.clicked.connect(self.compare_group_measures)
-        self.btnRandom.clicked.connect(self.compare_with_random_graph)
+        self.btnCalculate.clicked.connect(self.calculation_window)
+        self.btnCompare.clicked.connect(self.calculation_window)
+        self.btnRandom.clicked.connect(self.calculation_window)
 
     def init_graph_measures_widget(self, graph_type):
         self.graphMeasuresWidget.init(graph_type)
@@ -48,6 +49,10 @@ class StartAnalysisWidget(Base, Form):
                                                               cohort = self.analysis.cohort,
                                                               brain_mesh_data = self.analysis_gui.brain_mesh_data)
         self.graph_analysis_gui.show()
+
+    def calculation_window(self):
+        self.calculation_window = CalculationWindow(self, self.analysis_gui.analysis, self.graph_type, self.update_callbacks())
+        self.calculation_window.show()
 
     def calculate_group_measures(self):
         self.calculate_group_measures_gui = CalculateGroupMeasures(self, self.analysis_gui.analysis, self.graph_type, self.update_callbacks())
