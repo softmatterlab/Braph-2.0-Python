@@ -55,6 +55,25 @@
         <item>
          <layout class="QVBoxLayout" name="leftSide">
           <item>
+           <widget class="QLineEdit" name="textAnalysisName">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Name</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QGroupBox" name="groupBoxCohort">
             <property name="title">
              <string>Cohort</string>
@@ -64,13 +83,6 @@
               <layout class="QHBoxLayout" name="layoutCohort">
                <item>
                 <layout class="QVBoxLayout" name="verticalLayout_5">
-                 <item>
-                  <widget class="QLabel" name="repetitionLabel">
-                   <property name="text">
-                    <string>Repetition time = 1</string>
-                   </property>
-                  </widget>
-                 </item>
                  <item>
                   <widget class="QLabel" name="subjectLabel">
                    <property name="text">
@@ -82,6 +94,13 @@
                   <widget class="QLabel" name="groupLabel">
                    <property name="text">
                     <string>Number of groups = 0</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="timestepLabel">
+                   <property name="text">
+                    <string>Time steps = 1</string>
                    </property>
                   </widget>
                  </item>
@@ -135,25 +154,6 @@
               </layout>
              </item>
             </layout>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLineEdit" name="textAnalysisName">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>16777215</width>
-              <height>30</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>analysis</string>
-            </property>
            </widget>
           </item>
           <item>
@@ -424,9 +424,6 @@
     <addaction name="separator"/>
     <addaction name="actionSave"/>
     <addaction name="actionSave_as"/>
-    <addaction name="separator"/>
-    <addaction name="actionImport_xml"/>
-    <addaction name="actionExport_xml"/>
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>

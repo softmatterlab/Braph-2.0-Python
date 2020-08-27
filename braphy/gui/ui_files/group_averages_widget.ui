@@ -137,6 +137,9 @@
          </item>
          <item>
           <widget class="QSpinBox" name="spinBoxPermutations">
+           <property name="minimum">
+            <number>1</number>
+           </property>
            <property name="maximum">
             <number>10000</number>
            </property>

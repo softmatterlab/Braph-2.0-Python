@@ -43,6 +43,7 @@ class BrainAtlasWidget(GLViewWidget):
         self.selected_region_color = [1.0, 0.0, 2.0/3, 1.0] # pink
         self.opts['distance'] = brain_distance_default
         self.tool_bar = BrainAtlasWidgetToolBar(self)
+        self.setMouseTracking(True)
 
     def width(self):
         return super().width() * self.devicePixelRatio()
@@ -55,6 +56,11 @@ class BrainAtlasWidget(GLViewWidget):
 
     def set_brain_background_color(self, rgba):
         self.brainBackgroundColor = rgba
+        self.setBackgroundColor(self.brainBackgroundColor)
+
+    def set_background_color(self, color):
+        color = [int(round(v*255)) for v in color]
+        self.brainBackgroundColor = color
         self.setBackgroundColor(self.brainBackgroundColor)
 
     def get_actions(self):
@@ -292,6 +298,11 @@ class BrainAtlasWidget(GLViewWidget):
         self.gui_brain_regions[index].set_selected(False)
         self.update_brain_regions_plot()
 
+    def select_all(self):
+        for region in self.gui_brain_regions:
+            region.set_selected(True)
+        self.update_brain_regions_plot()
+
     def deselect_all(self):
         for region in self.gui_brain_regions:
             region.set_selected(False)
@@ -354,7 +365,14 @@ class BrainAtlasWidget(GLViewWidget):
     def mouseMoveEvent(self, ev):
         if not self.interaction_enabled:
             return
-        if ev.buttons() == QtCore.Qt.MidButton:
+        self.setToolTip('')
+        button_pressed = (ev.buttons() == QtCore.Qt.LeftButton or
+                         ev.buttons() == QtCore.Qt.MidButton or
+                         ev.buttons() == QtCore.Qt.RightButton)
+        if not button_pressed:
+            self.check_brain_region_tooltip(ev)
+            return
+        elif ev.buttons() == QtCore.Qt.MidButton:
             diff = ev.pos() - self.mousePos
             self.mousePos = ev.pos()
             if (ev.modifiers() & QtCore.Qt.ControlModifier):
@@ -399,6 +417,18 @@ class BrainAtlasWidget(GLViewWidget):
                     closest_region_distance = camera_distance
                     closest_region = gui_brain_region
         return closest_region
+
+    def check_brain_region_tooltip(self, ev):
+        x = (ev.pos().x()-super().width()/2)/(super().width()/2)
+        y = -(ev.pos().y()-super().height()/2)/(super().height()/2)
+        m = self.projectionMatrix() * self.viewMatrix()
+        camera_pos = m.inverted()[0].map(QtGui.QVector3D(0,0,0))
+        closest_region = self.gui_brain_region_at([x,y], camera_pos)
+        if closest_region:
+            tool_tip_label = "{}\n{}\n{}".format(closest_region.label, closest_region.brain_region.name, closest_region.pos())
+            self.setToolTip(tool_tip_label)
+        else:
+            QtGui.QToolTip.hideText()
 
     def enable_brain_region_selection(self, enable):
         self.selection_enabled = enable

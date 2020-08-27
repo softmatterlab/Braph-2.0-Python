@@ -52,7 +52,7 @@ class GraphAnalysis(ExitDialog, Ui_MainWindow):
             self.analysis_class = get_analysis_class('Analysis{}'.format(self.subject_class.data_type()))
         if self.subject_class.structural():
             self.correlationMatrixWidget.set_structural_view()
-            self.repetitionLabel.hide()
+            self.timestepLabel.hide()
         self.setWindowTitle('{} Graph Analysis'.format(self.subject_class.data_type()))
 
         self.btnViewCohort.setEnabled(False)
@@ -314,6 +314,7 @@ class GraphAnalysis(ExitDialog, Ui_MainWindow):
     def set_cohort_labels(self):
         self.subjectLabel.setText('Number of subjects = {}'.format(len(self.analysis.cohort.subjects)))
         self.groupLabel.setText('Number of groups = {}'.format(len(self.analysis.cohort.groups)))
+        self.timestepLabel.setText('Time steps = {}'.format(self.analysis.cohort.time_steps()))
 
     def view_cohort(self):
         self.cohort_editor_gui = CohortEditor(self.subject_class, self, self.analysis.cohort, brain_mesh_data = self.brain_mesh_data)

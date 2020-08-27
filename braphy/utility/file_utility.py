@@ -21,6 +21,7 @@ def list_data_types():
     data_types = []
     workflow_dir = abs_path_from_relative(__file__, '../workflows')
     files = os.listdir(workflow_dir)
+    files.sort(reverse = True)
     for f in files:
         if os.path.isdir(os.path.join(workflow_dir, f)) and not f.startswith('_'):
             data_types.append(f.capitalize())

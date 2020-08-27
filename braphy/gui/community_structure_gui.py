@@ -1,6 +1,6 @@
 import sys
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
-from PyQt5.QtWidgets import QWidget, QHBoxLayout, QRadioButton, QTableWidgetItem, QButtonGroup, QAbstractItemView
+from PyQt5.QtWidgets import QWidget, QHBoxLayout, QRadioButton, QTableWidgetItem, QButtonGroup, QAbstractItemView, QMessageBox
 from braphy.utility.file_utility import abs_path_from_relative
 from braphy.gui.widgets.brain_view_options_widget import BrainViewOptionsWidget
 import numpy as np
@@ -76,6 +76,7 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
         for action in self.brain_view_options_widget.settingsWidget.get_actions():
             self.toolBar.addAction(action)
         self.actionGenerate_figure.triggered.connect(self.brainWidget.generate_figure)
+        self.actionAbout.triggered.connect(self.about)
 
     def init_brain_widget(self):
         self.brainWidget.init_brain_mesh(self.brain_mesh_data)
@@ -338,6 +339,9 @@ class CommunityStructure(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def resizeEvent(self, event):
         self.brain_view_options_widget.update_move()
+
+    def about(self):
+        QMessageBox.about(self, 'About', 'Community Structure editor')
 
 def run():
     app = QtWidgets.QApplication(sys.argv)

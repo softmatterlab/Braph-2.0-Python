@@ -35,15 +35,11 @@ class BrainAtlasSettingsWidget(Base, Form):
     def init_buttons(self):
         self.btnRegions.clicked.connect(self.pick_brain_region_color)
         self.btnRegionsSelected.clicked.connect(self.pick_selected_brain_region_color)
+        self.btnBackground.clicked.connect(self.pick_background_color)
+        self.btnSelectAll.clicked.connect(self.brain_widget.select_all)
+        self.btnClearSelection.clicked.connect(self.brain_widget.deselect_all)
         self.init_brain_region_color()
 
-        self.btn3D.clicked.connect(self.brain_widget.show_3D)
-        self.btnSagittalLeft.clicked.connect(self.brain_widget.sagittal_left)
-        self.btnSagittalRight.clicked.connect(self.brain_widget.sagittal_right)
-        self.btnAxialDorsal.clicked.connect(self.brain_widget.axial_dorsal)
-        self.btnAxialVentral.clicked.connect(self.brain_widget.axial_ventral)
-        self.btnCoronalAnterior.clicked.connect(self.brain_widget.coronal_anterior)
-        self.btnCoronalPosterior.clicked.connect(self.brain_widget.coronal_posterior)
 
     def init_brain_region_color(self):
         style_sheet = 'background-color: {};'.format(QColor_from_list(self.brain_widget.region_color).name())
@@ -54,8 +50,6 @@ class BrainAtlasSettingsWidget(Base, Form):
     def init_check_boxes(self):
         self.checkBoxShowBrainRegions.stateChanged.connect(self.show_brain_regions)
         self.checkBoxShowBrainRegions.setChecked(True)
-        self.checkBoxShowBrain.stateChanged.connect(self.show_brain)
-        self.checkBoxShowBrain.setChecked(True)
         self.checkBoxShowAxis.stateChanged.connect(self.show_axis)
         self.checkBoxShowAxis.setChecked(True)
         self.checkBoxShowGrid.stateChanged.connect(self.show_grid)
@@ -96,11 +90,9 @@ class BrainAtlasSettingsWidget(Base, Form):
         return actions
 
     def show_brain(self, state):
-        if (self.actionShow_brain.isChecked() != self.checkBoxShowBrain.isChecked()):
-            self.sliderBrain.setEnabled(state)
-            self.brain_widget.show_brain(state)
-            self.actionShow_brain.setChecked(state != 0)
-            self.checkBoxShowBrain.setChecked(state != 0)
+        self.sliderBrain.setEnabled(state)
+        self.brain_widget.show_brain(state)
+        self.actionShow_brain.setChecked(state != 0)
 
     def show_axis(self, state):
         if (self.actionShow_axis.isChecked() != self.checkBoxShowAxis.isChecked()):
@@ -166,6 +158,16 @@ class BrainAtlasSettingsWidget(Base, Form):
         style_sheet = 'background-color: {};'.format(color.name())
         self.btnRegionsSelected.setStyleSheet(style_sheet)
         self.brain_widget.set_selected_brain_region_color(QColor_to_list(color))
+
+    def pick_background_color(self):
+        color = self.pick_color()
+        if color.isValid():
+            self.set_background_color(color)
+
+    def set_background_color(self, color):
+        style_sheet = 'background-color: {};'.format(color.name())
+        self.btnBackground.setStyleSheet(style_sheet)
+        self.brain_widget.set_background_color(QColor_to_list(color))
 
     def change_transparency(self):
         alpha = self.sliderBrain.value()/100.0
