@@ -6,6 +6,7 @@ from braphy.utility.file_utility import abs_path_from_relative
 from braphy.utility.qt_utility import FloatDelegate
 from braphy.utility.math_utility import float_to_string, float_to_string_fix_decimals
 from braphy.graph.measures.measure import Measure
+import sys
 
 ui_file = abs_path_from_relative(__file__, "../ui_files/measures_widget.ui")
 Form, Base = uic.loadUiType(ui_file)
@@ -27,8 +28,10 @@ class MeasuresWidget(Base, Form):
             self.comboBoxRegion.hide()
             self.comboBoxRegion2.hide()
             self.labelRegion.hide()
+            self.binaryPlotWidget.tabWidget.tabBar().hide()
         elif measure_type == Measure.NODAL:
             self.comboBoxRegion2.hide()
+            self.binaryPlotWidget.set_nodal()
         if analysis.cohort.subject_class.structural():
             self.btnGroup.hide()
             self.btnSubject.hide()
@@ -80,7 +83,58 @@ class MeasuresWidget(Base, Form):
         for function in self.update_functions:
             function()
 
+    def add_matrix_plot(self):
+        selected = self.get_selected()[0]
+        binary_values = []
+        node_values = []
+        current_group_1 = self.comboBoxGroup1.currentIndex()
+        current_group_2 = self.comboBoxGroup2.currentIndex()
+        if self.is_measure():
+            index = self.measurement_index_mapping[selected]
+            sub_measure = self.analysis.measurements[index].sub_measure
+            for measurement in self.analysis.measurements:
+                if (measurement.sub_measure == sub_measure and
+                    measurement.group == current_group_1):
+                    binary_values.append(measurement.binary_value)
+                    node_values.append(measurement.value)
+
+        if self.is_comparison():
+            index = self.comparison_index_mapping[selected]
+            sub_measure = self.analysis.comparisons[index].sub_measure
+            for comparison in self.analysis.comparisons:
+                if (comparison.sub_measure == sub_measure and
+                    comparison.groups[0] == current_group_1 and
+                    comparison.groups[1] == current_group_2):
+                    binary_values.append(comparison.binary_value)
+                    value_1 = comparison.measures[0]
+                    value_2 = comparison.measures[1]
+                    node_values.append(value_2 - value_1)
+
+        if self.is_random_comparison():
+            index = self.random_comparison_index_mapping[selected]
+            sub_measure = self.analysis.random_comparisons[index].sub_measure
+            for random_comparison in self.analysis.random_comparisons:
+                if (random_comparison.sub_measure == sub_measure and
+                    random_comparison.group_index == current_group_1):
+                    binary_values.append(random_comparison.binary_value)
+                    node_values.append(random_comparison.difference)
+        
+        binary_values = np.array(binary_values)
+        node_values = np.array(node_values)
+        sorted_indices = np.argsort(binary_values)
+        node_values = node_values[sorted_indices,:]
+        binary_values = np.sort(binary_values)
+        title = sub_measure
+        if len(node_values.shape) > 2:
+            self.binaryPlotWidget.matrix = node_values
+            node_values = node_values[:, 0, :]
+            title = title + ', {}'.format(self.analysis.cohort.atlas.get_brain_region_labels()[0])
+        self.binaryPlotWidget.binaryMatrixPlotVisualizer.plot(node_values, title, binary_values)
+
     def add_plot(self):
+        if self.binaryPlotWidget.get_tab_index() == 1:
+            self.add_matrix_plot()
+            return
         selected = self.get_selected()
         info_strings = {}
         all_values = {}

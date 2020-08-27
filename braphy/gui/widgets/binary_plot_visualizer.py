@@ -111,9 +111,9 @@ class BinaryPlotVisualizer(FigureCanvas):
     def show_legend(self, show):
         if show:
             self.ax.legend()
-            self.parent().actionLegend.blockSignals(True)
-            self.parent().actionLegend.setChecked(True)
-            self.parent().actionLegend.blockSignals(False)
+            self.parent().parent().actionLegend.blockSignals(True)
+            self.parent().parent().actionLegend.setChecked(True)
+            self.parent().parent().actionLegend.blockSignals(False)
         else:
             legend = self.ax.get_legend()
             if legend:

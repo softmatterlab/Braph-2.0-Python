@@ -17,74 +17,99 @@
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="BinaryPlotVisualizer" name="binaryPlot"/>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <property name="topMargin">
+      <widget class="QTabWidget" name="tabWidget">
+       <property name="currentIndex">
         <number>0</number>
        </property>
-       <property name="rightMargin">
-        <number>0</number>
-       </property>
-       <item>
-        <layout class="QVBoxLayout" name="verticalLayout_3">
-         <property name="topMargin">
-          <number>0</number>
-         </property>
+       <widget class="QWidget" name="tab_1">
+        <attribute name="title">
+         <string>Binary plot</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_5">
          <item>
-          <widget class="QLabel" name="label">
-           <property name="text">
-            <string>Current plots:</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QListWidget" name="listWidget">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>16777215</width>
-             <height>200</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_5">
-           <property name="topMargin">
-            <number>10</number>
-           </property>
+          <layout class="QVBoxLayout" name="verticalLayout_4">
            <item>
-            <widget class="QPushButton" name="btnRemove">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
+            <widget class="BinaryPlotVisualizer" name="binaryPlot"/>
+           </item>
+           <item>
+            <widget class="QLabel" name="label">
              <property name="text">
-              <string>Remove</string>
+              <string>Current plots:</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="btnClear">
-             <property name="enabled">
-              <bool>false</bool>
+            <widget class="QListWidget" name="listWidget">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
-             <property name="text">
-              <string>Clear</string>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>200</height>
+              </size>
              </property>
             </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_2">
+             <item>
+              <widget class="QPushButton" name="btnClear">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="text">
+                <string>Clear</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btnRemove">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="text">
+                <string>Remove</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
           </layout>
          </item>
         </layout>
-       </item>
-      </layout>
+       </widget>
+       <widget class="QWidget" name="tab_2">
+        <attribute name="title">
+         <string>Matrix plot</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_3">
+         <item>
+          <widget class="BinaryMatrixPlotVisualizer" name="binaryMatrixPlotVisualizer"/>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout">
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="labelBrainRegion">
+             <property name="text">
+              <string>Choose second brain region:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="comboBox"/>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+      </widget>
      </item>
     </layout>
    </item>
@@ -110,6 +135,11 @@
    <class>BinaryPlotVisualizer</class>
    <extends>QGraphicsView</extends>
    <header>braphy.gui.widgets.binary_plot_visualizer</header>
+  </customwidget>
+  <customwidget>
+   <class>BinaryMatrixPlotVisualizer</class>
+   <extends>QGraphicsView</extends>
+   <header>braphy.gui.widgets.binary_matrix_plot_visualizer</header>
   </customwidget>
  </customwidgets>
  <resources>
