@@ -11,12 +11,44 @@ qtCreatorFile = abs_path_from_relative(__file__, "ui_files/calculation_window.ui
 
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 class CalculationData():
-    def __init__(self, measures_dict, sub_measures, group_index, analysis, binary_values):
+    def __init__(self, measures_dict, sub_measures, group_index, analysis, binary_values, calculation_function):
         self.measures_dict = measures_dict
         self.sub_measures = sub_measures
         self.group_index = group_index
         self.analysis = analysis
         self.binary_values = binary_values
+        self.calculation_function = calculation_function
+        self.computation_string = 'Computing'
+
+    def calculate(self, sub_measure):
+        measure_class = self.measures_dict[sub_measure]
+        self.calculation_function(measure_class, sub_measure, self.group_index)
+
+class ComparisonData(CalculationData):
+    def __init__(self, measures_dict, sub_measures, group_indices, analysis, binary_values, calculation_function,
+                 longitudinal, permutations):
+        super().__init__(measures_dict, sub_measures, group_indices, analysis, binary_values, calculation_function)
+        self.longitudinal = longitudinal
+        self.permutations = permutations
+        self.computation_string = 'Comparing'
+
+    def calculate(self, sub_measure):
+        measure_class = self.measures_dict[sub_measure]
+        self.calculation_function(measure_class, sub_measure, self.group_index, self.permutations, self.longitudinal)
+
+class RandomComparisonData(CalculationData):
+    def __init__(self, measures_dict, sub_measures, group_indices, analysis, binary_values, calculation_function,
+                 randomization_number, attempts_per_edge, number_of_weights):
+        super().__init__(measures_dict, sub_measures, group_indices, analysis, binary_values, calculation_function)
+        self.randomization_number = randomization_number
+        self.attempts_per_edge = attempts_per_edge
+        self.number_of_weights = number_of_weights
+        self.computation_string = 'Comparing'
+
+    def calculate(self, sub_measure):
+        measure_class = self.measures_dict[sub_measure]
+        self.calculation_function(measure_class, sub_measure, self.group_index, self.attempts_per_edge,
+                                  self.number_of_weights, self.randomization_number)
 
 class CalculationThread(QtCore.QThread):
     status = QtCore.pyqtSignal(str)
@@ -43,16 +75,16 @@ class CalculationThread(QtCore.QThread):
                     if not self.running:
                         break
                     start_time = time.time()
-                    self.status.emit('Computing {}...\n'.format(sub_measure) + text_box_string)
+                    self.status.emit('{} {}...\n'.format(self.calculation_data.computation_string, sub_measure) + text_box_string)
                     measure_class = self.calculation_data.measures_dict[sub_measure]
                     if self.calculation_data.analysis.is_binary():
                         for value in self.calculation_data.binary_values:
                             if not self.running:
                                 break
                             self.calculation_data.analysis.set_binary_value(value)
-                            self.calculation_data.analysis.get_measurement(measure_class, sub_measure, self.calculation_data.group_index)
+                            self.calculation_data.calculate(sub_measure)
                     else:
-                        self.calculation_data.analysis.get_measurement(measure_class, sub_measure, self.calculation_data.group_index)
+                        self.calculation_data.calculate(sub_measure)
                     duration = time.time() - start_time
                     total_time = total_time + duration
                     text_box_string = text_box_string + '\n{} {} s.'.format(sub_measure, float_to_string(duration, 3))
@@ -176,91 +208,30 @@ class CalculationWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.spinBoxMax.valueChanged.connect(self.max_changed)
 
     def calculation(self):
-        if self.btnMeasures.isChecked():
-            self.calculate_measures()
-        elif self.btnComparison.isChecked():
-            self.compare()
-        elif self.btnRandomComparison.isChecked():
-            self.compare_random()
-
-    def calculate_measures(self):
         self.btnCalculate.setEnabled(False)
         measures_dict = self.graphMeasuresWidget.inverted_measures_dict
         sub_measures = self.graphMeasuresWidget.get_selected_measures()
         group_index = self.comboBoxGroup1.currentIndex()
         binary_values = np.arange(self.spinBoxMin.value(), self.spinBoxMax.value(), self.spinBoxStep.value())
-        calculation_data = CalculationData(measures_dict, sub_measures, group_index,self.analysis,binary_values)
-        self.calculation_thread.calculate(calculation_data)
-
-    def compare(self):
-        with wait_cursor():
-            text_box_string = ' '
-            self.textBrowser.setPlainText(text_box_string)
-            QtGui.QApplication.processEvents()
+        if self.btnMeasures.isChecked():
+            calculation_data = CalculationData(measures_dict, sub_measures, group_index,
+                                               self.analysis,binary_values, self.analysis.get_measurement)
+        elif self.btnComparison.isChecked():
             permutations = self.spinBoxPermutation.value()
-            sub_measures = self.graphMeasuresWidget.get_selected_measures()
-            group_index_1 = self.comboBoxGroup1.currentIndex()
             group_index_2 = self.comboBoxGroup2.currentIndex()
+            groups = (group_index, group_index_2)
             longitudinal = self.checkBoxLongitudinal.isChecked()
-            groups = (group_index_1, group_index_2)
-            total_time = 0
-            for sub_measure in sub_measures:
-                start_time = time.time()
-                self.textBrowser.setPlainText('Comparing {}...\n'.format(sub_measure) + text_box_string)
-                QtGui.QApplication.processEvents()
-                measure_class = self.graphMeasuresWidget.inverted_measures_dict[sub_measure]
-                if self.analysis.is_binary():
-                    binary_values = np.arange(self.spinBoxMin.value(), self.spinBoxMax.value(), self.spinBoxStep.value())
-                    for value in binary_values:
-                        self.analysis.set_binary_value(value)
-                        self.analysis.get_comparison(measure_class, sub_measure, groups, permutations, longitudinal)
-                else:
-                    self.analysis.get_comparison(measure_class, sub_measure, groups, permutations, longitudinal)
-                duration = time.time() - start_time
-                total_time = total_time + duration
-                text_box_string = text_box_string + '\n{} {} s.'.format(sub_measure, float_to_string(duration, 3))
-                self.textBrowser.setPlainText(text_box_string)
-                QtGui.QApplication.processEvents()
-            text_box_string = 'DONE \nTotal time: {} s.\n'.format(float_to_string(total_time, 3)) + text_box_string
-            self.textBrowser.setPlainText(text_box_string)
-            QtGui.QApplication.processEvents()
-        self.call_update()
-
-    def compare_random(self):
-        with wait_cursor():
-            text_box_string = ' '
-            self.textBrowser.setPlainText(text_box_string)
-            QtGui.QApplication.processEvents()
-            sub_measures = self.graphMeasuresWidget.get_selected_measures()
-            group_index = self.comboBoxGroup1.currentIndex()
+            calculation_data = ComparisonData(measures_dict, sub_measures, groups,
+                                               self.analysis,binary_values, self.analysis.get_comparison,
+                                               longitudinal, permutations)
+        elif self.btnRandomComparison.isChecked():
             attempts_per_edge = self.spinBoxAttempts.value()
             number_of_weights = self.spinBoxWeights.value()
             randomization_number = self.spinBoxRandomization.value()
-            total_time = 0
-            for sub_measure in sub_measures:
-                start_time = time.time()
-                self.textBrowser.setPlainText('Comparing {}...\n'.format(sub_measure) + text_box_string)
-                QtGui.QApplication.processEvents()
-                measure_class = self.graphMeasuresWidget.inverted_measures_dict[sub_measure]
-                if self.analysis.is_binary():
-                    binary_values = np.arange(self.spinBoxMin.value(), self.spinBoxMax.value(), self.spinBoxStep.value())
-                    for value in binary_values:
-                        self.analysis.set_binary_value(value)
-                        self.analysis.get_random_comparison(measure_class, sub_measure, group_index,
-                                                            attempts_per_edge, number_of_weights, randomization_number)
-                else:
-                    self.analysis.get_random_comparison(measure_class, sub_measure, group_index,
-                                                        attempts_per_edge, number_of_weights, randomization_number)
-                    pass
-                duration = time.time() - start_time
-                total_time = total_time + duration
-                text_box_string = text_box_string + '\n{} {} s.'.format(sub_measure, float_to_string(duration, 3))
-                self.textBrowser.setPlainText(text_box_string)
-                QtGui.QApplication.processEvents()
-            text_box_string = 'DONE \nTotal time: {} s.\n'.format(float_to_string(total_time, 3)) + text_box_string
-            self.textBrowser.setPlainText(text_box_string)
-            QtGui.QApplication.processEvents()
-        self.call_update()
+            calculation_data = RandomComparisonData(measures_dict, sub_measures, group_index,
+                                                    self.analysis,binary_values, self.analysis.get_random_comparison,
+                                                    randomization_number, attempts_per_edge, number_of_weights)
+        self.calculation_thread.calculate(calculation_data)
 
     def call_update(self):
         for func in self.update_callbacks:
@@ -282,6 +253,10 @@ class CalculationWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if msg[:4] == 'DONE':
             self.call_update()
             self.btnCalculate.setEnabled(True)
+
+    def closeEvent(self, e):
+        self.calculation_thread.stop()
+        super().closeEvent(e)
 
 def run():
     app = QtWidgets.QApplication(sys.argv)
