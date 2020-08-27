@@ -40,7 +40,7 @@
            <number>0</number>
           </property>
           <item>
-           <widget class="QRadioButton" name="btnRandomComparison">
+           <widget class="QRadioButton" name="btnMeasures">
             <property name="text">
              <string>Measures</string>
             </property>
@@ -57,9 +57,9 @@
            </widget>
           </item>
           <item>
-           <widget class="QRadioButton" name="btnMeasures">
+           <widget class="QRadioButton" name="btnRandomComparison">
             <property name="text">
-             <string>Compare with random graph</string>
+             <string>Compare with random graphs</string>
             </property>
            </widget>
           </item>
@@ -291,7 +291,7 @@
      <x>0</x>
      <y>0</y>
      <width>775</width>
-     <height>20</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuAbout">

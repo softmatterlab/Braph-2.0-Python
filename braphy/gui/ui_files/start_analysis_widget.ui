@@ -54,22 +54,14 @@
      </item>
      <item>
       <widget class="QPushButton" name="btnCalculate">
-       <property name="text">
-        <string>Calculate Group Measures</string>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>100</height>
+        </size>
        </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="btnCompare">
        <property name="text">
-        <string>Compare Group Measures</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="btnRandom">
-       <property name="text">
-        <string>Compare With Random Graph</string>
+        <string>Calculate and compare graph measures</string>
        </property>
       </widget>
      </item>

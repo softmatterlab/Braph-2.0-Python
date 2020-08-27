@@ -83,28 +83,15 @@ class CalculationWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.calculation_thread.status.connect(self.update_status_text)
         self.calculation_thread.start()
 
-    def random_comparison_window(self):
-        self.btnCalculate.setText('Compare measure with random group')
-        self.setWindowTitle('Compare measure with random group')
-
-        self.comboBoxGroup2.hide()
-        self.labelPermutation.hide()
-        self.spinBoxPermutation.hide()
-        self.checkBoxLongitudinal.hide()
-
-        if self.analysis.is_weighted():
-            self.labelBinary.hide()
-            self.labelMin.hide()
-            self.labelMax.hide()
-            self.labelStep.hide()
-            self.spinBoxMin.hide()
-            self.spinBoxMax.hide()
-            self.spinBoxStep.hide()
-        else:
-            self.labelBinary.setText('Set {} values'.format(self.analysis.graph_settings.rule_binary))
-
+    def show_all_widgets(self):
+        widgets = [self.comboBoxGroup2, self.labelPermutation, self.spinBoxPermutation, self.checkBoxLongitudinal,
+                   self.labelBinary, self.labelMin, self.labelMax, self.labelStep, self.spinBoxMin, self.spinBoxMax, self.spinBoxStep, 
+                   self.labelAttempts, self.labelWeights, self.labelRandomization, self.spinBoxAttempts, self.spinBoxWeights, self.spinBoxRandomization]
+        for widget in widgets: 
+            widget.show()
 
     def calculate_measures_window(self):
+        self.show_all_widgets()
         self.comboBoxGroup2.hide()
         self.labelPermutation.hide()
         self.labelAttempts.hide()
@@ -116,6 +103,7 @@ class CalculationWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.spinBoxRandomization.hide()
         self.checkBoxLongitudinal.hide()
         self.setWindowTitle('Calculate group measures')
+        self.btnCalculate.setText('Calculate group measures')
 
         if self.analysis.is_weighted():
             self.labelBinary.hide()
@@ -129,8 +117,9 @@ class CalculationWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.labelBinary.setText('Set {} values'.format(self.analysis.graph_settings.rule_binary))
 
     def compare_group_measures_window(self):
-        self.btnCalculate.setText('Compare groups')
-        self.setWindowTitle('Compare group measures')
+        self.show_all_widgets()
+        self.btnCalculate.setText('Compare measures between groups')
+        self.setWindowTitle('Compare measures between groups')
 
         self.labelAttempts.hide()
         self.labelWeights.hide()
@@ -138,6 +127,27 @@ class CalculationWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.spinBoxAttempts.hide()
         self.spinBoxWeights.hide()
         self.spinBoxRandomization.hide()
+
+        if self.analysis.is_weighted():
+            self.labelBinary.hide()
+            self.labelMin.hide()
+            self.labelMax.hide()
+            self.labelStep.hide()
+            self.spinBoxMin.hide()
+            self.spinBoxMax.hide()
+            self.spinBoxStep.hide()
+        else:
+            self.labelBinary.setText('Set {} values'.format(self.analysis.graph_settings.rule_binary))
+
+    def random_comparison_window(self):
+        self.show_all_widgets()
+        self.btnCalculate.setText('Compare measure with random group')
+        self.setWindowTitle('Compare measure with random group')
+
+        self.comboBoxGroup2.hide()
+        self.labelPermutation.hide()
+        self.spinBoxPermutation.hide()
+        self.checkBoxLongitudinal.hide()
 
         if self.analysis.is_weighted():
             self.labelBinary.hide()

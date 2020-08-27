@@ -8,9 +8,6 @@ from braphy.utility.math_utility import float_to_string
 from braphy.graph.measures.measure_parser import MeasureParser
 from braphy.graph.measures.measure import Measure
 from braphy.gui.community_structure_gui import CommunityStructure
-from braphy.gui.calculate_group_measures import CalculateGroupMeasures
-from braphy.gui.compare_group_measures import CompareGroupMeasures
-from braphy.gui.compare_with_random_graph import CompareWithRandomGraph
 from braphy.gui.calculation_window import CalculationWindow
 
 ui_file = abs_path_from_relative(__file__, "../ui_files/start_analysis_widget.ui")
@@ -33,8 +30,6 @@ class StartAnalysisWidget(Base, Form):
         self.btnNewAnalysis.clicked.connect(self.new_analysis)
 
         self.btnCalculate.clicked.connect(self.calculation_window)
-        self.btnCompare.clicked.connect(self.calculation_window)
-        self.btnRandom.clicked.connect(self.calculation_window)
 
     def init_graph_measures_widget(self, graph_type):
         self.graphMeasuresWidget.init(graph_type)
@@ -54,26 +49,14 @@ class StartAnalysisWidget(Base, Form):
         self.calculation_window = CalculationWindow(self, self.analysis_gui.analysis, self.graph_type, self.update_callbacks())
         self.calculation_window.show()
 
-    def calculate_group_measures(self):
-        self.calculate_group_measures_gui = CalculateGroupMeasures(self, self.analysis_gui.analysis, self.graph_type, self.update_callbacks())
-        self.calculate_group_measures_gui.show()
-
-    def compare_group_measures(self):
-        self.compare_group_measures_gui = CompareGroupMeasures(self, self.analysis_gui.analysis, self.graph_type, self.update_callbacks())
-        self.compare_group_measures_gui.show()
-
-    def compare_with_random_graph(self):
-        self.compare_with_random_graph_gui = CompareWithRandomGraph(self, self.analysis_gui.analysis, self.graph_type, self.update_callbacks())
-        self.compare_with_random_graph_gui.show()
-
     def update_callbacks(self):
         return self.analysis_gui.table_update_callbacks() + self.analysis_gui.visualization_update_callbacks()
 
     def show_buttons(self):
-        for btn in [self.btnViewCommunity, self.btnNewAnalysis, self.btnCalculate, self.btnCompare, self.btnRandom]:
+        for btn in [self.btnViewCommunity, self.btnNewAnalysis, self.btnCalculate]:
             btn.show()
 
     def hide_buttons(self):
-        for btn in [self.btnViewCommunity, self.btnNewAnalysis, self.btnCalculate, self.btnCompare, self.btnRandom]:
+        for btn in [self.btnViewCommunity, self.btnNewAnalysis, self.btnCalculate]:
             btn.hide()
         self.graphMeasuresWidget.hide_buttons()
