@@ -13,7 +13,8 @@ class MeasureDistance(Measure):
 
     def get_description():
         description = {}
-        description['distance'] = 'distance'
+        description['distance'] = 'The distance between two nodes is defined as the length of the ' +\
+                                  'shortest path between those nodes'
         description['edge_number_distance'] =  'The edge number distance of a graph is ' +\
                                                'the number of edges in the shortest weighted' +\
                                                'path between two nodes. '
