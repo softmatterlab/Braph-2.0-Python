@@ -11,6 +11,7 @@ class TableManager(QTableWidget):
         return np.array(rows)
 
     def set_selected(self, selected):
+        self.clearSelection()
         mode = self.selectionMode()
         self.setSelectionMode(QtGui.QAbstractItemView.MultiSelection)
         for row in selected:

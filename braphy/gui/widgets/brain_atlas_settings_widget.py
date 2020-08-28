@@ -37,7 +37,7 @@ class BrainAtlasSettingsWidget(Base, Form):
         self.btnRegionsSelected.clicked.connect(self.pick_selected_brain_region_color)
         self.btnBackground.clicked.connect(self.pick_background_color)
         self.btnSelectAll.clicked.connect(self.brain_widget.select_all)
-        self.btnClearSelection.clicked.connect(self.brain_widget.deselect_all)
+        self.btnClearSelection.clicked.connect(self.brain_widget.clear_selection)
         self.init_brain_region_color()
 
 

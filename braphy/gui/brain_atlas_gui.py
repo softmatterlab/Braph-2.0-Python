@@ -91,7 +91,7 @@ class BrainAtlasGui(ExitDialog, Ui_MainWindow):
         self.set_brain_mesh_data()
 
     def set_brain_mesh_data(self):
-        self.settingsWidget.checkBoxShowBrain.setChecked(True)
+        self.settingsWidget.actionShow_brain.setChecked(True)
         self.brainWidget.set_brain_mesh(self.brain_mesh_data)
         self.settingsWidget.change_transparency()
 
@@ -336,7 +336,9 @@ class BrainAtlasGui(ExitDialog, Ui_MainWindow):
             self.brainWidget.select_region(index)
 
     def set_selected(self, selected):
+        self.tableWidget.blockSignals(True)
         self.tableWidget.set_selected(selected)
+        self.tableWidget.blockSignals(False)
 
     def get_selected(self):
         return self.tableWidget.get_selected()

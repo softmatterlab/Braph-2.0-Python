@@ -301,11 +301,23 @@ class BrainAtlasWidget(GLViewWidget):
     def select_all(self):
         for region in self.gui_brain_regions:
             region.set_selected(True)
+        for observer in self.selected_observers:
+            observer(list(range(len(self.gui_brain_regions))))
+        
+        self.update_brain_regions_plot()
+
+    def clear_selection(self):
+        for region in self.gui_brain_regions:
+            region.set_selected(False)
+        for observer in self.selected_observers:
+            observer([])
+
         self.update_brain_regions_plot()
 
     def deselect_all(self):
         for region in self.gui_brain_regions:
             region.set_selected(False)
+
         self.update_brain_regions_plot()
 
     def generate_figure(self):
@@ -332,7 +344,6 @@ class BrainAtlasWidget(GLViewWidget):
             pass
         self.clear_gui_brain_regions()
         for gui_brain_region in self.gui_brain_regions:
-            b = gui_brain_region.pos
             if self.brain_region_visible(gui_brain_region.selected):
                 self.addItem(gui_brain_region)
         if brain_removed:
