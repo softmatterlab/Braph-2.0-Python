@@ -30,6 +30,7 @@ class BinaryMatrixPlotVisualizer(FigureCanvas):
         self.ax = self.figure.add_subplot(111)
         self.cax = self.ax.imshow(matrix)
 
+        binary_values = [float_to_string(value) for value in self.binary_values]
         self.ax.tick_params(top = False, bottom = True, labeltop = False, labelbottom = True)
         self.ax.set_xticks(np.arange(len(self.node_labels)))
         self.ax.set_yticks(np.arange(len(binary_values)))
@@ -37,7 +38,6 @@ class BinaryMatrixPlotVisualizer(FigureCanvas):
         self.ax.set_yticklabels(binary_values)
         plt.setp(self.ax.get_xticklabels(), rotation = 90, ha = "right", va = 'center', rotation_mode = "anchor", fontsize = 7)
         plt.setp(self.ax.get_yticklabels(), fontsize = 7)
-        binary_values = [float_to_string(value) for value in self.binary_values]
 
         self.ax.set_ylabel('Binary value')
         self.ax.set_xlabel('Node')
