@@ -19,7 +19,7 @@ class MeasurePathLength(Measure):
     def get_description():
         description = {}
         description['path_length'] = 'For undirected graphs, the path length of a node is ' +\
-                                     'the average path length from the note to all other nodes. ' +\
+                                     'the average path length from the node to all other nodes. ' +\
                                      'For directed graphs, it is the sum of the in-path length and of the out-path length.'
         description['char_path_length'] = 'The characteristic path length of a graph is the average ' +\
                                           'shortest path length in the graph. It is the average of ' +\
