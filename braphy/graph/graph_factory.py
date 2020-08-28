@@ -53,7 +53,7 @@ class GraphSettings():
         rule_negative = d['rule_negative']
         rule_symmetrize = d['rule_symmetrize']
         rule_standardize = d['rule_standardize']
-        rule_binary = d['rule_negative']
+        rule_binary = d['rule_binary']
         value_binary = d['value_binary']
         correlation_type = d['correlation_type']
         return GraphSettings(weighted, directed, gamma, community_algorithm,
