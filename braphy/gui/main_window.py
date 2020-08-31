@@ -86,6 +86,7 @@ class MainWindow(ExitDialog, Ui_MainWindow):
 def braphy_run_gui():
     app = QtWidgets.QApplication(sys.argv)
     app.setApplicationName('braphy')
+    app.setStyleSheet("QWidget{background-color: white}")
     window = MainWindow()
     window.show()
     sys.exit(app.exec_())
