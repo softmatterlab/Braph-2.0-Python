@@ -215,7 +215,6 @@ class MeasureVisualizationWidget(AnalysisVisualizationWidget):
         if isinstance(values[0], np.ndarray): # fmri: compute average
             values = np.mean(values, axis = 0)
         values = self.normalize(values)
-        print(values)
         return values
 
 class MeasureComparisonVisualizationWidget(AnalysisVisualizationWidget):

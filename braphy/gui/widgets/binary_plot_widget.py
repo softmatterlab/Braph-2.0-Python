@@ -16,8 +16,9 @@ class BinaryPlotWidget(Base, Form):
 
     def init(self, analysis):
         self.binaryPlot.set_x_label(analysis.graph_settings.rule_binary)
-        self.binaryMatrixPlotVisualizer.init(analysis.cohort.atlas.get_brain_region_labels())
+        self.binaryMatrixPlotVisualizer.init(analysis.cohort.atlas.get_brain_region_labels(), analysis.graph_settings.rule_binary)
         self.init_combo_box(analysis.cohort.atlas.get_brain_region_labels())
+        self.tabWidget.currentChanged.connect(self.tab_changed)
 
     def init_buttons(self):
         self.btnRemove.clicked.connect(self.remove_plot)
@@ -75,9 +76,37 @@ class BinaryPlotWidget(Base, Form):
             self.btnRemove.setEnabled(False)
 
     def get_actions(self):
-        actions = [self.actionLegend]
+        actions = [self.actionLegend, self.actionShow_labels, self.actionShow_colorbar, self.actionInspect]
         actions.extend(self.binaryPlot.get_actions())
+        actions.extend(self.binaryMatrixPlotVisualizer.get_actions())
         return actions
 
     def get_tab_index(self):
         return self.tabWidget.currentIndex()
+
+    def tab_changed(self):
+        if self.tabWidget.currentIndex() == 0:
+            self.set_plot_actions_visible(True)
+            self.set_matrix_actions_visible(False)
+        elif self.tabWidget.currentIndex() == 1:
+            self.set_plot_actions_visible(False)
+            self.set_matrix_actions_visible(True)
+
+    def set_matrix_actions_visible(self, state):
+        matrix_actions = [self.actionShow_labels, self.actionShow_colorbar, self.actionInspect]
+        matrix_actions.extend(self.binaryMatrixPlotVisualizer.get_actions())
+        for action in matrix_actions:
+            action.setVisible(state)
+
+    def set_plot_actions_visible(self, state):
+        actions  = [self.actionLegend]
+        actions.extend(self.binaryPlot.get_actions())
+        for action in actions:
+            action.setVisible(state)
+
+    def show_actions(self, state):
+        if not state:
+            self.set_matrix_actions_visible(False)
+            self.set_plot_actions_visible(False)
+        else:
+            self.tab_changed()
