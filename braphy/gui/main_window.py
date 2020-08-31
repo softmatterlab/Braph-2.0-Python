@@ -22,7 +22,6 @@ class MainWindow(ExitDialog, Ui_MainWindow):
         QtWidgets.QMainWindow.__init__(self)
         Ui_MainWindow.__init__(self)
         self.setupUi(self)
-
         self.color = self.palette().color(QtGui.QPalette.Window).getRgb()
         self.init_buttons()
         self.slideShowWidget.init(self.color)
@@ -84,9 +83,14 @@ class MainWindow(ExitDialog, Ui_MainWindow):
         self.subject_class = eval("Subject{}".format(data_type))
 
 def braphy_run_gui():
+    background_color = "white"
+
     app = QtWidgets.QApplication(sys.argv)
     app.setApplicationName('braphy')
-    app.setStyleSheet("QWidget{background-color: white}")
+    app.setStyleSheet("QWidget{{background-color: {}}}".format(background_color))
+    palette = QtGui.QPalette()
+    palette.setColor(QtGui.QPalette.Background, QtGui.QColor("{}".format(background_color)))
+    app.setPalette(palette)
     window = MainWindow()
     window.show()
     sys.exit(app.exec_())
