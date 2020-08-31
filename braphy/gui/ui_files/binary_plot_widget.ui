@@ -129,6 +129,42 @@
     <string>Show legend</string>
    </property>
   </action>
+  <action name="actionInspect">
+   <property name="icon">
+    <iconset resource="../icons/icons.qrc">
+     <normaloff>:/buttons/icon_inspect.png</normaloff>:/buttons/icon_inspect.png</iconset>
+   </property>
+   <property name="text">
+    <string>Inspect</string>
+   </property>
+   <property name="toolTip">
+    <string>Inspect</string>
+   </property>
+  </action>
+  <action name="actionShow_colorbar">
+   <property name="icon">
+    <iconset resource="../icons/icons.qrc">
+     <normaloff>:/buttons/icon_colorbar.png</normaloff>:/buttons/icon_colorbar.png</iconset>
+   </property>
+   <property name="text">
+    <string>Show colorbar</string>
+   </property>
+   <property name="toolTip">
+    <string>Show colorbar</string>
+   </property>
+  </action>
+  <action name="actionShow_labels">
+   <property name="icon">
+    <iconset resource="../icons/icons.qrc">
+     <normaloff>:/buttons/icon_label.png</normaloff>:/buttons/icon_label.png</iconset>
+   </property>
+   <property name="text">
+    <string>Show labels</string>
+   </property>
+   <property name="toolTip">
+    <string>Show label</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>

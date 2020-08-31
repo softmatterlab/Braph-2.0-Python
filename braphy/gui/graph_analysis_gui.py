@@ -172,8 +172,7 @@ class GraphAnalysis(ExitDialog, Ui_MainWindow):
         if self.analysis.graph_settings.weighted and state:
             return
         for widget in widgets:
-            for action in widget.binaryPlotWidget.get_actions():
-                action.setVisible(state)
+            widget.binaryPlotWidget.show_actions(state)
 
     def init_comboboxes(self, settings = None):
         weighted = ['no', 'yes']

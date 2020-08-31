@@ -95,8 +95,15 @@ class MeasuresWidget(Base, Form):
             for measurement in self.analysis.measurements:
                 if (measurement.sub_measure == sub_measure and
                     measurement.group == current_group_1):
+                    if self.analysis.functional():
+                        if self.btnGroup.isChecked():
+                            value = np.mean(measurement.value, axis = 0)
+                        else:
+                            value = measurement.value[self.comboBoxSubject.currentIndex()]
+                    else:
+                        value = (measurement.value)
+                    node_values.append(value)
                     binary_values.append(measurement.binary_value)
-                    node_values.append(measurement.value)
 
         if self.is_comparison():
             index = self.comparison_index_mapping[selected]
@@ -105,10 +112,14 @@ class MeasuresWidget(Base, Form):
                 if (comparison.sub_measure == sub_measure and
                     comparison.groups[0] == current_group_1 and
                     comparison.groups[1] == current_group_2):
-                    binary_values.append(comparison.binary_value)
-                    value_1 = comparison.measures[0]
-                    value_2 = comparison.measures[1]
+                    if self.analysis.functional():
+                        value_1 = np.mean(comparison.measures[0], axis = 0)
+                        value_2 = np.mean(comparison.measures[1], axis = 0)
+                    else:
+                        value_1 = comparison.measures[0]
+                        value_2 = comparison.measures[1]
                     node_values.append(value_2 - value_1)
+                    binary_values.append(comparison.binary_value)
 
         if self.is_random_comparison():
             index = self.random_comparison_index_mapping[selected]
