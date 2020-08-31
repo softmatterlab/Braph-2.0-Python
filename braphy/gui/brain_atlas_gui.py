@@ -125,6 +125,8 @@ class BrainAtlasGui(ExitDialog, Ui_MainWindow):
         self.locked = locked
         lock_items = [self.comboBoxMeshFile, self.textAtlasName, self.actionOpen, self.actionImport_file,
                       self.btnAdd, self.btnAddAbove, self.btnAddBelow, self.btnRemove,
+                      self.btnMoveUp, self.btnMoveDown, self.btnMoveToTop, self.btnMoveToBottom,
+                      self.actionMove_up, self.actionMove_down, self.actionMove_to_top, self.actionMove_to_bottom,
                       self.actionAdd, self.actionAdd_above, self.actionAdd_below, self.actionRemove,
                       self.actionBrainViewOpen, self.menuSubject_Cohorts]
         for item in lock_items:
