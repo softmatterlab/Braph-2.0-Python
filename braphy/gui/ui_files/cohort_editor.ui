@@ -396,7 +396,7 @@
      <normaloff>:/buttons/open.png</normaloff>:/buttons/open.png</iconset>
    </property>
    <property name="text">
-    <string>Open ...</string>
+    <string>Open cohort ...</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+O</string>
@@ -408,7 +408,7 @@
      <normaloff>:/buttons/save.png</normaloff>:/buttons/save.png</iconset>
    </property>
    <property name="text">
-    <string>Save</string>
+    <string>Save cohort</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+S</string>
@@ -416,7 +416,7 @@
   </action>
   <action name="actionSave_as">
    <property name="text">
-    <string>Save as ...</string>
+    <string>Save cohort as ...</string>
    </property>
   </action>
   <action name="actionQuit">

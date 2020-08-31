@@ -196,7 +196,7 @@ class MeasureVisualizationWidget(AnalysisVisualizationWidget):
         for i, region in enumerate(self.brain_widget.gui_brain_regions):
             value = values[i]
             if np.isnan(value) or np.isinf(value):
-                region.set_size(0.1)
+                region.set_size(0.5)
                 continue
             if visualization_type == 0 or visualization_type == 2:
                 region.set_color(self.get_color(value))
