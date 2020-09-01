@@ -102,14 +102,17 @@ class BinaryPlotWidget(Base, Form):
         for action in actions:
             action.setVisible(state)
 
-    def show_actions(self, state = True):
+    def actions_visible(self, state):
         if not state:
             self.set_matrix_actions_visible(False)
             self.set_plot_actions_visible(False)
         else:
-            if self.tab_index() == 0:
-                self.set_plot_actions_visible(True)
-                self.set_matrix_actions_visible(False)
-            elif self.tab_index() == 1:
-                self.set_plot_actions_visible(False)
-                self.set_matrix_actions_visible(True)
+            self.show_actions()
+
+    def show_actions(self):
+        if self.tab_index() == 0:
+            self.set_plot_actions_visible(True)
+            self.set_matrix_actions_visible(False)
+        elif self.tab_index() == 1:
+            self.set_plot_actions_visible(False)
+            self.set_matrix_actions_visible(True)
