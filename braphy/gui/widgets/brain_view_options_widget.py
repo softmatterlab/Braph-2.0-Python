@@ -76,6 +76,9 @@ class BrainViewOptionsWidget(Base, Form):
         self.community_visualization_widget.init(community_structure, group_index, color_callback)
         self.tabWidget.addTab(self.community_visualization_widget, 'Visualize communities')
 
+    def set_brain_atlas_mode(self):
+        self.tabWidget.tabBar().hide()
+
     def set_cohort_mode(self):
         self.add_visualize_subjects_tab()
         self.add_visualize_groups_tab()

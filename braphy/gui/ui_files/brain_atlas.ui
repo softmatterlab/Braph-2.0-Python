@@ -254,28 +254,6 @@ p, li { white-space: pre-wrap; }
         <item>
          <widget class="BrainAtlasWidget" name="brainWidget"/>
         </item>
-        <item>
-         <layout class="QVBoxLayout" name="verticalLayout_2">
-          <property name="spacing">
-           <number>0</number>
-          </property>
-          <property name="leftMargin">
-           <number>0</number>
-          </property>
-          <property name="topMargin">
-           <number>0</number>
-          </property>
-          <property name="rightMargin">
-           <number>0</number>
-          </property>
-          <property name="bottomMargin">
-           <number>0</number>
-          </property>
-          <item>
-           <widget class="BrainAtlasSettingsWidget" name="settingsWidget" native="true"/>
-          </item>
-         </layout>
-        </item>
        </layout>
       </widget>
      </widget>
@@ -573,12 +551,6 @@ p, li { white-space: pre-wrap; }
    <class>TableManager</class>
    <extends>QTableWidget</extends>
    <header>braphy.utility.table_manager</header>
-  </customwidget>
-  <customwidget>
-   <class>BrainAtlasSettingsWidget</class>
-   <extends>QWidget</extends>
-   <header>braphy.gui.widgets.brain_atlas_settings_widget</header>
-   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>

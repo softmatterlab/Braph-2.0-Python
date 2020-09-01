@@ -11,6 +11,8 @@ from braphy.utility.helper_functions import get_subject_class
 import numpy as np
 from braphy.gui.exit_dialog import ExitDialog
 
+from braphy.gui.widgets.brain_view_options_widget import BrainViewOptionsWidget
+
 qtCreatorFile = abs_path_from_relative(__file__, "ui_files/brain_atlas.ui")
 brain_mesh_file_name_default = "meshes/BrainMesh_ICBM152.nv"
 brain_mesh_file_default = abs_path_from_relative(__file__, brain_mesh_file_name_default)
@@ -28,8 +30,11 @@ class BrainAtlasGui(ExitDialog, Ui_MainWindow):
             self.atlas = atlas
         else:
             self.atlas = BrainAtlas(mesh_file = brain_mesh_file_name_default.split('/')[-1])
+        
+        self.settings_pop_up_widget = BrainViewOptionsWidget(parent=self.brainWidget)
+        self.settings_pop_up_widget.raise_()
+
         self.init_brain_widget(brain_mesh_file_default)
-        self.settingsWidget.init(self.brainWidget)
         self.init_combo_boxes()
         self.init_buttons()
         self.init_actions()
@@ -91,14 +96,14 @@ class BrainAtlasGui(ExitDialog, Ui_MainWindow):
         self.set_brain_mesh_data()
 
     def set_brain_mesh_data(self):
-        self.settingsWidget.actionShow_brain.setChecked(True)
+        self.settings_pop_up_widget.settingsWidget.actionShow_brain.setChecked(True)
         self.brainWidget.set_brain_mesh(self.brain_mesh_data)
-        self.settingsWidget.change_transparency()
+        self.settings_pop_up_widget.settingsWidget.change_transparency()
 
     def set_brain_regions(self):
-        size = self.settingsWidget.sliderRegions.value()/10.0
-        show_only_selected = self.settingsWidget.checkBoxShowOnlySelected.isChecked()
-        show_brain_regions = self.settingsWidget.actionShow_brain_regions.isChecked()
+        size = self.settings_pop_up_widget.settingsWidget.sliderRegions.value()/10.0
+        show_only_selected = self.settings_pop_up_widget.settingsWidget.checkBoxShowOnlySelected.isChecked()
+        show_brain_regions = self.settings_pop_up_widget.settingsWidget.actionShow_brain_regions.isChecked()
         self.brainWidget.init_brain_regions(self.atlas.brain_regions, size, self.get_selected(), show_brain_regions, show_only_selected)
 
     def init_brain_widget(self, brain_mesh_file):
@@ -106,6 +111,10 @@ class BrainAtlasGui(ExitDialog, Ui_MainWindow):
         self.brain_mesh_data = load_nv(brain_mesh_file)
         self.brainWidget.set_brain_mesh(self.brain_mesh_data)
         self.set_brain_regions()
+        self.settings_pop_up_widget.init(self.brainWidget)
+        self.settings_pop_up_widget.set_brain_atlas_mode()
+        self.settings_pop_up_widget.settingsWidget.change_transparency()
+        self.settings_pop_up_widget.show()
 
     def init_combo_boxes(self):
         self.mesh_file_paths = []
@@ -197,7 +206,7 @@ class BrainAtlasGui(ExitDialog, Ui_MainWindow):
              self.toolBar.addAction(action)
         self.toolBar.addSeparator()
 
-        for action in self.settingsWidget.get_actions():
+        for action in self.settings_pop_up_widget.settingsWidget.get_actions():
             self.toolBar.addAction(action)
 
         # MENU BAR:
@@ -414,6 +423,9 @@ class BrainAtlasGui(ExitDialog, Ui_MainWindow):
 
     def load_file_warning(self, string):
         error_msg('Import warning', string, QMessageBox.Warning)
+
+    def resizeEvent(self, event):
+        self.settings_pop_up_widget.update_move()
 
 def run():
     app = QtWidgets.QApplication(sys.argv)
