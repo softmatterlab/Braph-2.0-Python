@@ -138,7 +138,8 @@ class CorrelationMatrixVisualizer(FigureCanvas):
                 y = int(round(event.ydata))
                 tool_tip_label = "x: {}\ny: {}\nz: {}".format(x, y, self.matrix[y, x])
                 props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
-                self.text = self.ax.text((event.xdata+0.5)/len(self.matrix),1-(event.ydata+0.5)/len(self.matrix), tool_tip_label, transform=self.ax.transAxes, fontsize=14, verticalalignment='top', bbox=props)
+                self.text = self.ax.text((event.xdata+0.5)/len(self.matrix),1-(event.ydata+0.5)/len(self.matrix),
+                                         tool_tip_label, transform=self.ax.transAxes, fontsize=14, verticalalignment='top', bbox=props)
                 self.draw()
 
     def clear_text(self):

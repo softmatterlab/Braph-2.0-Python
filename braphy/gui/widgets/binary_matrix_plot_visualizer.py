@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from braphy.utility.math_utility import float_to_string
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT
+from braphy.utility.file_utility import abs_path_from_relative
 
 class BinaryMatrixPlotVisualizer(FigureCanvas):
     def __init__(self, parent = None, width = 8, height = 6, dpi = 100):
@@ -17,12 +18,15 @@ class BinaryMatrixPlotVisualizer(FigureCanvas):
                 QSizePolicy.Expanding,
                 QSizePolicy.Expanding)
         FigureCanvas.updateGeometry(self)
+        fig.canvas.mpl_connect("button_press_event", self.show_inspect)
         self.binary_values = None
         self.toolbar = NavigationToolbar2QT(self, self)
         self.toolbar.hide()
         self.labels_visible = False
         self.colorbar_visible = False
         self.colorbar = None
+        self.mouse_mode_inspect = False
+        self.text = None
 
     def init(self, node_labels, y_label):
         self.node_labels = node_labels
@@ -49,8 +53,38 @@ class BinaryMatrixPlotVisualizer(FigureCanvas):
         actions = self.toolbar.actions()
         return actions
 
-    def inspect(self):
-        pass
+    def inspect(self, checked):
+        if checked:
+            self.set_cursor('../icons/icon_inspect.png')
+        else:
+            QtGui.QApplication.restoreOverrideCursor()
+            self.clear_text()
+            self.draw()
+        self.mouse_mode_inspect = checked
+
+    def set_cursor(self, file_name):
+        cursor_file = abs_path_from_relative(__file__, file_name)
+        pm = QtGui.QPixmap(cursor_file).scaled(15,15, QtCore.Qt.KeepAspectRatio)
+        cursor = QtGui.QCursor(pm)
+        QtGui.QApplication.setOverrideCursor(cursor)
+
+    def clear_text(self):
+        if self.text:
+            self.text.remove()
+            self.text = None
+
+    def show_inspect(self, event):
+        if self.mouse_mode_inspect:
+            if event.xdata and event.ydata:
+                self.clear_text()
+                x = int(round(event.xdata))
+                y = int(round(event.ydata))
+                value = self.cax.get_array()[y, x]
+                tool_tip_label = "{}: {}\nnode: {}\nz: {}".format(self.y_label, self.binary_values[y], self.node_labels[x], value)
+                props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
+                self.text = self.ax.text((event.xdata+0.5)/len(self.node_labels),1-(event.ydata+0.5)/len(self.binary_values),
+                                         tool_tip_label, transform=self.ax.transAxes, fontsize=14, verticalalignment='top', bbox=props)
+                self.draw()
 
     def show_colorbar(self, show = None):
         if show is not None:
