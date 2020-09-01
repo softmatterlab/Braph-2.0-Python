@@ -143,7 +143,7 @@ class MeasuresWidget(Base, Form):
         self.binaryPlotWidget.binaryMatrixPlotVisualizer.plot(node_values, title, binary_values)
 
     def add_plot(self):
-        if self.binaryPlotWidget.get_tab_index() == 1:
+        if self.binaryPlotWidget.tab_index() == 1:
             self.add_matrix_plot()
             return
         selected = self.get_selected()

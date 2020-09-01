@@ -11,18 +11,24 @@ class BinaryPlotWidget(Base, Form):
         self.plot_dict = {}
         self.info_strings = []
         self.init_buttons()
+        self.init_actions()
         self.listWidget.itemSelectionChanged.connect(self.selection_changed)
-        self.actionLegend.triggered.connect(self.binaryPlot.show_legend)
 
     def init(self, analysis):
         self.binaryPlot.set_x_label(analysis.graph_settings.rule_binary)
         self.binaryMatrixPlotVisualizer.init(analysis.cohort.atlas.get_brain_region_labels(), analysis.graph_settings.rule_binary)
         self.init_combo_box(analysis.cohort.atlas.get_brain_region_labels())
-        self.tabWidget.currentChanged.connect(self.tab_changed)
+        self.tabWidget.currentChanged.connect(self.show_actions)
 
     def init_buttons(self):
         self.btnRemove.clicked.connect(self.remove_plot)
         self.btnClear.clicked.connect(self.clear_plot)
+
+    def init_actions(self):
+        self.actionLegend.triggered.connect(self.binaryPlot.show_legend)
+        self.actionInspect.triggered.connect(self.binaryMatrixPlotVisualizer.inspect)
+        self.actionShow_colorbar.triggered.connect(self.binaryMatrixPlotVisualizer.show_colorbar)
+        self.actionShow_labels.triggered.connect(self.binaryMatrixPlotVisualizer.show_labels)
 
     def init_combo_box(self, node_labels):
         for label in node_labels:
@@ -81,16 +87,8 @@ class BinaryPlotWidget(Base, Form):
         actions.extend(self.binaryMatrixPlotVisualizer.get_actions())
         return actions
 
-    def get_tab_index(self):
+    def tab_index(self):
         return self.tabWidget.currentIndex()
-
-    def tab_changed(self):
-        if self.tabWidget.currentIndex() == 0:
-            self.set_plot_actions_visible(True)
-            self.set_matrix_actions_visible(False)
-        elif self.tabWidget.currentIndex() == 1:
-            self.set_plot_actions_visible(False)
-            self.set_matrix_actions_visible(True)
 
     def set_matrix_actions_visible(self, state):
         matrix_actions = [self.actionShow_labels, self.actionShow_colorbar, self.actionInspect]
@@ -104,9 +102,14 @@ class BinaryPlotWidget(Base, Form):
         for action in actions:
             action.setVisible(state)
 
-    def show_actions(self, state):
+    def show_actions(self, state = True):
         if not state:
             self.set_matrix_actions_visible(False)
             self.set_plot_actions_visible(False)
         else:
-            self.tab_changed()
+            if self.tab_index() == 0:
+                self.set_plot_actions_visible(True)
+                self.set_matrix_actions_visible(False)
+            elif self.tab_index() == 1:
+                self.set_plot_actions_visible(False)
+                self.set_matrix_actions_visible(True)
