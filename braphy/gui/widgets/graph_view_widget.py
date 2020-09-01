@@ -20,10 +20,12 @@ class GraphViewWidget(Base, Form):
         self.correlation = None
         self.btnColor.color = self.edge_color
         self.colormaps = get_colormaps()
+        self.initiated = False
 
     def init(self, brain_widget, analysis):
         self.brain_widget = brain_widget
         self.set_analysis(analysis)
+        self.initiated = True
 
     def set_analysis(self, analysis):
         self.analysis = analysis
@@ -50,15 +52,17 @@ class GraphViewWidget(Base, Form):
         self.btnColor.setStyleSheet(style_sheet)
 
     def init_combo_boxes(self):
+        self.comboBoxGroup.clear()
         for group in self.analysis.cohort.groups:
             self.comboBoxGroup.addItem(group.name)
-        self.comboBoxGroup.currentIndexChanged.connect(self.update_correlation)
-        self.comboBoxSubject.currentIndexChanged.connect(self.update_correlation)
         self.comboBoxColor.reset()
         for colormap in self.colormaps.values():
             self.comboBoxColor.add_colormap(colormap)
         self.comboBoxColor.setCurrentIndex(0)
-        self.comboBoxColor.currentIndexChanged.connect(self.update_visualization)
+        if not self.initiated:
+            self.comboBoxGroup.currentIndexChanged.connect(self.update_correlation)
+            self.comboBoxSubject.currentIndexChanged.connect(self.update_correlation)
+            self.comboBoxColor.currentIndexChanged.connect(self.update_visualization)
 
     def init_check_boxes(self):
         self.checkBoxColor.stateChanged.connect(self.visualize_color)

@@ -15,6 +15,7 @@ class AnalysisVisualizationWidget(Base, Form):
         self.setupUi(self)
         self.visualization_options = ['Color', 'Size', 'Color and size']
         self.colormaps = get_colormaps()
+        self.initiated = False
 
     def init(self, settings_widget, groups, binary_type):
         self.binary_type = binary_type
@@ -31,19 +32,22 @@ class AnalysisVisualizationWidget(Base, Form):
             self.labelBinary.hide()
             self.comboBoxBinary.hide()
         self.comboBoxBinary.setEnabled(False)
+        self.initiated = True
 
     def init_combo_boxes(self, groups):
-        for group in groups:
-            self.comboBoxGroup.addItem(group.name)
-            self.comboBoxGroup2.addItem(group.name)
-        self.comboBoxGroup.currentIndexChanged.connect(self.group_changed)
-        self.comboBoxGroup2.currentIndexChanged.connect(self.group_changed)
+        for combo_box in [self.comboBoxGroup, self.comboBoxGroup2]:
+            combo_box.clear()
+            for group in groups:
+                combo_box.addItem(group.name)
+            if not self.initiated:
+                combo_box.currentIndexChanged.connect(self.group_changed)
         self.comboBoxColormap.reset()
         for colormap in self.colormaps.values():
             self.comboBoxColormap.add_colormap(colormap)
         self.comboBoxColormap.setCurrentIndex(0)
-        self.comboBoxColormap.currentIndexChanged.connect(self.update_visualization)
-        self.comboBoxBinary.currentIndexChanged.connect(self.update_visualization)
+        if not self.initiated:
+            self.comboBoxColormap.currentIndexChanged.connect(self.update_visualization)
+            self.comboBoxBinary.currentIndexChanged.connect(self.update_visualization)
 
     def init_spin_boxes(self):
         self.spinBoxMin.setValue(1)
@@ -106,10 +110,12 @@ class MeasureVisualizationWidget(AnalysisVisualizationWidget):
 
     def init_combo_boxes(self, groups):
         super().init_combo_boxes(groups)
+        self.comboBoxType.clear()
         self.comboBoxType.addItems(self.visualization_options)
-        self.comboBoxType.currentIndexChanged.connect(self.visualization_type_changed)
         self.comboBoxType.setEnabled(False)
         self.comboBoxColormap.setEnabled(False)
+        if not self.initiated:
+            self.comboBoxType.currentIndexChanged.connect(self.visualization_type_changed)
 
     def update_list(self):
         group_index = self.comboBoxGroup.currentIndex()
@@ -241,8 +247,10 @@ class MeasureComparisonVisualizationWidget(AnalysisVisualizationWidget):
         super().init_combo_boxes(groups)
         combo_boxes = [self.comboBoxDiff, self.comboBoxSingle, self.comboBoxDouble]
         for combo_box in combo_boxes:
+            combo_box.clear()
             combo_box.addItems(self.visualization_options)
-            combo_box.currentIndexChanged.connect(lambda index, combo_box = combo_box: self.set_combo_box_visualization(index, combo_box))
+            if not self.initiated:
+                combo_box.currentIndexChanged.connect(lambda index, combo_box = combo_box: self.set_combo_box_visualization(index, combo_box))
             combo_box.setEnabled(False)
             combo_box.blockSignals(True)
             combo_box.setCurrentIndex(-1)
@@ -438,8 +446,10 @@ class MeasureRandomComparisonVisualizationWidget(AnalysisVisualizationWidget):
         super().init_combo_boxes(groups)
         combo_boxes = [self.comboBoxDiff, self.comboBoxSingle, self.comboBoxDouble]
         for combo_box in combo_boxes:
+            combo_box.clear()
             combo_box.addItems(self.visualization_options)
-            combo_box.currentIndexChanged.connect(lambda index, combo_box = combo_box: self.set_combo_box_visualization(index, combo_box))
+            if not self.initiated:
+                combo_box.currentIndexChanged.connect(lambda index, combo_box = combo_box: self.set_combo_box_visualization(index, combo_box))
             combo_box.setEnabled(False)
             combo_box.blockSignals(True)
             combo_box.setCurrentIndex(-1)
