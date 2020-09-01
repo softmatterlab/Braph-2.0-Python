@@ -303,7 +303,6 @@ class BrainAtlasWidget(GLViewWidget):
             region.set_selected(True)
         for observer in self.selected_observers:
             observer(list(range(len(self.gui_brain_regions))))
-        
         self.update_brain_regions_plot()
 
     def clear_selection(self):
