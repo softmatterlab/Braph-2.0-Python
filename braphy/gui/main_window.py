@@ -87,7 +87,6 @@ def braphy_run_gui():
 
     app = QtWidgets.QApplication(sys.argv)
     app.setApplicationName('braphy')
-    app.setStyleSheet("QWidget{{background-color: {}}}".format(background_color))
     palette = QtGui.QPalette()
     palette.setColor(QtGui.QPalette.Background, QtGui.QColor("{}".format(background_color)))
     app.setPalette(palette)

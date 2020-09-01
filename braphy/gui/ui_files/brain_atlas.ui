@@ -252,7 +252,20 @@ p, li { white-space: pre-wrap; }
          </layout>
         </item>
         <item>
-         <widget class="BrainAtlasWidget" name="brainWidget"/>
+         <widget class="BrainAtlasWidget" name="brainWidget">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>850</width>
+            <height>0</height>
+           </size>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>

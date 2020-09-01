@@ -31,7 +31,7 @@ class BrainAtlasGui(ExitDialog, Ui_MainWindow):
         else:
             self.atlas = BrainAtlas(mesh_file = brain_mesh_file_name_default.split('/')[-1])
         
-        self.settings_pop_up_widget = BrainViewOptionsWidget(parent=self.brainWidget)
+        self.settings_pop_up_widget = BrainViewOptionsWidget(parent = self.brainWidget, border_width = 0)
         self.settings_pop_up_widget.raise_()
 
         self.init_brain_widget(brain_mesh_file_default)
@@ -47,6 +47,8 @@ class BrainAtlasGui(ExitDialog, Ui_MainWindow):
         self.loaded_mesh_data = None
         self.brainWidget.add_selected_observer(self.set_selected)
         self.update_table()
+
+        self.settings_pop_up_widget.update_move()
 
     def to_file(self, atlas_file):
         with open(atlas_file, 'w') as f:

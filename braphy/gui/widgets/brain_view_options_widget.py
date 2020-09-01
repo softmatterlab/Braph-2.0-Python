@@ -11,7 +11,7 @@ ui_file = abs_path_from_relative(__file__, "../ui_files/brain_view_options_widge
 Form, Base = uic.loadUiType(ui_file)
 
 class BrainViewOptionsWidget(Base, Form):
-    def __init__(self, parent = None):
+    def __init__(self, parent = None, border_width = 9):
         super(BrainViewOptionsWidget, self).__init__(parent)
         self.setupUi(self)
 
@@ -23,6 +23,7 @@ class BrainViewOptionsWidget(Base, Form):
         self.icon_down.addPixmap(QtGui.QPixmap(icon_location_down), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnShow.setIcon(self.icon_up)
 
+        self.border_width = border_width
         self.setAutoFillBackground(True)
         self.tabWidget.hide()
         self.resize(self.sizeHint())
@@ -151,7 +152,7 @@ class BrainViewOptionsWidget(Base, Form):
         return self.tabWidget.currentIndex() == self.tabWidget.indexOf(self.community_visualization_widget)
 
     def update_move(self):
-        self.move(9, self.parent().height()-self.height() - 9)
+        self.move(self.border_width, self.parent().height()-self.height() - self.border_width)
 
     def update_visible(self):
         if self.visible:
