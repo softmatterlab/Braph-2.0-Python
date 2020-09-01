@@ -89,7 +89,9 @@ class CalculationThread(QtCore.QThread):
                     total_time = total_time + duration
                     text_box_string = text_box_string + '\n{} {} s.'.format(sub_measure, float_to_string(duration, 3))
                     self.status.emit(text_box_string)
-                text_box_string = 'DONE \nTotal time: {} s.\n'.format(float_to_string(total_time, 3)) + text_box_string
+                text_box_string = 'DONE \nTotal time: {} s.\n'.format(float_to_string(total_time, 3)) \
+                    + text_box_string \
+                    + '\n \nCalculated values can be found in Graph Analysis window.\n'
                 self.status.emit(text_box_string)
                 self.calculation_data = None
 
