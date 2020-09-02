@@ -16,6 +16,7 @@ class BinaryPlotWidget(Base, Form):
 
     def init(self, analysis):
         self.binaryPlot.set_x_label(analysis.graph_settings.rule_binary)
+        self.binaryPlot.set_legend_action(self.actionLegend)
         self.binaryMatrixPlotVisualizer.init(analysis.cohort.atlas.get_brain_region_labels(), analysis.graph_settings.rule_binary)
         self.init_combo_box(analysis.cohort.atlas.get_brain_region_labels())
         self.tabWidget.currentChanged.connect(self.show_actions)
