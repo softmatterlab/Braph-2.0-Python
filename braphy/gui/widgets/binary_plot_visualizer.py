@@ -18,6 +18,7 @@ class NavigationToolbar(NavigationToolbar2QT):
 class BinaryPlotVisualizer(FigureCanvas):
     def __init__(self, parent = None, width = 8, height = 6, dpi = 100):
         fig = Figure(figsize=(width, height), dpi=dpi)
+        fig.subplots_adjust(bottom = 0.15)
         self.ax = fig.add_subplot(111)
         self.ax.set_ylabel('Value')
         self.ax.set_title(' ')
@@ -59,7 +60,6 @@ class BinaryPlotVisualizer(FigureCanvas):
         self.ax.tick_params(top = False, bottom = True, labeltop = False, labelbottom = True)
         plt.setp(self.ax.get_xticklabels(), fontsize = 7)
         plt.setp(self.ax.get_yticklabels(), fontsize = 7)
-        self.figure.tight_layout()
         self.ax.relim()
         self.ax.autoscale_view()
         self.show_legend(self.ax.get_legend())

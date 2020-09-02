@@ -113,7 +113,7 @@ class BinaryPlotSettingsWidget(Base, Form):
             self.update_function()
 
     def update_move(self):
-        self.move(9, self.parent().height()-self.height() - 9)
+        self.move(0, self.parent().height()-self.height())
 
     def update_visible(self):
         if self.visible:

@@ -11,7 +11,6 @@ from braphy.utility.file_utility import abs_path_from_relative
 class BinaryMatrixPlotVisualizer(FigureCanvas):
     def __init__(self, parent = None, width = 8, height = 6, dpi = 100):
         fig = Figure(figsize=(width, height), dpi=dpi)
-        self.axes = fig.add_subplot(111)
         FigureCanvas.__init__(self, fig)
         self.setParent(parent)
         FigureCanvas.setSizePolicy(self,
@@ -35,13 +34,12 @@ class BinaryMatrixPlotVisualizer(FigureCanvas):
     def plot(self, matrix, title = None, binary_values = None):
         self.remove_colorbar()
         self.figure.clear()
+        rows = matrix.shape[0]
+        self.figure.subplots_adjust(bottom = 0.35 - 0.004 * rows)
         self.ax = self.figure.add_subplot(111)
         self.cax = self.ax.imshow(matrix)
-
         self.set_colorbar()
         self.set_labels(title, binary_values)
-
-        self.figure.tight_layout()
         self.draw()
         self.show_labels()
         self.show_colorbar()
@@ -80,7 +78,7 @@ class BinaryMatrixPlotVisualizer(FigureCanvas):
                 x = int(round(event.xdata))
                 y = int(round(event.ydata))
                 value = self.cax.get_array()[y, x]
-                tool_tip_label = "{}: {}\nnode: {}\nz: {}".format(self.y_label, self.binary_values[y], self.node_labels[x], value)
+                tool_tip_label = "{}: {}\nnode: {}\nvalue: {}".format(self.y_label, self.binary_values[y], self.node_labels[x], value)
                 props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
                 self.text = self.ax.text((event.xdata+0.5)/len(self.node_labels),1-(event.ydata+0.5)/len(self.binary_values),
                                          tool_tip_label, transform=self.ax.transAxes, fontsize=14, verticalalignment='top', bbox=props)
@@ -102,7 +100,7 @@ class BinaryMatrixPlotVisualizer(FigureCanvas):
             self.colorbar = None
 
     def set_colorbar(self):
-        self.colorbar = self.figure.colorbar(self.cax, orientation = "horizontal", pad = 0.2)
+        self.colorbar = self.figure.colorbar(self.cax, orientation = "horizontal", shrink=0.8)
         self.colorbar.ax.tick_params(labelsize=7)
 
     def show_labels(self, show = None):

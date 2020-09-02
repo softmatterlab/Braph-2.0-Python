@@ -122,7 +122,7 @@ class CorrelationMatrixVisualizer(FigureCanvas):
             return
         self.colorbar_visible = show
         if show:
-            self.colorbar = self.figure.colorbar(self.cax)
+            self.colorbar = self.figure.colorbar(self.cax, shrink = 0.65)
         else:
             self.colorbar.remove()
         self.draw()
