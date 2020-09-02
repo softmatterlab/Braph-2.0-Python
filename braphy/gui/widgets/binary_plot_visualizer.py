@@ -33,6 +33,7 @@ class BinaryPlotVisualizer(FigureCanvas):
         self.binary_plot_settings_widget.show()
         self.plots = {}
         self.confidence_intervals = {}
+        self.action_legend = None
 
         self.toolbar = NavigationToolbar(self, self)
         self.toolbar.set_callback_function(self.settings_callback)
@@ -41,6 +42,9 @@ class BinaryPlotVisualizer(FigureCanvas):
     def settings_callback(self):
         self.show_legend(self.ax.get_legend())
         self.draw()
+
+    def set_legend_action(self, action):
+        self.action_legend = action
 
     def add_plot(self, info_string, values, confidence_interval = None):
         settings = self.binary_plot_settings_widget.get_plot_settings()
@@ -111,14 +115,18 @@ class BinaryPlotVisualizer(FigureCanvas):
     def show_legend(self, show):
         if show:
             self.ax.legend()
-            self.parent().parent().actionLegend.blockSignals(True)
-            self.parent().parent().actionLegend.setChecked(True)
-            self.parent().parent().actionLegend.blockSignals(False)
+            self.check_legend_action()
         else:
             legend = self.ax.get_legend()
             if legend:
                 legend.remove()
         self.draw()
+
+    def check_legend_action(self):
+        if self.action_legend is not None:
+            self.action_legend.blockSignals(True)
+            self.action_legend.setChecked(True)
+            self.action_legend.blockSignals(False)
 
     def set_x_label(self, label):
         self.ax.set_xlabel(label)
