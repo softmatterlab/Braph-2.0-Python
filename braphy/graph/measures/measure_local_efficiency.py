@@ -25,32 +25,44 @@ class MeasureLocalEfficiency(Measure):
         measure_dict = {}
         A = graph.A.copy()
         local_efficiency = np.zeros(len(A))
+        in_local_efficiency = np.zeros(len(A))
+        out_local_efficiency = np.zeros(len(A))
 
         for i in range(len(A)):
             neighbours = np.where(A[i,:] + A[:,i])[0]
             if len(neighbours) > 1:
-                if graph.is_binary():
-                    A_subgraph = A[neighbours,:][:,neighbours]
-                else:
-                    A_subgraph = A[neighbours,:][:,neighbours] * np.sqrt(np.dot(A[i,neighbours], A[neighbours,i]))
-
+                A_subgraph = A[neighbours,:][:,neighbours]
                 D_subgraph = MeasureDistance.distance(A_subgraph, graph.is_weighted(), graph.is_directed())['distance']
                 D_subgraph_inverse = divide_without_warning(1, D_subgraph)
                 np.fill_diagonal(D_subgraph_inverse, 0)
 
-                in_local_efficiency = np.sum(D_subgraph_inverse, axis = 0)/(len(D_subgraph) - 1)
-                out_local_efficiency = np.sum(D_subgraph_inverse, axis = 1)/(len(D_subgraph) - 1)
-                local_efficiency[i] = np.mean((in_local_efficiency + out_local_efficiency) / 2)
+                if not graph.is_directed():
+                    global_efficiency_D = np.sum(D_subgraph_inverse, axis = 0)/(len(D_subgraph) - 1)
+                    local_efficiency[i] = np.mean(global_efficiency_D)
 
-        measure_dict['local_efficiency'] = local_efficiency
-        measure_dict['avg_local_efficiency'] = np.mean(local_efficiency)
+                in_local_efficiency_i = np.sum(D_subgraph_inverse, axis = 0)/(len(D_subgraph) - 1)
+                out_local_efficiency_i = np.sum(D_subgraph_inverse, axis = 1)/(len(D_subgraph) - 1)
+
+                in_local_efficiency[i] = np.mean(in_local_efficiency_i)
+                out_local_efficiency[i] = np.mean(out_local_efficiency_i)
+
+        if graph.is_directed():
+            measure_dict['in_local_efficiency'] = in_local_efficiency
+            measure_dict['avg_in_local_efficiency'] = np.mean(in_local_efficiency)
+            measure_dict['out_local_efficiency'] = out_local_efficiency
+            measure_dict['avg_out_local_efficiency'] = np.mean(out_local_efficiency)
+        else:
+            measure_dict['local_efficiency'] = local_efficiency
+            measure_dict['avg_local_efficiency'] = np.mean(local_efficiency)
         return measure_dict
 
     def get_valid_graph_types():
         graph_type_measures = {}
-        graph_type_measures[GraphBD] = ['local_efficiency', 'avg_local_efficiency']
+        graph_type_measures[GraphBD] = ['in_local_efficiency', 'avg_in_local_efficiency',
+                                        'out_local_efficiency', 'avg_out_local_efficiency']
         graph_type_measures[GraphBU] = ['local_efficiency', 'avg_local_efficiency']
-        graph_type_measures[GraphWD] = ['local_efficiency', 'avg_local_efficiency']
+        graph_type_measures[GraphWD] = ['in_local_efficiency', 'avg_in_local_efficiency',
+                                        'out_local_efficiency', 'avg_out_local_efficiency']
         graph_type_measures[GraphWU] = ['local_efficiency', 'avg_local_efficiency']
 
         return graph_type_measures

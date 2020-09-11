@@ -72,13 +72,9 @@ class MeasureDegree(Measure):
 
     def get_valid_graph_types():
         graph_type_measures = {}
-        graph_type_measures[GraphBD] = ['degree', 'avg_degree']
+        graph_type_measures[GraphBD] = ['in_degree', 'out_degree', 'avg_in_degree', 'avg_out_degree']
         graph_type_measures[GraphBU] = ['degree', 'avg_degree']
-        graph_type_measures[GraphWD] = ['degree', 'avg_degree']
+        graph_type_measures[GraphWD] = ['in_degree', 'out_degree', 'avg_in_degree', 'avg_out_degree']
         graph_type_measures[GraphWU] = ['degree', 'avg_degree']
-
-        for graph_type in graph_type_measures.keys():
-            if graph_type.get_setting('directed'):
-                graph_type_measures[graph_type].extend(['in_degree', 'out_degree', 'avg_in_degree', 'avg_out_degree'])
 
         return graph_type_measures

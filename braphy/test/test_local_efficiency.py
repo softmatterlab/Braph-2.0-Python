@@ -18,7 +18,9 @@ class TestLocalEfficiency(TestUtility):
         graph = GraphFactory.get_graph(A, settings)
         local_efficiency = [0.3333, 0.3333, 0.3750, 0.3333, 0.1000, 0, 0, 0]
         self.assertSequenceAlmostEqual(graph.get_measure(MeasureLocalEfficiency,
-                                       'local_efficiency').tolist(), local_efficiency, 4)
+                                       'in_local_efficiency').tolist(), local_efficiency, 4)
+        self.assertSequenceAlmostEqual(graph.get_measure(MeasureLocalEfficiency,
+                                       'out_local_efficiency').tolist(), local_efficiency, 4)
 
     def test_bu(self):
         A = np.array([[0, 1, 0, 1, 0, 0, 0, 0],
@@ -44,11 +46,13 @@ class TestLocalEfficiency(TestUtility):
                       [0, 0, 0, 0, 0, 0, 0, 0.2],
                       [0, 0, 0, 0, 0, 0, 0, 0.8],
                       [0, 0, 0, 0, 0, 0, 0, 0]])
-        settings = GraphSettings(weighted = True, directed = True)
+        settings = GraphSettings(weighted = True, directed = True, rule_standardize = 'range')
         graph = GraphFactory.get_graph(A, settings)
-        local_efficiency = [0, 0, 0.0117, 0, 0.0156, 0, 0, 0]
-        self.assertSequenceAlmostEqual(graph.get_measure(MeasureLocalEfficiency,
-                                       'local_efficiency').tolist(), local_efficiency, 4)
+        local_efficiency = [] # new version in matlab, waiting for implementation
+        #self.assertSequenceAlmostEqual(graph.get_measure(MeasureLocalEfficiency,
+        #                               'in_local_efficiency').tolist(), local_efficiency, 4)
+        #self.assertSequenceAlmostEqual(graph.get_measure(MeasureLocalEfficiency,
+        #                               'out_local_efficiency').tolist(), local_efficiency, 4)
 
     def test_wu(self):
         A = np.array([[0, 0.1, 0.2, 0.1, 0, 0, 0, 0],
@@ -61,7 +65,7 @@ class TestLocalEfficiency(TestUtility):
                       [0, 0, 0, 0, 0, 0, 0, 0]])
         settings = GraphSettings(weighted = True, directed = False)
         graph = GraphFactory.get_graph(A, settings)
-        local_efficiency = [0.1595, 0.1353, 0.0992, 0.1353, 0.1105, 0, 0, 0]
+        local_efficiency = [0.4167, 0.1667, 0.0833, 0.1667, 0.1250, 0, 0, 0]
         self.assertSequenceAlmostEqual(graph.get_measure(MeasureLocalEfficiency,
                                        'local_efficiency').tolist(), local_efficiency, 4)
 

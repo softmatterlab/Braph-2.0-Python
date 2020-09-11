@@ -51,7 +51,7 @@ class TestDistance(unittest.TestCase):
                          [1.0, 2.25, 0.0, 1.25, np.inf],
                          [1.25, 1.0, 1.25, 0.0, np.inf],
                          [np.inf, np.inf, np.inf, np.inf, 0]]
-        settings = GraphSettings(weighted = True, directed = False)
+        settings = GraphSettings(weighted = True, directed = False, rule_standardize = 'range')
         graph = GraphFactory.get_graph(A, settings)
         D = graph.get_measure(MeasureDistance, 'distance')
         self.assertSequenceEqual(D.tolist(), true_distance)
@@ -83,7 +83,7 @@ class TestDistance(unittest.TestCase):
                          [1.6, 4, 0.0, 2, np.inf],
                          [1, 6.6, 2.6, 0.0, np.inf],
                          [np.inf, np.inf, np.inf, np.inf, 0]]
-        settings = GraphSettings(weighted = True, directed = True)
+        settings = GraphSettings(weighted = True, directed = True, rule_standardize = 'range')
         graph = GraphFactory.get_graph(A, settings)
         D = graph.get_measure(MeasureDistance, 'distance')
         self.assertSequenceEqual(D.tolist(), true_distance)

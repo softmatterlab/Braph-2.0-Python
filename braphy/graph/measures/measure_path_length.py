@@ -65,31 +65,31 @@ class MeasurePathLength(Measure):
                 out_path_length[i] = np.sum(D[i,:]) / nbr_of_paths_to_avg_out
         path_length = (in_path_length + out_path_length) / 2
 
-        measure_dict['path_length'] = path_length
-        measure_dict['char_path_length'] = np.nanmean(path_length)
         if graph.is_directed():
             measure_dict['in_path_length'] = in_path_length
             measure_dict['out_path_length'] = out_path_length
             measure_dict['char_in_path_length'] = np.nanmean(in_path_length)
             measure_dict['char_out_path_length'] = np.nanmean(out_path_length)
         else:
+            measure_dict['path_length'] = path_length
+            measure_dict['char_path_length'] = np.nanmean(path_length)
             measure_dict['char_path_length_wsg'] = np.mean(path_length[np.isfinite(path_length)])
         return measure_dict
 
     def get_valid_graph_types():
 
         graph_type_measures = {}
-        graph_type_measures[GraphBD] = ['path_length', 'char_path_length']
-        graph_type_measures[GraphBU] = ['path_length', 'char_path_length']
-        graph_type_measures[GraphWD] = ['path_length', 'char_path_length']
-        graph_type_measures[GraphWU] = ['path_length', 'char_path_length']
+        graph_type_measures[GraphBD] = []
+        graph_type_measures[GraphBU] = []
+        graph_type_measures[GraphWD] = []
+        graph_type_measures[GraphWU] = []
 
         for graph_type in graph_type_measures.keys():
             if graph_type.get_setting('directed'):
                 graph_type_measures[graph_type].extend(['in_path_length', 'char_in_path_length',
                                                         'out_path_length', 'char_out_path_length'])
             else:
-                graph_type_measures[graph_type].extend(['char_path_length_wsg'])
+                graph_type_measures[graph_type].extend(['path_length', 'char_path_length', 'char_path_length_wsg'])
 
 
         return graph_type_measures

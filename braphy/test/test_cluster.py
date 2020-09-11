@@ -42,7 +42,7 @@ class TestCluster(TestUtility):
                       [0,0,0,0,0,0,0,0.2],
                       [0,0,0,0,0,0,0,0.8],
                       [0,0,0,0,0,0,0,0]])
-        settings = GraphSettings(weighted = True, directed = True)
+        settings = GraphSettings(weighted = True, directed = True, rule_standardize = 'range')
         graph = GraphFactory.get_graph(A, settings)
         self.assertSequenceAlmostEqual(graph.get_measure(MeasureCluster, 'cluster').tolist(),
                                        [0.1347, 0.0673, 0.0673, 0.0673, 0, 0, 0, 0], places=4)
@@ -56,7 +56,7 @@ class TestCluster(TestUtility):
                       [0,0,0,0,0,0,0,0.2],
                       [0,0,0,0,0,0,0,0.8],
                       [0,0,0,0,0,0,0,0]])
-        settings = GraphSettings(weighted = True, directed = False)
+        settings = GraphSettings(weighted = True, directed = False, rule_standardize = 'range')
         graph = GraphFactory.get_graph(A, settings)
         self.assertSequenceAlmostEqual(graph.get_measure(MeasureCluster, 'cluster').tolist(),
                                        [0.1795, 0.1795, 0.1795, 0.1795, 0.0539, 0, 0, 0], places=4)

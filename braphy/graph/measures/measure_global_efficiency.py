@@ -49,21 +49,24 @@ class MeasureGlobalEfficiency(Measure):
         out_global_efficiency = np.sum(D_inverse, axis = 1)/(len(D) - 1)
         global_efficiency = (in_global_efficiency + out_global_efficiency) / 2
 
-        measure_dict['global_efficiency'] = global_efficiency
-        measure_dict['avg_global_efficiency'] = np.mean(global_efficiency)
         if graph.is_directed():
             measure_dict['in_global_efficiency'] = in_global_efficiency
             measure_dict['avg_in_global_efficiency'] = np.mean(in_global_efficiency)
             measure_dict['out_global_efficiency'] = out_global_efficiency
             measure_dict['avg_out_global_efficiency'] = np.mean(out_global_efficiency)
+        else:
+            measure_dict['global_efficiency'] = global_efficiency
+            measure_dict['avg_global_efficiency'] = np.mean(global_efficiency)
 
         return measure_dict
 
     def get_valid_graph_types():
         graph_type_measures = {}
-        graph_type_measures[GraphBD] = ['global_efficiency', 'avg_global_efficiency']
+        graph_type_measures[GraphBD] = ['in_global_efficiency', 'avg_in_global_efficiency',
+                                        'out_global_efficiency', 'avg_out_global_efficiency']
         graph_type_measures[GraphBU] = ['global_efficiency', 'avg_global_efficiency']
-        graph_type_measures[GraphWD] = ['global_efficiency', 'avg_global_efficiency']
+        graph_type_measures[GraphWD] = ['in_global_efficiency', 'avg_in_global_efficiency',
+                                        'out_global_efficiency', 'avg_out_global_efficiency']
         graph_type_measures[GraphWU] = ['global_efficiency', 'avg_global_efficiency']
 
         for graph_type in graph_type_measures.keys():

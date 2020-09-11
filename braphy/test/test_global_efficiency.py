@@ -12,11 +12,8 @@ class TestGlobalEfficiency(TestUtility):
                       [0, 0, 0, 0]])
         settings = GraphSettings(weighted = False, directed = True)
         graph = GraphFactory.get_graph(A, settings)
-        global_efficiency = [0.75, 0.75, 0.6667, 0.5]
         in_global_efficiency = [0.6667, 0.5, 0.5, 1.0]
         out_global_efficiency = [0.8333, 1.0, 0.8333, 0]
-        self.assertSequenceAlmostEqual(graph.get_measure(MeasureGlobalEfficiency,
-                                       'global_efficiency').tolist(), global_efficiency, 4)
         self.assertSequenceAlmostEqual(graph.get_measure(MeasureGlobalEfficiency,
                                        'in_global_efficiency').tolist(), in_global_efficiency, 4)
         self.assertSequenceAlmostEqual(graph.get_measure(MeasureGlobalEfficiency,
@@ -39,13 +36,10 @@ class TestGlobalEfficiency(TestUtility):
                       [0.3922,    0.2769,    0.3171,    0.7655,    0.6463],
                       [0.6555,    0.0462,    0.9502,    0.7952,    0.7094],
                       [0.1712,    0.0971,    0.0344,    0.1869,    0.7547]])
-        settings = GraphSettings(weighted = True, directed = True)
+        settings = GraphSettings(weighted = True, directed = True, rule_standardize = 'range')
         graph = GraphFactory.get_graph(A, settings)
-        global_efficiency = [0.5815, 0.4901, 0.6190, 0.5825, 0.3872]
         in_global_efficiency = [0.5162, 0.3843, 0.6906, 0.4664, 0.6028]
         out_global_efficiency = [0.6467, 0.5960, 0.5475, 0.6985, 0.1716]
-        self.assertSequenceAlmostEqual(graph.get_measure(MeasureGlobalEfficiency,
-                                       'global_efficiency').tolist(), global_efficiency, 4)
         self.assertSequenceAlmostEqual(graph.get_measure(MeasureGlobalEfficiency,
                                        'in_global_efficiency').tolist(), in_global_efficiency, 3)
         self.assertSequenceAlmostEqual(graph.get_measure(MeasureGlobalEfficiency,
@@ -57,7 +51,7 @@ class TestGlobalEfficiency(TestUtility):
                       [0.3922,    0.2769,    0.3171,    0.7655,    0.6463],
                       [0.6555,    0.0462,    0.9502,    0.7952,    0.7094],
                       [0.1712,    0.0971,    0.0344,    0.1869,    0.7547]])
-        settings = GraphSettings(weighted = True, directed = False)
+        settings = GraphSettings(weighted = True, directed = False, rule_standardize = 'range')
         graph = GraphFactory.get_graph(A, settings)
         global_efficiency = [0.7135, 0.6011, 0.8195, 0.7147, 0.6028]
         self.assertSequenceAlmostEqual(graph.get_measure(MeasureGlobalEfficiency,

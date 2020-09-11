@@ -8,7 +8,7 @@ class GraphSettings():
     GAMMA_DEFAULT = 1
     COMMUNITY_ALGORITHM_DEFAULT = 'Louvain'
     NEGATIVE = ['zero', 'none', 'abs']
-    STANDARDIZE = ['range', 'threshold']
+    STANDARDIZE = ['threshold', 'range']
     SYMMETRIZE = ['max', 'min', 'sum', 'average']
     BINARY = ['threshold', 'density']
     BINARY_VALUE_DEFAULT = 0

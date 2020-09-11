@@ -31,7 +31,7 @@ class TestTriangles(TestUtility):
                       [0.5,0,0,0.2],
                       [0,0.1,0,0.4],
                       [0,0,0,0]])
-        settings = GraphSettings(weighted = True, directed = True)
+        settings = GraphSettings(weighted = True, directed = True, rule_standardize = 'range')
         graph = GraphFactory.get_graph(A, settings)
         self.assertSequenceAlmostEqual(graph.get_measure(MeasureTriangles, 'triangles').tolist(),
                                        [0.1069, 0.1069, 0.1069, 0], places=4)
@@ -41,7 +41,7 @@ class TestTriangles(TestUtility):
                       [0.5,0,0.1,0.2],
                       [0.1,0.1,0,0.4],
                       [0.8,0.2,0.4,0]])
-        settings = GraphSettings(weighted = True, directed = False)
+        settings = GraphSettings(weighted = True, directed = False, rule_standardize = 'range')
         graph = GraphFactory.get_graph(A, settings)
         self.assertSequenceAlmostEqual(graph.get_measure(MeasureTriangles, 'triangles').tolist(),
                                        [1.1492, 1.0024, 0.8606, 1.1855], places=4)

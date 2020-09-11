@@ -40,23 +40,19 @@ class MeasureStrength(Measure):
 
         if graph.is_undirected():
             strength = np.multiply(strength, 0.5)
+            measure_dict['strength'] = strength
+            measure_dict['avg_strength'] = np.mean(strength)
         else:
             measure_dict['in_strength'] = in_strength
             measure_dict['out_strength'] = out_strength
             measure_dict['avg_in_strength'] = np.mean(in_strength)
             measure_dict['avg_out_strength'] = np.mean(out_strength)
 
-        measure_dict['strength'] = strength
-        measure_dict['avg_strength'] = np.mean(strength)
+        
         return measure_dict
 
     def get_valid_graph_types():
         graph_type_measures = {}
-        graph_type_measures[GraphWD] = ['strength', 'avg_strength']
+        graph_type_measures[GraphWD] = ['in_strength', 'out_strength', 'avg_in_strength', 'avg_out_strength']
         graph_type_measures[GraphWU] = ['strength', 'avg_strength']
-
-        for graph_type in graph_type_measures.keys():
-            if graph_type.get_setting('directed'):
-                graph_type_measures[graph_type].extend(['in_strength', 'out_strength',
-                                                        'avg_in_strength', 'avg_out_strength'])
         return graph_type_measures

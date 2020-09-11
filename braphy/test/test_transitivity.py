@@ -27,7 +27,7 @@ class TestTransitivity(unittest.TestCase):
                       [1, 0, 1, 0],
                       [1, 1, 0, 1],
                       [0, 0, 1, 0]])
-        settings = GraphSettings(weighted = True, directed = True)
+        settings = GraphSettings(weighted = True, directed = True, rule_standardize = 'range')
         graph = GraphFactory.get_graph(A, settings)
         self.assertAlmostEqual(graph.get_measure(MeasureTransitivity, 'transitivity'), 0.225)
 
@@ -36,7 +36,7 @@ class TestTransitivity(unittest.TestCase):
                       [1, 0, 1, 0],
                       [1, 1, 0, 1],
                       [0, 0, 1, 0]])
-        settings = GraphSettings(weighted = True, directed = False)
+        settings = GraphSettings(weighted = True, directed = False, rule_standardize = 'range')
         graph = GraphFactory.get_graph(A, settings)
         self.assertAlmostEqual(graph.get_measure(MeasureTransitivity, 'transitivity'), 0.9)
 
