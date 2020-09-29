@@ -9,15 +9,27 @@ class MeasureLocalEfficiency(Measure):
     def dimensions():
         d = {}
         d['local_efficiency'] = Measure.NODAL
+        d['in_local_efficiency'] = Measure.NODAL
+        d['out_local_efficiency'] = Measure.NODAL
         d['avg_local_efficiency'] = Measure.GLOBAL
+        d['avg_in_local_efficiency'] = Measure.GLOBAL
+        d['avg_out_local_efficiency'] = Measure.GLOBAL
         return d
 
     def get_description():
         description = {}
         description['local_efficiency'] = 'The local efficiency of a node is the global efficiency ' +\
                                           'of the node computed on the node''s neighborhood'
-        description['avg_local_efficiency'] = 'The local efficiency of a graph is the average of '+\
+        description['avg_local_efficiency'] = 'The average local efficiency of a graph is the average of '+\
                                               'the local efficiencies of its nodes. It is related to clustering coefficient.'
+        description['in_local_efficiency'] = 'The in-local efficiency of a node is the in-global efficiency ' +\
+                                             'of the node computed on the node''s neighborhood'
+        description['out_local_efficiency'] = 'The out-local efficiency of a node is the out-global efficiency ' +\
+                                             'of the node computed on the node''s neighborhood'
+        description['avg_in_local_efficiency'] = 'The average in-local efficiency of a graph is the average of '+\
+                                              'the in-local efficiencies of its nodes. It is related to clustering coefficient.'
+        description['avg_out_local_efficiency'] = 'The average out-local efficiency of a graph is the average of '+\
+                                              'the out-local efficiencies of its nodes. It is related to clustering coefficient.'
 
         return description
 

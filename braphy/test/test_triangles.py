@@ -31,10 +31,10 @@ class TestTriangles(TestUtility):
                       [0.5,0,0,0.2],
                       [0,0.1,0,0.4],
                       [0,0,0,0]])
-        settings = GraphSettings(weighted = True, directed = True, rule_standardize = 'range')
+        settings = GraphSettings(weighted = True, directed = True)
         graph = GraphFactory.get_graph(A, settings)
         self.assertSequenceAlmostEqual(graph.get_measure(MeasureTriangles, 'triangles').tolist(),
-                                       [0.1069, 0.1069, 0.1069, 0], places=4)
+                                       [0.1710, 0.1710, 0.1710, 0], places=4)
 
     def test_graphWU(self):
         A = np.array([[0,0.5,0.1,0.8],

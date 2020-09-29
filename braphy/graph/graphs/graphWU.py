@@ -6,10 +6,11 @@ from braphy.utility.math_utility import (accumarray, divide_without_warning,
 
 class GraphWU(Graph):
     def __init__(self, A, settings):
+        A = Graph.symmetrize(A, settings.rule_symmetrize)
         A = Graph.remove_diagonal(A)
         A = Graph.semipositivize(A, settings.rule_negative)
         A = Graph.standardize(A, settings.rule_standardize)
-        A = Graph.symmetrize(A, settings.rule_symmetrize)
+        
         super().__init__(A, settings)
 
     def match_settings():

@@ -306,7 +306,6 @@ class BrainAtlasGui(ExitDialog, Ui_MainWindow):
         self.tableWidget.clear_table(self.atlas.brain_region_number())
 
         for i in range(self.atlas.brain_region_number()):
-            widget = QWidget()
             layout = QHBoxLayout()
             layout.setAlignment(QtCore.Qt.AlignHCenter)
 
